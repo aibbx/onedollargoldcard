@@ -34,13 +34,6 @@ const HowItWorks = () => {
     }
   };
 
-  const scrollToDonationSection = () => {
-    const donationSection = document.getElementById('donation-section');
-    if (donationSection) {
-      donationSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <section id="how-it-works" className="py-24 bg-gray-50">
       <div className="container-custom">
@@ -51,12 +44,6 @@ const HowItWorks = () => {
             Our platform uses blockchain technology to ensure transparency and fairness
             in the process of selecting winners for the Gold Card program.
           </p>
-          <button 
-            onClick={scrollToDonationSection}
-            className="btn-gold inline-flex items-center gap-2"
-          >
-            {t('hero.donateNow')}
-          </button>
         </div>
         
         {/* Tabs */}
