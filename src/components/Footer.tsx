@@ -26,7 +26,27 @@ const Footer = () => {
   };
 
   const handlePrivacyClick = () => {
-    navigate('/terms');
+    navigate('/terms#privacy');
+  };
+
+  const handleScrollToSection = (sectionId: string) => {
+    // Navigate to home page if not already there
+    if (window.location.pathname !== '/') {
+      navigate('/');
+      // Add a small delay to ensure navigation completes before scrolling
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300);
+    } else {
+      // If already on home page, scroll directly
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   return (
@@ -88,9 +108,12 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="#how-it-works" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                <button 
+                  onClick={() => handleScrollToSection('how-it-works')}
+                  className="text-gray-600 hover:text-gold-600 transition-all duration-200 text-left"
+                >
                   {t('nav.howItWorks')}
-                </a>
+                </button>
               </li>
               <li>
                 <Link to="/faq" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
@@ -101,6 +124,14 @@ const Footer = () => {
                 <Link to="/terms" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
                   {t('nav.terms')}
                 </Link>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleScrollToSection('donation-section')}
+                  className="text-gray-600 hover:text-gold-600 transition-all duration-200 text-left"
+                >
+                  {t('hero.donateNow')}
+                </button>
               </li>
             </ul>
           </div>
