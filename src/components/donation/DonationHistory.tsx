@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ExternalLink, Clock } from 'lucide-react';
-import { DonationRecord } from '../../context/WalletContext';
+import { DonationRecord } from '../../types/wallet';
 import { formatDistanceToNow } from 'date-fns';
 
 interface DonationHistoryProps {
