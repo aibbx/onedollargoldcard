@@ -87,11 +87,6 @@ const Footer = () => {
                   {t('nav.terms')}
                 </Link>
               </li>
-              <li>
-                <Link to="/smart-contract" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
-                  Smart Contract
-                </Link>
-              </li>
             </ul>
           </div>
           

@@ -54,13 +54,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         >
           {t('nav.terms')}
         </Link>
-        <Link 
-          to="/smart-contract"
-          className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
-          onClick={onClose}
-        >
-          Smart Contract
-        </Link>
         <button 
           className="btn-gold w-full mt-4 flex items-center justify-center gap-2"
           onClick={onDonateClick}
