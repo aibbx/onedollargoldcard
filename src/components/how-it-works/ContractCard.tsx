@@ -37,7 +37,7 @@ const ContractCard: React.FC<ContractCardProps> = ({ section, isOpen, toggleOpen
           
           <div className="relative">
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-gold-300"></div>
-            <pre className="bg-gray-900 text-gray-100 p-4 rounded-md overflow-x-auto text-sm font-mono ml-3 shadow-md">
+            <pre className="bg-gray-900 text-gray-100 p-4 rounded-md overflow-x-auto text-sm font-mono ml-3 shadow-md whitespace-pre text-left">
               <code>{section.code}</code>
             </pre>
           </div>
