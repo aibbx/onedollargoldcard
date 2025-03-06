@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Share2, Wallet } from 'lucide-react';
+import { Share2, Wallet, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
@@ -108,11 +108,14 @@ const Hero = () => {
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <button 
-            className="btn-gold min-w-[180px] flex items-center justify-center gap-2"
+            className="btn-gold min-w-[180px] flex items-center justify-center gap-2 relative overflow-hidden group"
             onClick={handleDonateClick}
           >
-            <Wallet className="w-4 h-4" />
-            {t('hero.donateButton')}
+            {/* Shimmer effect */}
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></span>
+            
+            <Sparkles className="w-5 h-5 text-gray-800" />
+            <span className="relative z-10">{t('hero.donateButton')}</span>
           </button>
           <button 
             onClick={handleShare}
@@ -178,4 +181,3 @@ const Hero = () => {
 };
 
 export default Hero;
-

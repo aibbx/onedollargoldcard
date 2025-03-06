@@ -2,7 +2,7 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { Github, ExternalLink } from 'lucide-react';
+import { Github, ExternalLink, Home, HelpCircle, FileText, MessageCircle, Sparkle } from 'lucide-react';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -94,35 +94,48 @@ const Footer = () => {
           <div className="flex flex-col">
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <div className="grid grid-cols-2 gap-3">
-              <Link to="/" className="flex items-center px-4 py-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 group">
+              <Link to="/" 
+                className="flex items-center px-4 py-3 bg-white hover:bg-gold-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gold-200 group">
+                <Home className="w-4 h-4 mr-2 text-gold-500" />
                 <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('nav.home')}</span>
               </Link>
               
               <button 
                 onClick={() => handleScrollToSection('how-it-works')}
-                className="flex items-center justify-start px-4 py-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 text-left group"
+                className="flex items-center justify-start px-4 py-3 bg-white hover:bg-gold-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gold-200 text-left group"
               >
+                <Sparkle className="w-4 h-4 mr-2 text-gold-500" />
                 <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('nav.howItWorks')}</span>
               </button>
               
-              <Link to="/faq" className="flex items-center px-4 py-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 group">
+              <Link to="/faq" 
+                className="flex items-center px-4 py-3 bg-white hover:bg-gold-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gold-200 group">
+                <HelpCircle className="w-4 h-4 mr-2 text-gold-500" />
                 <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('nav.faq')}</span>
               </Link>
               
               <a 
                 href="#" 
                 onClick={handleContactClick}
-                className="flex items-center px-4 py-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 group"
+                className="flex items-center px-4 py-3 bg-white hover:bg-gold-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gold-200 group"
               >
+                <MessageCircle className="w-4 h-4 mr-2 text-gold-500" />
                 <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('footer.contact')}</span>
                 <ExternalLink className="ml-1 w-3 h-3 text-gray-400 group-hover:text-gold-500" />
               </a>
               
               <button 
                 onClick={() => handleScrollToSection('donation-section')}
-                className="flex items-center justify-start col-span-2 px-4 py-3 bg-gold-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gold-200 text-left group"
+                className="flex items-center justify-center col-span-2 px-4 py-4 bg-gradient-to-r from-gold-400 to-gold-500 hover:from-gold-500 hover:to-gold-600 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-left group"
               >
-                <span className="text-gold-700 group-hover:text-gold-800 font-medium">{t('hero.donateNow')}</span>
+                <span className="text-white font-medium">{t('hero.donateNow')}</span>
+                <svg className="w-5 h-5 ml-2 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 8c-2.8 0-5 1.5-5 4 0 2.3 2 3.8 5 4V8z"/>
+                  <path d="M12 8c2.8 0 5 1.5 5 4 0 2.3-2 3.8-5 4V8z"/>
+                  <circle cx="12" cy="4" r="2"/>
+                  <path d="M12 16v4"/>
+                  <path d="M8 20h8"/>
+                </svg>
               </button>
             </div>
           </div>
