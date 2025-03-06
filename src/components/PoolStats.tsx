@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Progress } from '@/components/ui/progress';
@@ -78,7 +77,10 @@ const PoolStats = () => {
                   </div>
                 </div>
                 
-                <Progress value={progress} className="h-3 bg-gray-100" indicatorClassName="bg-gold-gradient" />
+                <Progress 
+                  value={progress} 
+                  className="h-3 bg-gray-100"
+                />
                 
                 <div className="mt-2 text-sm text-gray-500 text-right">
                   {progress.toFixed(1)}% complete

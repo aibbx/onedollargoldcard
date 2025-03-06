@@ -9,17 +9,17 @@ interface LanguageContextType {
   availableLanguages: { code: LanguageCode; name: string }[];
 }
 
-const availableLanguages = [
-  { code: 'en', name: 'English' },
-  { code: 'es', name: 'Español' },
-  { code: 'pt', name: 'Português' },
-  { code: 'ru', name: 'Русский' },
-  { code: 'fr', name: 'Français' },
-  { code: 'de', name: 'Deutsch' },
-  { code: 'zh', name: '繁體中文' },
-  { code: 'hi', name: 'हिन्दी' },
-  { code: 'id', name: 'Bahasa Indonesia' },
-  { code: 'ja', name: '日本語' },
+const availableLanguages: { code: LanguageCode; name: string }[] = [
+  { code: 'en' as LanguageCode, name: 'English' },
+  { code: 'es' as LanguageCode, name: 'Español' },
+  { code: 'pt' as LanguageCode, name: 'Português' },
+  { code: 'ru' as LanguageCode, name: 'Русский' },
+  { code: 'fr' as LanguageCode, name: 'Français' },
+  { code: 'de' as LanguageCode, name: 'Deutsch' },
+  { code: 'zh' as LanguageCode, name: '繁體中文' },
+  { code: 'hi' as LanguageCode, name: 'हिन्दी' },
+  { code: 'id' as LanguageCode, name: 'Bahasa Indonesia' },
+  { code: 'ja' as LanguageCode, name: '日本語' },
 ];
 
 const LanguageContext = createContext<LanguageContextType>({
