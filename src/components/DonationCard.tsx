@@ -196,25 +196,25 @@ const DonationCard = () => {
                       onClick={() => connectWallet('Phantom')}
                       className="w-full justify-between bg-purple-600 hover:bg-purple-700"
                     >
-                      Phantom <img src="/phantom-icon.png" alt="Phantom" className="w-5 h-5" onError={(e) => { (e.target as HTMLImageElement).src = 'https://phantom.app/favicon.ico'; }} />
+                      Phantom <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-5 h-5" />
                     </Button>
                     <Button 
                       onClick={() => connectWallet('Solflare')}
                       className="w-full justify-between bg-orange-500 hover:bg-orange-600"
                     >
-                      Solflare <img src="/solflare-icon.png" alt="Solflare" className="w-5 h-5" onError={(e) => { (e.target as HTMLImageElement).src = 'https://solflare.com/favicon.ico'; }} />
+                      Solflare <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-5 h-5" />
                     </Button>
                     <Button 
                       onClick={() => connectWallet('OKX')}
                       className="w-full justify-between bg-blue-600 hover:bg-blue-700"
                     >
-                      OKX Wallet <img src="/okx-icon.png" alt="OKX" className="w-5 h-5" onError={(e) => { (e.target as HTMLImageElement).src = 'https://www.okx.com/favicon.ico'; }} />
+                      OKX Wallet <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-5 h-5" />
                     </Button>
                     <Button 
                       onClick={() => connectWallet('MetaMask')}
                       className="w-full justify-between bg-amber-500 hover:bg-amber-600"
                     >
-                      MetaMask <img src="/metamask-icon.png" alt="MetaMask" className="w-5 h-5" onError={(e) => { (e.target as HTMLImageElement).src = 'https://metamask.io/favicon.ico'; }} />
+                      MetaMask <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-5 h-5" />
                     </Button>
                   </div>
                 )}

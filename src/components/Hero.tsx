@@ -1,14 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+
+import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Share2 } from 'lucide-react';
+import { Share2, Wallet } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 const Hero = () => {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
+  const [showWalletOptions, setShowWalletOptions] = useState(false);
+  const [walletType, setWalletType] = useState('');
+  const [isWalletConnected, setIsWalletConnected] = useState(false);
 
   useEffect(() => {
     const elements = [
@@ -31,6 +37,19 @@ const Hero = () => {
     const text = `Join me in supporting OneDollarGoldCard! #OneDollarGoldCard`;
     const url = window.location.href;
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+  };
+
+  const connectWallet = (type: string) => {
+    // Mock wallet connection
+    setWalletType(type);
+    setTimeout(() => {
+      setIsWalletConnected(true);
+      setShowWalletOptions(false);
+      toast({
+        title: "Wallet Connected",
+        description: `Your ${type} wallet has been connected successfully.`,
+      });
+    }, 1000);
   };
 
   return (
@@ -71,7 +90,11 @@ const Hero = () => {
           ref={buttonsRef}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <button className="btn-gold min-w-[180px]">
+          <button 
+            className="btn-gold min-w-[180px] flex items-center justify-center gap-2"
+            onClick={() => setShowWalletOptions(true)}
+          >
+            <Wallet className="w-4 h-4" />
             {t('hero.donateButton')}
           </button>
           <button 
@@ -82,6 +105,37 @@ const Hero = () => {
             Share on X
           </button>
         </div>
+        
+        {/* Wallet options */}
+        {showWalletOptions && !isWalletConnected && (
+          <div className="mt-6 space-y-3 bg-white p-4 rounded-lg shadow-lg max-w-md mx-auto">
+            <h4 className="font-medium text-gray-800 mb-2">Select Wallet</h4>
+            <button 
+              onClick={() => connectWallet('Phantom')}
+              className="w-full py-2 px-4 flex justify-between items-center bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors"
+            >
+              Phantom <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => connectWallet('Solflare')}
+              className="w-full py-2 px-4 flex justify-between items-center bg-orange-500 hover:bg-orange-600 text-white rounded-md transition-colors"
+            >
+              Solflare <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => connectWallet('OKX')}
+              className="w-full py-2 px-4 flex justify-between items-center bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+            >
+              OKX Wallet <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => connectWallet('MetaMask')}
+              className="w-full py-2 px-4 flex justify-between items-center bg-amber-500 hover:bg-amber-600 text-white rounded-md transition-colors"
+            >
+              MetaMask <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-5 h-5" />
+            </button>
+          </div>
+        )}
         
         {/* Card floating effect */}
         <div className="relative mt-16 md:mt-24 max-w-md mx-auto">
