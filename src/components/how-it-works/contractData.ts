@@ -1,6 +1,6 @@
 
-import { Code, Shield, Zap } from 'lucide-react';
 import React from 'react';
+import { Code, Shield, Zap } from 'lucide-react';
 
 export interface ContractSection {
   id: string;
