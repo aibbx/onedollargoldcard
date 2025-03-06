@@ -1,15 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Progress } from '@/components/ui/progress';
-import { BarChart3, Users, Clock, Share2, ExternalLink, Copy } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useToast } from "@/hooks/use-toast";
-import { CONTRACT_ADDRESSES } from '../context/WalletContext';
+import { Users, Clock } from 'lucide-react';
+import PoolAddressCard from './pool/PoolAddressCard';
+import PoolProgress from './pool/PoolProgress';
+import PoolStatCard from './pool/PoolStatCard';
+import SharePoolCard from './pool/SharePoolCard';
 
 const PoolStats = () => {
   const { t } = useLanguage();
-  const { toast } = useToast();
   const [poolAmount, setPoolAmount] = useState(0);
   const [targetAmount, setTargetAmount] = useState(10000000); // $10M
   const [totalDonors, setTotalDonors] = useState(0);
@@ -51,16 +50,10 @@ const PoolStats = () => {
     return num.toLocaleString('en-US');
   };
 
-  const handleCopyAddress = () => {
-    navigator.clipboard.writeText(CONTRACT_ADDRESSES.poolAddress);
-    toast({
-      title: "Address Copied",
-      description: "Pool address has been copied to clipboard",
-    });
-  };
-
-  const openSolscan = () => {
-    window.open(`https://solscan.io/account/${CONTRACT_ADDRESSES.poolAddress}`, '_blank');
+  const handleShareOnX = () => {
+    const text = `Check out the OneDollarGoldCard pool! Already reached $${formatNumber(poolAmount)} with ${formatNumber(totalDonors)} donors. Join us! #OneDollarGoldCard`;
+    const url = window.location.href;
+    window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
   return (
@@ -75,107 +68,38 @@ const PoolStats = () => {
         
         <div className="max-w-4xl mx-auto">
           {/* Pool Address Card */}
-          <div className="mb-8 bg-white rounded-xl p-6 shadow-sm border border-gold-100">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-1">Pool Address</h3>
-                <p className="text-sm text-gray-500">View and verify the smart contract on Solscan</p>
-              </div>
-              <div className="flex items-center gap-2 bg-gray-50 p-2 rounded-lg border border-gray-100 w-full md:w-auto">
-                <code className="text-sm text-gold-600 font-mono">
-                  {CONTRACT_ADDRESSES.poolAddress.slice(0, 4)}...{CONTRACT_ADDRESSES.poolAddress.slice(-4)}
-                </code>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-gray-500 hover:text-gold-600"
-                  onClick={handleCopyAddress}
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-gray-500 hover:text-gold-600"
-                  onClick={openSolscan}
-                >
-                  <ExternalLink className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
+          <PoolAddressCard />
 
           <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gold-100">
             <div className="p-8">
-              <div className="mb-8">
-                <div className="flex justify-between items-end mb-2">
-                  <div>
-                    <div className="text-gray-600 mb-1">{t('pool.currentAmount')}</div>
-                    <div className="text-4xl font-bold bg-clip-text text-transparent bg-gold-gradient">
-                      ${formatNumber(poolAmount)}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-gray-600 mb-1">{t('pool.target')}</div>
-                    <div className="text-2xl font-semibold text-gray-800">
-                      ${formatNumber(targetAmount)}
-                    </div>
-                  </div>
-                </div>
-                
-                <Progress 
-                  value={progress} 
-                  className="h-3 bg-gray-100"
-                />
-                
-                <div className="mt-2 text-sm text-gray-500 text-right">
-                  {progress.toFixed(1)}% complete
-                </div>
-              </div>
+              {/* Pool Progress */}
+              <PoolProgress 
+                poolAmount={poolAmount}
+                targetAmount={targetAmount}
+                progress={progress}
+                formatNumber={formatNumber}
+              />
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full bg-gold-100 flex items-center justify-center mr-3">
-                      <Users className="w-5 h-5 text-gold-600" />
-                    </div>
-                    <span className="text-gray-700 font-medium">{t('pool.donors')}</span>
-                  </div>
-                  <div className="text-3xl font-bold text-gray-800">
-                    {formatNumber(totalDonors)}
-                  </div>
-                </div>
+                {/* Donors Stat */}
+                <PoolStatCard 
+                  icon={Users}
+                  title={t('pool.donors')}
+                  value={formatNumber(totalDonors)}
+                />
                 
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full bg-gold-100 flex items-center justify-center mr-3">
-                      <Clock className="w-5 h-5 text-gold-600" />
-                    </div>
-                    <span className="text-gray-700 font-medium">{t('pool.timeLeft')}</span>
-                  </div>
-                  <div className="text-3xl font-bold text-gray-800">
-                    {timeLeft}
-                  </div>
-                </div>
+                {/* Time Left Stat */}
+                <PoolStatCard 
+                  icon={Clock}
+                  title={t('pool.timeLeft')}
+                  value={timeLeft}
+                />
                 
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 rounded-full bg-gold-100 flex items-center justify-center mr-3">
-                      <Share2 className="w-5 h-5 text-gold-600" />
-                    </div>
-                    <span className="text-gray-700 font-medium">{t('pool.share')}</span>
-                  </div>
-                  <Button 
-                    onClick={handleShareOnX}
-                    variant="outline"
-                    className="flex items-center text-gray-700 hover:text-gold-600"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                    </svg>
-                    Share on X
-                  </Button>
-                </div>
+                {/* Share Card */}
+                <SharePoolCard 
+                  title={t('pool.share')}
+                  onShare={handleShareOnX}
+                />
               </div>
             </div>
           </div>
