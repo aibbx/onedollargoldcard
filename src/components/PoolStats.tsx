@@ -151,9 +151,9 @@ const PoolStats = () => {
                 </div>
               </div>
               
-              {/* Pool addresses */}
+              {/* Public Donation Pool (previously Solana Name Service) */}
               <div className="mt-8 pt-6 border-t border-gray-100">
-                <h4 className="font-medium text-gray-800 mb-3">Solana Name Service</h4>
+                <h4 className="font-medium text-gray-800 mb-3">Public Donation Pool</h4>
                 <div className="bg-gray-50 p-3 rounded-md text-sm text-gray-600 font-mono break-all flex items-center justify-between">
                   <span>onedollargoldcard.sol</span>
                   <Button 
