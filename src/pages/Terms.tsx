@@ -84,7 +84,7 @@ const Terms = () => {
                 </div>
               </section>
               
-              <section>
+              <section id="privacy">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">6. Privacy</h2>
                 <div className="space-y-3 text-gray-700">
                   <p>6.1. All donations are recorded on the Solana blockchain and are publicly viewable.</p>

@@ -14,6 +14,11 @@ const Footer = () => {
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
+  const handleContactClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.open('https://x.com/OneDollarGold', '_blank');
+  };
+
   return (
     <footer className="bg-gray-50 pt-16 pb-8">
       <div className="container-custom">
@@ -99,12 +104,16 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                <Link to="/terms#privacy" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
                   {t('footer.privacy')}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                <a 
+                  href="#" 
+                  onClick={handleContactClick}
+                  className="text-gray-600 hover:text-gold-600 transition-all duration-200"
+                >
                   {t('footer.contact')}
                 </a>
               </li>
