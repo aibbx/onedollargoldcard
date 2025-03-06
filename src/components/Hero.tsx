@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Share2, Sparkles } from 'lucide-react';
@@ -107,7 +106,7 @@ const Hero = () => {
           className="mb-6 max-w-3xl mx-auto"
         >
           <h3 className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 uppercase tracking-wide">
-            Donate for the Gold: Your Path to American Greatness!
+            Your Path to American Greatness
           </h3>
         </div>
         
