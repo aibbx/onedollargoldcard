@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -67,9 +68,9 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                <Link to="/" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
                   {t('nav.home')}
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#how-it-works" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
@@ -77,14 +78,19 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/faq" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                <Link to="/faq" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
                   {t('nav.faq')}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/terms" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                <Link to="/terms" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
                   {t('nav.terms')}
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link to="/smart-contract" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                  Smart Contract
+                </Link>
               </li>
             </ul>
           </div>
@@ -93,9 +99,9 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                <Link to="/terms" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
                   {t('footer.terms')}
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" className="text-gray-600 hover:text-gold-600 transition-all duration-200">

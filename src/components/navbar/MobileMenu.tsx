@@ -3,6 +3,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '../../context/LanguageContext';
 import { Wallet } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -25,13 +26,13 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
     )}>
       <div className="py-4 px-6 space-y-4">
-        <a 
-          href="/" 
+        <Link 
+          to="/"
           className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
           onClick={onClose}
         >
           {t('nav.home')}
-        </a>
+        </Link>
         <a 
           href="#how-it-works" 
           className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
@@ -39,20 +40,27 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         >
           {t('nav.howItWorks')}
         </a>
-        <a 
-          href="/faq" 
+        <Link 
+          to="/faq"
           className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
           onClick={onClose}
         >
           {t('nav.faq')}
-        </a>
-        <a 
-          href="/terms" 
+        </Link>
+        <Link 
+          to="/terms"
           className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
           onClick={onClose}
         >
           {t('nav.terms')}
-        </a>
+        </Link>
+        <Link 
+          to="/smart-contract"
+          className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
+          onClick={onClose}
+        >
+          Smart Contract
+        </Link>
         <button 
           className="btn-gold w-full mt-4 flex items-center justify-center gap-2"
           onClick={onDonateClick}

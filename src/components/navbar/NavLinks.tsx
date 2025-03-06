@@ -50,6 +50,14 @@ const NavLinks: React.FC<NavLinksProps> = ({ isScrolled }) => {
         {t('nav.terms')}
         {isActive('/terms') && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold-500 rounded-full"></span>}
       </a>
+      <a href="/smart-contract" className={cn(
+        'transition-all duration-200 hover:text-gold-600 relative',
+        isScrolled ? 'text-gray-800' : 'text-gray-800',
+        isActive('/smart-contract') && 'font-medium text-gold-600'
+      )}>
+        {t('nav.smartContract')}
+        {isActive('/smart-contract') && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold-500 rounded-full"></span>}
+      </a>
     </>
   );
 };
