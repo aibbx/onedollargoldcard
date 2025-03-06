@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Progress } from '@/components/ui/progress';
-import { BarChart3, Users, Clock, Share2 } from 'lucide-react';
+import { BarChart3, Users, Clock, Share2, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from "@/hooks/use-toast";
+import { CONTRACT_ADDRESSES } from '../context/WalletContext';
 
 const PoolStats = () => {
   const { t } = useLanguage();
@@ -56,8 +57,16 @@ const PoolStats = () => {
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
+  const copyPoolAddress = () => {
+    navigator.clipboard.writeText(CONTRACT_ADDRESSES.poolAddress);
+    toast({
+      title: "Copied!",
+      description: "Pool address copied to clipboard",
+    });
+  };
+
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-gray-50" id="donation-section">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="heading-lg mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600">
@@ -144,20 +153,17 @@ const PoolStats = () => {
                 <h4 className="font-medium text-gray-800 mb-3">Public Donation Pool</h4>
                 <div className="bg-gray-50 p-3 rounded-md text-sm text-gray-600 font-mono break-all flex items-center justify-between">
                   <span>onedollargoldcard.sol</span>
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    className="text-xs hover:bg-gold-50 hover:text-gold-600"
-                    onClick={() => {
-                      navigator.clipboard.writeText('onedollargoldcard.sol');
-                      toast({
-                        title: "Copied!",
-                        description: "Pool address copied to clipboard",
-                      });
-                    }}
-                  >
-                    Copy
-                  </Button>
+                  <div className="flex space-x-2">
+                    <div className="text-xs bg-gray-200 px-2 py-1 rounded">{CONTRACT_ADDRESSES.poolAddress.substring(0, 6)}...{CONTRACT_ADDRESSES.poolAddress.substring(CONTRACT_ADDRESSES.poolAddress.length - 6)}</div>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="text-xs hover:bg-gold-50 hover:text-gold-600"
+                      onClick={copyPoolAddress}
+                    >
+                      <Copy className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

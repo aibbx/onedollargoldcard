@@ -3,20 +3,20 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CheckCircle2, AlertCircle, Wallet, Share2 } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Wallet, Share2, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useWallet, CONTRACT_ADDRESSES } from '../context/WalletContext';
 
 const DonationCard = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const { isWalletConnected, walletType, walletAddress, connectWallet } = useWallet();
   const [amount, setAmount] = useState('1.00');
   const [fee, setFee] = useState('0.05');
   const [total, setTotal] = useState('1.05');
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [error, setError] = useState('');
-  const [walletType, setWalletType] = useState('');
   const [totalDonated, setTotalDonated] = useState(0);
   const [winningChance, setWinningChance] = useState(0);
   const [showWalletOptions, setShowWalletOptions] = useState(false);
@@ -59,17 +59,13 @@ const DonationCard = () => {
     }
   };
 
-  const connectWallet = (type: string) => {
-    // Mock wallet connection
-    setWalletType(type);
-    setTimeout(() => {
-      setIsWalletConnected(true);
+  const handleConnectWallet = async (type: 'Phantom' | 'Solflare' | 'OKX' | 'MetaMask') => {
+    try {
+      await connectWallet(type);
       setShowWalletOptions(false);
-      toast({
-        title: "Wallet Connected",
-        description: `Your ${type} wallet has been connected successfully.`,
-      });
-    }, 1000);
+    } catch (error) {
+      console.error("Failed to connect wallet:", error);
+    }
   };
   
   const handleDonation = () => {
@@ -103,6 +99,14 @@ const DonationCard = () => {
   };
 
   const presetAmounts = [1, 5, 10, 50, 100];
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: "Copied!",
+      description: `${label} copied to clipboard`,
+    });
+  };
 
   return (
     <section className="py-24 bg-white" id="donation-section">
@@ -167,6 +171,41 @@ const DonationCard = () => {
                   <span className="font-bold text-lg">${total}</span>
                 </div>
 
+                {/* Contract addresses information */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                  <h4 className="font-medium text-gray-800 mb-2">Contract Addresses</h4>
+                  <div className="space-y-3">
+                    <div>
+                      <div className="text-sm text-gray-600 mb-1">Pool Address (onedollargoldcard.sol):</div>
+                      <div className="flex items-center justify-between bg-white p-2 rounded border border-gray-200">
+                        <div className="text-xs font-mono truncate">{CONTRACT_ADDRESSES.poolAddress}</div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="ml-2" 
+                          onClick={() => copyToClipboard(CONTRACT_ADDRESSES.poolAddress, 'Pool address')}
+                        >
+                          <Copy className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-600 mb-1">Platform Fee Address:</div>
+                      <div className="flex items-center justify-between bg-white p-2 rounded border border-gray-200">
+                        <div className="text-xs font-mono truncate">{CONTRACT_ADDRESSES.feeAddress}</div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="ml-2" 
+                          onClick={() => copyToClipboard(CONTRACT_ADDRESSES.feeAddress, 'Fee address')}
+                        >
+                          <Copy className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 {/* User stats when wallet connected */}
                 {isWalletConnected && (
                   <div className="bg-gold-50 p-4 rounded-lg border border-gold-100">
@@ -193,25 +232,25 @@ const DonationCard = () => {
                   <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
                     <h4 className="font-medium text-gray-800 mb-2">Select Wallet</h4>
                     <Button 
-                      onClick={() => connectWallet('Phantom')}
+                      onClick={() => handleConnectWallet('Phantom')}
                       className="w-full justify-between bg-purple-600 hover:bg-purple-700"
                     >
                       Phantom <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-5 h-5" />
                     </Button>
                     <Button 
-                      onClick={() => connectWallet('Solflare')}
+                      onClick={() => handleConnectWallet('Solflare')}
                       className="w-full justify-between bg-orange-500 hover:bg-orange-600"
                     >
                       Solflare <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-5 h-5" />
                     </Button>
                     <Button 
-                      onClick={() => connectWallet('OKX')}
+                      onClick={() => handleConnectWallet('OKX')}
                       className="w-full justify-between bg-blue-600 hover:bg-blue-700"
                     >
                       OKX Wallet <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-5 h-5" />
                     </Button>
                     <Button 
-                      onClick={() => connectWallet('MetaMask')}
+                      onClick={() => handleConnectWallet('MetaMask')}
                       className="w-full justify-between bg-amber-500 hover:bg-amber-600"
                     >
                       MetaMask <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-5 h-5" />

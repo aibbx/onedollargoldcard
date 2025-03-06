@@ -7,12 +7,13 @@ import { Menu, X } from 'lucide-react';
 import WalletConnector from './navbar/WalletConnector';
 import MobileMenu from './navbar/MobileMenu';
 import NavLinks from './navbar/NavLinks';
+import { useWallet } from '../context/WalletContext';
 
 const Navbar = () => {
   const { t } = useLanguage();
+  const { isWalletConnected } = useWallet();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,10 +67,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-6">
           <NavLinks isScrolled={isScrolled} />
           <LanguageSelector />
-          <WalletConnector 
-            isWalletConnected={isWalletConnected}
-            setIsWalletConnected={setIsWalletConnected}
-          />
+          <WalletConnector />
         </div>
 
         {/* Mobile Menu Button */}
