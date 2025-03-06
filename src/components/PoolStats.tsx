@@ -3,9 +3,10 @@ import { useLanguage } from '../context/LanguageContext';
 import { Progress } from '@/components/ui/progress';
 import { BarChart3, Users, Clock, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useToast } from "@/hooks/use-toast";
 
 const PoolStats = () => {
-  const { t } = useLanguage();
+  const { t, toast } = useToast();
   const [poolAmount, setPoolAmount] = useState(0);
   const [targetAmount, setTargetAmount] = useState(10000000); // $10M
   const [totalDonors, setTotalDonors] = useState(0);
