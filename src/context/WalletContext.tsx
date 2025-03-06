@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useToast } from "@/hooks/use-toast";
 
@@ -150,8 +149,63 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
         
         localStorage.setItem('walletType', type);
         localStorage.setItem('walletAddress', address);
+      } else if (type === 'OKX') {
+        if (!window.okxwallet) {
+          throw new Error('OKX wallet not installed');
+        }
+        
+        const provider = window.okxwallet.solana;
+        if (provider.isConnected) {
+          setProvider(provider);
+          setWalletType(type);
+          const address = provider.publicKey?.toString() || '';
+          setWalletAddress(address);
+          setIsWalletConnected(true);
+          return;
+        }
+        
+        // If not connected, try to connect
+        const response = await provider.connect();
+        const address = response.publicKey.toString();
+        setProvider(provider);
+        setWalletType(type);
+        setWalletAddress(address);
+        setIsWalletConnected(true);
+        
+        localStorage.setItem('walletType', type);
+        localStorage.setItem('walletAddress', address);
+      } else if (type === 'MetaMask') {
+        if (!window.ethereum) {
+          throw new Error('MetaMask wallet not installed');
+        }
+        
+        const provider = window.ethereum;
+        // Get the current accounts
+        const accounts = await provider.request({ method: 'eth_accounts' });
+        
+        if (accounts && accounts.length > 0) {
+          setProvider(provider);
+          setWalletType(type);
+          setWalletAddress(accounts[0]);
+          setIsWalletConnected(true);
+          return;
+        }
+        
+        // If not connected, try to connect
+        const newAccounts = await provider.request({ method: 'eth_requestAccounts' });
+        if (newAccounts && newAccounts.length > 0) {
+          setProvider(provider);
+          setWalletType(type);
+          setWalletAddress(newAccounts[0]);
+          setIsWalletConnected(true);
+          
+          localStorage.setItem('walletType', type);
+          localStorage.setItem('walletAddress', newAccounts[0]);
+        } else {
+          throw new Error('No accounts found');
+        }
       } else {
-        // Fallback to mock connection for other wallet types
+        // Fallback to mock connection for other wallet types (should not reach here)
         const mockAddress = generateMockAddress(type);
         setWalletType(type);
         setWalletAddress(mockAddress);
@@ -251,8 +305,88 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
           });
           return Promise.reject(err);
         }
+      } else if (type === 'OKX') {
+        if (!window.okxwallet) {
+          toast({
+            title: "Wallet Not Found",
+            description: "Please install the OKX wallet extension and refresh the page.",
+            variant: "destructive",
+          });
+          return Promise.reject(new Error('OKX wallet not installed'));
+        }
+        
+        const provider = window.okxwallet.solana;
+        
+        // Request connection to the wallet
+        try {
+          const response = await provider.connect();
+          const address = response.publicKey.toString();
+          
+          setProvider(provider);
+          setWalletType(type);
+          setWalletAddress(address);
+          setIsWalletConnected(true);
+          
+          localStorage.setItem('walletType', type);
+          localStorage.setItem('walletAddress', address);
+          
+          toast({
+            title: "Wallet Connected",
+            description: "Your OKX wallet has been connected successfully.",
+          });
+          
+          return Promise.resolve();
+        } catch (err) {
+          toast({
+            title: "Connection Rejected",
+            description: "The connection request was rejected by the user.",
+            variant: "destructive",
+          });
+          return Promise.reject(err);
+        }
+      } else if (type === 'MetaMask') {
+        if (!window.ethereum) {
+          toast({
+            title: "Wallet Not Found",
+            description: "Please install the MetaMask extension and refresh the page.",
+            variant: "destructive",
+          });
+          return Promise.reject(new Error('MetaMask wallet not installed'));
+        }
+        
+        const provider = window.ethereum;
+        
+        // Request connection to the wallet
+        try {
+          const accounts = await provider.request({ method: 'eth_requestAccounts' });
+          if (accounts && accounts.length > 0) {
+            setProvider(provider);
+            setWalletType(type);
+            setWalletAddress(accounts[0]);
+            setIsWalletConnected(true);
+            
+            localStorage.setItem('walletType', type);
+            localStorage.setItem('walletAddress', accounts[0]);
+            
+            toast({
+              title: "Wallet Connected",
+              description: "Your MetaMask wallet has been connected successfully.",
+            });
+            
+            return Promise.resolve();
+          } else {
+            throw new Error('No accounts found');
+          }
+        } catch (err) {
+          toast({
+            title: "Connection Rejected",
+            description: "The connection request was rejected by the user.",
+            variant: "destructive",
+          });
+          return Promise.reject(err);
+        }
       } else {
-        // Mock connection for other wallet types or when in development
+        // This should not be reached, but keeping as fallback
         const mockAddress = generateMockAddress(type);
         
         setWalletType(type);
@@ -295,7 +429,14 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
         } catch (err) {
           console.error('Error disconnecting Solflare wallet:', err);
         }
+      } else if (walletType === 'OKX' && window.okxwallet?.solana) {
+        try {
+          window.okxwallet.solana.disconnect();
+        } catch (err) {
+          console.error('Error disconnecting OKX wallet:', err);
+        }
       }
+      // MetaMask doesn't have a disconnect method in the same way
     }
     
     setProvider(null);
@@ -324,25 +465,41 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     }
     
     try {
-      // In production, this would be a real blockchain transaction
-      // For now, we'll simulate a transaction
-      
       let transactionId;
       
-      if (provider && (walletType === 'Phantom' || walletType === 'Solflare')) {
-        try {
-          // This is where you would implement the actual transaction code
-          // For now, we'll just generate a mock transaction ID
+      if (provider) {
+        if (walletType === 'Phantom' || walletType === 'Solflare' || walletType === 'OKX') {
+          try {
+            // This is where you would implement the actual Solana transaction code
+            // For now, we'll just generate a mock transaction ID
+            transactionId = `SOL_TX_${Math.random().toString(36).substring(2, 15)}`;
+            
+            // In a real implementation, you would:
+            // 1. Create a transaction to send USDC to the contract address
+            // 2. Sign it with the wallet
+            // 3. Send it to the network
+            // 4. Get the transaction ID from the response
+          } catch (err) {
+            console.error('Error sending Solana transaction:', err);
+            throw new Error('Transaction failed');
+          }
+        } else if (walletType === 'MetaMask') {
+          try {
+            // This is where you would implement the actual Ethereum transaction code
+            transactionId = `ETH_TX_${Math.random().toString(36).substring(2, 15)}`;
+            
+            // In a real implementation, you would:
+            // 1. Create a transaction to send USDC to the contract address
+            // 2. Sign it with the wallet
+            // 3. Send it to the network
+            // 4. Get the transaction ID from the response
+          } catch (err) {
+            console.error('Error sending Ethereum transaction:', err);
+            throw new Error('Transaction failed');
+          }
+        } else {
+          // Fallback for unknown wallet types
           transactionId = `TX_${Math.random().toString(36).substring(2, 15)}`;
-          
-          // In a real implementation, you would:
-          // 1. Create a transaction to send USDC to the contract address
-          // 2. Sign it with the wallet
-          // 3. Send it to the network
-          // 4. Get the transaction ID from the response
-        } catch (err) {
-          console.error('Error sending transaction:', err);
-          throw new Error('Transaction failed');
         }
       } else {
         // Mock transaction for development
@@ -436,6 +593,20 @@ declare global {
       connect: () => Promise<void>;
       disconnect: () => Promise<void>;
       publicKey?: { toString: () => string };
+    };
+    okxwallet?: {
+      solana: {
+        isConnected: boolean;
+        connect: () => Promise<{ publicKey: { toString: () => string } }>;
+        disconnect: () => Promise<void>;
+        publicKey?: { toString: () => string };
+      }
+    };
+    ethereum?: {
+      isMetaMask?: boolean;
+      request: (args: { method: string; params?: any[] }) => Promise<any>;
+      on: (eventName: string, callback: (...args: any[]) => void) => void;
+      removeListener: (eventName: string, callback: (...args: any[]) => void) => void;
     };
   }
 }
