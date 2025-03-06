@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CheckCircle2, AlertCircle, Wallet, Share2, ExternalLink } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Wallet, Share2, ExternalLink, Sparkles, ArrowUpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet, CONTRACT_ADDRESSES } from '../context/WalletContext';
@@ -119,13 +119,29 @@ const DonationCard = () => {
               </div>
               
               <div className="p-6 space-y-6">
-                <div className="bg-gradient-to-r from-gold-100 via-gold-50 to-gold-100 p-3 rounded-lg border border-gold-200 text-center hover:shadow-md transition-all duration-300 cursor-pointer" onClick={openSolscan}>
-                  <div className="text-sm text-gray-600 mb-1">Contract Address</div>
+                <div 
+                  className="bg-gradient-to-r from-gold-200 via-gold-100 to-gold-200 p-4 rounded-lg border border-gold-300 text-center hover:shadow-lg transition-all duration-300 cursor-pointer relative overflow-hidden group" 
+                  onClick={openSolscan}
+                >
+                  <div className="absolute inset-0 bg-card-shimmer opacity-0 group-hover:opacity-100"></div>
+                  <div className="text-sm font-medium text-gray-700 mb-1">Verified Smart Contract</div>
                   <div className="flex items-center justify-center">
-                    <span className="text-gold-600 font-semibold">onedollargoldcard.sol</span>
-                    <ExternalLink className="w-4 h-4 ml-1.5 text-gold-500" />
+                    <span className="text-gold-600 font-bold tracking-wide">onedollargoldcard.sol</span>
+                    <ExternalLink className="w-4 h-4 ml-2 text-gold-500" />
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">Click to view on Solscan</div>
+                  <div className="text-xs text-gray-600 mt-1 font-medium">View on Solscan Explorer</div>
+                </div>
+
+                <div className="bg-gold-50 p-4 rounded-lg border border-gold-200 my-3 animate-pulse">
+                  <div className="flex items-center text-gold-800 font-medium">
+                    <Sparkles className="w-5 h-5 mr-2 text-gold-500" />
+                    <span>Each donation increases your chance to win proportionally!</span>
+                  </div>
+                  <div className="flex items-center justify-between mt-2">
+                    <div className="text-sm text-gray-600">$1 = Basic Entry</div>
+                    <ArrowUpCircle className="w-4 h-4 text-gold-400" />
+                    <div className="text-sm text-gold-700 font-medium">$100 = 100x Chance</div>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-5 gap-2">
