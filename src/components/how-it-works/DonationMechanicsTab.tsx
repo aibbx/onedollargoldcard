@@ -12,6 +12,15 @@ const DonationMechanicsTab: React.FC = () => {
         <InfoPoint text="A 5% service fee is added for platform operations (audits, legal, maintenance)" />
         <InfoPoint text="Each donation increases your chance to win proportionally" />
       </ul>
+      
+      <div className="bg-gold-50 p-6 rounded-lg border border-gold-200 mt-6">
+        <h4 className="text-xl font-bold text-gray-800 mb-3">Backup Mechanism</h4>
+        <p className="text-gray-700">
+          To ensure the prize pool is always distributed, our smart contract includes a backup mechanism:
+          If no donations are received for 7 days, the entire pool is automatically sent to the last donor.
+          This prevents indefinite accumulation and guarantees that someone always wins.
+        </p>
+      </div>
     </div>
   );
 };
