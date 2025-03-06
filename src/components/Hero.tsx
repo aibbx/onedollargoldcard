@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Share2, Sparkles } from 'lucide-react';
+import { Share2, Sparkles, Shield } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 const Hero = () => {
@@ -9,6 +9,7 @@ const Hero = () => {
   const subtitleRef = useRef<HTMLDivElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
+  const safeguardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const elements = [
@@ -16,6 +17,7 @@ const Hero = () => {
       { ref: subtitleRef, delay: 2 },
       { ref: descRef, delay: 4 },
       { ref: buttonsRef, delay: 6 },
+      { ref: safeguardRef, delay: 8 },
     ];
 
     elements.forEach(({ ref, delay }) => {
@@ -139,6 +141,22 @@ const Hero = () => {
             <Share2 className="w-4 h-4" />
             Share on X
           </button>
+        </div>
+        
+        <div
+          ref={safeguardRef}
+          className="mt-8 max-w-2xl mx-auto"
+        >
+          <div className="bg-white/80 backdrop-blur-sm border border-gold-200 rounded-xl p-4 shadow-lg animate-pulse">
+            <div className="flex items-center gap-3 mb-2">
+              <Shield className="w-6 h-6 text-purple-600 flex-shrink-0" />
+              <h4 className="text-lg font-bold text-purple-800">7-Day Inactivity Safeguard Contract</h4>
+            </div>
+            <p className="text-sm text-gray-700">
+              Our unique backup mechanism ensures funds are never locked: After 7 days without donations, 
+              the entire pool automatically transfers to the last donor. Your donation is always protected!
+            </p>
+          </div>
         </div>
         
         <div className="relative mt-16 md:mt-24 max-w-md mx-auto">
