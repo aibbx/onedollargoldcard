@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Input } from '@/components/ui/input';
@@ -41,11 +40,8 @@ const DonationCard = () => {
   }, [amount, t]);
 
   useEffect(() => {
-    // Calculate winning chance when wallet is connected
     if (isWalletConnected) {
-      // Mock data for demonstration
       setTotalDonated(parseFloat(total));
-      // Assuming pool size of $1,250,000 to calculate chance
       const poolSize = 1250000;
       const chance = (parseFloat(total) / poolSize) * 100;
       setWinningChance(chance);
@@ -84,7 +80,6 @@ const DonationCard = () => {
       return;
     }
     
-    // Handle donation logic here
     toast({
       title: "Donation Successful",
       description: `Donation of $${total} USDC initiated!`,
@@ -127,7 +122,6 @@ const DonationCard = () => {
               </div>
               
               <div className="p-6 space-y-6">
-                {/* Amount presets */}
                 <div className="grid grid-cols-5 gap-2">
                   {presetAmounts.map((preset) => (
                     <button
@@ -144,7 +138,6 @@ const DonationCard = () => {
                   ))}
                 </div>
                 
-                {/* Donation amount */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     {t('donation.amount')} (USDC)
@@ -160,7 +153,6 @@ const DonationCard = () => {
                   </div>
                 </div>
                 
-                {/* Fee and total */}
                 <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">{t('donation.fee')}</span>
                   <span className="font-medium">${fee}</span>
@@ -171,9 +163,8 @@ const DonationCard = () => {
                   <span className="font-bold text-lg">${total}</span>
                 </div>
 
-                {/* Contract addresses information */}
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                  <h4 className="font-medium text-gray-800 mb-2">Contract Addresses</h4>
+                  <h4 className="font-medium text-gray-800 mb-2">Contract Address</h4>
                   <div className="space-y-3">
                     <div>
                       <div className="text-sm text-gray-600 mb-1">Pool Address (onedollargoldcard.sol):</div>
@@ -189,24 +180,9 @@ const DonationCard = () => {
                         </Button>
                       </div>
                     </div>
-                    <div>
-                      <div className="text-sm text-gray-600 mb-1">Platform Fee Address:</div>
-                      <div className="flex items-center justify-between bg-white p-2 rounded border border-gray-200">
-                        <div className="text-xs font-mono truncate">{CONTRACT_ADDRESSES.feeAddress}</div>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="ml-2" 
-                          onClick={() => copyToClipboard(CONTRACT_ADDRESSES.feeAddress, 'Fee address')}
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
                   </div>
                 </div>
 
-                {/* User stats when wallet connected */}
                 {isWalletConnected && (
                   <div className="bg-gold-50 p-4 rounded-lg border border-gold-100">
                     <h4 className="font-medium text-gray-800 mb-2">Your Stats</h4>
@@ -227,7 +203,6 @@ const DonationCard = () => {
                   </div>
                 )}
                 
-                {/* Wallet options */}
                 {showWalletOptions && !isWalletConnected && (
                   <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
                     <h4 className="font-medium text-gray-800 mb-2">Select Wallet</h4>
@@ -258,7 +233,6 @@ const DonationCard = () => {
                   </div>
                 )}
                 
-                {/* Confirmation checkbox */}
                 <div className="flex items-start space-x-2">
                   <Checkbox
                     id="confirmation"
@@ -271,7 +245,6 @@ const DonationCard = () => {
                   </label>
                 </div>
                 
-                {/* Error message */}
                 {error && (
                   <div className="text-red-500 flex items-center text-sm">
                     <AlertCircle className="w-4 h-4 mr-1" />
@@ -279,7 +252,6 @@ const DonationCard = () => {
                   </div>
                 )}
                 
-                {/* Action buttons */}
                 <div className="space-y-3">
                   <button
                     onClick={handleDonation}
