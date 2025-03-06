@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Share2, Sparkles } from 'lucide-react';
@@ -103,7 +104,7 @@ const Hero = () => {
         
         <h2 
           ref={subtitleRef}
-          className="heading-md mb-6 text-gray-800 max-w-3xl mx-auto font-bold"
+          className="heading-md mb-6 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 uppercase tracking-wider max-w-3xl mx-auto"
         >
           ONE DOLLAR, ONE DREAM: $5,000,000 PRIZE FOR GOLD CARD WINNERS!
         </h2>
