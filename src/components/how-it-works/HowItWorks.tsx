@@ -1,11 +1,10 @@
 
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { Code, Coins, Cpu, Shield, Users } from 'lucide-react';
+import { Coins, Shield, Users, Cpu } from 'lucide-react';
 import TabButton from './TabButton';
 import DonationMechanicsTab from './DonationMechanicsTab';
 import WinnerSelectionTab from './WinnerSelectionTab';
-import SmartContractTab from './SmartContractTab';
 import SecurityFeaturesTab from './SecurityFeaturesTab';
 import WhySolanaTab from './WhySolanaTab';
 
@@ -16,7 +15,6 @@ const HowItWorks = () => {
   const tabs = [
     { id: 'donationMechanics', label: 'Donation Mechanics', icon: <Coins className="w-5 h-5" /> },
     { id: 'winnerSelection', label: 'Winner Selection', icon: <Users className="w-5 h-5" /> },
-    { id: 'smartContract', label: 'Smart Contract', icon: <Code className="w-5 h-5" /> },
     { id: 'security', label: 'Security Features', icon: <Shield className="w-5 h-5" /> },
     { id: 'whySolana', label: 'Why Solana?', icon: <Cpu className="w-5 h-5" /> },
   ];
@@ -27,8 +25,6 @@ const HowItWorks = () => {
         return <DonationMechanicsTab />;
       case 'winnerSelection':
         return <WinnerSelectionTab />;
-      case 'smartContract':
-        return <SmartContractTab />;
       case 'security':
         return <SecurityFeaturesTab />;
       case 'whySolana':
