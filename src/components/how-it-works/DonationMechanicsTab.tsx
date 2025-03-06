@@ -10,7 +10,7 @@ const DonationMechanicsTab: React.FC = () => {
         <InfoPoint text="Minimum donation of $1.00 plus a 5% service fee (1.05 USDC)" />
         <InfoPoint text="All donations go directly to the prize pool" />
         <InfoPoint text="A 5% service fee is added for platform operations (audits, legal, maintenance)" />
-        <InfoPoint text="Each donation increases your chance to win proportionally" />
+        <InfoPoint text="More you donate, higher your chances to win!" />
       </ul>
       
       <div className="bg-gold-50 p-6 rounded-lg border border-gold-200 mt-6">
