@@ -21,9 +21,25 @@ const DonationHistory: React.FC<DonationHistoryProps> = ({
     );
   }
 
+  // Convert string dates back to Date objects if needed
+  const processedDonations = donations.map(donation => {
+    if (typeof donation.timestamp === 'string') {
+      return {
+        ...donation,
+        timestamp: new Date(donation.timestamp)
+      };
+    }
+    return donation;
+  });
+
+  // Sort donations by timestamp (newest first)
+  const sortedDonations = [...processedDonations].sort((a, b) => 
+    new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  );
+
   return (
     <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
-      {donations.map((donation) => (
+      {sortedDonations.map((donation) => (
         <div 
           key={donation.id}
           className="bg-gray-50 rounded-lg p-3 text-sm border border-gray-100 hover:border-gold-200 transition-colors"
@@ -45,6 +61,9 @@ const DonationHistory: React.FC<DonationHistoryProps> = ({
             >
               <ExternalLink className="w-4 h-4" />
             </button>
+          </div>
+          <div className="text-xs text-gray-400 mt-1 truncate">
+            Tx: {donation.transactionId.substring(0, 12)}...
           </div>
         </div>
       ))}

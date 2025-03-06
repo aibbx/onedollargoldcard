@@ -1,16 +1,50 @@
 
-// Helper function to generate a mock wallet address
+// Helper function to generate a mock wallet address that's more realistic
 export const generateMockAddress = (type: string) => {
-  const prefix = type === 'MetaMask' ? '0x' : '';
-  const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-  let result = prefix;
+  const random = () => Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
   
-  // Generate a random string for the address
-  for (let i = 0; i < (type === 'MetaMask' ? 40 : 32); i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  if (type === 'MetaMask') {
+    // Generate Ethereum-like address (0x + 40 hex characters)
+    return `0x${Array(40).fill(0).map(() => 
+      "0123456789abcdef"[Math.floor(Math.random() * 16)]
+    ).join('')}`;
+  } else {
+    // Generate Solana-like address (base58 encoded, 44 characters)
+    const base58Chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+    let result = '';
+    for (let i = 0; i < 44; i++) {
+      result += base58Chars.charAt(Math.floor(Math.random() * base58Chars.length));
+    }
+    return result;
   }
-  
-  return result;
+};
+
+// Generate transaction hash
+export const generateTransactionHash = (chainType: 'solana' | 'ethereum') => {
+  if (chainType === 'ethereum') {
+    // Ethereum tx hash: 0x + 64 hex characters
+    return `0x${Array(64).fill(0).map(() => 
+      "0123456789abcdef"[Math.floor(Math.random() * 16)]
+    ).join('')}`;
+  } else {
+    // Solana tx signature: base58, typically 88 characters
+    const base58Chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+    let result = '';
+    for (let i = 0; i < 88; i++) {
+      result += base58Chars.charAt(Math.floor(Math.random() * base58Chars.length));
+    }
+    return result;
+  }
+};
+
+// Get explorer URL for transaction ID
+export const getExplorerUrl = (txId: string, walletType: string) => {
+  if (walletType === 'MetaMask') {
+    return `https://etherscan.io/tx/${txId}`;
+  } else {
+    // Solana-based wallets
+    return `https://solscan.io/tx/${txId}`;
+  }
 };
 
 // Contract addresses

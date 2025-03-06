@@ -117,18 +117,20 @@ const DonationCard = () => {
   };
 
   const openTransaction = (txId: string) => {
-    // In production, this would open the transaction on a blockchain explorer
-    // For now, just show a toast with the transaction ID
-    toast({
-      title: "Transaction Details",
-      description: `Transaction ID: ${txId}`,
-    });
+    if (!txId) return;
     
-    // In production, you would use something like:
-    // window.open(`https://solscan.io/tx/${txId}`, '_blank');
+    // In production, this would open the transaction on a blockchain explorer
+    const explorerUrl = walletType === 'MetaMask' 
+      ? `https://etherscan.io/tx/${txId}` 
+      : `https://solscan.io/tx/${txId}`;
+      
+    window.open(explorerUrl, '_blank');
   };
 
   const presetAmounts = [1, 10, 100, 1000, 10000];
+  const lastDonationTime = donations.length > 0 
+    ? new Date(donations[donations.length - 1].timestamp) 
+    : undefined;
 
   return (
     <section className="py-24 bg-white" id="donation-section">
@@ -178,6 +180,7 @@ const DonationCard = () => {
                     walletType={walletType}
                     walletAddress={walletAddress}
                     donationCount={donations.length}
+                    lastDonationTime={lastDonationTime}
                   />
                 )}
                 

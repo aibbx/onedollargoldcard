@@ -4,6 +4,7 @@ import { Wallet, ChevronDown, LogOut, History } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from '../../context/LanguageContext';
 import { useWallet, WalletType } from '../../context/WalletContext';
+import { getExplorerUrl } from '../../utils/walletUtils';
 
 const WalletConnector: React.FC = () => {
   const { t } = useLanguage();
@@ -52,6 +53,13 @@ const WalletConnector: React.FC = () => {
   const formatWalletAddress = (address: string) => {
     if (!address) return '';
     return `${address.substring(0, 4)}...${address.substring(address.length - 4)}`;
+  };
+
+  const openTransaction = (txId: string) => {
+    if (!txId) return;
+    
+    const explorerUrl = getExplorerUrl(txId, walletType);
+    window.open(explorerUrl, '_blank');
   };
 
   return (

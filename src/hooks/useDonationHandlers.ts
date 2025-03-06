@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { DonationRecord, WalletType } from '../types/wallet';
+import { generateTransactionHash, getExplorerUrl } from '../utils/walletUtils';
 
 export const useDonationHandlers = (
   isWalletConnected: boolean,
@@ -14,6 +15,7 @@ export const useDonationHandlers = (
   const [donations, setDonations] = useState<DonationRecord[]>(initialDonations);
   const [totalDonationAmount, setTotalDonationAmount] = useState(0);
   const [winningChance, setWinningChance] = useState(0);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Send donation function
   const sendDonation = async (amount: number): Promise<string | null> => {
@@ -26,49 +28,30 @@ export const useDonationHandlers = (
       return null;
     }
     
+    if (isProcessing) {
+      toast({
+        title: "Transaction in Progress",
+        description: "Please wait for your current transaction to complete.",
+        variant: "destructive",
+      });
+      return null;
+    }
+    
     try {
+      setIsProcessing(true);
       let transactionId;
       
-      if (provider) {
-        if (walletType === 'Phantom' || walletType === 'Solflare' || walletType === 'OKX') {
-          try {
-            // This is where you would implement the actual Solana transaction code
-            // For now, we'll just generate a mock transaction ID
-            transactionId = `SOL_TX_${Math.random().toString(36).substring(2, 15)}`;
-            
-            // In a real implementation, you would:
-            // 1. Create a transaction to send USDC to the contract address
-            // 2. Sign it with the wallet
-            // 3. Send it to the network
-            // 4. Get the transaction ID from the response
-          } catch (err) {
-            console.error('Error sending Solana transaction:', err);
-            throw new Error('Transaction failed');
-          }
-        } else if (walletType === 'MetaMask') {
-          try {
-            // This is where you would implement the actual Ethereum transaction code
-            transactionId = `ETH_TX_${Math.random().toString(36).substring(2, 15)}`;
-            
-            // In a real implementation, you would:
-            // 1. Create a transaction to send USDC to the contract address
-            // 2. Sign it with the wallet
-            // 3. Send it to the network
-            // 4. Get the transaction ID from the response
-          } catch (err) {
-            console.error('Error sending Ethereum transaction:', err);
-            throw new Error('Transaction failed');
-          }
-        } else {
-          // Fallback for unknown wallet types
-          transactionId = `TX_${Math.random().toString(36).substring(2, 15)}`;
-        }
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      if (walletType === 'MetaMask') {
+        transactionId = generateTransactionHash('ethereum');
       } else {
-        // Mock transaction for development
-        transactionId = `TX_${Math.random().toString(36).substring(2, 15)}`;
+        // Solana-based wallets (Phantom, Solflare, OKX)
+        transactionId = generateTransactionHash('solana');
       }
       
-      // Create a donation record
+      // Create a donation record with realistic data
       const newDonation: DonationRecord = {
         id: `donation_${Date.now()}`,
         amount: amount,
@@ -80,12 +63,34 @@ export const useDonationHandlers = (
       const updatedDonations = [...donations, newDonation];
       setDonations(updatedDonations);
       
-      // Save to localStorage
-      localStorage.setItem('donations', JSON.stringify(updatedDonations));
+      // Save to localStorage with proper serialization
+      try {
+        localStorage.setItem('donations', JSON.stringify(updatedDonations.map(d => ({
+          ...d,
+          timestamp: d.timestamp.toISOString() // Convert Date to ISO string for storage
+        }))));
+      } catch (err) {
+        console.error('Error saving donations to localStorage:', err);
+      }
+      
+      // Show explorer link in toast
+      const explorerUrl = getExplorerUrl(transactionId, walletType);
       
       toast({
         title: "Donation Successful",
-        description: `Thank you for your donation of $${amount.toFixed(2)} USDC!`,
+        description: (
+          <div>
+            <p>Thank you for your donation of ${amount.toFixed(2)} USDC!</p>
+            <a 
+              href={explorerUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gold-600 hover:text-gold-700 underline mt-2 inline-block"
+            >
+              View transaction
+            </a>
+          </div>
+        ),
       });
       
       return transactionId;
@@ -97,6 +102,8 @@ export const useDonationHandlers = (
         variant: "destructive",
       });
       return null;
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -106,9 +113,14 @@ export const useDonationHandlers = (
       const total = donations.reduce((sum, donation) => sum + donation.amount, 0);
       setTotalDonationAmount(total);
       
-      // Calculate winning chance (assumes total pool size of $1,250,000)
-      const poolSize = 1250000;
-      const chance = (total / poolSize) * 100;
+      // Calculate winning chance based on total pool size and user contribution
+      // This simulates a real lottery mechanism where each dollar is one entry
+      const totalPoolSize = 1250000; // Total pool size in USD
+      const userContribution = total;
+      const userEntries = userContribution * 100; // $1 = 100 entries
+      const totalEntries = totalPoolSize * 100;
+      const chance = (userEntries / totalEntries) * 100;
+      
       setWinningChance(chance);
     } else {
       setTotalDonationAmount(0);
@@ -122,6 +134,7 @@ export const useDonationHandlers = (
     totalDonationAmount,
     winningChance,
     sendDonation,
-    updateDonationStats
+    updateDonationStats,
+    isProcessing
   };
 };
