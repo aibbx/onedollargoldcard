@@ -33,7 +33,7 @@ export const translations: Translations = {
     'features.fair.title': 'Fair Chance System',
     'features.fair.desc': 'Your chances increase proportionally with your donation amount.',
     'features.secure.title': 'Secure by Design',
-    'features.secure.desc': 'Built on Solana's secure and efficient blockchain.',
+    'features.secure.desc': 'Built on Solana\'s secure and efficient blockchain.',
 
     // How It Works
     'howItWorks.title': 'How It Works',
@@ -72,7 +72,7 @@ export const translations: Translations = {
     'footer.disclaimer': 'This platform is not affiliated with the US government.',
     
     // Trump mention
-    'trump.support': 'Endorsed by the Trump administration\'s immigration initiatives.',
+    'trump.support': 'Endorsed by the Trump administration\'s immigration initiatives.'
   },
   
   es: {
@@ -137,7 +137,7 @@ export const translations: Translations = {
     'footer.disclaimer': 'Esta plataforma no está afiliada con el gobierno de EE.UU.',
     
     // Trump mention
-    'trump.support': 'Respaldado por las iniciativas de inmigración de la administración Trump.',
+    'trump.support': 'Respaldado por las iniciativas de inmigración de la administración Trump.'
   },
   
   pt: {
@@ -202,7 +202,7 @@ export const translations: Translations = {
     'footer.disclaimer': 'Esta plataforma não é afiliada ao governo dos EUA.',
     
     // Trump mention
-    'trump.support': 'Apoiado pelas iniciativas de imigração da administração Trump.',
+    'trump.support': 'Apoiado pelas iniciativas de imigração da administração Trump.'
   },
   
   // More translations follow the same pattern for all required languages
@@ -211,7 +211,7 @@ export const translations: Translations = {
     'nav.home': 'Главная',
     'hero.title': 'OneDollarGoldCard',
     'hero.donateButton': 'Пожертвовать',
-    'trump.support': 'Поддерживается иммиграционными инициативами администрации Трампа.',
+    'trump.support': 'Поддерживается иммиграционными инициативами администрации Трампа.'
     // Add more translations as needed
   },
   
@@ -220,7 +220,7 @@ export const translations: Translations = {
     'nav.home': 'Accueil',
     'hero.title': 'OneDollarGoldCard',
     'hero.donateButton': 'Faire un don',
-    'trump.support': 'Soutenu par les initiatives d\'immigration de l\'administration Trump.',
+    'trump.support': 'Soutenu par les initiatives d\'immigration de l\'administration Trump.'
     // Add more translations as needed
   },
   
@@ -229,7 +229,7 @@ export const translations: Translations = {
     'nav.home': 'Startseite',
     'hero.title': 'OneDollarGoldCard',
     'hero.donateButton': 'Jetzt spenden',
-    'trump.support': 'Unterstützt von den Einwanderungsinitiativen der Trump-Administration.',
+    'trump.support': 'Unterstützt von den Einwanderungsinitiativen der Trump-Administration.'
     // Add more translations as needed
   },
   
@@ -238,7 +238,7 @@ export const translations: Translations = {
     'nav.home': '首頁',
     'hero.title': 'OneDollarGoldCard',
     'hero.donateButton': '立即捐款',
-    'trump.support': '受到特朗普政府移民倡議的支持。',
+    'trump.support': '受到特朗普政府移民倡議的支持。'
     // Add more translations as needed
   },
   
@@ -247,7 +247,7 @@ export const translations: Translations = {
     'nav.home': 'होम',
     'hero.title': 'OneDollarGoldCard',
     'hero.donateButton': 'दान करें',
-    'trump.support': 'ट्रम्प प्रशासन की आव्रजन पहल द्वारा समर्थित।',
+    'trump.support': 'ट्रम्प प्रशासन की आव्रजन पहल द्वारा समर्थित।'
     // Add more translations as needed
   },
   
@@ -256,7 +256,7 @@ export const translations: Translations = {
     'nav.home': 'Beranda',
     'hero.title': 'OneDollarGoldCard',
     'hero.donateButton': 'Donasi Sekarang',
-    'trump.support': 'Didukung oleh inisiatif imigrasi pemerintahan Trump.',
+    'trump.support': 'Didukung oleh inisiatif imigrasi pemerintahan Trump.'
     // Add more translations as needed
   },
   
@@ -265,7 +265,7 @@ export const translations: Translations = {
     'nav.home': 'ホーム',
     'hero.title': 'OneDollarGoldCard',
     'hero.donateButton': '今すぐ寄付',
-    'trump.support': 'トランプ政権の移民イニシアチブによって支持されています。',
+    'trump.support': 'トランプ政権の移民イニシアチブによって支持されています。'
     // Add more translations as needed
   }
 };
