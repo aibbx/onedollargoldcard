@@ -4,10 +4,9 @@ import { useLanguage } from '../context/LanguageContext';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useWallet, CONTRACT_ADDRESSES } from '../context/WalletContext';
+import { useWallet } from '../context/WalletContext';
 
 // Import the extracted components
-import ContractInfoCard from './donation/ContractInfoCard';
 import DonationIncentive from './donation/DonationIncentive';
 import AmountSelector from './donation/AmountSelector';
 import WalletOptions from './donation/WalletOptions';
@@ -102,10 +101,6 @@ const DonationCard = () => {
 
   const presetAmounts = [1, 10, 100, 1000, 10000];
 
-  const openSolscan = () => {
-    window.open(`https://solscan.io/account/BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt`, '_blank');
-  };
-
   return (
     <section className="py-24 bg-white" id="donation-section">
       <div className="container-custom">
@@ -125,13 +120,6 @@ const DonationCard = () => {
               </div>
               
               <div className="p-6 space-y-6">
-                {/* Contract Info Card */}
-                <ContractInfoCard 
-                  contractName="onedollargoldcard.sol" 
-                  contractAddress={CONTRACT_ADDRESSES.poolAddress}
-                  onClick={openSolscan}
-                />
-
                 {/* Donation Incentive */}
                 <DonationIncentive />
 

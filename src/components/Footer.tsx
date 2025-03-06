@@ -2,7 +2,7 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { Github } from 'lucide-react';
+import { Github, ExternalLink } from 'lucide-react';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -19,14 +19,6 @@ const Footer = () => {
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://x.com/OneDollarGold', '_blank');
-  };
-
-  const handleTermsClick = () => {
-    navigate('/terms');
-  };
-
-  const handlePrivacyClick = () => {
-    navigate('/terms#privacy');
   };
 
   const handleScrollToSection = (sectionId: string) => {
@@ -82,7 +74,7 @@ const Footer = () => {
         </div>
 
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <img src="/src/assets/gold-card.svg" alt="OneDollarGoldCard" className="h-8 w-auto" />
@@ -99,72 +91,40 @@ const Footer = () => {
             </div>
           </div>
           
-          <div>
+          <div className="flex flex-col">
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
-                  {t('nav.home')}
-                </Link>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleScrollToSection('how-it-works')}
-                  className="text-gray-600 hover:text-gold-600 transition-all duration-200 text-left"
-                >
-                  {t('nav.howItWorks')}
-                </button>
-              </li>
-              <li>
-                <Link to="/faq" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
-                  {t('nav.faq')}
-                </Link>
-              </li>
-              <li>
-                <Link to="/terms" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
-                  {t('nav.terms')}
-                </Link>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleScrollToSection('donation-section')}
-                  className="text-gray-600 hover:text-gold-600 transition-all duration-200 text-left"
-                >
-                  {t('hero.donateNow')}
-                </button>
-              </li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="font-semibold text-lg mb-4">Legal</h3>
-            <ul className="space-y-2">
-              <li>
-                <button 
-                  onClick={handleTermsClick}
-                  className="text-gray-600 hover:text-gold-600 transition-all duration-200 text-left"
-                >
-                  {t('footer.terms')}
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={handlePrivacyClick}
-                  className="text-gray-600 hover:text-gold-600 transition-all duration-200 text-left"
-                >
-                  {t('footer.privacy')}
-                </button>
-              </li>
-              <li>
-                <a 
-                  href="#" 
-                  onClick={handleContactClick}
-                  className="text-gray-600 hover:text-gold-600 transition-all duration-200"
-                >
-                  {t('footer.contact')}
-                </a>
-              </li>
-            </ul>
+            <div className="grid grid-cols-2 gap-3">
+              <Link to="/" className="flex items-center px-4 py-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 group">
+                <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('nav.home')}</span>
+              </Link>
+              
+              <button 
+                onClick={() => handleScrollToSection('how-it-works')}
+                className="flex items-center justify-start px-4 py-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 text-left group"
+              >
+                <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('nav.howItWorks')}</span>
+              </button>
+              
+              <Link to="/faq" className="flex items-center px-4 py-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 group">
+                <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('nav.faq')}</span>
+              </Link>
+              
+              <a 
+                href="#" 
+                onClick={handleContactClick}
+                className="flex items-center px-4 py-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 group"
+              >
+                <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('footer.contact')}</span>
+                <ExternalLink className="ml-1 w-3 h-3 text-gray-400 group-hover:text-gold-500" />
+              </a>
+              
+              <button 
+                onClick={() => handleScrollToSection('donation-section')}
+                className="flex items-center justify-start col-span-2 px-4 py-3 bg-gold-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gold-200 text-left group"
+              >
+                <span className="text-gold-700 group-hover:text-gold-800 font-medium">{t('hero.donateNow')}</span>
+              </button>
+            </div>
           </div>
         </div>
         
