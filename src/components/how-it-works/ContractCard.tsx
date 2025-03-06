@@ -32,12 +32,12 @@ const ContractCard: React.FC<ContractCardProps> = ({ section, isOpen, toggleOpen
       </div>
       
       {isOpen && (
-        <div className="p-6 animate-fade-in">
+        <div className="p-6 animate-fadeIn">
           <p className="text-gray-700 mb-6">{section.description}</p>
           
           <div className="relative">
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-gold-300"></div>
-            <pre className="bg-gray-900 text-gray-100 p-4 rounded-md overflow-x-auto text-sm font-mono ml-3">
+            <pre className="bg-gray-900 text-gray-100 p-4 rounded-md overflow-x-auto text-sm font-mono ml-3 shadow-md">
               <code>{section.code}</code>
             </pre>
           </div>
