@@ -54,7 +54,7 @@ const Footer = () => {
               </svg>
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Gold Card Initiative</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Gold Card Initiative by President Trump</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                   <p className="text-gray-700 italic">{t('trump.support1')}</p>
