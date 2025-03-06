@@ -39,6 +39,21 @@ const Hero = () => {
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
+  const handleDonateClick = () => {
+    if (isWalletConnected) {
+      scrollToDonationSection();
+    } else {
+      setShowWalletOptions(true);
+    }
+  };
+  
+  const scrollToDonationSection = () => {
+    const donationSection = document.getElementById('donation-section');
+    if (donationSection) {
+      donationSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const connectWallet = (type: string) => {
     // Mock wallet connection
     setWalletType(type);
@@ -49,6 +64,8 @@ const Hero = () => {
         title: "Wallet Connected",
         description: `Your ${type} wallet has been connected successfully.`,
       });
+      // After connecting wallet, scroll to donation section
+      scrollToDonationSection();
     }, 1000);
   };
 
@@ -92,7 +109,7 @@ const Hero = () => {
         >
           <button 
             className="btn-gold min-w-[180px] flex items-center justify-center gap-2"
-            onClick={() => setShowWalletOptions(true)}
+            onClick={handleDonateClick}
           >
             <Wallet className="w-4 h-4" />
             {t('hero.donateButton')}
@@ -161,3 +178,4 @@ const Hero = () => {
 };
 
 export default Hero;
+

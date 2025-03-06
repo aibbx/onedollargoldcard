@@ -21,8 +21,10 @@ const Index = () => {
           <HowItWorks />
           <div className="relative">
             <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-gold-50/30 to-transparent" />
-            <DonationCard />
-            <PoolStats />
+            <div id="donation-section">
+              <DonationCard />
+              <PoolStats />
+            </div>
           </div>
         </main>
         <Footer />
