@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Wallet, ChevronDown, LogOut } from 'lucide-react';
+import { Wallet, ChevronDown, LogOut, History } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from '../../context/LanguageContext';
 import { useWallet, WalletType } from '../../context/WalletContext';
@@ -8,7 +8,14 @@ import { useWallet, WalletType } from '../../context/WalletContext';
 const WalletConnector: React.FC = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
-  const { isWalletConnected, walletType, walletAddress, connectWallet, disconnectWallet } = useWallet();
+  const { 
+    isWalletConnected, 
+    walletType, 
+    walletAddress, 
+    connectWallet, 
+    disconnectWallet,
+    donations 
+  } = useWallet();
   const [showWalletOptions, setShowWalletOptions] = useState(false);
   const [showWalletMenu, setShowWalletMenu] = useState(false);
 
@@ -68,6 +75,20 @@ const WalletConnector: React.FC = () => {
               <div className="px-4 py-2 text-xs text-gray-500 font-mono break-all">
                 {walletAddress}
               </div>
+              {donations.length > 0 && (
+                <div className="px-4 py-2 text-xs text-gray-500">
+                  <div className="flex justify-between items-center">
+                    <span>Total Donated:</span>
+                    <span className="font-medium text-gold-600">
+                      ${donations.reduce((sum, d) => sum + d.amount, 0).toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center mt-1">
+                    <span>Transactions:</span>
+                    <span className="font-medium text-gray-700">{donations.length}</span>
+                  </div>
+                </div>
+              )}
               <button
                 className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-red-50 text-red-600"
                 onClick={() => {

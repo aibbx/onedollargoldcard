@@ -2,29 +2,40 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from '../context/WalletContext';
 
-// Import the extracted components
+// Import the components
 import DonationIncentive from './donation/DonationIncentive';
 import AmountSelector from './donation/AmountSelector';
 import WalletOptions from './donation/WalletOptions';
 import DonationStats from './donation/DonationStats';
 import DonationActions from './donation/DonationActions';
+import DonationHistory from './donation/DonationHistory';
 
 const DonationCard = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
-  const { isWalletConnected, walletType, walletAddress, connectWallet } = useWallet();
+  const { 
+    isWalletConnected, 
+    walletType, 
+    walletAddress, 
+    connectWallet, 
+    sendDonation,
+    donations,
+    totalDonationAmount,
+    winningChance
+  } = useWallet();
+  
   const [amount, setAmount] = useState('100.00');
   const [fee, setFee] = useState('5.00');
   const [total, setTotal] = useState('105.00');
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [error, setError] = useState('');
-  const [totalDonated, setTotalDonated] = useState(0);
-  const [winningChance, setWinningChance] = useState(0);
   const [showWalletOptions, setShowWalletOptions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     try {
@@ -45,15 +56,6 @@ const DonationCard = () => {
     }
   }, [amount, t]);
 
-  useEffect(() => {
-    if (isWalletConnected) {
-      setTotalDonated(parseFloat(total));
-      const poolSize = 1250000;
-      const chance = (parseFloat(total) / poolSize) * 100;
-      setWinningChance(chance);
-    }
-  }, [isWalletConnected, total]);
-
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (/^\d*\.?\d{0,2}$/.test(value) || value === '') {
@@ -70,7 +72,7 @@ const DonationCard = () => {
     }
   };
   
-  const handleDonation = () => {
+  const handleDonation = async () => {
     if (!isWalletConnected) {
       setShowWalletOptions(true);
       return;
@@ -86,17 +88,44 @@ const DonationCard = () => {
       return;
     }
     
-    toast({
-      title: "Donation Successful",
-      description: `Donation of $${total} USDC initiated!`,
-      variant: "default",
-    });
+    try {
+      setIsLoading(true);
+      const totalAmount = parseFloat(total);
+      const transactionId = await sendDonation(totalAmount);
+      
+      if (transactionId) {
+        // Reset form after successful donation
+        setAmount('100.00');
+        setIsConfirmed(false);
+      }
+    } catch (error) {
+      console.error('Donation failed:', error);
+      toast({
+        title: "Donation Failed",
+        description: "There was an error processing your donation. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleShareOnX = () => {
     const text = `I just donated $${total} USDC to OneDollarGoldCard! Join me in supporting this initiative that democratizes access to immigration opportunities. #OneDollarGoldCard`;
     const url = window.location.href;
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+  };
+
+  const openTransaction = (txId: string) => {
+    // In production, this would open the transaction on a blockchain explorer
+    // For now, just show a toast with the transaction ID
+    toast({
+      title: "Transaction Details",
+      description: `Transaction ID: ${txId}`,
+    });
+    
+    // In production, you would use something like:
+    // window.open(`https://solscan.io/tx/${txId}`, '_blank');
   };
 
   const presetAmounts = [1, 10, 100, 1000, 10000];
@@ -144,9 +173,30 @@ const DonationCard = () => {
                 {/* Donation Stats */}
                 {isWalletConnected && (
                   <DonationStats 
-                    totalDonated={totalDonated}
+                    totalDonated={totalDonationAmount}
                     winningChance={winningChance}
                     walletType={walletType}
+                    walletAddress={walletAddress}
+                    donationCount={donations.length}
+                  />
+                )}
+                
+                {/* Donation History Toggle Button (only when connected and has donations) */}
+                {isWalletConnected && donations.length > 0 && (
+                  <button
+                    onClick={() => setShowHistory(!showHistory)}
+                    className="flex items-center justify-between w-full py-2 px-3 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-md transition-colors"
+                  >
+                    <span>Donation History ({donations.length})</span>
+                    {showHistory ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                )}
+                
+                {/* Donation History */}
+                {isWalletConnected && showHistory && (
+                  <DonationHistory 
+                    donations={donations}
+                    openTransaction={openTransaction}
                   />
                 )}
                 
@@ -184,6 +234,7 @@ const DonationCard = () => {
                   donateButtonText={t('donation.button')}
                   connectWalletText={t('donation.walletConnect')}
                   shareOnXText="Share on X"
+                  isLoading={isLoading}
                 />
               </div>
             </div>

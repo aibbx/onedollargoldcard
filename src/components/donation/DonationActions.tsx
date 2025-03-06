@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Wallet, Sparkles } from 'lucide-react';
+import { CheckCircle2, Wallet, Sparkles, Loader2 } from 'lucide-react';
 
 interface DonationActionsProps {
   isWalletConnected: boolean;
@@ -10,6 +10,7 @@ interface DonationActionsProps {
   donateButtonText: string;
   connectWalletText: string;
   shareOnXText?: string;
+  isLoading?: boolean;
 }
 
 const DonationActions: React.FC<DonationActionsProps> = ({
@@ -18,21 +19,29 @@ const DonationActions: React.FC<DonationActionsProps> = ({
   handleShareOnX,
   donateButtonText,
   connectWalletText,
-  shareOnXText
+  shareOnXText,
+  isLoading = false
 }) => {
   return (
     <div className="space-y-3">
       <button
         onClick={handleDonation}
+        disabled={isLoading}
         className="relative overflow-hidden w-full py-3 rounded-lg font-medium text-black 
                    shadow-md hover:shadow-lg transition-all duration-300 
                    bg-gradient-to-r from-gold-400 to-gold-500 hover:from-gold-500 hover:to-gold-600 
-                   transform hover:scale-[1.02] active:scale-[0.98] flex justify-center items-center group"
+                   transform hover:scale-[1.02] active:scale-[0.98] flex justify-center items-center group
+                   disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
       >
         {/* Shimmer effect */}
         <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmerTranslate"></span>
         
-        {isWalletConnected ? (
+        {isLoading ? (
+          <>
+            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+            Processing...
+          </>
+        ) : isWalletConnected ? (
           <>
             {donateButtonText}
             <CheckCircle2 className="w-5 h-5 ml-2" />
