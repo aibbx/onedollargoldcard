@@ -11,9 +11,9 @@ const DonationCard = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const { isWalletConnected, walletType, walletAddress, connectWallet } = useWallet();
-  const [amount, setAmount] = useState('10.00');
-  const [fee, setFee] = useState('0.50');
-  const [total, setTotal] = useState('10.50');
+  const [amount, setAmount] = useState('100.00');
+  const [fee, setFee] = useState('5.00');
+  const [total, setTotal] = useState('105.00');
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [error, setError] = useState('');
   const [totalDonated, setTotalDonated] = useState(0);
@@ -93,7 +93,7 @@ const DonationCard = () => {
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
-  const presetAmounts = [1, 5, 10, 50, 100];
+  const presetAmounts = [1, 10, 100, 1000, 10000];
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
