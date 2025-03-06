@@ -1,11 +1,12 @@
 
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Github } from 'lucide-react';
 
 const Footer = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
   
   const handleShare = (e: React.MouseEvent) => {
@@ -18,6 +19,14 @@ const Footer = () => {
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.open('https://x.com/OneDollarGold', '_blank');
+  };
+
+  const handleTermsClick = () => {
+    navigate('/terms');
+  };
+
+  const handlePrivacyClick = () => {
+    navigate('/terms');
   };
 
   return (
@@ -100,14 +109,20 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/terms" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                <button 
+                  onClick={handleTermsClick}
+                  className="text-gray-600 hover:text-gold-600 transition-all duration-200 text-left"
+                >
                   {t('footer.terms')}
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/terms#privacy" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                <button
+                  onClick={handlePrivacyClick}
+                  className="text-gray-600 hover:text-gold-600 transition-all duration-200 text-left"
+                >
                   {t('footer.privacy')}
-                </Link>
+                </button>
               </li>
               <li>
                 <a 
