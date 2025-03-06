@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSelector from './LanguageSelector';
@@ -29,10 +28,8 @@ const Navbar = () => {
   };
 
   const handleMobileMenuDonateClick = () => {
-    // Close the mobile menu
     setIsMobileMenuOpen(false);
     
-    // Handle wallet or donation section navigation
     if (isWalletConnected) {
       const donationSection = document.getElementById('donation-section');
       if (donationSection) {
@@ -53,7 +50,7 @@ const Navbar = () => {
       <div className="container-custom mx-auto flex justify-between items-center">
         <div className="flex items-center">
           <a href="/" className="flex items-center gap-2">
-            <img src="/src/assets/gold-card.svg" alt="OneDollarGoldCard" className="h-8 w-auto" />
+            <img src="/gold-card.svg" alt="OneDollarGoldCard" className="h-8 w-auto" />
             <span className={cn(
               'font-bold text-xl',
               isScrolled ? 'text-black' : 'text-black'
@@ -63,14 +60,12 @@ const Navbar = () => {
           </a>
         </div>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
           <NavLinks isScrolled={isScrolled} />
           <LanguageSelector />
           <WalletConnector />
         </div>
 
-        {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
           <LanguageSelector />
           <button 
@@ -87,7 +82,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       <MobileMenu 
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}

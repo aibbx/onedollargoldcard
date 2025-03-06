@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Share2, Wallet, Sparkles } from 'lucide-react';
@@ -161,7 +160,7 @@ const Hero = () => {
         <div className="relative mt-16 md:mt-24 max-w-md mx-auto">
           <div className="absolute -inset-1 rounded-2xl bg-gold-gradient opacity-50 blur-lg animate-pulse"></div>
           <img 
-            src="/src/assets/gold-card.svg" 
+            src="/gold-card.svg" 
             alt="Gold Card" 
             className="relative w-full h-auto rounded-2xl shadow-xl animate-float bg-white p-4"
           />

@@ -77,7 +77,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <img src="/src/assets/gold-card.svg" alt="OneDollarGoldCard" className="h-8 w-auto" />
+              <img src="/gold-card.svg" alt="OneDollarGoldCard" className="h-8 w-auto" />
               <span className="font-bold text-xl">OneDollarGoldCard</span>
             </div>
             <p className="text-gray-600 mb-4 max-w-md">
