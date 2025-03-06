@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { DonationRecord, WalletType } from '../types/wallet';
@@ -80,7 +79,7 @@ export const useDonationHandlers = (
         title: "Donation Successful",
         description: (
           <div>
-            <p>Thank you for your donation of ${amount.toFixed(2)} USDC!</p>
+            <p>{`Thank you for your donation of $${amount.toFixed(2)} USDC!`}</p>
             <a 
               href={explorerUrl} 
               target="_blank" 
