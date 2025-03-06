@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { useToast } from "@/hooks/use-toast";
 
 const PoolStats = () => {
-  const { t, toast } = useToast();
+  const { t } = useLanguage();
+  const { toast } = useToast();
   const [poolAmount, setPoolAmount] = useState(0);
   const [targetAmount, setTargetAmount] = useState(10000000); // $10M
   const [totalDonors, setTotalDonors] = useState(0);
