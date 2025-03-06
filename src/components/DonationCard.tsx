@@ -1,12 +1,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CheckCircle2, AlertCircle, Wallet, Share2, ExternalLink, Sparkles, ArrowUpCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet, CONTRACT_ADDRESSES } from '../context/WalletContext';
+
+// Import the extracted components
+import ContractInfoCard from './donation/ContractInfoCard';
+import DonationIncentive from './donation/DonationIncentive';
+import AmountSelector from './donation/AmountSelector';
+import WalletOptions from './donation/WalletOptions';
+import DonationStats from './donation/DonationStats';
+import DonationActions from './donation/DonationActions';
 
 const DonationCard = () => {
   const { t } = useLanguage();
@@ -119,61 +125,23 @@ const DonationCard = () => {
               </div>
               
               <div className="p-6 space-y-6">
-                <div 
-                  className="bg-gradient-to-r from-gold-200 via-gold-100 to-gold-200 p-4 rounded-lg border border-gold-300 text-center hover:shadow-lg transition-all duration-300 cursor-pointer relative overflow-hidden group" 
+                {/* Contract Info Card */}
+                <ContractInfoCard 
+                  contractName="onedollargoldcard.sol" 
+                  contractAddress={CONTRACT_ADDRESSES.poolAddress}
                   onClick={openSolscan}
-                >
-                  <div className="absolute inset-0 bg-card-shimmer opacity-0 group-hover:opacity-100"></div>
-                  <div className="text-sm font-medium text-gray-700 mb-1">Verified Smart Contract</div>
-                  <div className="flex items-center justify-center">
-                    <span className="text-gold-600 font-bold tracking-wide">onedollargoldcard.sol</span>
-                    <ExternalLink className="w-4 h-4 ml-2 text-gold-500" />
-                  </div>
-                  <div className="text-xs text-gray-600 mt-1 font-medium">View on Solscan Explorer</div>
-                </div>
+                />
 
-                <div className="bg-gold-50 p-4 rounded-lg border border-gold-200 my-3 animate-pulse">
-                  <div className="flex items-center text-gold-800 font-medium">
-                    <Sparkles className="w-5 h-5 mr-2 text-gold-500" />
-                    <span>Each donation increases your chance to win proportionally!</span>
-                  </div>
-                  <div className="flex items-center justify-between mt-2">
-                    <div className="text-sm text-gray-600">$1 = Basic Entry</div>
-                    <ArrowUpCircle className="w-4 h-4 text-gold-400" />
-                    <div className="text-sm text-gold-700 font-medium">$100 = 100x Chance</div>
-                  </div>
-                </div>
+                {/* Donation Incentive */}
+                <DonationIncentive />
 
-                <div className="grid grid-cols-5 gap-2">
-                  {presetAmounts.map((preset) => (
-                    <button
-                      key={preset}
-                      className={`py-2 px-1 rounded-md transition-all duration-200 ${
-                        parseFloat(amount) === preset
-                          ? 'bg-gold-500 text-black font-medium'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                      }`}
-                      onClick={() => setAmount(preset.toString())}
-                    >
-                      ${preset}
-                    </button>
-                  ))}
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('donation.amount')} (USDC)
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-                    <Input
-                      type="text"
-                      value={amount}
-                      onChange={handleAmountChange}
-                      className="pl-8 border-2 focus:ring-gold-500 focus:border-gold-500"
-                    />
-                  </div>
-                </div>
+                {/* Amount Selector */}
+                <AmountSelector 
+                  amount={amount}
+                  onChange={handleAmountChange}
+                  presetAmounts={presetAmounts}
+                  setAmount={setAmount}
+                />
                 
                 <div className="flex justify-between py-2 border-b border-gray-200">
                   <span className="text-gray-600">{t('donation.fee')}</span>
@@ -185,56 +153,21 @@ const DonationCard = () => {
                   <span className="font-bold text-lg">${total}</span>
                 </div>
 
+                {/* Donation Stats */}
                 {isWalletConnected && (
-                  <div className="bg-gold-50 p-4 rounded-lg border border-gold-100">
-                    <h4 className="font-medium text-gray-800 mb-2">Your Stats</h4>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Total Donated:</span>
-                        <span className="font-medium">${totalDonated.toFixed(2)} USDC</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Winning Chance:</span>
-                        <span className="font-medium text-gold-600">{winningChance.toFixed(6)}%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Wallet:</span>
-                        <span className="font-medium">{walletType}</span>
-                      </div>
-                    </div>
-                  </div>
+                  <DonationStats 
+                    totalDonated={totalDonated}
+                    winningChance={winningChance}
+                    walletType={walletType}
+                  />
                 )}
                 
+                {/* Wallet Options */}
                 {showWalletOptions && !isWalletConnected && (
-                  <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-800 mb-2">Select Wallet</h4>
-                    <Button 
-                      onClick={() => handleConnectWallet('Phantom')}
-                      className="w-full justify-between bg-purple-600 hover:bg-purple-700"
-                    >
-                      Phantom <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-5 h-5" />
-                    </Button>
-                    <Button 
-                      onClick={() => handleConnectWallet('Solflare')}
-                      className="w-full justify-between bg-orange-500 hover:bg-orange-600"
-                    >
-                      Solflare <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-5 h-5" />
-                    </Button>
-                    <Button 
-                      onClick={() => handleConnectWallet('OKX')}
-                      className="w-full justify-between bg-blue-600 hover:bg-blue-700"
-                    >
-                      OKX Wallet <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-5 h-5" />
-                    </Button>
-                    <Button 
-                      onClick={() => handleConnectWallet('MetaMask')}
-                      className="w-full justify-between bg-amber-500 hover:bg-amber-600"
-                    >
-                      MetaMask <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-5 h-5" />
-                    </Button>
-                  </div>
+                  <WalletOptions onConnect={handleConnectWallet} />
                 )}
                 
+                {/* Confirmation Checkbox */}
                 <div className="flex items-start space-x-2">
                   <Checkbox
                     id="confirmation"
@@ -247,6 +180,7 @@ const DonationCard = () => {
                   </label>
                 </div>
                 
+                {/* Error Message */}
                 {error && (
                   <div className="text-red-500 flex items-center text-sm">
                     <AlertCircle className="w-4 h-4 mr-1" />
@@ -254,37 +188,15 @@ const DonationCard = () => {
                   </div>
                 )}
                 
-                <div className="space-y-3">
-                  <button
-                    onClick={handleDonation}
-                    className="btn-gold w-full py-3 flex justify-center items-center"
-                  >
-                    {isWalletConnected ? (
-                      <>
-                        {t('donation.button')}
-                        <CheckCircle2 className="w-5 h-5 ml-2" />
-                      </>
-                    ) : (
-                      <>
-                        {t('donation.walletConnect')}
-                        <Wallet className="w-5 h-5 ml-2" />
-                      </>
-                    )}
-                  </button>
-                  
-                  {isWalletConnected && (
-                    <Button
-                      onClick={handleShareOnX}
-                      variant="outline"
-                      className="w-full flex items-center justify-center"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                      </svg>
-                      Share on X
-                    </Button>
-                  )}
-                </div>
+                {/* Donation Actions */}
+                <DonationActions 
+                  isWalletConnected={isWalletConnected}
+                  handleDonation={handleDonation}
+                  handleShareOnX={handleShareOnX}
+                  donateButtonText={t('donation.button')}
+                  connectWalletText={t('donation.walletConnect')}
+                  shareOnXText="Share on X"
+                />
               </div>
             </div>
           </div>
