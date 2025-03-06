@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Share2, Sparkles } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const Hero = () => {
   const { t } = useLanguage();
@@ -28,7 +29,7 @@ const Hero = () => {
 
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
-    const text = `Join me in supporting OneDollarGoldCard! #OneDollarGoldCard`;
+    const text = `Join me in supporting OneDollarGoldCard! #OneDollarGoldCard #GoldCard #Trump2024`;
     const url = window.location.href;
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
@@ -44,8 +45,54 @@ const Hero = () => {
     }
   };
 
+  // Structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "OneDollarGoldCard",
+    "url": "https://onedollargoldcard.com",
+    "logo": "https://onedollargoldcard.com/gold-card.svg",
+    "description": "A decentralized donation platform offering non-US citizens a chance to win enough to apply for the US Gold Card residency.",
+    "sameAs": [
+      "https://onedollargoldcard.xyz",
+      "https://1dollargoldcard.com",
+      "https://1dollargoldcard.xyz"
+    ]
+  };
+
+  // Additional product structured data for the Gold Card opportunity
+  const productData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Gold Card Opportunity",
+    "description": "An opportunity to win $5 million for applying to the Gold Card program introduced by President Trump.",
+    "offers": {
+      "@type": "Offer",
+      "price": "1.05",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+      <Helmet>
+        {/* Canonical URL to prevent duplicate content issues */}
+        <link rel="canonical" href="https://onedollargoldcard.com" />
+        
+        {/* Alternate language versions if you support multiple languages */}
+        <link rel="alternate" href="https://onedollargoldcard.com" hrefLang="x-default" />
+        <link rel="alternate" href="https://onedollargoldcard.com" hrefLang="en" />
+        
+        {/* Structured data for search engines */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(productData)}
+        </script>
+      </Helmet>
+      
       {/* Background with subtle gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-white via-gold-50 to-white opacity-70"></div>
       
@@ -85,6 +132,7 @@ const Hero = () => {
           <button 
             className="btn-gold min-w-[180px] flex items-center justify-center gap-2 relative overflow-hidden group"
             onClick={handleDonateClick}
+            aria-label="Donate now for a chance to win the Gold Card opportunity"
           >
             {/* Shimmer effect */}
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></span>
@@ -95,6 +143,7 @@ const Hero = () => {
           <button 
             onClick={handleShare}
             className="btn-outline min-w-[180px] flex items-center justify-center gap-2"
+            aria-label="Share this opportunity on X (Twitter)"
           >
             <Share2 className="w-4 h-4" />
             Share on X
@@ -106,7 +155,7 @@ const Hero = () => {
           <div className="absolute -inset-1 rounded-2xl bg-gold-gradient opacity-50 blur-lg animate-pulse"></div>
           <img 
             src="/gold-card.svg" 
-            alt="Gold Card" 
+            alt="Gold Card Visa - President Trump's Immigration Initiative" 
             className="relative w-full h-auto rounded-2xl shadow-xl animate-float bg-white p-4"
           />
         </div>

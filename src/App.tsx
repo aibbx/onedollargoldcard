@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { LanguageProvider } from './context/LanguageContext';
 import { WalletProvider } from './context/WalletContext';
 import Index from './pages/Index';
@@ -11,18 +12,20 @@ import './App.css';
 
 function App() {
   return (
-    <LanguageProvider>
-      <WalletProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
-      </WalletProvider>
-    </LanguageProvider>
+    <HelmetProvider>
+      <LanguageProvider>
+        <WalletProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
+        </WalletProvider>
+      </LanguageProvider>
+    </HelmetProvider>
   );
 }
 

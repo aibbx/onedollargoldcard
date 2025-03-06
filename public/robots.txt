@@ -1,0 +1,11 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://onedollargoldcard.com/sitemap.xml
+
+# Alternative domains
+Host: onedollargoldcard.com
+Host-redirect: onedollargoldcard.xyz
+Host-redirect: 1dollargoldcard.com
+Host-redirect: 1dollargoldcard.xyz
