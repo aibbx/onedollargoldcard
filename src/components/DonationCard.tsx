@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CheckCircle2, AlertCircle, Wallet, Share2 } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Wallet, Share2, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet, CONTRACT_ADDRESSES } from '../context/WalletContext';
@@ -96,6 +96,10 @@ const DonationCard = () => {
 
   const presetAmounts = [1, 10, 100, 1000, 10000];
 
+  const openSolscan = () => {
+    window.open(`https://solscan.io/account/BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt`, '_blank');
+  };
+
   return (
     <section className="py-24 bg-white" id="donation-section">
       <div className="container-custom">
@@ -115,6 +119,15 @@ const DonationCard = () => {
               </div>
               
               <div className="p-6 space-y-6">
+                <div className="bg-gradient-to-r from-gold-100 via-gold-50 to-gold-100 p-3 rounded-lg border border-gold-200 text-center hover:shadow-md transition-all duration-300 cursor-pointer" onClick={openSolscan}>
+                  <div className="text-sm text-gray-600 mb-1">Contract Address</div>
+                  <div className="flex items-center justify-center">
+                    <span className="text-gold-600 font-semibold">onedollargoldcard.sol</span>
+                    <ExternalLink className="w-4 h-4 ml-1.5 text-gold-500" />
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">Click to view on Solscan</div>
+                </div>
+
                 <div className="grid grid-cols-5 gap-2">
                   {presetAmounts.map((preset) => (
                     <button
