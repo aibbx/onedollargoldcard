@@ -21,11 +21,13 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     isWalletConnected,
     connectWallet,
     disconnectWallet,
-    autoConnectWallet
+    autoConnectWallet,
+    walletDetectionComplete
   } = useWalletConnectors();
 
   // Initialize donation state
   const [initialDonations, setInitialDonations] = useState<DonationRecord[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
   
   const {
     donations,
@@ -36,43 +38,95 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     updateDonationStats
   } = useDonationHandlers(isWalletConnected, walletAddress, walletType, provider, initialDonations);
 
+  // Load saved donations from localStorage
+  useEffect(() => {
+    const loadSavedDonations = () => {
+      const savedDonations = localStorage.getItem('donations');
+      
+      if (savedDonations) {
+        try {
+          const parsedDonations = JSON.parse(savedDonations);
+          // Convert ISO string timestamps back to Date objects
+          const processedDonations = parsedDonations.map((donation: any) => ({
+            ...donation,
+            timestamp: new Date(donation.timestamp)
+          }));
+          
+          setInitialDonations(processedDonations);
+          setDonations(processedDonations);
+        } catch (error) {
+          console.error('Failed to parse saved donations:', error);
+          // Clear potentially corrupted data
+          localStorage.removeItem('donations');
+        }
+      }
+    };
+    
+    loadSavedDonations();
+  }, []);
+
   // Check for existing wallet connection on load
   useEffect(() => {
+    if (!walletDetectionComplete) return;
+    
     const checkWalletConnection = async () => {
       const savedWalletType = localStorage.getItem('walletType') as WalletType;
       const savedWalletAddress = localStorage.getItem('walletAddress');
-      const savedDonations = localStorage.getItem('donations');
       
       if (savedWalletType && savedWalletAddress) {
         try {
           // Try to reconnect to the wallet
           await autoConnectWallet(savedWalletType);
+          console.log(`Auto-connected to ${savedWalletType} wallet`);
         } catch (error) {
           console.error('Failed to auto-connect wallet:', error);
           // Clear storage if auto-connect fails
           localStorage.removeItem('walletType');
           localStorage.removeItem('walletAddress');
+        } finally {
+          setIsInitialized(true);
         }
-      }
-      
-      if (savedDonations) {
-        try {
-          const parsedDonations = JSON.parse(savedDonations);
-          setInitialDonations(parsedDonations);
-          setDonations(parsedDonations);
-        } catch (error) {
-          console.error('Failed to parse saved donations:', error);
-        }
+      } else {
+        setIsInitialized(true);
       }
     };
     
     checkWalletConnection();
-  }, []);
+  }, [walletDetectionComplete]);
 
   // Update statistics when donations change
   useEffect(() => {
-    updateDonationStats();
+    if (donations.length > 0) {
+      updateDonationStats();
+    }
   }, [donations]);
+
+  // Wallet connection event handlers
+  useEffect(() => {
+    const handleAccountsChanged = (accounts: string[]) => {
+      if (walletType === 'MetaMask' && accounts.length === 0) {
+        // User disconnected their wallet
+        disconnectWallet();
+      } else if (walletType === 'MetaMask' && accounts[0] !== walletAddress) {
+        // User switched accounts
+        window.location.reload();
+      }
+    };
+
+    // Add event listeners for wallet changes
+    if (isWalletConnected && walletType === 'MetaMask' && window.ethereum) {
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      window.ethereum.on('chainChanged', () => window.location.reload());
+    }
+
+    return () => {
+      // Remove event listeners when component unmounts
+      if (window.ethereum) {
+        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        window.ethereum.removeListener('chainChanged', () => {});
+      }
+    };
+  }, [isWalletConnected, walletType, walletAddress]);
 
   return (
     <WalletContext.Provider value={{ 

@@ -47,6 +47,24 @@ export const getExplorerUrl = (txId: string, walletType: string) => {
   }
 };
 
+// Detect available wallets
+export const detectWallets = () => {
+  if (typeof window === 'undefined') return {
+    phantom: false,
+    solflare: false,
+    okx: false,
+    metamask: false
+  };
+  
+  // Ensure we're checking in a browser environment
+  return {
+    phantom: 'solana' in window,
+    solflare: 'solflare' in window,
+    okx: 'okxwallet' in window && 'solana' in (window.okxwallet || {}),
+    metamask: 'ethereum' in window && !!(window.ethereum?.isMetaMask)
+  };
+};
+
 // Contract addresses
 export const CONTRACT_ADDRESSES = {
   poolAddress: 'BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt', // Pool address (onedollargoldcard.sol)

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { WalletType } from '../types/wallet';
 import { generateMockAddress } from '../utils/walletUtils';
@@ -9,12 +10,36 @@ export const useWalletConnectors = () => {
   const [walletType, setWalletType] = useState<WalletType>('');
   const [walletAddress, setWalletAddress] = useState('');
   const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const [walletDetectionComplete, setWalletDetectionComplete] = useState(false);
+
+  // Detect available wallets
+  useEffect(() => {
+    const detectWallets = () => {
+      // Check what wallets are available for better UX
+      const availableWallets = {
+        phantom: typeof window !== 'undefined' && 'solana' in window,
+        solflare: typeof window !== 'undefined' && 'solflare' in window,
+        okx: typeof window !== 'undefined' && 'okxwallet' in window && 'solana' in window.okxwallet,
+        metamask: typeof window !== 'undefined' && 'ethereum' in window && window.ethereum?.isMetaMask
+      };
+      
+      console.log('Available wallets:', availableWallets);
+      setWalletDetectionComplete(true);
+    };
+    
+    // Small delay to ensure browser extensions have loaded
+    const timer = setTimeout(() => {
+      detectWallets();
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Auto-connect to wallet
   const autoConnectWallet = async (type: WalletType) => {
     try {
       if (type === 'Phantom') {
-        if (!window.solana) {
+        if (typeof window === 'undefined' || !window.solana) {
           throw new Error('Phantom wallet not installed');
         }
         
@@ -39,7 +64,7 @@ export const useWalletConnectors = () => {
         localStorage.setItem('walletType', type);
         localStorage.setItem('walletAddress', address);
       } else if (type === 'Solflare') {
-        if (!window.solflare) {
+        if (typeof window === 'undefined' || !window.solflare) {
           throw new Error('Solflare wallet not installed');
         }
         
@@ -64,7 +89,7 @@ export const useWalletConnectors = () => {
         localStorage.setItem('walletType', type);
         localStorage.setItem('walletAddress', address);
       } else if (type === 'OKX') {
-        if (!window.okxwallet) {
+        if (typeof window === 'undefined' || !window.okxwallet || !window.okxwallet.solana) {
           throw new Error('OKX wallet not installed');
         }
         
@@ -89,7 +114,7 @@ export const useWalletConnectors = () => {
         localStorage.setItem('walletType', type);
         localStorage.setItem('walletAddress', address);
       } else if (type === 'MetaMask') {
-        if (!window.ethereum) {
+        if (typeof window === 'undefined' || !window.ethereum) {
           throw new Error('MetaMask wallet not installed');
         }
         
@@ -138,12 +163,13 @@ export const useWalletConnectors = () => {
   const connectWallet = async (type: WalletType) => {
     try {
       if (type === 'Phantom') {
-        if (!window.solana) {
+        if (typeof window === 'undefined' || !window.solana) {
           toast({
             title: "Wallet Not Found",
             description: "Please install the Phantom wallet extension and refresh the page.",
             variant: "destructive",
           });
+          window.open("https://phantom.app/", "_blank");
           return Promise.reject(new Error('Phantom wallet not installed'));
         }
         
@@ -177,12 +203,13 @@ export const useWalletConnectors = () => {
           return Promise.reject(err);
         }
       } else if (type === 'Solflare') {
-        if (!window.solflare) {
+        if (typeof window === 'undefined' || !window.solflare) {
           toast({
             title: "Wallet Not Found",
             description: "Please install the Solflare wallet extension and refresh the page.",
             variant: "destructive",
           });
+          window.open("https://solflare.com/", "_blank");
           return Promise.reject(new Error('Solflare wallet not installed'));
         }
         
@@ -220,12 +247,13 @@ export const useWalletConnectors = () => {
           return Promise.reject(err);
         }
       } else if (type === 'OKX') {
-        if (!window.okxwallet) {
+        if (typeof window === 'undefined' || !window.okxwallet || !window.okxwallet.solana) {
           toast({
             title: "Wallet Not Found",
             description: "Please install the OKX wallet extension and refresh the page.",
             variant: "destructive",
           });
+          window.open("https://www.okx.com/web3", "_blank");
           return Promise.reject(new Error('OKX wallet not installed'));
         }
         
@@ -259,12 +287,13 @@ export const useWalletConnectors = () => {
           return Promise.reject(err);
         }
       } else if (type === 'MetaMask') {
-        if (!window.ethereum) {
+        if (typeof window === 'undefined' || !window.ethereum) {
           toast({
             title: "Wallet Not Found",
             description: "Please install the MetaMask extension and refresh the page.",
             variant: "destructive",
           });
+          window.open("https://metamask.io/", "_blank");
           return Promise.reject(new Error('MetaMask wallet not installed'));
         }
         
@@ -360,6 +389,7 @@ export const useWalletConnectors = () => {
     
     localStorage.removeItem('walletType');
     localStorage.removeItem('walletAddress');
+    localStorage.removeItem('donations');
     
     toast({
       title: "Wallet Disconnected",
@@ -378,6 +408,7 @@ export const useWalletConnectors = () => {
     setIsWalletConnected,
     connectWallet,
     disconnectWallet,
-    autoConnectWallet
+    autoConnectWallet,
+    walletDetectionComplete
   };
 };
