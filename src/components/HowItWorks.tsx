@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Code, Coins, Cpu, Shield, Users } from 'lucide-react';
@@ -74,13 +73,6 @@ const HowItWorks = () => {
                 </li>
               </ul>
               
-              <div className="bg-gold-50 p-6 rounded-lg border border-gold-200 mt-6">
-                <h4 className="text-xl font-bold text-gray-800 mb-3">Backup Mechanism</h4>
-                <p className="text-gray-700">
-                  If the pool doesn't reach $10 million and there are no donations for 7 days, 
-                  the last donor automatically receives the entire pool. This ensures that funds aren't locked indefinitely.
-                </p>
-              </div>
             </div>
           )}
           
@@ -379,14 +371,6 @@ const POOL_TARGET_AMOUNT: u64 = 10_000_000 * 1_000_000; // $10M in USDC`}
           )}
         </div>
         
-        <div className="mt-16 text-center bg-white p-8 rounded-xl shadow-md max-w-2xl mx-auto">
-          <div className="inline-block bg-gold-100 text-gold-800 px-3 py-1 rounded-full text-sm font-semibold mb-4">
-            Backup Mechanism
-          </div>
-          <p className="text-gray-700">
-            {t('pool.backupInfo')}
-          </p>
-        </div>
       </div>
     </section>
   );
