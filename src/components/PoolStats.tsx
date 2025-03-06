@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Progress } from '@/components/ui/progress';
@@ -13,7 +12,6 @@ const PoolStats = () => {
   const [timeLeft, setTimeLeft] = useState('');
   const [progress, setProgress] = useState(0);
   
-  // Simulate data loading and animation
   useEffect(() => {
     const animationDuration = 2000; // 2 seconds
     const targetPool = 1250000; // $1.25M
@@ -34,10 +32,8 @@ const PoolStats = () => {
     
     animate();
     
-    // Set estimated time
     setTimeLeft('45d 12h 32m');
     
-    // Calculate progress
     const calculateProgress = () => {
       const ratio = targetPool / targetAmount;
       const percentage = ratio * 100;
@@ -58,17 +54,18 @@ const PoolStats = () => {
   };
 
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2 className="heading-lg mb-6">{t('pool.title')}</h2>
-          <div className="w-20 h-1 bg-gold-400 mx-auto"></div>
+          <h2 className="heading-lg mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600">
+            {t('pool.title')}
+          </h2>
+          <div className="w-20 h-1 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 mx-auto rounded-full"></div>
         </div>
         
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gold-100">
             <div className="p-8">
-              {/* Pool progress */}
               <div className="mb-8">
                 <div className="flex justify-between items-end mb-2">
                   <div>
@@ -95,7 +92,6 @@ const PoolStats = () => {
                 </div>
               </div>
               
-              {/* Stats grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-gray-50 rounded-lg p-6">
                   <div className="flex items-center mb-4">
@@ -141,7 +137,6 @@ const PoolStats = () => {
                 </div>
               </div>
               
-              {/* 7-Day Inactivity Safeguard */}
               <div className="mt-8 p-6 bg-gold-50 border border-gold-100 rounded-lg">
                 <h4 className="font-semibold text-gray-800 mb-2">{t('pool.backupTitle') || '7-Day Inactivity Safeguard'}</h4>
                 <p className="text-gray-700 mb-3">{t('pool.backupInfo')}</p>
@@ -151,7 +146,6 @@ const PoolStats = () => {
                 </div>
               </div>
               
-              {/* Public Donation Pool (previously Solana Name Service) */}
               <div className="mt-8 pt-6 border-t border-gray-100">
                 <h4 className="font-medium text-gray-800 mb-3">Public Donation Pool</h4>
                 <div className="bg-gray-50 p-3 rounded-md text-sm text-gray-600 font-mono break-all flex items-center justify-between">
@@ -159,10 +153,13 @@ const PoolStats = () => {
                   <Button 
                     variant="ghost" 
                     size="sm"
-                    className="text-xs"
+                    className="text-xs hover:bg-gold-50 hover:text-gold-600"
                     onClick={() => {
                       navigator.clipboard.writeText('onedollargoldcard.sol');
-                      alert('SNS ID copied to clipboard!');
+                      toast({
+                        title: "Copied!",
+                        description: "Pool address copied to clipboard",
+                      });
                     }}
                   >
                     Copy

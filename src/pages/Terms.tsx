@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -12,17 +11,22 @@ const Terms = () => {
   const currentDate = new Date().toLocaleDateString();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-white via-gold-50/30 to-white">
       <Navbar />
       
       <section className="pt-24 pb-16">
         <div className="container-custom">
           <div className="text-center mb-16">
-            <h1 className="heading-lg mb-6">Terms & Conditions</h1>
-            <div className="w-20 h-1 bg-gold-400 mx-auto"></div>
+            <h1 className="heading-lg mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600">
+              Terms & Conditions
+            </h1>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Please read these terms carefully before using OneDollarGoldCard.
+            </p>
+            <div className="w-20 h-1 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 mx-auto mt-6 rounded-full"></div>
           </div>
           
-          <div className="bg-white rounded-xl shadow-md p-8 max-w-4xl mx-auto">
+          <div className="bg-white rounded-xl shadow-xl p-8 max-w-4xl mx-auto border border-gold-100">
             <p className="text-gray-700 mb-8">
               By using the OneDollarGoldCard platform, you acknowledge that you have read, understood, and agree 
               to be bound by these Terms & Conditions. If you do not agree to these terms, please do not use the platform.
@@ -113,7 +117,7 @@ const Terms = () => {
               </p>
               <div className="flex justify-center">
                 <Button 
-                  className="bg-gold-500 hover:bg-gold-600 text-white"
+                  className="bg-gold-500 hover:bg-gold-600 text-black font-medium transition-all duration-300 transform hover:scale-105"
                   onClick={() => navigate('/')}
                 >
                   I Agree & Want to Donate Now

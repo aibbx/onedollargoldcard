@@ -110,19 +110,24 @@ const FAQ = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-white via-gold-50/30 to-white">
       <Navbar />
       
-      <main className="container mx-auto px-4 py-16 max-w-6xl">
-        <h1 className="text-4xl font-bold text-center mb-12">Frequently Asked Questions</h1>
+      <main className="container mx-auto px-4 py-24 max-w-6xl">
+        <h1 className="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600">
+          Frequently Asked Questions
+        </h1>
+        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          Everything you need to know about OneDollarGoldCard and how it works.
+        </p>
         
-        <div className="space-y-12">
+        <div className="space-y-6">
           {sections.map((section, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md p-8">
-              <h2 className="text-2xl font-semibold mb-6">{section.title}</h2>
+            <div key={index} className="bg-white rounded-xl shadow-md p-8 border border-gold-100 transition-all duration-300 hover:shadow-lg">
+              <h2 className="text-2xl font-semibold mb-6 text-gold-600">{section.title}</h2>
               <div className="space-y-6">
                 {section.questions.map((item, qIndex) => (
-                  <div key={qIndex} className="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0">
+                  <div key={qIndex} className="border-b border-gray-100 pb-6 last:border-b-0 last:pb-0">
                     <h3 className="text-lg font-medium text-gray-900 mb-2">{item.q}</h3>
                     <p className="text-gray-600">{item.a}</p>
                   </div>
@@ -136,7 +141,7 @@ const FAQ = () => {
           <h3 className="text-xl font-semibold mb-4">Have a question that's not answered here?</h3>
           <Button
             variant="outline"
-            className="inline-flex items-center gap-2"
+            className="inline-flex items-center gap-2 hover:bg-gold-50 hover:text-gold-600 border-gold-200"
             onClick={() => window.open('https://twitter.com/intent/tweet?text=@OneDollarGoldCard', '_blank')}
           >
             <TwitterIcon className="w-5 h-5" />
