@@ -65,6 +65,39 @@ export const detectWallets = () => {
   };
 };
 
+// Enhanced wallet detection with additional fallback checks
+export const detectWalletsEnhanced = () => {
+  if (typeof window === 'undefined') return {
+    phantom: false,
+    solflare: false,
+    okx: false,
+    metamask: false
+  };
+  
+  // Primary detection
+  const primary = {
+    phantom: 'solana' in window,
+    solflare: 'solflare' in window,
+    okx: 'okxwallet' in window && 'solana' in (window.okxwallet || {}),
+    metamask: 'ethereum' in window && !!(window.ethereum?.isMetaMask)
+  };
+  
+  // Secondary fallback detection for cases where window objects exist but may not be fully loaded
+  const secondary = {
+    phantom: primary.phantom || (window.solana && window.solana.isPhantom) || false,
+    solflare: primary.solflare || (window.solflare !== undefined) || false,
+    okx: primary.okx || (window.okxwallet !== undefined) || false,
+    metamask: primary.metamask || (window.ethereum && window.ethereum.isMetaMask) || false
+  };
+  
+  return {
+    phantom: primary.phantom || secondary.phantom,
+    solflare: primary.solflare || secondary.solflare,
+    okx: primary.okx || secondary.okx,
+    metamask: primary.metamask || secondary.metamask
+  };
+};
+
 // Contract addresses
 export const CONTRACT_ADDRESSES = {
   poolAddress: 'BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt', // Pool address (onedollargoldcard.sol)
