@@ -1,22 +1,21 @@
-
 import React from 'react';
 import { Code, Shield, Zap } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 export interface ContractSection {
   id: string;
   title: string;
-  icon: React.ReactNode;
+  icon: React.ReactElement<LucideIcon>;
   description: string;
   code: string;
   securityPoints: string[];
 }
 
-// Contract code sections
 export const contractSections: ContractSection[] = [
   {
     id: 'donation-processing',
     title: 'Donation Processing Contract',
-    icon: <Code className="w-6 h-6 text-gold-600" />,
+    icon: React.createElement(Code, { className: "w-6 h-6 text-gold-600" }),
     description: 'This smart contract handles the donation process, validates the service fee, and maintains records of all donors:',
     code: `// Part 1: Donation Processing
 pub fn donate(
@@ -88,7 +87,7 @@ pub fn donate(
   {
     id: 'winner-selection',
     title: 'Winner Selection Contract',
-    icon: <Zap className="w-6 h-6 text-blue-600" />,
+    icon: React.createElement(Zap, { className: "w-6 h-6 text-blue-600" }),
     description: 'When the pool reaches $10 million, this smart contract logic is triggered to select a winner using a verifiable random function (VRF) that cannot be manipulated:',
     code: `// Part 2: Winner Selection Process
 pub fn select_winner(ctx: Context<SelectWinner>) -> Result<()> {
@@ -175,7 +174,7 @@ pub fn select_winner(ctx: Context<SelectWinner>) -> Result<()> {
   {
     id: 'inactivity-safeguard',
     title: '7-Day Inactivity Safeguard Contract',
-    icon: <Shield className="w-6 h-6 text-purple-600" />,
+    icon: React.createElement(Shield, { className: "w-6 h-6 text-purple-600" }),
     description: 'The backup mechanism is governed by this smart contract that monitors donation activity and automatically transfers funds after 7 days of inactivity if the pool doesn\'t reach the target:',
     code: `// Part 3: Inactivity Safeguard Mechanism
 pub fn check_inactivity_and_distribute(ctx: Context<CheckInactivity>) -> Result<()> {
