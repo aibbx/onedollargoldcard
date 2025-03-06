@@ -158,15 +158,6 @@ const Hero = () => {
             </p>
           </div>
         </div>
-        
-        <div className="relative mt-16 md:mt-24 max-w-md mx-auto">
-          <div className="absolute -inset-1 rounded-2xl bg-gold-gradient opacity-50 blur-lg animate-pulse"></div>
-          <img 
-            src="/gold-card.svg" 
-            alt="Gold Card Visa - President Trump's Immigration Initiative" 
-            className="relative w-full h-auto rounded-2xl shadow-xl animate-float bg-white p-4"
-          />
-        </div>
       </div>
       
       <div className="hidden md:block absolute bottom-10 left-1/2 transform -translate-x-1/2 cursor-pointer animate-bounce">
