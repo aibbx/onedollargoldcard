@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, Code, Shield, Zap } from 'lucide-react';
 import InfoPoint from './InfoPoint';
+import { CONTRACT_ADDRESSES } from '../../utils/walletUtils';
 
 // Contract code sections
 const contractSections = [
