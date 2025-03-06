@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Share2, Sparkles } from 'lucide-react';
@@ -45,7 +44,6 @@ const Hero = () => {
     }
   };
 
-  // Structured data for SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -60,7 +58,6 @@ const Hero = () => {
     ]
   };
 
-  // Additional product structured data for the Gold Card opportunity
   const productData = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -77,14 +74,9 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
       <Helmet>
-        {/* Canonical URL to prevent duplicate content issues */}
         <link rel="canonical" href="https://onedollargoldcard.com" />
-        
-        {/* Alternate language versions if you support multiple languages */}
         <link rel="alternate" href="https://onedollargoldcard.com" hrefLang="x-default" />
         <link rel="alternate" href="https://onedollargoldcard.com" hrefLang="en" />
-        
-        {/* Structured data for search engines */}
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
@@ -93,10 +85,8 @@ const Hero = () => {
         </script>
       </Helmet>
       
-      {/* Background with subtle gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-white via-gold-50 to-white opacity-70"></div>
       
-      {/* Floating card background effect */}
       <div className="absolute w-full h-full overflow-hidden">
         <div className="absolute w-72 h-72 rounded-full bg-gold-200 opacity-20 blur-3xl -top-20 -left-20 animate-float"></div>
         <div className="absolute w-64 h-64 rounded-full bg-gold-300 opacity-10 blur-2xl top-1/4 right-10 animate-float" style={{ animationDelay: '1s' }}></div>
@@ -115,7 +105,7 @@ const Hero = () => {
           ref={subtitleRef}
           className="heading-md mb-6 text-gray-800 max-w-3xl mx-auto font-bold"
         >
-          MAKE IMMIGRATION GREAT AGAIN!
+          ONE DOLLAR, ONE DREAM: $5,000,000 PRIZE FOR GOLD CARD WINNERS!
         </h2>
         
         <p 
@@ -134,7 +124,6 @@ const Hero = () => {
             onClick={handleDonateClick}
             aria-label="Donate now for a chance to win the Gold Card opportunity"
           >
-            {/* Shimmer effect */}
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></span>
             
             <Sparkles className="w-5 h-5 text-gray-800" />
@@ -150,7 +139,6 @@ const Hero = () => {
           </button>
         </div>
         
-        {/* Card floating effect */}
         <div className="relative mt-16 md:mt-24 max-w-md mx-auto">
           <div className="absolute -inset-1 rounded-2xl bg-gold-gradient opacity-50 blur-lg animate-pulse"></div>
           <img 
@@ -161,7 +149,6 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Scroll indicator */}
       <div className="hidden md:block absolute bottom-10 left-1/2 transform -translate-x-1/2 cursor-pointer animate-bounce">
         <div className="w-10 h-10 rounded-full border-2 border-gold-400 flex items-center justify-center">
           <svg className="w-4 h-4 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
