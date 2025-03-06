@@ -1,4 +1,4 @@
-<lov-code>
+
 export type LanguageCode = 'en' | 'es' | 'pt' | 'ru' | 'fr' | 'de' | 'zh' | 'hi' | 'id' | 'ja';
 
 interface TranslationDictionary {
@@ -521,4 +521,78 @@ export const translations: Translations = {
     'howItWorks.step3.desc': 'Ketika pool mencapai $10 juta, seorang pemenang akan dipilih secara acak.',
     'howItWorks.step4.title': 'Terima Dana',
     'howItWorks.step4.desc': 'Pemenang menerima $5 juta, dan $5 juta tetap untuk putaran berikutnya.',
-    'donation.title': 'Ber
+    'donation.title': 'Berikan Donasi',
+    'donation.amount': 'Jumlah Donasi',
+    'donation.fee': 'Biaya Layanan (5%)',
+    'donation.total': 'Jumlah Total',
+    'donation.button': 'Donasi Sekarang',
+    'donation.minAmount': 'Donasi minimal adalah 1,00 USDC.',
+    'donation.walletConnect': 'Hubungkan Dompet',
+    'donation.confirmation': 'Saya mengonfirmasi bahwa saya bukan warga negara AS atau pemegang kartu hijau.',
+    'pool.title': 'Statistik Pool Hadiah',
+    'pool.currentAmount': 'Jumlah Pool Saat Ini',
+    'pool.target': 'Jumlah Target',
+    'pool.donors': 'Total Donor',
+    'pool.timeLeft': 'Perkiraan Waktu Hingga Pengundian',
+    'pool.backupInfo': 'Jika tidak ada donasi selama 7 hari, donor terakhir menerima seluruh pool.',
+    'footer.rights': 'Hak cipta dilindungi undang-undang.',
+    'footer.terms': 'Syarat & Ketentuan',
+    'footer.privacy': 'Kebijakan Privasi',
+    'footer.contact': 'Hubungi Kami',
+    'footer.disclaimer': 'Platform ini tidak berafiliasi dengan pemerintah AS.'
+    // Add more translations as needed
+  },
+  
+  ja: {
+    // Basic translations for Japanese
+    'nav.home': 'ホーム',
+    'hero.title': 'OneDollarGoldCard',
+    'hero.donateButton': '今すぐ寄付',
+    'trump.support': 'トランプ政権の移民イニシアチブによって支持されています。',
+    'nav.howItWorks': '仕組み',
+    'nav.faq': 'よくある質問',
+    'nav.aboutUs': '私たちについて',
+    'nav.terms': '利用規約',
+    'nav.smartContract': 'スマートコントラクト',
+    'hero.subtitle': '移民機会へのアクセスの民主化',
+    'hero.description': 'Solanaブロックチェーン上の分散型寄付プラットフォームで、非米国市民にUS Gold Card居住権を申請するのに十分な金額を獲得するチャンスを提供します。',
+    'features.title': 'なぜOneDollarGoldCard？',
+    'features.transparent.title': '完全に透明',
+    'features.transparent.desc': 'すべての取引と当選者の選択はオンチェーンで検証されます。',
+    'features.accessible.title': '誰でもアクセス可能',
+    'features.accessible.desc': '少額の手数料に加えて1.00 USDCだけで始められます。',
+    'features.fair.title': '公平な機会システム',
+    'features.fair.desc': 'あなたの寄付額に比例してチャンスが増加します。',
+    'features.secure.title': '設計による安全性',
+    'features.secure.desc': 'Solanaの安全で効率的なブロックチェーン上に構築されています。',
+    'howItWorks.title': '仕組み',
+    'howItWorks.step1.title': '寄付する',
+    'howItWorks.step1.desc': '最低1.00 USDC（プラス5％のサービス料）を寄付します。',
+    'howItWorks.step2.title': 'プールに参加する',
+    'howItWorks.step2.desc': 'あなたの寄付は、勝つチャンスを比例的に増加させます。',
+    'howItWorks.step3.title': '当選者の選出',
+    'howItWorks.step3.desc': 'プールが1000万ドルに達すると、当選者がランダムに選ばれます。',
+    'howItWorks.step4.title': '資金を受け取る',
+    'howItWorks.step4.desc': '当選者は500万ドルを受け取り、500万ドルが次のラウンドのために残ります。',
+    'donation.title': '寄付する',
+    'donation.amount': '寄付金額',
+    'donation.fee': 'サービス料（5％）',
+    'donation.total': '合計金額',
+    'donation.button': '今すぐ寄付',
+    'donation.minAmount': '最低寄付額は1.00 USDCです。',
+    'donation.walletConnect': 'ウォレットを接続',
+    'donation.confirmation': '私は米国市民またはグリーンカード保持者ではないことを確認します。',
+    'pool.title': '賞金プール統計',
+    'pool.currentAmount': '現在のプール金額',
+    'pool.target': '目標金額',
+    'pool.donors': '寄付者総数',
+    'pool.timeLeft': '抽選までの推定時間',
+    'pool.backupInfo': '7日間寄付がない場合、最後の寄付者がプール全体を受け取ります。',
+    'footer.rights': '全著作権所有。',
+    'footer.terms': '利用規約',
+    'footer.privacy': 'プライバシーポリシー',
+    'footer.contact': 'お問い合わせ',
+    'footer.disclaimer': 'このプラットフォームは米国政府と提携していません。'
+    // Add more translations as needed
+  }
+};
