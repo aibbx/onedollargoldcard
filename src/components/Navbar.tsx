@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
 import WalletConnector from './navbar/WalletConnector';
 import MobileMenu from './navbar/MobileMenu';
+import NavLinks from './navbar/NavLinks';
 
 const Navbar = () => {
   const { t } = useLanguage();
@@ -63,30 +64,7 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
-          <a href="/" className={cn(
-            'transition-all duration-200 hover:text-gold-600',
-            isScrolled ? 'text-gray-800' : 'text-gray-800'
-          )}>
-            {t('nav.home')}
-          </a>
-          <a href="#how-it-works" className={cn(
-            'transition-all duration-200 hover:text-gold-600',
-            isScrolled ? 'text-gray-800' : 'text-gray-800'
-          )}>
-            {t('nav.howItWorks')}
-          </a>
-          <a href="/faq" className={cn(
-            'transition-all duration-200 hover:text-gold-600',
-            isScrolled ? 'text-gray-800' : 'text-gray-800'
-          )}>
-            {t('nav.faq')}
-          </a>
-          <a href="/terms" className={cn(
-            'transition-all duration-200 hover:text-gold-600',
-            isScrolled ? 'text-gray-800' : 'text-gray-800'
-          )}>
-            {t('nav.terms')}
-          </a>
+          <NavLinks isScrolled={isScrolled} />
           <LanguageSelector />
           <WalletConnector 
             isWalletConnected={isWalletConnected}
