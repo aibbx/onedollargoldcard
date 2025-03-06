@@ -11,7 +11,7 @@ const SecurityFeaturesTab: React.FC = () => {
         <div className="bg-white shadow-md rounded-lg p-6 border border-gray-200">
           <h4 className="text-xl font-bold text-gray-800 mb-3">Donation Security</h4>
           <ul className="space-y-2 text-gray-700">
-            <InfoPoint text="Ensures the service fee is exactly 5% of the donation amount" />
+            <InfoPoint text="Ensures the service fee is exactly 5% on top of the donation amount" />
             <InfoPoint text="Transfers donation to prize pool and service fee to platform wallet" />
             <InfoPoint text="Records timestamp of donation for the 7-day inactivity check" />
           </ul>
