@@ -2,10 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Progress } from '@/components/ui/progress';
-import { BarChart3, Users, Clock, Share2, Copy } from 'lucide-react';
+import { BarChart3, Users, Clock, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from "@/hooks/use-toast";
-import { CONTRACT_ADDRESSES } from '../context/WalletContext';
 
 const PoolStats = () => {
   const { t } = useLanguage();
@@ -55,14 +54,6 @@ const PoolStats = () => {
     const text = "Amazing! I am in #OneDollarGoldCard on @solana to win $5M for the Gold Card application! Join now:";
     const url = "https://onedollargoldcard.com";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-  };
-
-  const copyPoolAddress = () => {
-    navigator.clipboard.writeText(CONTRACT_ADDRESSES.poolAddress);
-    toast({
-      title: "Copied!",
-      description: "Pool address copied to clipboard",
-    });
   };
 
   return (
@@ -146,24 +137,6 @@ const PoolStats = () => {
                     </svg>
                     Share on X
                   </Button>
-                </div>
-              </div>
-              
-              <div className="mt-8 pt-6 border-t border-gray-100">
-                <h4 className="font-medium text-gray-800 mb-3">Public Donation Pool</h4>
-                <div className="bg-gray-50 p-3 rounded-md text-sm text-gray-600 font-mono break-all flex items-center justify-between">
-                  <span>onedollargoldcard.sol</span>
-                  <div className="flex space-x-2">
-                    <div className="text-xs bg-gray-200 px-2 py-1 rounded">{CONTRACT_ADDRESSES.poolAddress.substring(0, 6)}...{CONTRACT_ADDRESSES.poolAddress.substring(CONTRACT_ADDRESSES.poolAddress.length - 6)}</div>
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      className="text-xs hover:bg-gold-50 hover:text-gold-600"
-                      onClick={copyPoolAddress}
-                    >
-                      <Copy className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
                 </div>
               </div>
             </div>

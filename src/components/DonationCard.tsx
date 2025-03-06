@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CheckCircle2, AlertCircle, Wallet, Share2, Copy } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Wallet, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet, CONTRACT_ADDRESSES } from '../context/WalletContext';
@@ -95,14 +96,6 @@ const DonationCard = () => {
 
   const presetAmounts = [1, 10, 100, 1000, 10000];
 
-  const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text);
-    toast({
-      title: "Copied!",
-      description: `${label} copied to clipboard`,
-    });
-  };
-
   return (
     <section className="py-24 bg-white" id="donation-section">
       <div className="container-custom">
@@ -161,26 +154,6 @@ const DonationCard = () => {
                 <div className="flex justify-between py-2">
                   <span className="text-gray-800 font-medium">{t('donation.total')}</span>
                   <span className="font-bold text-lg">${total}</span>
-                </div>
-
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                  <h4 className="font-medium text-gray-800 mb-2">Contract Address</h4>
-                  <div className="space-y-3">
-                    <div>
-                      <div className="text-sm text-gray-600 mb-1">Pool Address (onedollargoldcard.sol):</div>
-                      <div className="flex items-center justify-between bg-white p-2 rounded border border-gray-200">
-                        <div className="text-xs font-mono truncate">{CONTRACT_ADDRESSES.poolAddress}</div>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="ml-2" 
-                          onClick={() => copyToClipboard(CONTRACT_ADDRESSES.poolAddress, 'Pool address')}
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 {isWalletConnected && (
