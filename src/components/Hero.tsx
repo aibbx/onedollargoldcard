@@ -40,9 +40,9 @@ const Hero = () => {
   };
 
   const handleDonateClick = () => {
-    if (isWalletConnected) {
-      scrollToDonationSection();
-    } else {
+    scrollToDonationSection();
+    
+    if (!isWalletConnected) {
       setShowWalletOptions(true);
     }
   };
