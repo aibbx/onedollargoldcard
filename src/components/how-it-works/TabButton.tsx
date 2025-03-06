@@ -16,8 +16,8 @@ const TabButton: React.FC<TabButtonProps> = ({ id, label, icon, isActive, onClic
       onClick={() => onClick(id)}
       className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
         isActive
-          ? 'bg-gold-500 text-white shadow-md'
-          : 'bg-white text-gray-700 hover:bg-gold-100'
+          ? 'bg-gold-500 text-white shadow-md transform scale-105'
+          : 'bg-white text-gray-700 hover:bg-gold-100 hover:scale-105'
       }`}
     >
       {icon}
