@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Share2, Sparkles } from 'lucide-react';
@@ -7,7 +6,7 @@ import { Helmet } from 'react-helmet-async';
 const Hero = () => {
   const { t } = useLanguage();
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
 
@@ -102,12 +101,17 @@ const Hero = () => {
           {t('hero.title')}
         </h1>
         
-        <h2 
+        <div 
           ref={subtitleRef}
-          className="heading-md mb-6 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 uppercase tracking-wider max-w-3xl mx-auto"
+          className="mb-6 max-w-3xl mx-auto"
         >
-          ONE DOLLAR, ONE DREAM: $5,000,000 PRIZE FOR GOLD CARD WINNERS!
-        </h2>
+          <h2 className="heading-md font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 uppercase tracking-wider mb-1">
+            ONE DOLLAR, ONE DREAM
+          </h2>
+          <h3 className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 uppercase tracking-wide">
+            $5,000,000 PRIZE FOR GOLD CARD WINNERS!
+          </h3>
+        </div>
         
         <p 
           ref={descRef}
