@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -38,13 +37,13 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                <a href="/faq" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
                   {t('nav.faq')}
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
-                  {t('nav.aboutUs')}
+                <a href="/terms" className="text-gray-600 hover:text-gold-600 transition-all duration-200">
+                  {t('nav.terms')}
                 </a>
               </li>
             </ul>

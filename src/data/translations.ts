@@ -1,4 +1,3 @@
-
 export type LanguageCode = 'en' | 'es' | 'pt' | 'ru' | 'fr' | 'de' | 'zh' | 'hi' | 'id' | 'ja';
 
 interface TranslationDictionary {
@@ -16,6 +15,7 @@ export const translations: Translations = {
     'nav.howItWorks': 'How It Works',
     'nav.faq': 'FAQ',
     'nav.aboutUs': 'About Us',
+    'nav.terms': 'Terms',
 
     // Hero section
     'hero.title': 'OneDollarGoldCard',
@@ -89,6 +89,7 @@ export const translations: Translations = {
     'nav.howItWorks': 'Cómo Funciona',
     'nav.faq': 'Preguntas Frecuentes',
     'nav.aboutUs': 'Sobre Nosotros',
+    'nav.terms': 'Términos',
 
     // Hero section
     'hero.title': 'OneDollarGoldCard',
@@ -154,6 +155,7 @@ export const translations: Translations = {
     'nav.howItWorks': 'Como Funciona',
     'nav.faq': 'FAQ',
     'nav.aboutUs': 'Sobre Nós',
+    'nav.terms': 'Termos',
 
     // Hero section
     'hero.title': 'OneDollarGoldCard',
@@ -213,7 +215,6 @@ export const translations: Translations = {
     'trump.support': 'Apoiado pelas iniciativas de imigração da administração Trump.'
   },
   
-  // More translations follow the same pattern for all required languages
   ru: {
     // Basic translations for Russian
     'nav.home': 'Главная',
@@ -273,7 +274,7 @@ export const translations: Translations = {
     'nav.home': 'ホーム',
     'hero.title': 'OneDollarGoldCard',
     'hero.donateButton': '今すぐ寄付',
-    'trump.support': 'トランプ政権の移民イニシアチブによって支持されています。'
+    'trump.support': 'トランプ政権の移民イニシアチブによっ���支持されています。'
     // Add more translations as needed
   }
 };

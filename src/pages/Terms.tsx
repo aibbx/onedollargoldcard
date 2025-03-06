@@ -1,11 +1,15 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { Button } from '@/components/ui/button';
 
 const Terms = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  const currentDate = new Date().toLocaleDateString();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -104,9 +108,17 @@ const Terms = () => {
             </div>
             
             <div className="mt-10 pt-8 border-t border-gray-200">
-              <p className="text-gray-500 text-sm text-center">
-                Last updated: {new Date().toLocaleDateString()}
+              <p className="text-gray-500 text-sm text-center mb-8">
+                Last updated: {currentDate}
               </p>
+              <div className="flex justify-center">
+                <Button 
+                  className="bg-gold-500 hover:bg-gold-600 text-white"
+                  onClick={() => navigate('/')}
+                >
+                  I Agree & Want to Donate Now
+                </Button>
+              </div>
             </div>
           </div>
         </div>

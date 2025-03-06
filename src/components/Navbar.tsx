@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSelector from './LanguageSelector';
@@ -59,17 +58,17 @@ const Navbar = () => {
           )}>
             {t('nav.howItWorks')}
           </a>
-          <a href="#" className={cn(
+          <a href="/faq" className={cn(
             'transition-all duration-200 hover:text-gold-600',
             isScrolled ? 'text-gray-800' : 'text-gray-800'
           )}>
             {t('nav.faq')}
           </a>
-          <a href="#" className={cn(
+          <a href="/terms" className={cn(
             'transition-all duration-200 hover:text-gold-600',
             isScrolled ? 'text-gray-800' : 'text-gray-800'
           )}>
-            {t('nav.aboutUs')}
+            {t('nav.terms')}
           </a>
           <LanguageSelector />
           <button className="btn-gold">
@@ -115,18 +114,18 @@ const Navbar = () => {
             {t('nav.howItWorks')}
           </a>
           <a 
-            href="#" 
+            href="/faq" 
             className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             {t('nav.faq')}
           </a>
           <a 
-            href="#" 
+            href="/terms" 
             className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            {t('nav.aboutUs')}
+            {t('nav.terms')}
           </a>
           <button className="btn-gold w-full mt-4">
             {t('hero.donateButton')}
