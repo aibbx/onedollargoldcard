@@ -4,6 +4,13 @@ import { useLanguage } from '../context/LanguageContext';
 const Footer = () => {
   const { t } = useLanguage();
   const currentYear = new Date().getFullYear();
+  
+  const handleShare = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const text = "Amazing! I am in #OneDollarGoldCard on @solana to win $5M for the Gold Card application! Join now:";
+    const url = "https://onedollargoldcard.com";
+    window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+  };
 
   return (
     <footer className="bg-gray-50 pt-16 pb-8">
@@ -67,8 +74,13 @@ const Footer = () => {
                   {t('footer.contact')}
                 </a>
               </li>
-              <li className="pt-2 text-gray-600">
-                <p className="text-sm italic">{t('trump.support')}</p>
+              <li className="pt-2">
+                <div className="space-y-2 text-sm italic text-gray-600">
+                  <p>{t('trump.support1')}</p>
+                  <p>{t('trump.support2')}</p>
+                  <p>{t('trump.support3')}</p>
+                  <p>{t('trump.support4')}</p>
+                </div>
               </li>
             </ul>
           </div>

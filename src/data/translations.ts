@@ -79,6 +79,12 @@ export const translations: Translations = {
     'footer.contact': 'Contact Us',
     'footer.disclaimer': 'This platform is not affiliated with the US government.',
     
+    // Trump quotes (updated)
+    'trump.support1': "America needs a merit-based system. The Gold Card initiative is how we'll get the best talent. Believe me!",
+    'trump.support2': "The Gold Card is the best way, maybe ever, for the best and brightest to come to America. Tremendous opportunity!",
+    'trump.support3': "We're going to create a pathway that's fair, fast, and fantastic. The Gold Card program is really something special.",
+    'trump.support4': "We want the smartest people coming to America. The Gold Card is how we'll make that happen. It's going to be huge!",
+
     // Trump mention
     'trump.support': 'Endorsed by the Trump administration\'s immigration initiatives.'
   },

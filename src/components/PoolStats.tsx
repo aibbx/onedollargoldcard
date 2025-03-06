@@ -50,8 +50,8 @@ const PoolStats = () => {
   };
 
   const handleShareOnX = () => {
-    const text = `Join me in supporting OneDollarGoldCard! Current pool: $${formatNumber(poolAmount)} of $${formatNumber(targetAmount)} goal. Your chance to win while supporting immigration opportunities. #OneDollarGoldCard`;
-    const url = window.location.href;
+    const text = "Amazing! I am in #OneDollarGoldCard on @solana to win $5M for the Gold Card application! Join now:";
+    const url = "https://onedollargoldcard.com";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
