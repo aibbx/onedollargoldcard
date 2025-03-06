@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Progress } from '@/components/ui/progress';
-import { BarChart3, Users, Clock } from 'lucide-react';
+import { BarChart3, Users, Clock, Share2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const PoolStats = () => {
   const { t } = useLanguage();
@@ -49,6 +51,12 @@ const PoolStats = () => {
     return num.toLocaleString('en-US');
   };
 
+  const handleShareOnX = () => {
+    const text = `Join me in supporting OneDollarGoldCard! Current pool: $${formatNumber(poolAmount)} of $${formatNumber(targetAmount)} goal. Your chance to win while supporting immigration opportunities. #OneDollarGoldCard`;
+    const url = window.location.href;
+    window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+  };
+
   return (
     <section className="py-24 bg-gray-50">
       <div className="container-custom">
@@ -88,7 +96,7 @@ const PoolStats = () => {
               </div>
               
               {/* Stats grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-gray-50 rounded-lg p-6">
                   <div className="flex items-center mb-4">
                     <div className="w-10 h-10 rounded-full bg-gold-100 flex items-center justify-center mr-3">
@@ -112,18 +120,53 @@ const PoolStats = () => {
                     {timeLeft}
                   </div>
                 </div>
+                
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="w-10 h-10 rounded-full bg-gold-100 flex items-center justify-center mr-3">
+                      <Share2 className="w-5 h-5 text-gold-600" />
+                    </div>
+                    <span className="text-gray-700 font-medium">{t('pool.share')}</span>
+                  </div>
+                  <Button 
+                    onClick={handleShareOnX}
+                    variant="outline"
+                    className="flex items-center text-gray-700 hover:text-gold-600"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                    </svg>
+                    Share on X
+                  </Button>
+                </div>
+              </div>
+              
+              {/* 7-Day Inactivity Safeguard */}
+              <div className="mt-8 p-6 bg-gold-50 border border-gold-100 rounded-lg">
+                <h4 className="font-semibold text-gray-800 mb-2">{t('pool.backupTitle') || '7-Day Inactivity Safeguard'}</h4>
+                <p className="text-gray-700 mb-3">{t('pool.backupInfo')}</p>
+                <div className="flex items-center text-sm text-gold-600">
+                  <Clock className="w-4 h-4 mr-2" />
+                  <span>This ensures funds are never locked indefinitely in the pool.</span>
+                </div>
               </div>
               
               {/* Pool addresses */}
               <div className="mt-8 pt-6 border-t border-gray-100">
-                <h4 className="font-medium text-gray-800 mb-3">Public Pool Contract</h4>
-                <div className="bg-gray-50 p-3 rounded-md text-sm text-gray-600 font-mono break-all">
-                  BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt
-                </div>
-                
-                <h4 className="font-medium text-gray-800 mt-4 mb-3">Service Fee Address</h4>
-                <div className="bg-gray-50 p-3 rounded-md text-sm text-gray-600 font-mono break-all">
-                  5ecoPEMgbz8CL8ymcLVhUNFkp3ded5mWH731L2So7e9Q
+                <h4 className="font-medium text-gray-800 mb-3">Solana Name Service</h4>
+                <div className="bg-gray-50 p-3 rounded-md text-sm text-gray-600 font-mono break-all flex items-center justify-between">
+                  <span>onedollargoldcard.sol</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="text-xs"
+                    onClick={() => {
+                      navigator.clipboard.writeText('onedollargoldcard.sol');
+                      alert('SNS ID copied to clipboard!');
+                    }}
+                  >
+                    Copy
+                  </Button>
                 </div>
               </div>
             </div>

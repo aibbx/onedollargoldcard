@@ -55,6 +55,11 @@ export const translations: Translations = {
     'donation.minAmount': 'Minimum donation is $1.00 USDC.',
     'donation.walletConnect': 'Connect Wallet',
     'donation.confirmation': 'I confirm I am not a US citizen or green card holder.',
+    'donation.shareX': 'Share on X',
+    'donation.stats': 'Your Stats',
+    'donation.totalDonated': 'Total Donated:',
+    'donation.winningChance': 'Winning Chance:',
+    'donation.connectedWallet': 'Connected Wallet:',
 
     // Pool Stats
     'pool.title': 'Prize Pool Statistics',
@@ -62,7 +67,10 @@ export const translations: Translations = {
     'pool.target': 'Target Amount',
     'pool.donors': 'Total Donors',
     'pool.timeLeft': 'Estimated Time Until Draw',
+    'pool.backupTitle': '7-Day Inactivity Safeguard',
     'pool.backupInfo': 'If no donations for 7 days, the last donor receives the entire pool.',
+    'pool.share': 'Share on Social',
+    'pool.sns': 'Solana Name Service',
 
     // Footer
     'footer.rights': 'All rights reserved.',
