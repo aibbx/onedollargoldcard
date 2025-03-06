@@ -105,7 +105,7 @@ const DonationCard = () => {
   const presetAmounts = [1, 5, 10, 50, 100];
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white" id="donation-section">
       <div className="container-custom">
         <div className="max-w-md mx-auto">
           <div className="relative">

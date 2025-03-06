@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Progress } from '@/components/ui/progress';
@@ -56,7 +57,7 @@ const PoolStats = () => {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50" id="donation-section">
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="heading-lg mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600">
@@ -136,15 +137,6 @@ const PoolStats = () => {
                     </svg>
                     Share on X
                   </Button>
-                </div>
-              </div>
-              
-              <div className="mt-8 p-6 bg-gold-50 border border-gold-100 rounded-lg">
-                <h4 className="font-semibold text-gray-800 mb-2">{t('pool.backupTitle') || '7-Day Inactivity Safeguard'}</h4>
-                <p className="text-gray-700 mb-3">{t('pool.backupInfo')}</p>
-                <div className="flex items-center text-sm text-gold-600">
-                  <Clock className="w-4 h-4 mr-2" />
-                  <span>This ensures funds are never locked indefinitely in the pool.</span>
                 </div>
               </div>
               
