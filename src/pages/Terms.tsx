@@ -27,15 +27,15 @@ const Terms = () => {
           </div>
           
           <div className="bg-white rounded-xl shadow-xl p-8 max-w-4xl mx-auto border border-gold-100">
-            <p className="text-gray-700 mb-8">
+            <p className="text-gray-700 mb-8 text-left">
               By using the OneDollarGoldCard platform, you acknowledge that you have read, understood, and agree 
               to be bound by these Terms & Conditions. If you do not agree to these terms, please do not use the platform.
             </p>
             
             <div className="space-y-8">
               <section>
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">1. Eligibility</h2>
-                <div className="space-y-3 text-gray-700">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-left">1. Eligibility</h2>
+                <div className="space-y-3 text-gray-700 text-left">
                   <p>1.1. Participation in the OneDollarGoldCard platform is strictly limited to non-US citizens and non-green card holders.</p>
                   <p>1.2. US citizens and green card holders are expressly prohibited from participating.</p>
                   <p>1.3. Participants must be at least 18 years old or the legal age of majority in their jurisdiction.</p>
@@ -44,8 +44,8 @@ const Terms = () => {
               </section>
               
               <section>
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">2. Platform Operation</h2>
-                <div className="space-y-3 text-gray-700">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-left">2. Platform Operation</h2>
+                <div className="space-y-3 text-gray-700 text-left">
                   <p>2.1. OneDollarGoldCard operates as a donation platform where participants donate USDC tokens on the Solana blockchain.</p>
                   <p>2.2. 100% of each donation goes directly to the prize pool. An additional 5% service fee is charged separately and is allocated to platform fees for audits, legal compliance, and operations.</p>
                   <p>2.3. When the pool reaches $10 million, a winner is randomly selected using Switchboard VRF to receive $5 million USDC.</p>
@@ -55,8 +55,8 @@ const Terms = () => {
               </section>
               
               <section>
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">3. Donations</h2>
-                <div className="space-y-3 text-gray-700">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-left">3. Donations</h2>
+                <div className="space-y-3 text-gray-700 text-left">
                   <p>3.1. All donations are final and non-refundable.</p>
                   <p>3.2. The minimum donation amount is 1.05 USDC.</p>
                   <p>3.3. Participants may make multiple donations to increase their chances of winning.</p>
@@ -65,8 +65,8 @@ const Terms = () => {
               </section>
               
               <section>
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">4. Prize Distribution</h2>
-                <div className="space-y-3 text-gray-700">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-left">4. Prize Distribution</h2>
+                <div className="space-y-3 text-gray-700 text-left">
                   <p>4.1. The prize of $5 million USDC will be automatically transferred to the winner's Solana wallet address.</p>
                   <p>4.2. The winner is solely responsible for any taxes, fees, or other obligations related to receiving the prize.</p>
                   <p>4.3. OneDollarGoldCard does not guarantee that winning the prize will result in a successful Gold Card application or US residency.</p>
@@ -75,8 +75,8 @@ const Terms = () => {
               </section>
               
               <section>
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">5. Disclaimers</h2>
-                <div className="space-y-3 text-gray-700">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-left">5. Disclaimers</h2>
+                <div className="space-y-3 text-gray-700 text-left">
                   <p>5.1. OneDollarGoldCard is not affiliated with any government entity or official immigration program.</p>
                   <p>5.2. Participation is at your own risk. We make no guarantees regarding the success of immigration applications.</p>
                   <p>5.3. The platform relies on blockchain technology and smart contracts. While we take security seriously, we cannot guarantee the absence of technical vulnerabilities.</p>
@@ -85,8 +85,8 @@ const Terms = () => {
               </section>
               
               <section id="privacy">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">6. Privacy</h2>
-                <div className="space-y-3 text-gray-700">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-left">6. Privacy</h2>
+                <div className="space-y-3 text-gray-700 text-left">
                   <p>6.1. All donations are recorded on the Solana blockchain and are publicly viewable.</p>
                   <p>6.2. Wallet addresses of participants and winners will be publicly visible on the blockchain.</p>
                   <p>6.3. We do not collect personal identification information beyond wallet addresses.</p>
@@ -94,8 +94,8 @@ const Terms = () => {
               </section>
               
               <section>
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">7. Modifications</h2>
-                <div className="space-y-3 text-gray-700">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-left">7. Modifications</h2>
+                <div className="space-y-3 text-gray-700 text-left">
                   <p>7.1. We reserve the right to modify these Terms & Conditions at any time.</p>
                   <p>7.2. Material changes will be announced on our website and social media channels.</p>
                   <p>7.3. Continued use of the platform after changes constitutes acceptance of the updated terms.</p>
@@ -103,8 +103,8 @@ const Terms = () => {
               </section>
               
               <section>
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">8. Governing Law</h2>
-                <div className="space-y-3 text-gray-700">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-left">8. Governing Law</h2>
+                <div className="space-y-3 text-gray-700 text-left">
                   <p>8.1. These Terms & Conditions shall be governed by and construed in accordance with the laws of the jurisdiction in which the platform is legally established.</p>
                   <p>8.2. Any disputes arising from these terms shall be resolved through arbitration in accordance with the rules of the jurisdiction.</p>
                 </div>

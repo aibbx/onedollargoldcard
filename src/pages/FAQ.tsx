@@ -124,12 +124,12 @@ const FAQ = () => {
         <div className="space-y-6">
           {sections.map((section, index) => (
             <div key={index} className="bg-white rounded-xl shadow-md p-8 border border-gold-100 transition-all duration-300 hover:shadow-lg">
-              <h2 className="text-2xl font-semibold mb-6 text-gold-600">{section.title}</h2>
+              <h2 className="text-2xl font-semibold mb-6 text-gold-600 text-left">{section.title}</h2>
               <div className="space-y-6">
                 {section.questions.map((item, qIndex) => (
                   <div key={qIndex} className="border-b border-gray-100 pb-6 last:border-b-0 last:pb-0">
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">{item.q}</h3>
-                    <p className="text-gray-600">{item.a}</p>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2 text-left">{item.q}</h3>
+                    <p className="text-gray-600 text-left">{item.a}</p>
                   </div>
                 ))}
               </div>
