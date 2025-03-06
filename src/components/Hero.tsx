@@ -98,18 +98,15 @@ const Hero = () => {
           ref={titleRef}
           className="heading-xl mb-4 font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600"
         >
-          {t('hero.title')}
+          One Dollar, One Dream
         </h1>
         
         <div 
           ref={subtitleRef}
           className="mb-6 max-w-3xl mx-auto"
         >
-          <h2 className="heading-md font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 uppercase tracking-wider mb-1">
-            ONE DOLLAR, ONE DREAM
-          </h2>
           <h3 className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 uppercase tracking-wide">
-            $5,000,000 PRIZE FOR GOLD CARD WINNERS!
+            $5M USDC Prize for Gold Card Winners
           </h3>
         </div>
         
