@@ -113,9 +113,9 @@ const Hero = () => {
         
         <h2 
           ref={subtitleRef}
-          className="heading-md mb-6 text-gray-800 max-w-3xl mx-auto"
+          className="heading-md mb-6 text-gray-800 max-w-3xl mx-auto font-bold"
         >
-          {t('hero.subtitle')}
+          MAKE IMMIGRATION GREAT AGAIN!
         </h2>
         
         <p 
