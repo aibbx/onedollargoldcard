@@ -1,6 +1,6 @@
-
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { Share2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const Hero = () => {
@@ -25,6 +25,13 @@ const Hero = () => {
       }
     });
   }, []);
+
+  const handleShare = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const text = `Join me in supporting OneDollarGoldCard! #OneDollarGoldCard`;
+    const url = window.location.href;
+    window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
@@ -67,8 +74,12 @@ const Hero = () => {
           <button className="btn-gold min-w-[180px]">
             {t('hero.donateButton')}
           </button>
-          <button className="btn-outline min-w-[180px]">
-            {t('hero.learnMore')}
+          <button 
+            onClick={handleShare}
+            className="btn-outline min-w-[180px] flex items-center justify-center gap-2"
+          >
+            <Share2 className="w-4 h-4" />
+            Share on X
           </button>
         </div>
         
