@@ -15,8 +15,8 @@ export const sendPhantomTransaction = async (
       throw new Error('Wallet not properly connected');
     }
 
-    // Get network connection (mainnet-beta, devnet, or testnet)
-    const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+    // Get network connection (using mainnet-beta for production)
+    const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
     
     // Convert USDC amount to lamports (SOL)
     // 1 SOL = 1 billion lamports

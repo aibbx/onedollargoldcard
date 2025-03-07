@@ -21,7 +21,7 @@ import {
 } from './okxConnector';
 
 // Connect to a wallet based on the given type
-export const connectWallet = async (type: WalletType, network: NetworkType = 'devnet'): Promise<{ 
+export const connectWallet = async (type: WalletType, network: NetworkType = 'mainnet-beta'): Promise<{ 
   address: string; 
   provider: any;
 }> => {
@@ -38,7 +38,7 @@ export const connectWallet = async (type: WalletType, network: NetworkType = 'de
 };
 
 // Auto-connect to a wallet based on the given type
-export const autoConnectWallet = async (type: WalletType, network: NetworkType = 'devnet'): Promise<{ 
+export const autoConnectWallet = async (type: WalletType, network: NetworkType = 'mainnet-beta'): Promise<{ 
   address: string; 
   provider: any;
 } | null> => {
