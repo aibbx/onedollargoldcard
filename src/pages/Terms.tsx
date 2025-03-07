@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -146,10 +145,10 @@ const Terms = () => {
       <Navbar />
       
       <main className="container mx-auto px-4 py-24 max-w-6xl">
-        <h1 className="text-4xl font-bold text-left mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600">
+        <h1 className="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600">
           Terms & Conditions
         </h1>
-        <p className="text-left text-gray-600 mb-12 max-w-2xl">
+        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
           Please read these terms carefully before using OneDollarGoldCard.
         </p>
         
@@ -172,10 +171,10 @@ const Terms = () => {
               By using the OneDollarGoldCard platform, you acknowledge that you have read, understood, and agree 
               to be bound by these Terms & Conditions. If you do not agree to these terms, please do not use the platform.
             </p>
-            <p className="text-gray-500 text-sm text-left mb-8">
+            <p className="text-gray-500 text-sm text-center mb-8">
               Last updated: {currentDate}
             </p>
-            <div className="flex justify-start">
+            <div className="flex justify-center">
               <Button 
                 className="bg-gold-500 hover:bg-gold-600 text-black font-medium transition-all duration-300 transform hover:scale-105"
                 onClick={() => navigate('/')}
