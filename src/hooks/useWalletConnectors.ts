@@ -93,6 +93,14 @@ export const useWalletConnectors = () => {
         });
         window.open("https://www.okx.com/web3", "_blank");
         return Promise.reject(new Error('OKX wallet not installed'));
+      } else if (type === 'MetaMask' && (typeof window === 'undefined' || !window.ethereum || !window.ethereum.isMetaMask)) {
+        toast({
+          title: "Wallet Not Found",
+          description: "Please install the MetaMask wallet extension and refresh the page.",
+          variant: "destructive",
+        });
+        window.open("https://metamask.io/download/", "_blank");
+        return Promise.reject(new Error('MetaMask wallet not installed'));
       }
       
       try {
@@ -109,7 +117,7 @@ export const useWalletConnectors = () => {
         
         toast({
           title: "Wallet Connected",
-          description: `Your ${type} wallet has been connected successfully to Solana ${network}.`,
+          description: `Your ${type} wallet has been connected successfully to ${type === 'MetaMask' ? 'Ethereum Sepolia' : `Solana ${network}`}.`,
         });
         
         return Promise.resolve();

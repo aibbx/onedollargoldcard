@@ -44,13 +44,37 @@ export const useDonationHandlers = (
       // Create an actual transaction to send funds to the contract address
       if (provider) {
         try {
-          console.log("Creating transaction to donate USDC...");
-          console.log("Amount:", amount);
-          console.log("Contract address:", CONTRACT_ADDRESSES.poolAddress);
-          
-          // Request wallet to sign the transaction
-          // This will trigger the wallet popup for user to confirm
-          if (walletType === 'Phantom' && provider.request) {
+          if (walletType === 'MetaMask') {
+            console.log("Creating MetaMask transaction to donate ETH...");
+            console.log("Amount:", amount);
+            console.log("Contract address:", CONTRACT_ADDRESSES.ethereumPoolAddress);
+
+            // Convert amount to wei (1 ETH = 10^18 wei)
+            // For example, $1 might be 0.0004 ETH (at $2500/ETH) which would be 400000000000000 wei
+            // This is just an example, in a real app you'd use proper conversion rates
+            const weiAmount = `0x${(amount * 0.0004 * 1e18).toString(16)}`;
+            
+            // Create Ethereum transaction
+            const txParams = {
+              from: walletAddress,
+              to: CONTRACT_ADDRESSES.ethereumPoolAddress,
+              value: weiAmount, // Value in wei
+              gas: '0x5208', // 21000 gas (standard Ethereum transaction)
+              gasPrice: '0x9184e72a000', // 10 Gwei
+            };
+            
+            console.log("Requesting signature from MetaMask wallet...");
+            
+            // This will trigger the MetaMask popup
+            const txHash = await provider.request({
+              method: 'eth_sendTransaction',
+              params: [txParams],
+            });
+            
+            console.log("Transaction sent successfully!", txHash);
+            transactionId = txHash;
+          } 
+          else if (walletType === 'Phantom' && provider.request) {
             // Create Solana transaction (this is simplified - in a real app you'd build a proper transaction)
             const transaction = {
               feePayer: walletAddress,
@@ -107,7 +131,7 @@ export const useDonationHandlers = (
             console.log("Simulating transaction for wallet type:", walletType);
             // If we reach here, we'll simulate a transaction for demo purposes
             await new Promise(resolve => setTimeout(resolve, 1500));
-            transactionId = generateTransactionHash('solana');
+            transactionId = generateTransactionHash(walletType === 'MetaMask' ? 'ethereum' : 'solana');
           }
         } catch (err) {
           console.error("Error requesting signature:", err);
@@ -123,7 +147,7 @@ export const useDonationHandlers = (
         console.warn("No provider available, simulating transaction");
         // Simulate network delay for demo purposes
         await new Promise(resolve => setTimeout(resolve, 1500));
-        transactionId = generateTransactionHash('solana');
+        transactionId = generateTransactionHash(walletType === 'MetaMask' ? 'ethereum' : 'solana');
       }
       
       // Create a donation record with realistic data
@@ -155,7 +179,7 @@ export const useDonationHandlers = (
         title: "Donation Successful",
         description: (
           <div>
-            <p>{`Thank you for your donation of $${amount.toFixed(2)} USDC!`}</p>
+            <p>{`Thank you for your donation of $${amount.toFixed(2)} ${walletType === 'MetaMask' ? 'ETH' : 'USDC'}!`}</p>
             <a 
               href={explorerUrl} 
               target="_blank" 
