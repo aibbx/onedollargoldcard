@@ -52,8 +52,19 @@ export const useDonationTransactions = ({
       console.log('Initiating donation transaction for amount:', totalAmount);
       console.log('Current wallet type:', walletType);
       
+      // Set a timeout to show a more helpful message if it's taking too long
+      const timeoutId = setTimeout(() => {
+        toast({
+          title: "Processing Transaction",
+          description: "Please approve the transaction in your wallet. This might take a moment...",
+        });
+      }, 5000);
+      
       // Try to send donation
       const transactionId = await sendDonation(totalAmount);
+      
+      // Clear the timeout
+      clearTimeout(timeoutId);
       
       if (transactionId) {
         console.log('Transaction completed successfully with ID:', transactionId);

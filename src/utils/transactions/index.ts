@@ -4,8 +4,6 @@ import { sendPhantomTransaction } from './phantomTransactions';
 import { sendSolflareTransaction } from './solflareTransactions';
 import { sendOKXTransaction } from './okxTransactions';
 import { toast } from "@/components/ui/use-toast";
-import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { PublicKey } from '@solana/web3.js';
 
 // Process transaction based on wallet type
 export const processTransaction = async (
@@ -97,4 +95,3 @@ export const processTransaction = async (
     throw err;
   }
 };
-
