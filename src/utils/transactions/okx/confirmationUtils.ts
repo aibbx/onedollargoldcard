@@ -3,6 +3,13 @@ import { Connection } from '@solana/web3.js';
 import { toast } from "@/hooks/use-toast";
 import { getBackupConnection } from './connectionUtils';
 
+// Define the interface for the confirmation response
+interface ConfirmationResponse {
+  value: {
+    err: any;
+  } | null;
+}
+
 // Function to confirm transaction with retry logic
 export const confirmTransaction = async (
   connection: Connection,
@@ -31,11 +38,11 @@ export const confirmTransaction = async (
         signature,
         blockhash,
         lastValidBlockHeight
-      }, 'confirmed');
+      }, 'confirmed') as ConfirmationResponse;
       
       confirmed = true;
       
-      if (confirmation.value.err) {
+      if (confirmation?.value?.err) {
         console.error('Transaction error during confirmation:', confirmation.value.err);
         toast({
           title: "Transaction Failed on Network",
