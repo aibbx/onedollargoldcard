@@ -24,6 +24,7 @@ const ConfirmationCheckbox: React.FC<ConfirmationCheckboxProps> = ({
           checked={isConfirmed}
           onCheckedChange={(checked) => setIsConfirmed(!!checked)}
           className="data-[state=checked]:bg-gold-500 data-[state=checked]:border-gold-500 mt-1"
+          defaultChecked={true}
         />
         <label htmlFor="confirmation" className="text-sm text-gray-600">
           {confirmationText}
