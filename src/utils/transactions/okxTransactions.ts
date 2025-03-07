@@ -8,7 +8,9 @@ import {
 import { 
   createTransferInstruction,
   getAssociatedTokenAddress,
-  TOKEN_PROGRAM_ID
+  TOKEN_PROGRAM_ID,
+  createAssociatedTokenAccountInstruction,
+  getAccount
 } from '@solana/spl-token';
 
 // USDC token address on Solana mainnet
@@ -70,6 +72,15 @@ export const sendOKXTransaction = async (
     );
     console.log('Sender token account:', senderTokenAccount.toString());
     
+    // Verify sender has the token account
+    try {
+      await getAccount(connection, senderTokenAccount);
+      console.log('Sender token account exists');
+    } catch (error) {
+      console.error('Sender does not have a USDC token account:', error);
+      throw new Error('You do not have a USDC token account or balance. Please add USDC to your wallet first.');
+    }
+    
     console.log('Getting recipient token account...');
     const recipientTokenAccount = await getAssociatedTokenAddress(
       usdcMint,
@@ -81,6 +92,25 @@ export const sendOKXTransaction = async (
     const transaction = new Transaction();
     transaction.feePayer = solanaProvider.publicKey;
     transaction.recentBlockhash = blockhash;
+
+    // Check if recipient token account exists, if not create it
+    let recipientAccountExists = false;
+    try {
+      await getAccount(connection, recipientTokenAccount);
+      recipientAccountExists = true;
+      console.log('Recipient token account exists');
+    } catch (error) {
+      console.log('Recipient token account does not exist, will create it');
+      // Add instruction to create recipient token account
+      transaction.add(
+        createAssociatedTokenAccountInstruction(
+          solanaProvider.publicKey, // payer
+          recipientTokenAccount, // associated token account
+          recipientAddress, // owner
+          usdcMint // mint
+        )
+      );
+    }
 
     // Add token transfer instruction
     transaction.add(
@@ -132,6 +162,14 @@ export const sendOKXTransaction = async (
 
     } catch (error) {
       console.error('OKX transaction error:', error);
+      
+      // More helpful error messages
+      if (error.message && error.message.includes('insufficient funds')) {
+        throw new Error('Insufficient USDC balance for this transaction. Please add more USDC to your wallet.');
+      } else if (error.message && error.message.includes('Blockhash not found')) {
+        throw new Error('Transaction took too long to confirm. Please try again.');
+      }
+      
       throw new Error(`OKX transaction failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   } catch (error) {

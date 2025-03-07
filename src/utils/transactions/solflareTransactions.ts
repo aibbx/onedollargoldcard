@@ -8,7 +8,9 @@ import {
 import { 
   createTransferInstruction,
   getAssociatedTokenAddress,
-  TOKEN_PROGRAM_ID
+  TOKEN_PROGRAM_ID,
+  createAssociatedTokenAccountInstruction,
+  getAccount
 } from '@solana/spl-token';
 
 // USDC token address on Solana mainnet
@@ -64,6 +66,15 @@ export const sendSolflareTransaction = async (
       );
       console.log('Sender token account:', senderTokenAccount.toString());
       
+      // Verify sender has the token account
+      try {
+        await getAccount(connection, senderTokenAccount);
+        console.log('Sender token account exists');
+      } catch (error) {
+        console.error('Sender does not have a USDC token account:', error);
+        throw new Error('You do not have a USDC token account or balance. Please add USDC to your wallet first.');
+      }
+      
       // Get recipient token account (pool address USDC account)
       const recipientAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
       console.log('Recipient address:', recipientAddress.toString());
@@ -79,6 +90,25 @@ export const sendSolflareTransaction = async (
       const transaction = new Transaction();
       transaction.feePayer = provider.publicKey;
       transaction.recentBlockhash = blockhash;
+      
+      // Check if recipient token account exists, if not create it
+      let recipientAccountExists = false;
+      try {
+        await getAccount(connection, recipientTokenAccount);
+        recipientAccountExists = true;
+        console.log('Recipient token account exists');
+      } catch (error) {
+        console.log('Recipient token account does not exist, will create it');
+        // Add instruction to create recipient token account
+        transaction.add(
+          createAssociatedTokenAccountInstruction(
+            provider.publicKey, // payer
+            recipientTokenAccount, // associated token account
+            recipientAddress, // owner
+            usdcMint // mint
+          )
+        );
+      }
       
       // Add token transfer instruction
       transaction.add(
@@ -128,6 +158,12 @@ export const sendSolflareTransaction = async (
             console.log('Solflare transaction sent with fallback method:', signature);
           } catch (fallbackError) {
             console.error('Error with fallback Solflare transaction method:', fallbackError);
+            
+            // More helpful error messages
+            if (fallbackError.message && fallbackError.message.includes('insufficient funds')) {
+              throw new Error('Insufficient USDC balance for this transaction. Please add more USDC to your wallet.');
+            }
+            
             throw fallbackError;
           }
         }

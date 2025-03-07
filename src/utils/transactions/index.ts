@@ -1,4 +1,9 @@
 
+// Add Buffer polyfill for browser compatibility
+import { Buffer } from 'buffer';
+// Make Buffer available globally
+window.Buffer = Buffer;
+
 import { WalletType } from '../../types/wallet';
 import { sendPhantomTransaction } from './phantomTransactions';
 import { sendSolflareTransaction } from './solflareTransactions';
