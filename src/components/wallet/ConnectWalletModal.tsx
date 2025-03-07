@@ -11,12 +11,12 @@ interface ConnectWalletModalProps {
   onConnectWallet: (type: WalletType) => Promise<void>;
 }
 
-// Wallet configuration with native logo URLs
+// Updated wallet configuration with more reliable logo URLs
 const walletConfig = [
   {
     type: 'Phantom' as WalletType,
     name: 'Phantom',
-    logoUrl: 'https://phantom.app/favicon.ico'
+    logoUrl: 'https://www.phantom.app/img/logo.png'
   },
   {
     type: 'Solflare' as WalletType,
@@ -31,7 +31,7 @@ const walletConfig = [
   {
     type: 'MetaMask' as WalletType,
     name: 'MetaMask',
-    logoUrl: 'https://metamask.io/favicon.ico'
+    logoUrl: 'https://metamask.io/images/metamask-fox.svg'
   }
 ];
 
