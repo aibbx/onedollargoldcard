@@ -10,13 +10,12 @@ import {
 
 // Function to get a working connection
 const getConnection = (): Connection => {
-  // Use Helius RPC endpoint which is more reliable than the public one
-  const endpoint = "https://rpc.helius.xyz/?api-key=5f72607c-88c9-4019-9fe9-1a86d5805268";
-  console.log('Using Helius RPC endpoint for Solflare transactions');
+  // Use public Solana RPC endpoint
+  const endpoint = clusterApiUrl('mainnet-beta');
+  console.log('Using public Solana RPC endpoint for Solflare transactions');
   return new Connection(endpoint, {
     commitment: 'confirmed',
-    confirmTransactionInitialTimeout: 60000, // 60 seconds timeout
-    wsEndpoint: "wss://rpc.helius.xyz/?api-key=5f72607c-88c9-4019-9fe9-1a86d5805268"
+    confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
   });
 };
 
