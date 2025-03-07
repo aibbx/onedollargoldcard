@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { DonationRecord, WalletType } from '../types/wallet';
-import { generateTransactionHash, getExplorerUrl } from '../utils/walletUtils';
+import { generateTransactionHash, getExplorerUrl, CONTRACT_ADDRESSES } from '../utils/walletUtils';
 
 export const useDonationHandlers = (
   isWalletConnected: boolean,
@@ -41,11 +41,90 @@ export const useDonationHandlers = (
       setIsProcessing(true);
       let transactionId;
       
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // All wallets use Solana
-      transactionId = generateTransactionHash('solana');
+      // Create an actual transaction to send funds to the contract address
+      if (provider) {
+        try {
+          console.log("Creating transaction to donate USDC...");
+          console.log("Amount:", amount);
+          console.log("Contract address:", CONTRACT_ADDRESSES.poolAddress);
+          
+          // Request wallet to sign the transaction
+          // This will trigger the wallet popup for user to confirm
+          if (walletType === 'Phantom' && provider.request) {
+            // Create Solana transaction (this is simplified - in a real app you'd build a proper transaction)
+            const transaction = {
+              feePayer: walletAddress,
+              recentBlockhash: 'simulated_blockhash',
+              instructions: [
+                {
+                  programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA', // Token program ID
+                  data: Buffer.from([]), // Would contain serialized instruction data
+                  keys: [
+                    { pubkey: walletAddress, isSigner: true, isWritable: true },
+                    { pubkey: CONTRACT_ADDRESSES.poolAddress, isSigner: false, isWritable: true },
+                    { pubkey: CONTRACT_ADDRESSES.feeAddress, isSigner: false, isWritable: true }
+                  ]
+                }
+              ]
+            };
+
+            console.log("Requesting signature from wallet...");
+            
+            // This should trigger the wallet popup
+            const signedTx = await provider.request({
+              method: 'signTransaction',
+              params: { message: transaction }
+            });
+            
+            console.log("Transaction signed successfully!", signedTx);
+            
+            // In a real app, you'd send the transaction to the network here
+            // await provider.request({ method: 'sendTransaction', params: { signedTransaction: signedTx } });
+            
+            // For our demo, we'll simulate a successful transaction
+            transactionId = generateTransactionHash('solana');
+            console.log("Transaction ID:", transactionId);
+          } 
+          else if (walletType === 'Solflare' && provider.signTransaction) {
+            console.log("Requesting Solflare wallet to sign transaction...");
+            // Similar process for Solflare
+            // This would use provider.signTransaction() in a real implementation
+            
+            // Simulate user signing
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            transactionId = generateTransactionHash('solana');
+          }
+          else if (walletType === 'OKX' && provider.signTransaction) {
+            console.log("Requesting OKX wallet to sign transaction...");
+            // Similar process for OKX
+            // This would use provider.signTransaction() in a real implementation
+            
+            // Simulate user signing
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            transactionId = generateTransactionHash('solana');
+          }
+          else {
+            console.log("Simulating transaction for wallet type:", walletType);
+            // If we reach here, we'll simulate a transaction for demo purposes
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            transactionId = generateTransactionHash('solana');
+          }
+        } catch (err) {
+          console.error("Error requesting signature:", err);
+          toast({
+            title: "Signature Declined",
+            description: "You declined the transaction signature. The donation was not processed.",
+            variant: "destructive",
+          });
+          setIsProcessing(false);
+          return null;
+        }
+      } else {
+        console.warn("No provider available, simulating transaction");
+        // Simulate network delay for demo purposes
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        transactionId = generateTransactionHash('solana');
+      }
       
       // Create a donation record with realistic data
       const newDonation: DonationRecord = {
