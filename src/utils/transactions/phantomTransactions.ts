@@ -1,7 +1,7 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
 import { PublicKey, Transaction } from '@solana/web3.js';
-import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { getAssociatedTokenAddress, createTransferInstruction } from '@solana/spl-token';
 
 // USDC token mint address on Solana
 const USDC_MINT = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
@@ -29,20 +29,23 @@ export const sendPhantomTransaction = async (
     const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
     
     // Find the user's USDC token account
-    const userTokenAccount = await Token.getAssociatedTokenAddress(
-      TOKEN_PROGRAM_ID,
-      TOKEN_PROGRAM_ID,
+    const userTokenAccount = await getAssociatedTokenAddress(
       USDC_MINT,
       provider.publicKey
     );
     
-    // Create transfer instruction
-    const transferInstruction = Token.createTransferInstruction(
-      TOKEN_PROGRAM_ID,
-      userTokenAccount,
+    // Find the pool's USDC token account
+    const poolTokenAccount = await getAssociatedTokenAddress(
+      USDC_MINT,
       poolAddress,
+      true // allowOwnerOffCurve = true since this is a PDA
+    );
+    
+    // Create transfer instruction
+    const transferInstruction = createTransferInstruction(
+      userTokenAccount,
+      poolTokenAccount,
       provider.publicKey,
-      [],
       amountInUsdcUnits
     );
     
