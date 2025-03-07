@@ -1,3 +1,4 @@
+
 // Import Buffer polyfill first to ensure it's available globally
 import '../buffer-polyfill';
 
@@ -21,7 +22,18 @@ export const processTransaction = async (
       providerType: walletType,
       providerKeys: Object.keys(provider),
       solanaKeys: provider?.solana ? Object.keys(provider.solana) : [],
+      bufferAvailable: typeof window !== 'undefined' ? !!window.Buffer : false
     });
+
+    // Double check Buffer is available
+    if (typeof window !== 'undefined' && !window.Buffer) {
+      console.error('Buffer not available! Trying to re-initialize...');
+      // Force re-initialize
+      await import('../buffer-polyfill');
+      if (!window.Buffer) {
+        throw new Error('Buffer polyfill failed to initialize');
+      }
+    }
 
     if (!provider) {
       const error = new Error('Wallet provider is not available');
