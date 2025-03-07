@@ -1,5 +1,6 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
+import { PublicKey, Transaction, SystemProgram } from '@solana/web3.js';
 
 // Handle transactions specifically for Solflare wallet
 export const sendSolflareTransaction = async (
@@ -10,55 +11,36 @@ export const sendSolflareTransaction = async (
   try {
     console.log('Processing Solflare transaction', { amount, walletAddress });
     
-    // Build transaction for Solflare
-    const transaction = await buildSolflareTransaction(provider, amount, walletAddress);
+    if (!provider || !provider.publicKey) {
+      throw new Error('Wallet not properly connected');
+    }
+
+    // Convert USDC amount to lamports (assuming USDC decimal places)
+    const amountInLamports = amount * 1000000; // USDC has 6 decimal places
     
-    // This is a production-ready call to Solflare wallet
-    const result = await provider.signAndSendTransaction(transaction);
+    // Create a new transaction
+    const transaction = new Transaction();
     
-    console.log('Solflare transaction result:', result);
-    return result?.signature || result;
+    // Use the pool address from our constants
+    const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
+    
+    // Add a simple SOL transfer instruction as placeholder
+    // In production, this would be a proper USDC transfer
+    transaction.add(
+      SystemProgram.transfer({
+        fromPubkey: provider.publicKey,
+        toPubkey: poolAddress,
+        lamports: Math.round(amountInLamports),
+      })
+    );
+    
+    // Sign and send the transaction using Solflare
+    const signature = await provider.signAndSendTransaction(transaction);
+    console.log('Solflare transaction sent with signature:', signature);
+    
+    return signature;
   } catch (error) {
     console.error('Error in Solflare transaction:', error);
-    throw error;
-  }
-};
-
-// Build a proper Solana transaction for Solflare
-const buildSolflareTransaction = async (provider: any, amount: number, walletAddress: string) => {
-  try {
-    // In production, this should build a proper Solana transaction
-    // Here we're preparing a transaction structure that Solflare would understand
-    const connection = provider.connection;
-    
-    // Note: This is a placeholder structure - the actual transaction would 
-    // be built using proper Solana web3.js methods
-    const transaction = {
-      feePayer: walletAddress,
-      recentBlockhash: await connection.getRecentBlockhash(),
-      instructions: [
-        {
-          programId: CONTRACT_ADDRESSES.poolAddress,
-          keys: [
-            {
-              pubkey: walletAddress,
-              isSigner: true,
-              isWritable: true
-            },
-            {
-              pubkey: CONTRACT_ADDRESSES.poolAddress,
-              isSigner: false,
-              isWritable: true
-            }
-          ],
-          data: Buffer.from([0, ...new Uint8Array(Buffer.from(amount.toString()))]) // Simplified data structure
-        }
-      ]
-    };
-    
-    return transaction;
-  } catch (error) {
-    console.error('Error building Solflare transaction:', error);
     throw error;
   }
 };

@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from "@/hooks/use-toast";
 import { useWallet } from '../context/WalletContext';
 
 interface UseDonationTransactionsProps {
@@ -23,7 +23,7 @@ export const useDonationTransactions = ({
   t
 }: UseDonationTransactionsProps) => {
   const { toast } = useToast();
-  const { sendDonation } = useWallet();
+  const { sendDonation, isProcessing } = useWallet();
   const [isLoading, setIsLoading] = useState(false);
   
   const handleDonation = async () => {
@@ -45,16 +45,27 @@ export const useDonationTransactions = ({
     try {
       setIsLoading(true);
       const totalAmount = parseFloat(amount) * 1.05; // Adding 5% fee
+      console.log('Initiating donation transaction for amount:', totalAmount);
+      
       const transactionId = await sendDonation(totalAmount);
       
       if (transactionId) {
+        console.log('Transaction completed successfully with ID:', transactionId);
         resetForm();
+        toast({
+          title: "Donation Successful",
+          description: `Your donation of $${totalAmount.toFixed(2)} has been submitted. Thank you for your support!`,
+        });
+      } else {
+        throw new Error("Transaction failed - no transaction ID returned");
       }
     } catch (error) {
       console.error('Donation failed:', error);
       toast({
         title: "Donation Failed",
-        description: "There was an error processing your donation. Please try again.",
+        description: error instanceof Error 
+          ? `There was an error: ${error.message}` 
+          : "There was an error processing your donation. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -64,6 +75,6 @@ export const useDonationTransactions = ({
 
   return {
     handleDonation,
-    isLoading
+    isLoading: isLoading || isProcessing
   };
 };

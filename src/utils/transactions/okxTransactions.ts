@@ -1,5 +1,6 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
+import { PublicKey, Transaction, SystemProgram } from '@solana/web3.js';
 
 // Handle transactions specifically for OKX wallet
 export const sendOKXTransaction = async (
@@ -10,57 +11,38 @@ export const sendOKXTransaction = async (
   try {
     console.log('Processing OKX transaction', { amount, walletAddress });
     
-    // Build a transaction for OKX
-    const transaction = await buildOKXTransaction(provider, amount, walletAddress);
+    if (!provider || !provider.solana?.publicKey) {
+      throw new Error('OKX wallet not properly connected');
+    }
+
+    // Convert USDC amount to lamports (assuming USDC decimal places)
+    const amountInLamports = amount * 1000000; // USDC has 6 decimal places
     
-    // Execute with OKX wallet provider
-    const result = await provider.solana.signAndSendTransaction({
+    // Create a new transaction
+    const transaction = new Transaction();
+    
+    // Use the pool address from our constants
+    const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
+    
+    // Add a simple SOL transfer instruction as placeholder
+    // In production, this would be a proper USDC transfer
+    transaction.add(
+      SystemProgram.transfer({
+        fromPubkey: provider.solana.publicKey,
+        toPubkey: poolAddress,
+        lamports: Math.round(amountInLamports),
+      })
+    );
+    
+    // Sign and send the transaction using OKX wallet
+    const signature = await provider.solana.signAndSendTransaction({
       transaction: transaction
     });
     
-    console.log('OKX transaction result:', result);
-    return result?.signature || result;
+    console.log('OKX transaction sent with signature:', signature);
+    return signature?.signature || signature;
   } catch (error) {
     console.error('Error in OKX transaction:', error);
-    throw error;
-  }
-};
-
-// Build a proper Solana transaction for OKX
-const buildOKXTransaction = async (provider: any, amount: number, walletAddress: string) => {
-  try {
-    // In production, this should build a proper Solana transaction
-    // Here we're preparing a transaction structure that OKX would understand
-    const connection = provider.solana.connection;
-    
-    // Note: This is a placeholder structure - the actual transaction would 
-    // be built using proper Solana web3.js methods
-    const transaction = {
-      feePayer: walletAddress,
-      recentBlockhash: await connection.getRecentBlockhash(),
-      instructions: [
-        {
-          programId: CONTRACT_ADDRESSES.poolAddress,
-          keys: [
-            {
-              pubkey: walletAddress,
-              isSigner: true,
-              isWritable: true
-            },
-            {
-              pubkey: CONTRACT_ADDRESSES.poolAddress,
-              isSigner: false,
-              isWritable: true
-            }
-          ],
-          data: Buffer.from([0, ...new Uint8Array(Buffer.from(amount.toString()))]) // Simplified data structure
-        }
-      ]
-    };
-    
-    return transaction;
-  } catch (error) {
-    console.error('Error building OKX transaction:', error);
     throw error;
   }
 };
