@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { WalletType } from '../types/wallet';
@@ -19,8 +18,8 @@ export const useWalletConnectors = () => {
   const [walletAddress, setWalletAddress] = useState('');
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [walletDetectionComplete, setWalletDetectionComplete] = useState(false);
-  // Set the network to devnet
-  const network: NetworkType = 'devnet';
+  // Set the network to mainnet-beta for production
+  const network: NetworkType = 'mainnet-beta';
 
   // Detect available wallets
   useEffect(() => {

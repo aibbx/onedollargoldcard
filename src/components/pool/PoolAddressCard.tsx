@@ -3,7 +3,7 @@ import React from 'react';
 import { Copy, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from "@/hooks/use-toast";
-import { CONTRACT_ADDRESSES } from '../../context/WalletContext';
+import { CONTRACT_ADDRESSES } from '../../utils/walletUtils';
 
 const PoolAddressCard = () => {
   const { toast } = useToast();

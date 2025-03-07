@@ -1,10 +1,9 @@
 
 import { WalletType } from '../../types/wallet';
-import { generateMockAddress } from '../walletUtils';
 import { NetworkType } from '../../hooks/useWalletConnectors';
 
 // Connect to OKX wallet
-export const connectOKXWallet = async (network: NetworkType = 'devnet'): Promise<{ 
+export const connectOKXWallet = async (network: NetworkType = 'mainnet-beta'): Promise<{ 
   address: string; 
   provider: any;
 }> => {
@@ -38,7 +37,7 @@ export const connectOKXWallet = async (network: NetworkType = 'devnet'): Promise
 };
 
 // Auto-connect to OKX wallet if already connected
-export const autoConnectOKXWallet = async (network: NetworkType = 'devnet'): Promise<{ 
+export const autoConnectOKXWallet = async (network: NetworkType = 'mainnet-beta'): Promise<{ 
   address: string; 
   provider: any;
 } | null> => {

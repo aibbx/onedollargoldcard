@@ -1,10 +1,9 @@
 
 import { WalletType } from '../../types/wallet';
-import { generateMockAddress } from '../walletUtils';
 import { NetworkType } from '../../hooks/useWalletConnectors';
 
 // Connect to Solflare wallet
-export const connectSolflareWallet = async (network: NetworkType = 'devnet'): Promise<{ 
+export const connectSolflareWallet = async (network: NetworkType = 'mainnet-beta'): Promise<{ 
   address: string; 
   provider: any;
 }> => {
@@ -42,7 +41,7 @@ export const connectSolflareWallet = async (network: NetworkType = 'devnet'): Pr
 };
 
 // Auto-connect to Solflare wallet if already connected
-export const autoConnectSolflareWallet = async (network: NetworkType = 'devnet'): Promise<{ 
+export const autoConnectSolflareWallet = async (network: NetworkType = 'mainnet-beta'): Promise<{ 
   address: string; 
   provider: any;
 } | null> => {

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { DonationRecord, WalletType } from '../types/wallet';
-import { generateTransactionHash, getExplorerUrl, CONTRACT_ADDRESSES } from '../utils/walletUtils';
+import { getExplorerUrl, CONTRACT_ADDRESSES } from '../utils/walletUtils';
 
 export const useDonationHandlers = (
   isWalletConnected: boolean,
@@ -50,8 +50,7 @@ export const useDonationHandlers = (
             console.log("Contract address:", CONTRACT_ADDRESSES.ethereumPoolAddress);
 
             // Convert amount to wei (1 ETH = 10^18 wei)
-            // For example, $1 might be 0.0004 ETH (at $2500/ETH) which would be 400000000000000 wei
-            // This is just an example, in a real app you'd use proper conversion rates
+            // For production, use proper conversion rates based on current ETH prices
             const weiAmount = `0x${(amount * 0.0004 * 1e18).toString(16)}`;
             
             // Create Ethereum transaction
@@ -75,63 +74,61 @@ export const useDonationHandlers = (
             transactionId = txHash;
           } 
           else if (walletType === 'Phantom' && provider.request) {
-            // Create Solana transaction (this is simplified - in a real app you'd build a proper transaction)
-            const transaction = {
-              feePayer: walletAddress,
-              recentBlockhash: 'simulated_blockhash',
-              instructions: [
-                {
-                  programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA', // Token program ID
-                  data: Buffer.from([]), // Would contain serialized instruction data
-                  keys: [
-                    { pubkey: walletAddress, isSigner: true, isWritable: true },
-                    { pubkey: CONTRACT_ADDRESSES.poolAddress, isSigner: false, isWritable: true },
-                    { pubkey: CONTRACT_ADDRESSES.feeAddress, isSigner: false, isWritable: true }
-                  ]
-                }
-              ]
-            };
-
-            console.log("Requesting signature from wallet...");
+            console.log("Creating Solana transaction...");
+            // In production, we would create a proper Solana transaction here
+            // This would involve using @solana/web3.js to construct the transaction
             
-            // This should trigger the wallet popup
-            const signedTx = await provider.request({
-              method: 'signTransaction',
-              params: { message: transaction }
+            // Create a "Send SOL" transaction to the pool address
+            const createTransactionRequest = {
+              method: 'transfer',
+              params: {
+                to: CONTRACT_ADDRESSES.poolAddress,
+                amount: amount // Amount in USDC or SOL
+              }
+            };
+            
+            console.log("Requesting signature from Phantom wallet...");
+            
+            // This will trigger the wallet popup
+            const signedTx = await provider.request(createTransactionRequest);
+            transactionId = signedTx.signature;
+            
+            console.log("Transaction signed and sent successfully!", transactionId);
+          } 
+          else if (walletType === 'Solflare') {
+            console.log("Creating Solana transaction for Solflare...");
+            // For production, implement actual Solflare transaction using their API
+            
+            // This would use provider methods in a real implementation
+            const result = await provider.signAndSendTransaction({
+              to: CONTRACT_ADDRESSES.poolAddress,
+              amount: amount
             });
             
-            console.log("Transaction signed successfully!", signedTx);
-            
-            // In a real app, you'd send the transaction to the network here
-            // await provider.request({ method: 'sendTransaction', params: { signedTransaction: signedTx } });
-            
-            // For our demo, we'll simulate a successful transaction
-            transactionId = generateTransactionHash('solana');
-            console.log("Transaction ID:", transactionId);
-          } 
-          else if (walletType === 'Solflare' && provider.signTransaction) {
-            console.log("Requesting Solflare wallet to sign transaction...");
-            // Similar process for Solflare
-            // This would use provider.signTransaction() in a real implementation
-            
-            // Simulate user signing
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            transactionId = generateTransactionHash('solana');
+            transactionId = result.signature;
+            console.log("Transaction sent successfully:", transactionId);
           }
-          else if (walletType === 'OKX' && provider.signTransaction) {
-            console.log("Requesting OKX wallet to sign transaction...");
-            // Similar process for OKX
-            // This would use provider.signTransaction() in a real implementation
+          else if (walletType === 'OKX' && provider) {
+            console.log("Creating Solana transaction for OKX...");
+            // For production, implement actual OKX transaction using their API
             
-            // Simulate user signing
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            transactionId = generateTransactionHash('solana');
+            const result = await provider.signAndSendTransaction({
+              to: CONTRACT_ADDRESSES.poolAddress,
+              amount: amount
+            });
+            
+            transactionId = result.signature;
+            console.log("Transaction sent successfully:", transactionId);
           }
           else {
-            console.log("Simulating transaction for wallet type:", walletType);
-            // If we reach here, we'll simulate a transaction for demo purposes
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            transactionId = generateTransactionHash(walletType === 'MetaMask' ? 'ethereum' : 'solana');
+            console.error("Unsupported wallet type:", walletType);
+            toast({
+              title: "Unsupported Wallet",
+              description: "This wallet type is not currently supported for transactions.",
+              variant: "destructive",
+            });
+            setIsProcessing(false);
+            return null;
           }
         } catch (err) {
           console.error("Error requesting signature:", err);
@@ -144,55 +141,68 @@ export const useDonationHandlers = (
           return null;
         }
       } else {
-        console.warn("No provider available, simulating transaction");
-        // Simulate network delay for demo purposes
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        transactionId = generateTransactionHash(walletType === 'MetaMask' ? 'ethereum' : 'solana');
+        console.error("No provider available");
+        toast({
+          title: "Wallet Error",
+          description: "Cannot access your wallet. Please reconnect and try again.",
+          variant: "destructive",
+        });
+        setIsProcessing(false);
+        return null;
       }
       
-      // Create a donation record with realistic data
-      const newDonation: DonationRecord = {
-        id: `donation_${Date.now()}`,
-        amount: amount,
-        timestamp: new Date(),
-        transactionId: transactionId
-      };
-      
-      // Update the donations state
-      const updatedDonations = [...donations, newDonation];
-      setDonations(updatedDonations);
-      
-      // Save to localStorage with proper serialization
-      try {
-        localStorage.setItem('donations', JSON.stringify(updatedDonations.map(d => ({
-          ...d,
-          timestamp: d.timestamp.toISOString() // Convert Date to ISO string for storage
-        }))));
-      } catch (err) {
-        console.error('Error saving donations to localStorage:', err);
+      // Create a donation record with transaction data
+      if (transactionId) {
+        const newDonation: DonationRecord = {
+          id: `donation_${Date.now()}`,
+          amount: amount,
+          timestamp: new Date(),
+          transactionId: transactionId
+        };
+        
+        // Update the donations state
+        const updatedDonations = [...donations, newDonation];
+        setDonations(updatedDonations);
+        
+        // Save to localStorage with proper serialization
+        try {
+          localStorage.setItem('donations', JSON.stringify(updatedDonations.map(d => ({
+            ...d,
+            timestamp: d.timestamp.toISOString() // Convert Date to ISO string for storage
+          }))));
+        } catch (err) {
+          console.error('Error saving donations to localStorage:', err);
+        }
+        
+        // Show explorer link in toast
+        const explorerUrl = getExplorerUrl(transactionId, walletType);
+        
+        toast({
+          title: "Donation Successful",
+          description: (
+            <div>
+              <p>{`Thank you for your donation of $${amount.toFixed(2)} ${walletType === 'MetaMask' ? 'ETH' : 'USDC'}!`}</p>
+              <a 
+                href={explorerUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gold-600 hover:text-gold-700 underline mt-2 inline-block"
+              >
+                View transaction
+              </a>
+            </div>
+          ),
+        });
+        
+        return transactionId;
+      } else {
+        toast({
+          title: "Transaction Failed",
+          description: "The transaction could not be processed. Please try again.",
+          variant: "destructive",
+        });
+        return null;
       }
-      
-      // Show explorer link in toast
-      const explorerUrl = getExplorerUrl(transactionId, walletType);
-      
-      toast({
-        title: "Donation Successful",
-        description: (
-          <div>
-            <p>{`Thank you for your donation of $${amount.toFixed(2)} ${walletType === 'MetaMask' ? 'ETH' : 'USDC'}!`}</p>
-            <a 
-              href={explorerUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-gold-600 hover:text-gold-700 underline mt-2 inline-block"
-            >
-              View transaction
-            </a>
-          </div>
-        ),
-      });
-      
-      return transactionId;
     } catch (error) {
       console.error('Error sending donation:', error);
       toast({
@@ -212,12 +222,13 @@ export const useDonationHandlers = (
       const total = donations.reduce((sum, donation) => sum + donation.amount, 0);
       setTotalDonationAmount(total);
       
-      // Calculate winning chance based on total pool size and user contribution
-      // This simulates a real lottery mechanism where each dollar is one entry
-      const totalPoolSize = 1250000; // Total pool size in USD
+      // Calculate winning chance based on actual pool size (for production)
+      // This should be fetched from the blockchain in a production app
+      // This is a simplified example
+      const currentPoolSize = 1250000; // This should be fetched from the contract in production
       const userContribution = total;
-      const userEntries = userContribution * 100; // $1 = 100 entries
-      const totalEntries = totalPoolSize * 100;
+      const userEntries = userContribution * 100; // $1 = 100 entries (example)
+      const totalEntries = currentPoolSize * 100;
       const chance = (userEntries / totalEntries) * 100;
       
       setWinningChance(chance);

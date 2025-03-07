@@ -1,10 +1,9 @@
 
 import { WalletType } from '../../types/wallet';
-import { generateMockAddress } from '../walletUtils';
 import { NetworkType } from '../../hooks/useWalletConnectors';
 
 // Connect to Phantom wallet
-export const connectPhantomWallet = async (network: NetworkType = 'devnet'): Promise<{ 
+export const connectPhantomWallet = async (network: NetworkType = 'mainnet-beta'): Promise<{ 
   address: string; 
   provider: any;
 }> => {
@@ -43,7 +42,7 @@ export const connectPhantomWallet = async (network: NetworkType = 'devnet'): Pro
 };
 
 // Auto-connect to Phantom wallet if already connected
-export const autoConnectPhantomWallet = async (network: NetworkType = 'devnet'): Promise<{ 
+export const autoConnectPhantomWallet = async (network: NetworkType = 'mainnet-beta'): Promise<{ 
   address: string; 
   provider: any;
 } | null> => {
