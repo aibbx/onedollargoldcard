@@ -1,13 +1,12 @@
 
 import React from 'react';
 import { LogOut } from 'lucide-react';
-import { WalletType } from '../../context/WalletContext';
-import { DonationType } from '../../types/wallet';
+import { WalletType, DonationRecord } from '../../types/wallet';
 
 interface WalletMenuProps {
   walletType: WalletType;
   walletAddress: string;
-  donations: DonationType[];
+  donations: DonationRecord[];
   onDisconnect: () => void;
   onDonateClick: () => void;
   onClose: () => void;
