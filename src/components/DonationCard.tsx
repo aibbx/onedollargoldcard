@@ -94,7 +94,6 @@ const DonationCard = () => {
       const transactionId = await sendDonation(totalAmount);
       
       if (transactionId) {
-        // Reset form after successful donation
         setAmount('100.00');
         setIsConfirmed(false);
       }
@@ -119,7 +118,6 @@ const DonationCard = () => {
   const openTransaction = (txId: string) => {
     if (!txId) return;
     
-    // In production, this would open the transaction on a blockchain explorer
     const explorerUrl = `https://solscan.io/tx/${txId}`;
       
     window.open(explorerUrl, '_blank');
@@ -150,7 +148,7 @@ const DonationCard = () => {
               
               <div className="p-6 space-y-6">
                 {/* Donation Incentive */}
-                <DonationIncentive />
+                <DonationIncentive amount={amount} />
 
                 {/* Amount Selector */}
                 <AmountSelector 
