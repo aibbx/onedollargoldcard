@@ -1,9 +1,10 @@
 
 import { WalletType } from '../../types/wallet';
 import { generateMockAddress } from '../walletUtils';
+import { NetworkType } from '../../hooks/useWalletConnectors';
 
 // Connect to Phantom wallet
-export const connectPhantomWallet = async (): Promise<{ 
+export const connectPhantomWallet = async (network: NetworkType = 'devnet'): Promise<{ 
   address: string; 
   provider: any;
 }> => {
@@ -13,9 +14,27 @@ export const connectPhantomWallet = async (): Promise<{
   
   const provider = window.solana;
   
+  // Set the network
+  if (provider.isPhantom) {
+    try {
+      await provider.connect();
+      // Switch to the specified network
+      await provider.request({
+        method: 'switchNetwork',
+        params: { network }
+      });
+      console.log(`Switched to Solana ${network}`);
+    } catch (error) {
+      console.error('Error switching network:', error);
+      // Continue anyway as we want to connect regardless
+    }
+  }
+  
   // Request connection to the wallet
   const response = await provider.connect();
   const address = response.publicKey.toString();
+  
+  console.log(`Connected to Phantom wallet on ${network}`);
   
   return {
     address,
@@ -24,7 +43,7 @@ export const connectPhantomWallet = async (): Promise<{
 };
 
 // Auto-connect to Phantom wallet if already connected
-export const autoConnectPhantomWallet = async (): Promise<{ 
+export const autoConnectPhantomWallet = async (network: NetworkType = 'devnet'): Promise<{ 
   address: string; 
   provider: any;
 } | null> => {
@@ -33,6 +52,22 @@ export const autoConnectPhantomWallet = async (): Promise<{
   }
   
   const provider = window.solana;
+  
+  // Try to switch to the specified network
+  if (provider.isPhantom) {
+    try {
+      // Switch to the specified network
+      await provider.request({
+        method: 'switchNetwork',
+        params: { network }
+      });
+      console.log(`Switched to Solana ${network}`);
+    } catch (error) {
+      console.error('Error switching network:', error);
+      // Continue anyway
+    }
+  }
+  
   if (provider.isConnected) {
     const address = provider.publicKey?.toString() || '';
     if (address) {
@@ -45,7 +80,7 @@ export const autoConnectPhantomWallet = async (): Promise<{
   
   // If not already connected, try explicit connect
   try {
-    return await connectPhantomWallet();
+    return await connectPhantomWallet(network);
   } catch (error) {
     console.error('Error auto-connecting to Phantom:', error);
     return null;

@@ -20,6 +20,7 @@ export interface WalletContextType {
   donations: DonationRecord[];
   totalDonationAmount: number;
   winningChance: number;
+  network?: string;
 }
 
 // Add type definitions for wallet providers
@@ -31,12 +32,15 @@ declare global {
       connect: () => Promise<{ publicKey: { toString: () => string } }>;
       disconnect: () => Promise<void>;
       publicKey?: { toString: () => string };
+      request?: (args: { method: string; params?: any }) => Promise<any>;
+      switchNetwork?: (network: string) => Promise<void>;
     };
     solflare?: {
       isConnected: boolean;
       connect: () => Promise<void>;
       disconnect: () => Promise<void>;
       publicKey?: { toString: () => string };
+      setSolanaNetwork?: (network: string) => void;
     };
     okxwallet?: {
       solana: {
@@ -44,6 +48,7 @@ declare global {
         connect: () => Promise<{ publicKey: { toString: () => string } }>;
         disconnect: () => Promise<void>;
         publicKey?: { toString: () => string };
+        switchNetwork?: (network: string) => Promise<void>;
       }
     };
     ethereum?: {

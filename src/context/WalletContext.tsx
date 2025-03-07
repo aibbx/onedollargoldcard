@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useWalletConnectors } from '../hooks/useWalletConnectors';
 import { useDonationHandlers } from '../hooks/useDonationHandlers';
@@ -22,7 +21,8 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     connectWallet,
     disconnectWallet,
     autoConnectWallet,
-    walletDetectionComplete
+    walletDetectionComplete,
+    network
   } = useWalletConnectors();
 
   // Initialize donation state
@@ -138,7 +138,8 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
       sendDonation,
       donations,
       totalDonationAmount,
-      winningChance
+      winningChance,
+      network
     }}>
       {children}
     </WalletContext.Provider>

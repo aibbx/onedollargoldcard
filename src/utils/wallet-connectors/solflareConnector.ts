@@ -1,9 +1,10 @@
 
 import { WalletType } from '../../types/wallet';
 import { generateMockAddress } from '../walletUtils';
+import { NetworkType } from '../../hooks/useWalletConnectors';
 
 // Connect to Solflare wallet
-export const connectSolflareWallet = async (): Promise<{ 
+export const connectSolflareWallet = async (network: NetworkType = 'devnet'): Promise<{ 
   address: string; 
   provider: any;
 }> => {
@@ -13,6 +14,17 @@ export const connectSolflareWallet = async (): Promise<{
   
   const provider = window.solflare;
   
+  // Set the network before connecting
+  if (provider.setSolanaNetwork) {
+    try {
+      provider.setSolanaNetwork(network);
+      console.log(`Switched to Solana ${network}`);
+    } catch (error) {
+      console.error('Error switching network:', error);
+      // Continue anyway
+    }
+  }
+  
   // Request connection to the wallet
   await provider.connect();
   const address = provider.publicKey?.toString();
@@ -21,6 +33,8 @@ export const connectSolflareWallet = async (): Promise<{
     throw new Error('No public key found after connection');
   }
   
+  console.log(`Connected to Solflare wallet on ${network}`);
+  
   return {
     address,
     provider
@@ -28,7 +42,7 @@ export const connectSolflareWallet = async (): Promise<{
 };
 
 // Auto-connect to Solflare wallet if already connected
-export const autoConnectSolflareWallet = async (): Promise<{ 
+export const autoConnectSolflareWallet = async (network: NetworkType = 'devnet'): Promise<{ 
   address: string; 
   provider: any;
 } | null> => {
@@ -37,6 +51,18 @@ export const autoConnectSolflareWallet = async (): Promise<{
   }
   
   const provider = window.solflare;
+  
+  // Try to set the network
+  if (provider.setSolanaNetwork) {
+    try {
+      provider.setSolanaNetwork(network);
+      console.log(`Switched to Solana ${network}`);
+    } catch (error) {
+      console.error('Error switching network:', error);
+      // Continue anyway
+    }
+  }
+  
   if (provider.isConnected) {
     const address = provider.publicKey?.toString() || '';
     if (address) {
@@ -49,7 +75,7 @@ export const autoConnectSolflareWallet = async (): Promise<{
   
   // If not already connected, try explicit connect
   try {
-    return await connectSolflareWallet();
+    return await connectSolflareWallet(network);
   } catch (error) {
     console.error('Error auto-connecting to Solflare:', error);
     return null;

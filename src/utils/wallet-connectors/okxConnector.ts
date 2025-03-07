@@ -1,9 +1,10 @@
 
 import { WalletType } from '../../types/wallet';
 import { generateMockAddress } from '../walletUtils';
+import { NetworkType } from '../../hooks/useWalletConnectors';
 
 // Connect to OKX wallet
-export const connectOKXWallet = async (): Promise<{ 
+export const connectOKXWallet = async (network: NetworkType = 'devnet'): Promise<{ 
   address: string; 
   provider: any;
 }> => {
@@ -13,9 +14,22 @@ export const connectOKXWallet = async (): Promise<{
   
   const provider = window.okxwallet.solana;
   
+  // Try to set the network
+  try {
+    if (provider.switchNetwork) {
+      await provider.switchNetwork(network);
+      console.log(`Switched to Solana ${network}`);
+    }
+  } catch (error) {
+    console.error('Error switching network:', error);
+    // Continue anyway
+  }
+  
   // Request connection to the wallet
   const response = await provider.connect();
   const address = response.publicKey.toString();
+  
+  console.log(`Connected to OKX wallet on ${network}`);
   
   return {
     address,
@@ -24,7 +38,7 @@ export const connectOKXWallet = async (): Promise<{
 };
 
 // Auto-connect to OKX wallet if already connected
-export const autoConnectOKXWallet = async (): Promise<{ 
+export const autoConnectOKXWallet = async (network: NetworkType = 'devnet'): Promise<{ 
   address: string; 
   provider: any;
 } | null> => {
@@ -33,6 +47,18 @@ export const autoConnectOKXWallet = async (): Promise<{
   }
   
   const provider = window.okxwallet.solana;
+  
+  // Try to set the network
+  try {
+    if (provider.switchNetwork) {
+      await provider.switchNetwork(network);
+      console.log(`Switched to Solana ${network}`);
+    }
+  } catch (error) {
+    console.error('Error switching network:', error);
+    // Continue anyway
+  }
+  
   if (provider.isConnected) {
     const address = provider.publicKey?.toString() || '';
     if (address) {
@@ -45,7 +71,7 @@ export const autoConnectOKXWallet = async (): Promise<{
   
   // If not already connected, try explicit connect
   try {
-    return await connectOKXWallet();
+    return await connectOKXWallet(network);
   } catch (error) {
     console.error('Error auto-connecting to OKX:', error);
     return null;

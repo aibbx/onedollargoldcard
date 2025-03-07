@@ -9,6 +9,9 @@ import {
   disconnectWallet as disconnectWalletUtil
 } from '../utils/wallet-connectors';
 
+// Define the network type
+export type NetworkType = 'mainnet-beta' | 'testnet' | 'devnet';
+
 export const useWalletConnectors = () => {
   const { toast } = useToast();
   const [provider, setProvider] = useState<any>(null);
@@ -16,6 +19,8 @@ export const useWalletConnectors = () => {
   const [walletAddress, setWalletAddress] = useState('');
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [walletDetectionComplete, setWalletDetectionComplete] = useState(false);
+  // Set the network to devnet
+  const network: NetworkType = 'devnet';
 
   // Detect available wallets
   useEffect(() => {
@@ -37,7 +42,7 @@ export const useWalletConnectors = () => {
   // Auto-connect to wallet
   const autoConnectWallet = async (type: WalletType) => {
     try {
-      const result = await autoConnectWalletUtil(type);
+      const result = await autoConnectWalletUtil(type, network);
       
       if (result) {
         const { address, provider: walletProvider } = result;
@@ -91,7 +96,7 @@ export const useWalletConnectors = () => {
       }
       
       try {
-        const result = await connectWalletUtil(type);
+        const result = await connectWalletUtil(type, network);
         const { address, provider: walletProvider } = result;
         
         setProvider(walletProvider);
@@ -104,7 +109,7 @@ export const useWalletConnectors = () => {
         
         toast({
           title: "Wallet Connected",
-          description: `Your ${type} wallet has been connected successfully.`,
+          description: `Your ${type} wallet has been connected successfully to Solana ${network}.`,
         });
         
         return Promise.resolve();
@@ -160,6 +165,7 @@ export const useWalletConnectors = () => {
     connectWallet,
     disconnectWallet,
     autoConnectWallet,
-    walletDetectionComplete
+    walletDetectionComplete,
+    network
   };
 };

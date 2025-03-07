@@ -1,6 +1,7 @@
 
 import { WalletType } from '../../types/wallet';
 import { generateMockAddress } from '../walletUtils';
+import { NetworkType } from '../../hooks/useWalletConnectors';
 
 import { 
   connectPhantomWallet, 
@@ -21,17 +22,17 @@ import {
 } from './okxConnector';
 
 // Connect to a wallet based on the given type
-export const connectWallet = async (type: WalletType): Promise<{ 
+export const connectWallet = async (type: WalletType, network: NetworkType = 'devnet'): Promise<{ 
   address: string; 
   provider: any;
 }> => {
   switch (type) {
     case 'Phantom':
-      return connectPhantomWallet();
+      return connectPhantomWallet(network);
     case 'Solflare':
-      return connectSolflareWallet();
+      return connectSolflareWallet(network);
     case 'OKX':
-      return connectOKXWallet();
+      return connectOKXWallet(network);
     default:
       // Fallback for testing or if a non-supported wallet type is passed
       const mockAddress = generateMockAddress(type);
@@ -43,18 +44,18 @@ export const connectWallet = async (type: WalletType): Promise<{
 };
 
 // Auto-connect to a wallet based on the given type
-export const autoConnectWallet = async (type: WalletType): Promise<{ 
+export const autoConnectWallet = async (type: WalletType, network: NetworkType = 'devnet'): Promise<{ 
   address: string; 
   provider: any;
 } | null> => {
   try {
     switch (type) {
       case 'Phantom':
-        return await autoConnectPhantomWallet();
+        return await autoConnectPhantomWallet(network);
       case 'Solflare':
-        return await autoConnectSolflareWallet();
+        return await autoConnectSolflareWallet(network);
       case 'OKX':
-        return await autoConnectOKXWallet();
+        return await autoConnectOKXWallet(network);
       default:
         // Fallback for testing or if a non-supported wallet type is passed
         const mockAddress = generateMockAddress(type);
