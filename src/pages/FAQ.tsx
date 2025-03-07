@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
-import { ExternalLinkIcon } from 'lucide-react';
+import { ExternalLinkIcon, DownloadIcon } from 'lucide-react';
 
 const FAQ = () => {
   const { t } = useLanguage();
@@ -109,6 +108,42 @@ const FAQ = () => {
     }
   ];
 
+  const logoItems = [
+    {
+      name: "Gold Card Logo",
+      path: "/logos/gold-card-logo.svg",
+      size: "512×512",
+      description: "Main logo with gold gradient background"
+    },
+    {
+      name: "Gold Card Square",
+      path: "/logos/gold-card-square.svg",
+      size: "512×512",
+      description: "Alternative square design with larger $1 symbol"
+    },
+    {
+      name: "Card Design",
+      path: "/gold-card.svg",
+      size: "120×80",
+      description: "Card-shaped logo resembling a credit card"
+    },
+    {
+      name: "Favicon",
+      path: "/gold-card-favicon.svg",
+      size: "32×32",
+      description: "Small icon suitable for favicons or small displays"
+    }
+  ];
+
+  const handleDownload = (path, name) => {
+    const link = document.createElement('a');
+    link.href = path;
+    link.download = name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gold-50/30 to-white">
       <Navbar />
@@ -135,6 +170,45 @@ const FAQ = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-16 bg-white rounded-xl shadow-md p-8 border border-gold-100">
+          <h2 className="text-2xl font-semibold mb-6 text-gold-600 text-left">Partner Resources</h2>
+          <p className="text-gray-600 mb-8">
+            Below you'll find our official logos in various formats. Partners are welcome to use these assets when referring to OneDollarGoldCard in their communications.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {logoItems.map((logo, index) => (
+              <div key={index} className="border border-gray-100 rounded-lg p-4 flex flex-col items-center hover:shadow-md transition-all">
+                <div className="w-full h-40 flex items-center justify-center mb-4 bg-gray-50 rounded-md p-4">
+                  <img src={logo.path} alt={logo.name} className="max-w-full max-h-full" />
+                </div>
+                <h3 className="font-medium text-gray-900">{logo.name}</h3>
+                <p className="text-sm text-gray-500 mb-1">{logo.size}</p>
+                <p className="text-xs text-gray-500 mb-4 text-center">{logo.description}</p>
+                <Button 
+                  size="sm"
+                  variant="outline" 
+                  className="w-full border-gold-300 text-gold-700 hover:bg-gold-50 mt-auto"
+                  onClick={() => handleDownload(logo.path, logo.name.replace(/\s+/g, '-').toLowerCase() + '.svg')}
+                >
+                  <DownloadIcon className="w-4 h-4 mr-2" />
+                  Download SVG
+                </Button>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-8 p-4 bg-gold-50 rounded-lg border border-gold-100">
+            <h3 className="font-semibold text-gray-900 mb-2">Usage Guidelines</h3>
+            <ul className="list-disc pl-5 text-gray-600 space-y-1">
+              <li>Do not alter the colors or proportions of the logos</li>
+              <li>Maintain adequate spacing around the logo</li>
+              <li>Do not combine the logo with other elements to create a new logo</li>
+              <li>When using on colored backgrounds, ensure adequate contrast</li>
+            </ul>
+          </div>
         </div>
 
         <div className="mt-12 text-center">
