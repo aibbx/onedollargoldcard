@@ -4,8 +4,8 @@ import { WalletType } from '../types/wallet';
 // Real mainnet contract addresses
 export const CONTRACT_ADDRESSES = {
   // Solana contract addresses
-  poolAddress: "5Uph6MCRb8W4HaGQsQZYnGRCQaL9V1KZTxq7Nokds2iG", // Update with actual mainnet pool address
-  feeAddress: "7egNJdFtKvBiJj6J1ZgWh82M3QgMQcKDnHJzwkX1xg5g", // Update with actual mainnet fee address
+  poolAddress: "BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt", // Updated pool address
+  feeAddress: "5ecoPEMgbz8CL8ymcLVhUNFkp3ded5mWH731L2So7e9Q", // Updated fee address
   // Ethereum contract addresses (for MetaMask)
   ethereumPoolAddress: "0xE1F4Af4D3Bc52d82387E86C2635C92DD2E301dAE" // Update with actual Ethereum mainnet pool address
 };
