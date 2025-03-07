@@ -8,14 +8,14 @@ import {
   LAMPORTS_PER_SOL
 } from '@solana/web3.js';
 
-// Function to get a working connection
+// Function to get a reliable connection to Solana
 const getConnection = (): Connection => {
-  // Use QuickNode RPC endpoint
+  // Use the provided QuickNode RPC endpoint
   const endpoint = "https://snowy-capable-night.solana-mainnet.quiknode.pro/72424723ee91618f3c3a7c1415e06e6f66ff1035/";
   console.log('Using QuickNode RPC endpoint for Solflare transactions');
   return new Connection(endpoint, {
     commitment: 'confirmed',
-    confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
+    confirmTransactionInitialTimeout: 120000 // 120 seconds timeout for better reliability
   });
 };
 
@@ -26,26 +26,33 @@ export const sendSolflareTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Processing Solflare USDC transaction', { amount, walletAddress });
+    console.log('Processing Solflare transaction', { amount, walletAddress });
     
     if (!provider || !provider.publicKey) {
       throw new Error('Solflare wallet not properly connected');
     }
 
-    // Get a reliable connection
-    console.log('Establishing connection to Solana network...');
+    // Get a reliable connection using QuickNode
+    console.log('Establishing connection to Solana network via QuickNode...');
     const connection = getConnection();
     
-    // Calculate USDC amount in lamports (simulation for now)
-    // Using a fixed conversion rate for demonstration
-    const transferAmountLamports = Math.floor(amount * LAMPORTS_PER_SOL * 0.0001);
-    console.log('USDC transfer amount in lamports:', transferAmountLamports);
+    // Verify wallet has sufficient balance
+    const walletBalance = await connection.getBalance(provider.publicKey);
+    console.log('Current wallet balance (lamports):', walletBalance);
     
+    // For demonstration, using a small SOL transfer to simulate USDC
+    // In production, this would be replaced with a proper USDC token transfer
+    const transferAmountLamports = Math.floor(amount * LAMPORTS_PER_SOL * 0.0001);
+    console.log('Transfer amount in lamports:', transferAmountLamports);
+    
+    if (walletBalance < transferAmountLamports + 5000) { // Add buffer for fees
+      throw new Error('Insufficient balance for transaction');
+    }
+    
+    // Get recent blockhash for transaction
+    console.log('Getting recent blockhash for Solflare transaction...');
     try {
-      // Get recent blockhash for transaction
-      console.log('Getting recent blockhash for Solflare transaction...');
-      const blockhashResponse = await connection.getLatestBlockhash();
-      const { blockhash, lastValidBlockHeight } = blockhashResponse;
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
       console.log('Received blockhash:', blockhash.slice(0, 10) + '...');
       
       // Create a new transaction
@@ -57,7 +64,7 @@ export const sendSolflareTransaction = async (
       const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
       console.log('Pool address:', poolAddress.toString());
       
-      // Use SOL transfer as a placeholder for USDC
+      // Add transfer instruction
       transaction.add(
         SystemProgram.transfer({
           fromPubkey: provider.publicKey,
@@ -111,7 +118,7 @@ export const sendSolflareTransaction = async (
         throw new Error('Failed to get transaction signature from Solflare wallet');
       }
       
-      // Wait for confirmation
+      // Wait for confirmation with proper timeout
       console.log('Waiting for Solflare transaction confirmation...');
       try {
         const confirmation = await connection.confirmTransaction({

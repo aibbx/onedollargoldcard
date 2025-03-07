@@ -8,14 +8,14 @@ import {
   LAMPORTS_PER_SOL
 } from '@solana/web3.js';
 
-// Function to get connection
+// Function to get connection with proper configuration
 const getConnection = (): Connection => {
-  // Use QuickNode RPC endpoint
+  // Use the provided QuickNode RPC endpoint
   const endpoint = "https://snowy-capable-night.solana-mainnet.quiknode.pro/72424723ee91618f3c3a7c1415e06e6f66ff1035/";
   console.log('Using QuickNode RPC endpoint for OKX transactions');
   return new Connection(endpoint, {
     commitment: 'confirmed',
-    confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
+    confirmTransactionInitialTimeout: 120000 // 120 seconds timeout for better reliability
   });
 };
 
@@ -25,16 +25,32 @@ export const sendOKXTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Starting OKX transaction for USDC:', { amount, walletAddress });
+    console.log('Starting OKX transaction:', { amount, walletAddress });
+    if (!provider || !provider.solana) {
+      throw new Error('OKX wallet provider not properly connected');
+    }
+    
     const solanaProvider = provider.solana;
+    if (!solanaProvider.publicKey) {
+      throw new Error('OKX Solana wallet not properly connected');
+    }
     
-    // Establish connection
+    // Get connection using QuickNode
     const connection = getConnection();
+    console.log('Connection established to QuickNode');
     
-    // For browser compatibility without Buffer, use SOL transfer with small amount
-    // This is a temporary simulation of USDC transfer
+    // Verify wallet has sufficient balance
+    const walletBalance = await connection.getBalance(solanaProvider.publicKey);
+    console.log('Current wallet balance (lamports):', walletBalance);
+    
+    // For demonstration, using a small SOL transfer to simulate USDC
+    // In production, this would be replaced with a proper USDC token transfer
     const transferAmountLamports = Math.floor(amount * LAMPORTS_PER_SOL * 0.0001);
-    console.log('USDC transfer amount in lamports:', transferAmountLamports);
+    console.log('Transfer amount in lamports:', transferAmountLamports);
+    
+    if (walletBalance < transferAmountLamports + 5000) { // Add buffer for fees
+      throw new Error('Insufficient balance for transaction');
+    }
 
     // Get the recipient address
     const recipientAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
@@ -42,8 +58,7 @@ export const sendOKXTransaction = async (
 
     // Get latest blockhash
     console.log('Getting latest blockhash for OKX transaction...');
-    const blockhashResponse = await connection.getLatestBlockhash();
-    const { blockhash, lastValidBlockHeight } = blockhashResponse;
+    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
     console.log('Blockhash obtained:', blockhash.slice(0, 10) + '...');
     
     // Create transaction
@@ -51,7 +66,7 @@ export const sendOKXTransaction = async (
     transaction.feePayer = solanaProvider.publicKey;
     transaction.recentBlockhash = blockhash;
 
-    // Use SOL transfer as a placeholder for USDC
+    // Add transfer instruction
     transaction.add(
       SystemProgram.transfer({
         fromPubkey: solanaProvider.publicKey,
@@ -60,11 +75,12 @@ export const sendOKXTransaction = async (
       })
     );
 
-    console.log('Transaction created, requesting OKX signature...');
+    // Sign and send transaction
+    console.log('Requesting OKX wallet signature...');
     let signature: string;
 
     try {
-      // Try signAndSendTransaction first (preferred method)
+      // Try signAndSendTransaction method first
       if (solanaProvider.signAndSendTransaction) {
         console.log('Using OKX signAndSendTransaction method');
         const result = await solanaProvider.signAndSendTransaction(transaction);
@@ -74,24 +90,25 @@ export const sendOKXTransaction = async (
       // Fallback to separate sign and send
       else {
         console.log('Using OKX separate sign and send methods');
-        const signed = await solanaProvider.signTransaction(transaction);
-        signature = await connection.sendRawTransaction(signed.serialize());
+        const signedTransaction = await solanaProvider.signTransaction(transaction);
+        signature = await connection.sendRawTransaction(signedTransaction.serialize());
         console.log('OKX transaction sent with separate sign/send:', signature);
       }
 
-      // Wait for confirmation
+      // Wait for confirmation with proper handling
       console.log('Waiting for OKX transaction confirmation...');
       const confirmation = await connection.confirmTransaction({
         signature,
         blockhash,
         lastValidBlockHeight
       }, 'confirmed');
-
+      
       if (confirmation.value.err) {
-        throw new Error(`OKX transaction failed: ${JSON.stringify(confirmation.value.err)}`);
+        console.error('Transaction error during confirmation:', confirmation.value.err);
+        throw new Error(`Transaction failed during confirmation: ${JSON.stringify(confirmation.value.err)}`);
       }
 
-      console.log('OKX transaction confirmed successfully');
+      console.log('OKX transaction confirmed successfully!');
       return signature;
 
     } catch (error) {
