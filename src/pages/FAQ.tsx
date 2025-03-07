@@ -3,7 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
-import { ExternalLinkIcon } from 'lucide-react';
+import { ExternalLinkIcon, Download } from 'lucide-react';
 
 const FAQ = () => {
   const { t } = useLanguage();
@@ -108,6 +108,42 @@ const FAQ = () => {
     }
   ];
 
+  const logos = [
+    { 
+      name: 'Standard Logo',
+      description: 'Full color logo with gold card design',
+      file: '/logos/gold-card-logo.svg',
+      sizes: ['64x64', '128x128', '256x256', '512x512']
+    },
+    { 
+      name: 'Square Logo',
+      description: 'Simplified square logo for social media',
+      file: '/logos/gold-card-square.svg',
+      sizes: ['64x64', '128x128', '256x256', '512x512']
+    },
+    { 
+      name: 'Light Background',
+      description: 'Logo optimized for light backgrounds',
+      file: '/logos/gold-card-light.svg',
+      sizes: ['64x64', '128x128', '256x256', '512x512']
+    },
+    { 
+      name: 'Dark Background',
+      description: 'Logo optimized for dark backgrounds',
+      file: '/logos/gold-card-dark.svg',
+      sizes: ['64x64', '128x128', '256x256', '512x512']
+    },
+  ];
+
+  const downloadLogo = (file: string, size: string, name: string) => {
+    const link = document.createElement('a');
+    link.href = file;
+    link.download = `onedollargoldcard-${name.toLowerCase().replace(/\s+/g, '-')}.svg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gold-50/30 to-white">
       <Navbar />
@@ -145,6 +181,52 @@ const FAQ = () => {
             <ExternalLinkIcon className="w-5 h-5" />
             Ask on X
           </Button>
+        </div>
+
+        <div className="mt-24 mb-12">
+          <h2 className="text-3xl font-bold text-center mb-2 bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600">
+            Partner Resources
+          </h2>
+          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+            Download official OneDollarGoldCard logos for your marketing materials.
+            All logos are available as SVG files, which can be scaled to any size without loss of quality.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {logos.map((logo, index) => (
+              <div key={index} className="bg-white rounded-xl shadow-md p-6 border border-gold-100 transition-all duration-300 hover:shadow-lg">
+                <h3 className="text-xl font-semibold mb-2 text-gold-600">{logo.name}</h3>
+                <p className="text-gray-600 mb-4">{logo.description}</p>
+                <div className={`bg-${index === 3 ? 'gray-900' : 'gray-50'} p-6 rounded-lg mb-4 w-full flex items-center justify-center`}>
+                  <img 
+                    src={logo.file} 
+                    alt={`OneDollarGoldCard ${logo.name}`} 
+                    className="max-w-full h-auto max-h-48"
+                  />
+                </div>
+                <Button
+                  variant="outline"
+                  className="border-gold-400 text-gold-600 hover:bg-gold-50 w-full mt-2 flex items-center justify-center gap-2"
+                  onClick={() => downloadLogo(logo.file, 'svg', logo.name)}
+                >
+                  <Download className="h-4 w-4" />
+                  Download SVG
+                </Button>
+                <p className="text-xs text-gray-500 mt-2 text-center">Scalable vector graphic - suitable for all sizes</p>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-12 p-6 bg-gold-50 rounded-xl border border-gold-100">
+            <h3 className="text-lg font-semibold mb-2">Logo Usage Guidelines</h3>
+            <ul className="list-disc pl-6 space-y-2 text-gray-700">
+              <li>Always maintain the logo's proportions when resizing.</li>
+              <li>Maintain adequate clear space around the logo.</li>
+              <li>Do not alter the colors or add effects to the logo.</li>
+              <li>Do not place the logo on busy backgrounds that reduce visibility.</li>
+              <li>For questions about logo usage, please contact us at <span className="text-gold-600">partners@onedollargoldcard.com</span>.</li>
+            </ul>
+          </div>
         </div>
       </main>
 
