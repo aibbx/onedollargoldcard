@@ -1,3 +1,4 @@
+
 import { CONTRACT_ADDRESSES } from '../walletUtils';
 import { 
   PublicKey, 
@@ -9,9 +10,9 @@ import {
 
 // Function to get connection
 const getConnection = (): Connection => {
-  // Use Ankr RPC endpoint for Solana which is more reliable
-  const endpoint = "https://rpc.ankr.com/solana";
-  console.log('Using Ankr RPC endpoint for Phantom transactions');
+  // Use public Solana RPC endpoint which doesn't require API key
+  const endpoint = "https://api.mainnet-beta.solana.com";
+  console.log('Using public Solana RPC endpoint for Phantom transactions');
   return new Connection(endpoint, {
     commitment: 'confirmed',
     confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
@@ -31,20 +32,20 @@ export const sendPhantomTransaction = async (
     // For browser compatibility without Buffer, use SOL transfer with small amount
     // This is a temporary solution until we figure out how to handle token transfers
     // without the Buffer dependency
-    const transferAmountLamports = Math.floor(amount * 100); // Small amount in lamports for testing
-    console.log('Transfer amount in lamports:', transferAmountLamports);
+    // Simulate USDC amount with a small fraction of SOL
+    const transferAmountLamports = Math.floor(amount * LAMPORTS_PER_SOL * 0.0001);
+    console.log('USDC transfer amount in lamports:', transferAmountLamports);
 
     // Get latest blockhash
     console.log('Getting latest blockhash...');
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+    const blockhashResponse = await connection.getLatestBlockhash();
+    const { blockhash, lastValidBlockHeight } = blockhashResponse;
     console.log('Latest blockhash obtained:', blockhash.slice(0, 10) + '...');
     
     // Create transaction
-    const transaction = new Transaction({
-      feePayer: provider.publicKey,
-      blockhash,
-      lastValidBlockHeight,
-    });
+    const transaction = new Transaction();
+    transaction.feePayer = provider.publicKey;
+    transaction.recentBlockhash = blockhash;
 
     // Use SOL transfer as a placeholder for USDC
     // This is temporary until we can handle the Buffer issues

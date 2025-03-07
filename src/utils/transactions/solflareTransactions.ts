@@ -1,16 +1,18 @@
+
 import { CONTRACT_ADDRESSES } from '../walletUtils';
 import { 
   PublicKey, 
   Transaction, 
   Connection, 
-  SystemProgram
+  SystemProgram,
+  LAMPORTS_PER_SOL
 } from '@solana/web3.js';
 
 // Function to get a working connection
 const getConnection = (): Connection => {
-  // Use Ankr RPC endpoint for Solana which is more reliable
-  const endpoint = "https://rpc.ankr.com/solana";
-  console.log('Using Ankr RPC endpoint for Solflare transactions');
+  // Use public Solana RPC endpoint which doesn't require API key
+  const endpoint = "https://api.mainnet-beta.solana.com";
+  console.log('Using public Solana RPC endpoint for Solflare transactions');
   return new Connection(endpoint, {
     commitment: 'confirmed',
     confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
@@ -34,24 +36,22 @@ export const sendSolflareTransaction = async (
     console.log('Establishing connection to Solana network...');
     const connection = getConnection();
     
-    // For browser compatibility without Buffer, use SOL transfer with small amount
-    // This is a temporary solution until we figure out how to handle token transfers
-    // without the Buffer dependency
-    const transferAmountLamports = Math.floor(amount * 100); // Small amount in lamports for testing
-    console.log('Transfer amount in lamports:', transferAmountLamports);
+    // Calculate USDC amount in lamports (simulation for now)
+    // Using a fixed conversion rate for demonstration
+    const transferAmountLamports = Math.floor(amount * LAMPORTS_PER_SOL * 0.0001);
+    console.log('USDC transfer amount in lamports:', transferAmountLamports);
     
-    // Get recent blockhash for transaction
+    // Get recent blockhash for transaction using the correct parameters format
     console.log('Getting recent blockhash for Solflare transaction...');
     try {
-      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
+      const blockhashResponse = await connection.getLatestBlockhash();
+      const { blockhash, lastValidBlockHeight } = blockhashResponse;
       console.log('Received blockhash:', blockhash.slice(0, 10) + '...');
       
       // Create a new transaction
-      const transaction = new Transaction({
-        feePayer: provider.publicKey,
-        blockhash,
-        lastValidBlockHeight,
-      });
+      const transaction = new Transaction();
+      transaction.feePayer = provider.publicKey;
+      transaction.recentBlockhash = blockhash;
       
       // Use the pool address from our constants
       const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
