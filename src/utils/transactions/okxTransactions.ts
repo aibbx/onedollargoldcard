@@ -1,154 +1,119 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
-import { PublicKey, Transaction, SystemProgram, Connection, Keypair, clusterApiUrl, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { 
+  PublicKey, 
+  Transaction, 
+  Connection, 
+  clusterApiUrl,
+  SystemProgram,
+  LAMPORTS_PER_SOL
+} from '@solana/web3.js';
+import { 
+  TOKEN_PROGRAM_ID,
+  createTransferInstruction,
+  getAssociatedTokenAddress,
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+} from '@solana/spl-token';
 
-// List of reliable Solana RPC endpoints
-const RPC_ENDPOINTS = [
-  clusterApiUrl('mainnet-beta'),
-  'https://api.mainnet-beta.solana.com',
-  'https://solana-mainnet.g.alchemy.com/v2/demo',
-  'https://solana-api.projectserum.com'
-];
+// USDC token mint address on mainnet
+const USDC_MINT = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
 
-// Function to get a working connection with fallbacks
-const getConnection = async (): Promise<Connection> => {
-  // Try endpoints in sequence until one works
-  for (const endpoint of RPC_ENDPOINTS) {
-    try {
-      const connection = new Connection(endpoint, { commitment: 'confirmed' });
-      // Quick test to ensure connection works
-      await connection.getVersion();
-      console.log(`Connected to Solana RPC: ${endpoint}`);
-      return connection;
-    } catch (error) {
-      console.warn(`Failed to connect to ${endpoint}:`, error);
-      // Try next endpoint
-    }
-  }
-  throw new Error("All RPC endpoints failed. Please try again later.");
+// Function to get connection
+const getConnection = (): Connection => {
+  return new Connection(clusterApiUrl('mainnet-beta'), {
+    commitment: 'confirmed',
+    wsEndpoint: 'wss://api.mainnet-beta.solana.com/'
+  });
 };
 
-// Handle transactions specifically for OKX wallet
 export const sendOKXTransaction = async (
   provider: any,
   amount: number,
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Processing OKX transaction', { amount, walletAddress });
-    
-    if (!provider || !provider.solana?.publicKey) {
-      throw new Error('OKX wallet not properly connected');
-    }
-
+    console.log('Starting OKX transaction:', { amount, walletAddress });
     const solanaProvider = provider.solana;
+    
+    const connection = getConnection();
+    
+    // Convert USDC amount (USDC has 6 decimals)
+    const transferAmount = Math.floor(amount * 1_000_000);
+    console.log('Transfer amount in USDC decimals:', transferAmount);
 
-    // Get a reliable connection
-    console.log('Establishing connection to Solana network...');
-    const connection = await getConnection();
+    // Get the sender's token account
+    const senderTokenAccount = await getAssociatedTokenAddress(
+      USDC_MINT,
+      solanaProvider.publicKey
+    );
+    console.log('Sender token account:', senderTokenAccount.toString());
+
+    // Get the recipient's token account
+    const recipientAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
+    const recipientTokenAccount = await getAssociatedTokenAddress(
+      USDC_MINT,
+      recipientAddress
+    );
+    console.log('Recipient token account:', recipientTokenAccount.toString());
+
+    // Get latest blockhash
+    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
     
-    // For testing/development we use a very small SOL amount
-    // 1 SOL = 1 billion lamports (LAMPORTS_PER_SOL)
-    const amountInLamports = Math.ceil(amount * 10000); // Small amount for testing
-    console.log(`Transaction amount in lamports: ${amountInLamports}`);
-    
-    // Get recent blockhash for transaction
-    console.log('Getting recent blockhash...');
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
-    console.log('Received blockhash:', blockhash);
-    
-    // Create a new transaction
+    // Create transaction
     const transaction = new Transaction({
       feePayer: solanaProvider.publicKey,
       blockhash,
       lastValidBlockHeight,
     });
-    
-    // Use the pool address from our constants
-    const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
-    console.log('Pool address:', poolAddress.toString());
-    
-    // Add a SOL transfer instruction
+
+    // Add token transfer instruction
     transaction.add(
-      SystemProgram.transfer({
-        fromPubkey: solanaProvider.publicKey,
-        toPubkey: poolAddress,
-        lamports: amountInLamports,
-      })
+      createTransferInstruction(
+        senderTokenAccount,
+        recipientTokenAccount,
+        solanaProvider.publicKey,
+        transferAmount,
+        [],
+        TOKEN_PROGRAM_ID
+      )
     );
-    
-    // Sign and send the transaction using OKX wallet
-    console.log('Sending transaction with OKX wallet...');
-    console.log('Available OKX methods:', Object.keys(solanaProvider));
-    
-    let signature: string | null = null;
-    
+
+    console.log('Requesting OKX transaction signature...');
+    let signature: string;
+
     try {
-      // Try using the signAndSendTransaction method if available
+      // Try signAndSendTransaction first
       if (solanaProvider.signAndSendTransaction) {
-        console.log('Using OKX signAndSendTransaction method...');
-        // OKX might require different parameters structure
-        const response = await solanaProvider.signAndSendTransaction(transaction);
-        signature = response?.signature || response;
-        console.log('OKX transaction sent using signAndSendTransaction:', signature);
-      }
-      // Fallback to separate sign and send methods
-      else if (solanaProvider.signTransaction) {
-        console.log('Using OKX separate sign and send transaction methods...');
-        const signedTransaction = await solanaProvider.signTransaction(transaction);
-        signature = await connection.sendRawTransaction(signedTransaction.serialize());
-        console.log('OKX transaction sent using separate sign and send:', signature);
-      }
+        const result = await solanaProvider.signAndSendTransaction(transaction);
+        signature = result.signature || result;
+      } 
+      // Fallback to separate sign and send
       else {
-        throw new Error('OKX wallet does not support required transaction methods');
+        const signed = await solanaProvider.signTransaction(transaction);
+        signature = await connection.sendRawTransaction(signed.serialize());
       }
-    } catch (e) {
-      console.error('Error with initial OKX transaction method:', e);
-      
-      // Try fallback method if the first attempt failed
-      if (!signature && solanaProvider.signTransaction) {
-        try {
-          console.log('Using fallback OKX transaction method...');
-          const signedTransaction = await solanaProvider.signTransaction(transaction);
-          signature = await connection.sendRawTransaction(signedTransaction.serialize());
-          console.log('OKX transaction sent with fallback method:', signature);
-        } catch (fallbackError) {
-          console.error('Error with fallback OKX transaction method:', fallbackError);
-          throw fallbackError;
-        }
-      }
-    }
-    
-    if (!signature) {
-      throw new Error('Failed to get transaction signature from OKX wallet');
-    }
-    
-    // Wait for confirmation
-    console.log('Waiting for transaction confirmation...');
-    try {
+
+      console.log('Transaction sent:', signature);
+
+      // Wait for confirmation
       const confirmation = await connection.confirmTransaction({
         signature,
         blockhash,
         lastValidBlockHeight
-      }, 'confirmed');
-      
+      });
+
       if (confirmation.value.err) {
-        throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
+        throw new Error(`Transaction failed: ${JSON.stringify(confirmation.value.err)}`);
       }
-      
-      console.log('Transaction confirmed successfully');
+
       return signature;
-    } catch (confirmError) {
-      console.error('Error confirming transaction:', confirmError);
-      // Even if confirmation verification fails, return the signature if we have it
-      if (signature) {
-        console.log('Returning signature despite confirmation error');
-        return signature;
-      }
-      throw confirmError;
+
+    } catch (error) {
+      console.error('Transaction error:', error);
+      throw new Error(`Transaction failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   } catch (error) {
-    console.error('Error in OKX transaction:', error);
+    console.error('OKX transaction error:', error);
     throw error;
   }
 };

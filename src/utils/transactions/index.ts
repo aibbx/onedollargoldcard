@@ -4,6 +4,8 @@ import { sendPhantomTransaction } from './phantomTransactions';
 import { sendSolflareTransaction } from './solflareTransactions';
 import { sendOKXTransaction } from './okxTransactions';
 import { toast } from "@/components/ui/use-toast";
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { PublicKey } from '@solana/web3.js';
 
 // Process transaction based on wallet type
 export const processTransaction = async (
@@ -13,8 +15,14 @@ export const processTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Processing transaction for:', walletType, { amount, walletAddress });
-    
+    console.log('Starting transaction process:', { walletType, amount, walletAddress });
+    console.log('Provider details:', { 
+      hasProvider: !!provider,
+      providerType: walletType,
+      providerKeys: Object.keys(provider),
+      solanaKeys: provider?.solana ? Object.keys(provider.solana) : [],
+    });
+
     if (!provider) {
       throw new Error('Wallet provider is not available');
     }
@@ -27,54 +35,60 @@ export const processTransaction = async (
     if (amount <= 0) {
       throw new Error('Invalid donation amount. Amount must be greater than 0.');
     }
+
+    let transactionId: string;
     
     // Process transaction based on wallet type
     switch (walletType) {
       case 'Phantom':
         if (!provider.publicKey) {
-          throw new Error('Phantom wallet not properly connected. Please reconnect your wallet.');
+          throw new Error('Phantom wallet not properly connected');
         }
-        console.log('Sending transaction via Phantom wallet...');
-        console.log('Phantom provider details:', { 
+        console.log('Sending via Phantom:', {
           publicKey: provider.publicKey.toString(),
           isConnected: provider.isConnected,
-          hasSignAndSendTransaction: !!provider.signAndSendTransaction,
-          hasSignTransaction: !!provider.signTransaction 
+          amount
         });
-        return await sendPhantomTransaction(provider, amount, walletAddress);
+        transactionId = await sendPhantomTransaction(provider, amount, walletAddress);
+        break;
         
       case 'Solflare':
         if (!provider.publicKey) {
-          throw new Error('Solflare wallet not properly connected. Please reconnect your wallet.');
+          throw new Error('Solflare wallet not properly connected');
         }
-        console.log('Sending transaction via Solflare wallet...');
-        console.log('Solflare provider details:', { 
+        console.log('Sending via Solflare:', {
           publicKey: provider.publicKey.toString(),
           isConnected: provider.isConnected,
-          hasSignAndSendTransaction: !!provider.signAndSendTransaction,
-          hasSignTransaction: !!provider.signTransaction 
+          amount
         });
-        return await sendSolflareTransaction(provider, amount, walletAddress);
+        transactionId = await sendSolflareTransaction(provider, amount, walletAddress);
+        break;
         
       case 'OKX':
         if (!provider.solana?.publicKey) {
-          throw new Error('OKX wallet not properly connected. Please reconnect your wallet.');
+          throw new Error('OKX wallet not properly connected');
         }
-        console.log('Sending transaction via OKX wallet...');
-        console.log('OKX provider details:', { 
+        console.log('Sending via OKX:', {
           publicKey: provider.solana.publicKey.toString(),
           isConnected: provider.solana.isConnected,
-          hasSignAndSendTransaction: !!provider.solana.signAndSendTransaction,
-          hasSignTransaction: !!provider.solana.signTransaction 
+          amount
         });
-        return await sendOKXTransaction(provider, amount, walletAddress);
+        transactionId = await sendOKXTransaction(provider, amount, walletAddress);
+        break;
         
       default:
         throw new Error(`Unsupported wallet type: ${walletType}`);
     }
+
+    if (!transactionId) {
+      throw new Error('Transaction failed - no transaction ID returned');
+    }
+
+    console.log('Transaction completed successfully:', transactionId);
+    return transactionId;
+
   } catch (err) {
-    console.error("Error processing transaction:", err);
-    // Display error toast to user
+    console.error("Transaction processing error:", err);
     toast({
       title: "Transaction Failed",
       description: err instanceof Error ? err.message : "Unknown error occurred during transaction",
@@ -83,3 +97,4 @@ export const processTransaction = async (
     throw err;
   }
 };
+
