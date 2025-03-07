@@ -3,10 +3,16 @@ import { CONTRACT_ADDRESSES } from '../walletUtils';
 import { 
   PublicKey, 
   Transaction, 
-  Connection, 
-  SystemProgram,
-  LAMPORTS_PER_SOL
+  Connection
 } from '@solana/web3.js';
+import { 
+  createTransferInstruction,
+  getAssociatedTokenAddress,
+  TOKEN_PROGRAM_ID
+} from '@solana/spl-token';
+
+// USDC token address on Solana mainnet
+const USDC_TOKEN_ADDRESS = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 
 // Function to get a reliable connection to Solana
 const getConnection = (): Connection => {
@@ -26,7 +32,7 @@ export const sendSolflareTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Processing Solflare transaction', { amount, walletAddress });
+    console.log('Processing Solflare USDC transaction', { amount, walletAddress });
     
     if (!provider || !provider.publicKey) {
       throw new Error('Solflare wallet not properly connected');
@@ -36,18 +42,13 @@ export const sendSolflareTransaction = async (
     console.log('Establishing connection to Solana network via QuickNode...');
     const connection = getConnection();
     
-    // Verify wallet has sufficient balance
-    const walletBalance = await connection.getBalance(provider.publicKey);
-    console.log('Current wallet balance (lamports):', walletBalance);
+    // Convert dollar amount to USDC tokens (USDC has 6 decimals)
+    const transferAmountUSDC = Math.floor(amount * 1000000);
+    console.log('Transfer amount in USDC (with decimals):', transferAmountUSDC);
     
-    // For demonstration, using a small SOL transfer to simulate USDC
-    // In production, this would be replaced with a proper USDC token transfer
-    const transferAmountLamports = Math.floor(amount * LAMPORTS_PER_SOL * 0.0001);
-    console.log('Transfer amount in lamports:', transferAmountLamports);
-    
-    if (walletBalance < transferAmountLamports + 5000) { // Add buffer for fees
-      throw new Error('Insufficient balance for transaction');
-    }
+    // Get USDC token mint
+    const usdcMint = new PublicKey(USDC_TOKEN_ADDRESS);
+    console.log('USDC token mint:', usdcMint.toString());
     
     // Get recent blockhash for transaction
     console.log('Getting recent blockhash for Solflare transaction...');
@@ -55,22 +56,40 @@ export const sendSolflareTransaction = async (
       const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
       console.log('Received blockhash:', blockhash.slice(0, 10) + '...');
       
+      // Get source token account (sender's USDC account)
+      console.log('Getting sender token account...');
+      const senderTokenAccount = await getAssociatedTokenAddress(
+        usdcMint,
+        provider.publicKey
+      );
+      console.log('Sender token account:', senderTokenAccount.toString());
+      
+      // Get recipient token account (pool address USDC account)
+      const recipientAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
+      console.log('Recipient address:', recipientAddress.toString());
+      
+      console.log('Getting recipient token account...');
+      const recipientTokenAccount = await getAssociatedTokenAddress(
+        usdcMint,
+        recipientAddress
+      );
+      console.log('Recipient token account:', recipientTokenAccount.toString());
+      
       // Create a new transaction
       const transaction = new Transaction();
       transaction.feePayer = provider.publicKey;
       transaction.recentBlockhash = blockhash;
       
-      // Use the pool address from our constants
-      const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
-      console.log('Pool address:', poolAddress.toString());
-      
-      // Add transfer instruction
+      // Add token transfer instruction
       transaction.add(
-        SystemProgram.transfer({
-          fromPubkey: provider.publicKey,
-          toPubkey: poolAddress,
-          lamports: transferAmountLamports,
-        })
+        createTransferInstruction(
+          senderTokenAccount,
+          recipientTokenAccount,
+          provider.publicKey,
+          transferAmountUSDC,
+          [],
+          TOKEN_PROGRAM_ID
+        )
       );
       
       // Sign and send the transaction
@@ -131,7 +150,7 @@ export const sendSolflareTransaction = async (
           throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
         }
         
-        console.log('Solflare transaction confirmed successfully');
+        console.log('Solflare USDC transaction confirmed successfully');
         return signature;
       } catch (confirmError) {
         console.error('Error confirming Solflare transaction:', confirmError);
@@ -147,7 +166,7 @@ export const sendSolflareTransaction = async (
       throw new Error(`Failed to get blockhash: ${blockHashError instanceof Error ? blockHashError.message : 'Unknown error'}`);
     }
   } catch (error) {
-    console.error('Error in Solflare transaction:', error);
+    console.error('Error in Solflare USDC transaction:', error);
     throw error;
   }
 };

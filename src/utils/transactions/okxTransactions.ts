@@ -3,10 +3,16 @@ import { CONTRACT_ADDRESSES } from '../walletUtils';
 import { 
   PublicKey, 
   Transaction, 
-  Connection, 
-  SystemProgram,
-  LAMPORTS_PER_SOL
+  Connection
 } from '@solana/web3.js';
+import { 
+  createTransferInstruction,
+  getAssociatedTokenAddress,
+  TOKEN_PROGRAM_ID
+} from '@solana/spl-token';
+
+// USDC token address on Solana mainnet
+const USDC_TOKEN_ADDRESS = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 
 // Function to get connection with proper configuration
 const getConnection = (): Connection => {
@@ -25,7 +31,7 @@ export const sendOKXTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Starting OKX transaction:', { amount, walletAddress });
+    console.log('Starting OKX USDC transaction:', { amount, walletAddress });
     if (!provider || !provider.solana) {
       throw new Error('OKX wallet provider not properly connected');
     }
@@ -39,19 +45,14 @@ export const sendOKXTransaction = async (
     const connection = getConnection();
     console.log('Connection established to QuickNode');
     
-    // Verify wallet has sufficient balance
-    const walletBalance = await connection.getBalance(solanaProvider.publicKey);
-    console.log('Current wallet balance (lamports):', walletBalance);
+    // Convert dollar amount to USDC tokens (USDC has 6 decimals)
+    const transferAmountUSDC = Math.floor(amount * 1000000);
+    console.log('Transfer amount in USDC (with decimals):', transferAmountUSDC);
     
-    // For demonstration, using a small SOL transfer to simulate USDC
-    // In production, this would be replaced with a proper USDC token transfer
-    const transferAmountLamports = Math.floor(amount * LAMPORTS_PER_SOL * 0.0001);
-    console.log('Transfer amount in lamports:', transferAmountLamports);
+    // Get USDC token mint
+    const usdcMint = new PublicKey(USDC_TOKEN_ADDRESS);
+    console.log('USDC token mint:', usdcMint.toString());
     
-    if (walletBalance < transferAmountLamports + 5000) { // Add buffer for fees
-      throw new Error('Insufficient balance for transaction');
-    }
-
     // Get the recipient address
     const recipientAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
     console.log('Recipient address:', recipientAddress.toString());
@@ -61,18 +62,36 @@ export const sendOKXTransaction = async (
     const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
     console.log('Blockhash obtained:', blockhash.slice(0, 10) + '...');
     
+    // Get source token account (sender's USDC account)
+    console.log('Getting sender token account...');
+    const senderTokenAccount = await getAssociatedTokenAddress(
+      usdcMint,
+      solanaProvider.publicKey
+    );
+    console.log('Sender token account:', senderTokenAccount.toString());
+    
+    console.log('Getting recipient token account...');
+    const recipientTokenAccount = await getAssociatedTokenAddress(
+      usdcMint,
+      recipientAddress
+    );
+    console.log('Recipient token account:', recipientTokenAccount.toString());
+    
     // Create transaction
     const transaction = new Transaction();
     transaction.feePayer = solanaProvider.publicKey;
     transaction.recentBlockhash = blockhash;
 
-    // Add transfer instruction
+    // Add token transfer instruction
     transaction.add(
-      SystemProgram.transfer({
-        fromPubkey: solanaProvider.publicKey,
-        toPubkey: recipientAddress,
-        lamports: transferAmountLamports
-      })
+      createTransferInstruction(
+        senderTokenAccount,
+        recipientTokenAccount,
+        solanaProvider.publicKey,
+        transferAmountUSDC,
+        [],
+        TOKEN_PROGRAM_ID
+      )
     );
 
     // Sign and send transaction
@@ -108,7 +127,7 @@ export const sendOKXTransaction = async (
         throw new Error(`Transaction failed during confirmation: ${JSON.stringify(confirmation.value.err)}`);
       }
 
-      console.log('OKX transaction confirmed successfully!');
+      console.log('OKX USDC transaction confirmed successfully!');
       return signature;
 
     } catch (error) {
@@ -116,7 +135,7 @@ export const sendOKXTransaction = async (
       throw new Error(`OKX transaction failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   } catch (error) {
-    console.error('OKX transaction error:', error);
+    console.error('OKX USDC transaction error:', error);
     throw error;
   }
 };
