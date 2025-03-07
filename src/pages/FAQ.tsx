@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import Navbar from '../components/Navbar';
@@ -109,30 +108,6 @@ const FAQ = () => {
     }
   ];
 
-  const partnerLogos = [
-    { 
-      name: 'Gold Card', 
-      logo: '/logos/gold-card-64x64.png',
-      logoLarge: '/logos/gold-card-256x256.png',
-      url: 'https://onedollargoldcard.com'
-    },
-    { 
-      name: 'Phantom Wallet', 
-      logo: '/wallet-icons/phantom-icon.png',
-      url: 'https://phantom.app/' 
-    },
-    { 
-      name: 'Solflare Wallet', 
-      logo: '/wallet-icons/solflare-icon.png',
-      url: 'https://solflare.com/' 
-    },
-    { 
-      name: 'OKX Wallet', 
-      logo: '/wallet-icons/okx-icon.png',
-      url: 'https://www.okx.com/web3' 
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gold-50/30 to-white">
       <Navbar />
@@ -170,38 +145,6 @@ const FAQ = () => {
             <ExternalLinkIcon className="w-5 h-5" />
             Ask on X
           </Button>
-        </div>
-
-        {/* Partner Resources Section */}
-        <div className="mt-24">
-          <h2 className="text-2xl font-bold text-center mb-6 text-gold-600">Partner Resources</h2>
-          <div className="bg-white rounded-xl shadow-md p-8 border border-gold-100">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {partnerLogos.map((partner, index) => (
-                <a 
-                  key={index}
-                  href={partner.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex flex-col items-center justify-center group transition-all duration-300"
-                >
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-3 bg-white shadow-sm border border-gray-100 p-2 overflow-hidden group-hover:shadow-md transition-all">
-                    <img 
-                      src={partner.logoLarge || partner.logo} 
-                      alt={`${partner.name} logo`} 
-                      className="max-w-full max-h-full object-contain" 
-                    />
-                  </div>
-                  <span className="text-sm text-gray-600 text-center group-hover:text-gold-600 transition-colors">
-                    {partner.name}
-                  </span>
-                </a>
-              ))}
-            </div>
-            <div className="mt-8 text-center text-sm text-gray-500">
-              These are the official partners and supported wallets for the OneDollarGoldCard platform.
-            </div>
-          </div>
         </div>
       </main>
 
