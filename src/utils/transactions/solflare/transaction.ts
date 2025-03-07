@@ -15,7 +15,7 @@ export const sendSolflareTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Processing Solflare USDC transaction', { amount, walletAddress });
+    console.log('Processing Solflare USDT transaction', { amount, walletAddress });
     
     // Validate provider
     provider = validateProvider(provider);
@@ -24,14 +24,14 @@ export const sendSolflareTransaction = async (
     console.log('Establishing connection to Solana network...');
     const connection = getConnection();
     
-    // Convert dollar amount to USDC tokens (USDC has 6 decimals)
-    const transferAmountUSDC = Math.floor(amount * 1000000);
-    console.log('Transfer amount in USDC (with decimals):', transferAmountUSDC);
+    // Convert dollar amount to USDT tokens (USDT has 6 decimals)
+    const transferAmountUSDT = Math.floor(amount * 1000000);
+    console.log('Transfer amount in USDT (with decimals):', transferAmountUSDT);
     
     // Show toast notification
     toast({
       title: "Preparing Transaction",
-      description: "Setting up your USDC transaction. Please wait...",
+      description: "Setting up your USDT transaction. Please wait...",
     });
     
     // Get sender public key
@@ -41,7 +41,7 @@ export const sendSolflareTransaction = async (
     // Prepare token accounts
     console.log('Preparing token accounts...');
     const { 
-      usdcMint, 
+      usdtMint, 
       senderTokenAccount, 
       recipientTokenAccount, 
       recipientAddress, 
@@ -66,8 +66,8 @@ export const sendSolflareTransaction = async (
       senderTokenAccount,
       recipientTokenAccount,
       recipientAddress,
-      usdcMint,
-      transferAmountUSDC,
+      usdtMint,
+      transferAmountUSDT,
       recipientAccountExists
     );
     
@@ -98,7 +98,7 @@ export const sendSolflareTransaction = async (
     // Show success toast
     toast({
       title: "Donation Successful",
-      description: `Your donation of $${amount.toFixed(2)} USDC has been processed successfully! Thank you for your support.`,
+      description: `Your donation of $${amount.toFixed(2)} USDT has been processed successfully! Thank you for your support.`,
     });
     
     return signature;

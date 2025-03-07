@@ -52,7 +52,7 @@ export const useDonationTransactions = ({
       // Show initial toast
       toast({
         title: "Preparing Donation",
-        description: `Preparing your donation of $${numericAmount.toFixed(2)} USDC...`,
+        description: `Preparing your donation of $${numericAmount.toFixed(2)} USDT...`,
       });
       
       // Calculate total with 5% fee
@@ -92,7 +92,7 @@ export const useDonationTransactions = ({
         resetForm();
         toast({
           title: "Donation Successful",
-          description: `Thank you! Your donation of $${totalAmount.toFixed(2)} USDC has been confirmed.`,
+          description: `Thank you! Your donation of $${totalAmount.toFixed(2)} USDT has been confirmed.`,
         });
         return transactionId;
       } else {
@@ -109,13 +109,13 @@ export const useDonationTransactions = ({
         let helpfulMessage = errorMessage;
         
         if (errorMessage.includes("insufficient") || errorMessage.includes("Insufficient")) {
-          helpfulMessage = "You don't have enough USDC in your wallet. Please add more USDC and try again.";
+          helpfulMessage = "You don't have enough USDT in your wallet. Please add more USDT and try again.";
         } else if (errorMessage.includes("rejected") || errorMessage.includes("cancelled") || errorMessage.includes("denied")) {
           helpfulMessage = "You rejected the transaction in your wallet. Please try again when you're ready to approve.";
         } else if (errorMessage.includes("timeout") || errorMessage.includes("timed out")) {
           helpfulMessage = "The transaction timed out. The Solana network might be congested. Please try again.";
-        } else if (errorMessage.includes("USDC token account") || errorMessage.includes("token account")) {
-          helpfulMessage = "You need a USDC token account. Please add some USDC to your wallet first.";
+        } else if (errorMessage.includes("USDT token account") || errorMessage.includes("token account")) {
+          helpfulMessage = "You need a USDT token account. Please add some USDT to your wallet first.";
         }
         
         toast({

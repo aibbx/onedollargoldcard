@@ -105,7 +105,7 @@ export const useDonationHandlers = (
           title: "Donation Successful",
           description: (
             <div>
-              <p>{`Thank you for your donation of $${amount.toFixed(2)} USDC!`}</p>
+              <p>{`Thank you for your donation of $${amount.toFixed(2)} USDT!`}</p>
               <a 
                 href={explorerUrl} 
                 target="_blank" 

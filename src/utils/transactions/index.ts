@@ -16,7 +16,7 @@ export const processTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Starting USDC transaction process:', { walletType, amount, walletAddress });
+    console.log('Starting USDT transaction process:', { walletType, amount, walletAddress });
     console.log('Provider details:', { 
       hasProvider: !!provider,
       providerType: walletType,
@@ -62,7 +62,7 @@ export const processTransaction = async (
       const error = new Error('Invalid donation amount. Amount must be greater than 0.');
       toast({
         title: "Invalid Amount",
-        description: "Donation amount must be greater than 0 USDC.",
+        description: "Donation amount must be greater than 0 USDT.",
         variant: "destructive",
       });
       throw error;
@@ -73,7 +73,7 @@ export const processTransaction = async (
     // Show preparing toast
     toast({
       title: "Preparing Transaction",
-      description: `Setting up your donation of ${amount.toFixed(2)} USDC using ${walletType} wallet...`,
+      description: `Setting up your donation of ${amount.toFixed(2)} USDT using ${walletType} wallet...`,
     });
     
     // Process transaction based on wallet type
@@ -88,7 +88,7 @@ export const processTransaction = async (
           });
           throw error;
         }
-        console.log('Sending USDC via Phantom:', {
+        console.log('Sending USDT via Phantom:', {
           publicKey: provider.publicKey.toString(),
           isConnected: provider.isConnected,
           amount
@@ -106,7 +106,7 @@ export const processTransaction = async (
           });
           throw error;
         }
-        console.log('Sending USDC via Solflare:', {
+        console.log('Sending USDT via Solflare:', {
           publicKey: provider.publicKey.toString(),
           isConnected: provider.isConnected,
           amount
@@ -124,7 +124,7 @@ export const processTransaction = async (
           });
           throw error;
         }
-        console.log('Sending USDC via OKX:', {
+        console.log('Sending USDT via OKX:', {
           publicKey: provider.solana.publicKey.toString(),
           isConnected: provider.solana.isConnected,
           amount
@@ -152,11 +152,11 @@ export const processTransaction = async (
       throw error;
     }
 
-    console.log('USDC Transaction completed successfully:', transactionId);
+    console.log('USDT Transaction completed successfully:', transactionId);
     return transactionId;
 
   } catch (err) {
-    console.error("USDC Transaction processing error:", err);
+    console.error("USDT Transaction processing error:", err);
     
     // Only show toast if not already shown in wallet-specific methods
     if (!err.message?.includes("already shown")) {

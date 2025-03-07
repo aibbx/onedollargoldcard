@@ -47,7 +47,7 @@ const DonationHistory: React.FC<DonationHistoryProps> = ({
           <div className="flex justify-between items-start">
             <div>
               <div className="font-medium text-gray-800">
-                ${donation.amount.toFixed(2)} USDC
+                ${donation.amount.toFixed(2)} USDT
               </div>
               <div className="text-gray-500 flex items-center text-xs mt-1">
                 <Clock className="w-3 h-3 mr-1" />

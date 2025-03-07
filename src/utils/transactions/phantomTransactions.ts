@@ -14,8 +14,8 @@ import {
   getAccount
 } from '@solana/spl-token';
 
-// USDC token address on Solana mainnet
-const USDC_TOKEN_ADDRESS = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+// USDT token address on Solana mainnet
+const USDT_TOKEN_ADDRESS = 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB';
 
 // Function to get connection with proper configuration
 const getConnection = (): Connection => {
@@ -34,7 +34,7 @@ export const sendPhantomTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Starting Phantom USDC transaction:', { amount, walletAddress });
+    console.log('Starting Phantom USDT transaction:', { amount, walletAddress });
     
     if (!provider || !provider.publicKey) {
       throw new Error('Phantom wallet not properly connected');
@@ -44,23 +44,23 @@ export const sendPhantomTransaction = async (
     const connection = getConnection();
     console.log('Connection established to QuickNode');
     
-    // Convert dollar amount to USDC tokens (USDC has 6 decimals)
-    const transferAmountUSDC = Math.floor(amount * 1000000);
-    console.log('Transfer amount in USDC (with decimals):', transferAmountUSDC);
+    // Convert dollar amount to USDT tokens (USDT has 6 decimals)
+    const transferAmountUSDT = Math.floor(amount * 1000000);
+    console.log('Transfer amount in USDT (with decimals):', transferAmountUSDT);
     
-    // Get USDC token mint
-    const usdcMint = new PublicKey(USDC_TOKEN_ADDRESS);
-    console.log('USDC token mint:', usdcMint.toString());
+    // Get USDT token mint
+    const usdtMint = new PublicKey(USDT_TOKEN_ADDRESS);
+    console.log('USDT token mint:', usdtMint.toString());
     
     // Get the latest blockhash
     console.log('Getting latest blockhash...');
     const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
     console.log('Blockhash obtained:', blockhash.slice(0, 10) + '...');
     
-    // Get source token account (sender's USDC account)
+    // Get source token account (sender's USDT account)
     console.log('Getting sender token account...');
     const senderTokenAccount = await getAssociatedTokenAddress(
-      usdcMint,
+      usdtMint,
       provider.publicKey
     );
     console.log('Sender token account:', senderTokenAccount.toString());
@@ -70,17 +70,17 @@ export const sendPhantomTransaction = async (
       await getAccount(connection, senderTokenAccount);
       console.log('Sender token account exists');
     } catch (error) {
-      console.error('Sender does not have a USDC token account:', error);
-      throw new Error('You do not have a USDC token account or balance. Please add USDC to your wallet first.');
+      console.error('Sender does not have a USDT token account:', error);
+      throw new Error('You do not have a USDT token account or balance. Please add USDT to your wallet first.');
     }
     
-    // Get recipient token account (pool address USDC account)
+    // Get recipient token account (pool address USDT account)
     const recipientAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
     console.log('Recipient address:', recipientAddress.toString());
     
     console.log('Getting recipient token account...');
     const recipientTokenAccount = await getAssociatedTokenAddress(
-      usdcMint,
+      usdtMint,
       recipientAddress
     );
     console.log('Recipient token account:', recipientTokenAccount.toString());
@@ -104,7 +104,7 @@ export const sendPhantomTransaction = async (
           provider.publicKey, // payer
           recipientTokenAccount, // associated token account
           recipientAddress, // owner
-          usdcMint // mint
+          usdtMint // mint
         )
       );
     }
@@ -115,13 +115,13 @@ export const sendPhantomTransaction = async (
         senderTokenAccount,
         recipientTokenAccount,
         provider.publicKey,
-        transferAmountUSDC,
+        transferAmountUSDT,
         [],
         TOKEN_PROGRAM_ID
       )
     );
     
-    console.log('Transaction created for USDC transfer');
+    console.log('Transaction created for USDT transfer');
     
     // Sign and send transaction
     console.log('Requesting wallet signature...');
@@ -156,14 +156,14 @@ export const sendPhantomTransaction = async (
         throw new Error(`Transaction failed during confirmation: ${JSON.stringify(confirmationStatus.value.err)}`);
       }
 
-      console.log('USDC Transaction confirmed successfully!');
+      console.log('USDT Transaction confirmed successfully!');
       return signature;
     } catch (error) {
       console.error('Transaction execution failed:', error);
       
       // More helpful error message
       if (error.message && error.message.includes('insufficient funds')) {
-        throw new Error('Insufficient USDC balance for this transaction. Please add more USDC to your wallet.');
+        throw new Error('Insufficient USDT balance for this transaction. Please add more USDT to your wallet.');
       } else if (error.message && error.message.includes('Blockhash not found')) {
         throw new Error('Transaction took too long to confirm. Please try again.');
       }
@@ -171,7 +171,7 @@ export const sendPhantomTransaction = async (
       throw new Error(`Transaction failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   } catch (error) {
-    console.error('Phantom USDC transaction error:', error);
+    console.error('Phantom USDT transaction error:', error);
     throw error;
   }
 };

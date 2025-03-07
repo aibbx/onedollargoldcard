@@ -16,7 +16,7 @@ export const sendOKXTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Starting OKX USDC transaction:', { amount, walletAddress });
+    console.log('Starting OKX USDT transaction:', { amount, walletAddress });
     
     // Validate provider and get solana provider
     const solanaProvider = validateProvider(provider);
@@ -40,9 +40,9 @@ export const sendOKXTransaction = async (
       connection = getConnection();
     }
     
-    // Convert dollar amount to USDC tokens (USDC has 6 decimals)
-    const transferAmountUSDC = Math.floor(amount * 1000000);
-    console.log('Transfer amount in USDC (with decimals):', transferAmountUSDC);
+    // Convert dollar amount to USDT tokens (USDT has 6 decimals)
+    const transferAmountUSDT = Math.floor(amount * 1000000);
+    console.log('Transfer amount in USDT (with decimals):', transferAmountUSDT);
     
     // Get the recipient address
     const recipientAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
@@ -51,7 +51,7 @@ export const sendOKXTransaction = async (
     // Show toast to inform user that we're preparing the transaction
     toast({
       title: "Preparing Transaction",
-      description: "Setting up your USDC transaction. Please wait...",
+      description: "Setting up your USDT transaction. Please wait...",
     });
 
     // Get sender public key
@@ -59,7 +59,7 @@ export const sendOKXTransaction = async (
     
     // Prepare token accounts
     const { 
-      usdcMint, 
+      usdtMint, 
       senderTokenAccount, 
       recipientTokenAccount, 
       recipientAccountExists 
@@ -67,7 +67,7 @@ export const sendOKXTransaction = async (
       connection, 
       senderPublicKey, 
       recipientAddress,
-      transferAmountUSDC
+      transferAmountUSDT
     );
     
     // Build transaction
@@ -81,8 +81,8 @@ export const sendOKXTransaction = async (
       senderTokenAccount,
       recipientTokenAccount,
       recipientAddress,
-      usdcMint,
-      transferAmountUSDC,
+      usdtMint,
+      transferAmountUSDT,
       recipientAccountExists
     );
     
@@ -95,7 +95,7 @@ export const sendOKXTransaction = async (
     // Show success toast
     toast({
       title: "Donation Successful",
-      description: `Your donation of $${amount.toFixed(2)} USDC has been processed successfully! Thank you for your support.`,
+      description: `Your donation of $${amount.toFixed(2)} USDT has been processed successfully! Thank you for your support.`,
     });
     
     return signature;

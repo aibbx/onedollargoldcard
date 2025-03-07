@@ -29,7 +29,7 @@ const DonationStats: React.FC<DonationStatsProps> = ({
             <BarChart3 className="w-4 h-4 mr-2 text-gold-500" />
             Total Donated:
           </span>
-          <span className="font-medium">${totalDonated.toFixed(2)} USDC</span>
+          <span className="font-medium">${totalDonated.toFixed(2)} USDT</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-gray-600 flex items-center">

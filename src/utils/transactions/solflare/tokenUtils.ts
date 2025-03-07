@@ -9,28 +9,28 @@ import {
 } from '@solana/spl-token';
 import { CONTRACT_ADDRESSES } from '../../walletUtils';
 
-// USDC token address on Solana mainnet
-export const USDC_TOKEN_ADDRESS = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+// USDT token address on Solana mainnet
+export const USDT_TOKEN_ADDRESS = 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB';
 
 // Prepare token accounts for transaction
 export const prepareTokenAccounts = async (
   connection: Connection,
   senderPublicKey: PublicKey
 ): Promise<{
-  usdcMint: PublicKey;
+  usdtMint: PublicKey;
   senderTokenAccount: PublicKey;
   recipientTokenAccount: PublicKey;
   recipientAddress: PublicKey;
   recipientAccountExists: boolean;
 }> => {
-  // Get USDC token mint
-  const usdcMint = new PublicKey(USDC_TOKEN_ADDRESS);
-  console.log('USDC token mint:', usdcMint.toString());
+  // Get USDT token mint
+  const usdtMint = new PublicKey(USDT_TOKEN_ADDRESS);
+  console.log('USDT token mint:', usdtMint.toString());
   
-  // Get source token account (sender's USDC account)
+  // Get source token account (sender's USDT account)
   console.log('Getting sender token account...');
   const senderTokenAccount = await getAssociatedTokenAddress(
-    usdcMint,
+    usdtMint,
     senderPublicKey
   );
   console.log('Sender token account:', senderTokenAccount.toString());
@@ -40,17 +40,17 @@ export const prepareTokenAccounts = async (
     await getAccount(connection, senderTokenAccount);
     console.log('Sender token account exists');
   } catch (error) {
-    console.error('Sender does not have a USDC token account:', error);
-    throw new Error('You do not have a USDC token account or balance. Please add USDC to your wallet first.');
+    console.error('Sender does not have a USDT token account:', error);
+    throw new Error('You do not have a USDT token account or balance. Please add USDT to your wallet first.');
   }
   
-  // Get recipient token account (pool address USDC account)
+  // Get recipient token account (pool address USDT account)
   const recipientAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
   console.log('Recipient address:', recipientAddress.toString());
   
   console.log('Getting recipient token account...');
   const recipientTokenAccount = await getAssociatedTokenAddress(
-    usdcMint,
+    usdtMint,
     recipientAddress
   );
   console.log('Recipient token account:', recipientTokenAccount.toString());
@@ -66,7 +66,7 @@ export const prepareTokenAccounts = async (
   }
   
   return {
-    usdcMint,
+    usdtMint,
     senderTokenAccount,
     recipientTokenAccount,
     recipientAddress,

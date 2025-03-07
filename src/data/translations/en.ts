@@ -21,7 +21,7 @@ export const en = {
   'features.transparent.title': 'Fully Transparent',
   'features.transparent.desc': 'All transactions and winner selection are verified on-chain.',
   'features.accessible.title': 'Accessible to Everyone',
-  'features.accessible.desc': 'Start with just $1.00 USDC plus a small fee.',
+  'features.accessible.desc': 'Start with just $1.00 USDT plus a small fee.',
   'features.fair.title': 'Fair Chance System',
   'features.fair.desc': 'Your chances increase proportionally with your donation amount.',
   'features.secure.title': 'Secure by Design',
@@ -30,7 +30,7 @@ export const en = {
   // How It Works
   'howItWorks.title': 'How It Works',
   'howItWorks.step1.title': 'Make a Donation',
-  'howItWorks.step1.desc': 'Donate a minimum of $1.00 USDC (plus 5% service fee).',
+  'howItWorks.step1.desc': 'Donate a minimum of $1.00 USDT (plus 5% service fee).',
   'howItWorks.step2.title': 'Join the Pool',
   'howItWorks.step2.desc': 'Your donation increases your chance to win proportionally.',
   'howItWorks.step3.title': 'Winner Selection',
@@ -44,7 +44,7 @@ export const en = {
   'donation.fee': 'Service Fee (5%)',
   'donation.total': 'Total Amount',
   'donation.button': 'Donate Now',
-  'donation.minAmount': 'Minimum donation is $1.00 USDC.',
+  'donation.minAmount': 'Minimum donation is $1.00 USDT.',
   'donation.walletConnect': 'Connect Wallet',
   'donation.confirmation': 'I confirm I am not a US citizen or green card holder.',
   'donation.shareX': 'Share on X',
@@ -80,4 +80,3 @@ export const en = {
   // Trump mention
   'trump.support': 'Endorsed by the Trump administration\'s immigration initiatives.'
 };
-

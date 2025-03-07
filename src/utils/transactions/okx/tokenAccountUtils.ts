@@ -10,26 +10,26 @@ import {
 } from '@solana/spl-token';
 import { toast } from "@/hooks/use-toast";
 
-// USDC token address on Solana mainnet
-export const USDC_TOKEN_ADDRESS = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+// USDT token address on Solana mainnet
+export const USDT_TOKEN_ADDRESS = 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB';
 
 // Function to prepare and validate token accounts
 export const prepareTokenAccounts = async (
   connection: Connection,
   senderPublicKey: PublicKey,
   recipientAddress: PublicKey,
-  transferAmountUSDC: number
+  transferAmountUSDT: number
 ) => {
   console.log('Preparing token accounts for OKX transaction...');
   
-  // Get USDC token mint
-  const usdcMint = new PublicKey(USDC_TOKEN_ADDRESS);
-  console.log('USDC token mint:', usdcMint.toString());
+  // Get USDT token mint
+  const usdtMint = new PublicKey(USDT_TOKEN_ADDRESS);
+  console.log('USDT token mint:', usdtMint.toString());
   
-  // Get source token account (sender's USDC account)
+  // Get source token account (sender's USDT account)
   console.log('Getting sender token account...');
   const senderTokenAccount = await getAssociatedTokenAddress(
-    usdcMint,
+    usdtMint,
     senderPublicKey
   );
   console.log('Sender token account:', senderTokenAccount.toString());
@@ -39,29 +39,29 @@ export const prepareTokenAccounts = async (
     const tokenAccount = await getAccount(connection, senderTokenAccount);
     console.log('Sender token account exists with balance:', tokenAccount.amount.toString());
     
-    // Check if user has enough USDC
-    if (Number(tokenAccount.amount) < transferAmountUSDC) {
+    // Check if user has enough USDT
+    if (Number(tokenAccount.amount) < transferAmountUSDT) {
       toast({
-        title: "Insufficient USDC Balance",
-        description: `You need at least ${transferAmountUSDC / 1000000} USDC for this donation. Please add more USDC to your wallet.`,
+        title: "Insufficient USDT Balance",
+        description: `You need at least ${transferAmountUSDT / 1000000} USDT for this donation. Please add more USDT to your wallet.`,
         variant: "destructive",
       });
-      throw new Error(`Insufficient USDC balance: ${Number(tokenAccount.amount) / 1000000} USDC available, ${transferAmountUSDC / 1000000} USDC needed`);
+      throw new Error(`Insufficient USDT balance: ${Number(tokenAccount.amount) / 1000000} USDT available, ${transferAmountUSDT / 1000000} USDT needed`);
     }
   } catch (error) {
-    console.error('Sender does not have a USDC token account:', error);
+    console.error('Sender does not have a USDT token account:', error);
     toast({
-      title: "USDC Account Missing",
-      description: "You don't have a USDC token account. Please add USDC to your wallet first.",
+      title: "USDT Account Missing",
+      description: "You don't have a USDT token account. Please add USDT to your wallet first.",
       variant: "destructive",
     });
-    throw new Error('You do not have a USDC token account. Please add USDC to your wallet first.');
+    throw new Error('You do not have a USDT token account. Please add USDT to your wallet first.');
   }
   
   // Get recipient token account
   console.log('Getting recipient token account...');
   const recipientTokenAccount = await getAssociatedTokenAddress(
-    usdcMint,
+    usdtMint,
     recipientAddress
   );
   console.log('Recipient token account:', recipientTokenAccount.toString());
@@ -77,7 +77,7 @@ export const prepareTokenAccounts = async (
   }
   
   return {
-    usdcMint,
+    usdtMint,
     senderTokenAccount,
     recipientTokenAccount,
     recipientAccountExists

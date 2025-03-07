@@ -17,8 +17,8 @@ export const buildTransaction = async (
   senderTokenAccount: PublicKey,
   recipientTokenAccount: PublicKey,
   recipientAddress: PublicKey,
-  usdcMint: PublicKey,
-  transferAmountUSDC: number,
+  usdtMint: PublicKey,
+  transferAmountUSDT: number,
   recipientAccountExists: boolean
 ): Promise<{
   transaction: Transaction;
@@ -44,7 +44,7 @@ export const buildTransaction = async (
         senderPublicKey, // payer
         recipientTokenAccount, // associated token account
         recipientAddress, // owner
-        usdcMint // mint
+        usdtMint // mint
       )
     );
   }
@@ -55,7 +55,7 @@ export const buildTransaction = async (
       senderTokenAccount,
       recipientTokenAccount,
       senderPublicKey,
-      transferAmountUSDC,
+      transferAmountUSDT,
       [],
       TOKEN_PROGRAM_ID
     )
