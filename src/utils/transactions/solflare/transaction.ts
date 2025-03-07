@@ -1,0 +1,93 @@
+
+import { PublicKey } from '@solana/web3.js';
+import { toast } from "@/hooks/use-toast";
+import { getConnection, validateProvider } from './connectionUtils';
+import { prepareTokenAccounts } from './tokenUtils';
+import { buildTransaction } from './transactionBuilder';
+import { signAndSendTransaction } from './signTransaction';
+import { confirmTransaction } from './confirmTransaction';
+import { handleTransactionError } from './errorHandler';
+
+// Handle transactions specifically for Solflare wallet
+export const sendSolflareTransaction = async (
+  provider: any,
+  amount: number,
+  walletAddress: string
+): Promise<string> => {
+  try {
+    console.log('Processing Solflare USDC transaction', { amount, walletAddress });
+    
+    // Validate provider
+    provider = validateProvider(provider);
+
+    // Get a reliable connection using QuickNode
+    console.log('Establishing connection to Solana network via QuickNode...');
+    const connection = getConnection();
+    
+    // Convert dollar amount to USDC tokens (USDC has 6 decimals)
+    const transferAmountUSDC = Math.floor(amount * 1000000);
+    console.log('Transfer amount in USDC (with decimals):', transferAmountUSDC);
+    
+    // Show toast notification
+    toast({
+      title: "Preparing Transaction",
+      description: "Setting up your USDC transaction. Please wait...",
+    });
+    
+    // Get sender public key
+    const senderPublicKey = provider.publicKey;
+    
+    // Prepare token accounts
+    const { 
+      usdcMint, 
+      senderTokenAccount, 
+      recipientTokenAccount, 
+      recipientAddress, 
+      recipientAccountExists 
+    } = await prepareTokenAccounts(connection, senderPublicKey);
+    
+    // Build transaction
+    const { 
+      transaction, 
+      blockhash, 
+      lastValidBlockHeight 
+    } = await buildTransaction(
+      connection,
+      senderPublicKey,
+      senderTokenAccount,
+      recipientTokenAccount,
+      recipientAddress,
+      usdcMint,
+      transferAmountUSDC,
+      recipientAccountExists
+    );
+    
+    // Show wallet approval toast
+    toast({
+      title: "Wallet Approval Required",
+      description: "Please approve the transaction in your Solflare wallet",
+    });
+    
+    // Sign and send transaction
+    const signature = await signAndSendTransaction(provider, transaction, connection);
+    
+    // Show processing toast
+    toast({
+      title: "Transaction Submitted",
+      description: "Your transaction is being processed on the Solana network...",
+    });
+    
+    // Confirm transaction
+    await confirmTransaction(connection, signature, blockhash, lastValidBlockHeight);
+    
+    // Show success toast
+    toast({
+      title: "Donation Successful",
+      description: `Your donation of $${amount.toFixed(2)} USDC has been processed successfully! Thank you for your support.`,
+    });
+    
+    return signature;
+  } catch (error) {
+    return handleTransactionError(error);
+  }
+};
