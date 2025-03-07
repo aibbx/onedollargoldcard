@@ -2,7 +2,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '../../context/LanguageContext';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 interface NavLinksProps {
   isScrolled: boolean;
@@ -11,11 +11,25 @@ interface NavLinksProps {
 const NavLinks: React.FC<NavLinksProps> = ({ isScrolled }) => {
   const { t } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPath = location.pathname;
 
   const isActive = (path: string) => {
     if (path === '/') return currentPath === '/';
     return currentPath.startsWith(path);
+  };
+
+  const handleSectionNavigation = (sectionId: string) => {
+    // If we're not on the homepage, navigate there first
+    if (currentPath !== '/') {
+      navigate('/', { state: { scrollToSection: sectionId } });
+    } else {
+      // If already on homepage, just scroll to the section
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   return (
@@ -28,12 +42,15 @@ const NavLinks: React.FC<NavLinksProps> = ({ isScrolled }) => {
         {t('nav.home')}
         {isActive('/') && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold-500 rounded-full"></span>}
       </Link>
-      <a href="#how-it-works" className={cn(
-        'transition-all duration-200 hover:text-gold-600',
-        isScrolled ? 'text-gray-800' : 'text-gray-800'
-      )}>
+      <button 
+        onClick={() => handleSectionNavigation('how-it-works')}
+        className={cn(
+          'transition-all duration-200 hover:text-gold-600',
+          isScrolled ? 'text-gray-800' : 'text-gray-800'
+        )}
+      >
         {t('nav.howItWorks')}
-      </a>
+      </button>
       <Link to="/faq" className={cn(
         'transition-all duration-200 hover:text-gold-600 relative',
         isScrolled ? 'text-gray-800' : 'text-gray-800',

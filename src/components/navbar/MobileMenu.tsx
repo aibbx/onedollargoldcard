@@ -3,7 +3,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '../../context/LanguageContext';
 import { Wallet } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -19,6 +19,23 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   onDonateClick 
 }) => {
   const { t } = useLanguage();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const currentPath = location.pathname;
+
+  const handleSectionNavigation = (sectionId: string) => {
+    // If we're not on the homepage, navigate there first
+    if (currentPath !== '/') {
+      navigate('/', { state: { scrollToSection: sectionId } });
+    } else {
+      // If already on homepage, just scroll to the section
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    onClose(); // Close the mobile menu after navigation
+  };
 
   return (
     <div className={cn(
@@ -33,13 +50,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         >
           {t('nav.home')}
         </Link>
-        <a 
-          href="#how-it-works" 
-          className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
-          onClick={onClose}
+        <button 
+          className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200 text-left w-full"
+          onClick={() => handleSectionNavigation('how-it-works')}
         >
           {t('nav.howItWorks')}
-        </a>
+        </button>
         <Link 
           to="/faq"
           className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
