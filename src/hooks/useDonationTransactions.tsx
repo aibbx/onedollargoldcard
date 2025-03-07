@@ -57,8 +57,7 @@ export const useDonationTransactions = ({
           description: `Your donation of $${totalAmount.toFixed(2)} has been submitted. Thank you for your support!`,
         });
       } else {
-        console.log('Transaction failed - no transaction ID returned');
-        // Error is already handled in sendDonation
+        throw new Error("Transaction failed - no transaction ID returned");
       }
     } catch (error) {
       console.error('Donation failed:', error);

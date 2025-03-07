@@ -1,11 +1,6 @@
 
 import { WalletType } from '../types/wallet';
 
-// Polyfill Buffer for browser environments
-if (typeof window !== 'undefined' && !window.Buffer) {
-  window.Buffer = require('buffer/').Buffer;
-}
-
 // Solana contract addresses (mainnet)
 export const CONTRACT_ADDRESSES = {
   poolAddress: "BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt", // Pool address on mainnet

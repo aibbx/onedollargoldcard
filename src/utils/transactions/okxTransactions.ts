@@ -3,11 +3,6 @@ import { CONTRACT_ADDRESSES } from '../walletUtils';
 import { PublicKey, Transaction, Connection, clusterApiUrl } from '@solana/web3.js';
 import { getAssociatedTokenAddress, createTransferInstruction } from '@solana/spl-token';
 
-// Ensure Buffer is available
-if (typeof window !== 'undefined' && !window.Buffer) {
-  window.Buffer = require('buffer/').Buffer;
-}
-
 // USDC token mint address on Solana mainnet
 const USDC_MINT = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
 
@@ -32,8 +27,7 @@ export const sendOKXTransaction = async (
     console.log('Amount in USDC units:', amountInUsdcUnits);
     
     // Get the latest blockhash for transaction
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('finalized');
-    console.log('Got blockhash:', blockhash, 'lastValidBlockHeight:', lastValidBlockHeight);
+    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
     
     // Create a new transaction with blockhash and fee payer
     const transaction = new Transaction({
@@ -113,3 +107,4 @@ export const sendOKXTransaction = async (
     throw error;
   }
 };
+
