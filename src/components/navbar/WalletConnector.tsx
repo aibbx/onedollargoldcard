@@ -131,7 +131,7 @@ const WalletConnector: React.FC = () => {
           className="btn-gold flex items-center gap-2"
           onClick={handleDonateClick}
         >
-          {t('hero.donateButton')}
+          Connect Wallet
           <Wallet className="w-4 h-4" />
         </button>
       )}

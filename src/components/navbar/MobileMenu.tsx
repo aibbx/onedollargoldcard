@@ -75,7 +75,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           className="btn-gold w-full mt-4 flex items-center justify-center gap-2"
           onClick={onDonateClick}
         >
-          {isWalletConnected ? t('hero.donateNow') : t('hero.donateButton')}
+          {isWalletConnected ? t('hero.donateNow') : "Connect Wallet"}
           {!isWalletConnected && <Wallet className="w-4 h-4" />}
         </button>
       </div>
