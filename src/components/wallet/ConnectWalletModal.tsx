@@ -44,7 +44,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
         </div>
         
         <div className="p-6">
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 mb-6 text-left">
             Connect your Solana wallet to donate and participate in the Gold Card program.
           </p>
           
@@ -82,7 +82,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
             </button>
           </div>
           
-          <p className="text-sm text-center text-gray-500 mt-6">
+          <p className="text-sm text-left text-gray-500 mt-6">
             By connecting your wallet, you agree to our <Link to="/terms" className="text-gold-600 hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-gold-600 hover:underline">Privacy Policy</Link>.
           </p>
         </div>

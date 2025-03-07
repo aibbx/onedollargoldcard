@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import Navbar from '../components/Navbar';
@@ -113,10 +114,10 @@ const FAQ = () => {
       <Navbar />
       
       <main className="container mx-auto px-4 py-24 max-w-6xl">
-        <h1 className="text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600">
+        <h1 className="text-4xl font-bold text-left mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600">
           Frequently Asked Questions
         </h1>
-        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        <p className="text-left text-gray-600 mb-12 max-w-2xl">
           Everything you need to know about OneDollarGoldCard and how it works.
         </p>
         
@@ -136,7 +137,7 @@ const FAQ = () => {
           ))}
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="mt-12 text-left">
           <h3 className="text-xl font-semibold mb-4">Have a question that's not answered here?</h3>
           <Button
             className="bg-gold-500 hover:bg-gold-600 text-black font-medium py-2 px-6 rounded-md transition-all inline-flex items-center gap-2"
