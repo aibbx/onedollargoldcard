@@ -31,8 +31,8 @@ export const usePoolStats = () => {
           
           // Count unique wallets
           donations.forEach(donation => {
-            if (donation.walletAddress) {
-              uniqueWallets.add(donation.walletAddress);
+            if (donation.transactionId) {
+              uniqueWallets.add(donation.transactionId);
             }
           });
         }
@@ -55,10 +55,17 @@ export const usePoolStats = () => {
             
             // Add unique senders to our set
             transactionDetails.forEach(tx => {
-              if (tx && tx.meta && tx.transaction.message.accountKeys.length > 0) {
+              if (tx && tx.meta && tx.transaction.message) {
                 // The first account is typically the fee payer (sender)
-                const sender = tx.transaction.message.accountKeys[0].toString();
-                uniqueWallets.add(sender);
+                const accountKeys = tx.transaction.message.getAccountKeys?.() || 
+                                   { keySegments: () => [{ pubkey: tx.transaction.message.staticAccountKeys?.[0] }] };
+                
+                const sender = accountKeys.keySegments?.()?.[0]?.pubkey?.toString() || 
+                              tx.transaction.message.staticAccountKeys?.[0]?.toString();
+                
+                if (sender) {
+                  uniqueWallets.add(sender);
+                }
               }
             });
           }
