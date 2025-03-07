@@ -11,7 +11,7 @@ interface ConnectWalletModalProps {
   onConnectWallet: (type: WalletType) => Promise<void>;
 }
 
-// Wallet configuration with improved logos
+// Wallet configuration with logos matching the screenshot
 const walletConfig = [
   {
     type: 'Phantom' as WalletType,
@@ -21,17 +21,17 @@ const walletConfig = [
   {
     type: 'Solflare' as WalletType,
     name: 'Solflare',
-    logoUrl: 'https://solflare.com/icon-512.png'
+    logoUrl: '/wallet-icons/solflare-icon.svg'
   },
   {
     type: 'OKX' as WalletType,
     name: 'OKX Wallet',
-    logoUrl: 'https://static.okx.com/cdn/assets/imgs/223/C6E0D7FF36211DF4.png'
+    logoUrl: '/wallet-icons/okx-icon.svg'
   },
   {
     type: 'MetaMask' as WalletType,
     name: 'MetaMask',
-    logoUrl: 'https://metamask.io/images/metamask-fox.svg'
+    logoUrl: '/wallet-icons/metamask-icon.svg'
   }
 ];
 
@@ -56,7 +56,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white w-full max-w-md rounded-3xl shadow-xl overflow-hidden">
-        <div className="py-5 px-6 flex justify-between items-center border-b border-gray-100">
+        <div className="py-4 px-6 flex justify-between items-center border-b border-gray-100">
           <h2 className="text-2xl font-normal text-gray-800">Connect Wallet</h2>
           <button 
             onClick={onClose}
@@ -77,21 +77,21 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               <button
                 key={wallet.type}
                 onClick={() => handleWalletConnect(wallet.type)}
-                className="wallet-option-button"
+                className="connect-wallet-option"
               >
                 <img 
                   src={wallet.logoUrl} 
                   alt={`${wallet.name} logo`} 
-                  className="wallet-logo"
+                  className="wallet-logo-img"
                   loading="lazy"
                 />
-                <span className="wallet-name">{wallet.name}</span>
+                <span className="wallet-name-text">{wallet.name}</span>
               </button>
             ))}
           </div>
           
-          <p className="text-sm text-center text-gray-500 mt-8 font-light">
-            By connecting your wallet, you agree to our <Link to="/terms" className="text-gold-600 hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-gold-600 hover:underline">Privacy Policy</Link>.
+          <p className="text-sm text-center text-gray-500 mt-8 mb-2 font-light">
+            By connecting your wallet, you agree to our <Link to="/terms" className="text-gray-500 hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-gray-500 hover:underline">Privacy Policy</Link>.
           </p>
         </div>
       </div>
