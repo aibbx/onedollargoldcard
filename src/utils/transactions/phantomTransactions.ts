@@ -1,19 +1,17 @@
-
 import { CONTRACT_ADDRESSES } from '../walletUtils';
 import { 
   PublicKey, 
   Transaction, 
   Connection, 
-  clusterApiUrl,
   SystemProgram,
   LAMPORTS_PER_SOL
 } from '@solana/web3.js';
 
 // Function to get connection
 const getConnection = (): Connection => {
-  // Use public Solana RPC endpoint
-  const endpoint = clusterApiUrl('mainnet-beta');
-  console.log('Using public Solana RPC endpoint for Phantom transactions');
+  // Use Ankr RPC endpoint for Solana which is more reliable
+  const endpoint = "https://rpc.ankr.com/solana";
+  console.log('Using Ankr RPC endpoint for Phantom transactions');
   return new Connection(endpoint, {
     commitment: 'confirmed',
     confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
