@@ -1,6 +1,6 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
-import { PublicKey, Transaction, SystemProgram, Connection, clusterApiUrl } from '@solana/web3.js';
+import { PublicKey, Transaction, SystemProgram, Connection } from '@solana/web3.js';
 
 // Handle transactions specifically for OKX wallet
 export const sendOKXTransaction = async (
@@ -15,8 +15,11 @@ export const sendOKXTransaction = async (
       throw new Error('OKX wallet not properly connected');
     }
 
-    // Get network connection (using mainnet-beta for production)
-    const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+    // Use a reliable RPC endpoint for mainnet
+    const connection = new Connection(
+      'https://api.mainnet-beta.solana.com', 
+      { commitment: 'confirmed' }
+    );
     
     // Convert USDC amount to lamports (SOL)
     // 1 SOL = 1 billion lamports
@@ -24,7 +27,9 @@ export const sendOKXTransaction = async (
     const amountInLamports = Math.ceil(amount * 10000); // Small amount for real transfers
     
     // Get recent blockhash for transaction
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+    console.log('Getting recent blockhash for OKX...');
+    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
+    console.log('Received blockhash for OKX:', blockhash);
     
     // Create a new transaction
     const transaction = new Transaction({
@@ -53,10 +58,9 @@ export const sendOKXTransaction = async (
     // Try using the signAndSendTransaction method if available
     if (provider.solana.signAndSendTransaction) {
       try {
+        console.log('Using OKX signAndSendTransaction method...');
         // OKX might require different parameters structure
-        const response = await provider.solana.signAndSendTransaction({
-          message: transaction
-        });
+        const response = await provider.solana.signAndSendTransaction(transaction);
         signature = response?.signature || response;
         console.log('OKX transaction sent using signAndSendTransaction:', signature);
       } catch (e) {
@@ -69,6 +73,7 @@ export const sendOKXTransaction = async (
     if (!signature) {
       try {
         if (provider.solana.signTransaction) {
+          console.log('Using OKX separate sign and send transaction methods...');
           // Try to use the separate signTransaction and sendTransaction methods
           const signedTransaction = await provider.solana.signTransaction(transaction);
           signature = await connection.sendRawTransaction(signedTransaction.serialize());
@@ -87,11 +92,8 @@ export const sendOKXTransaction = async (
     }
     
     // Wait for confirmation
-    const confirmation = await connection.confirmTransaction({
-      blockhash,
-      lastValidBlockHeight,
-      signature,
-    });
+    console.log('Waiting for OKX transaction confirmation...');
+    const confirmation = await connection.confirmTransaction(signature, 'confirmed');
     
     if (confirmation.value.err) {
       throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);

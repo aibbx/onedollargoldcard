@@ -1,6 +1,6 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
-import { PublicKey, Transaction, SystemProgram, Connection, clusterApiUrl } from '@solana/web3.js';
+import { PublicKey, Transaction, SystemProgram, Connection } from '@solana/web3.js';
 
 // Handle transactions specifically for Phantom wallet
 export const sendPhantomTransaction = async (
@@ -15,8 +15,11 @@ export const sendPhantomTransaction = async (
       throw new Error('Wallet not properly connected');
     }
 
-    // Get network connection (using mainnet-beta for production)
-    const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+    // Use a reliable RPC endpoint for mainnet
+    const connection = new Connection(
+      'https://api.mainnet-beta.solana.com', 
+      { commitment: 'confirmed' }
+    );
     
     // Convert USDC amount to lamports (SOL)
     // 1 SOL = 1 billion lamports
@@ -24,7 +27,9 @@ export const sendPhantomTransaction = async (
     const amountInLamports = Math.ceil(amount * 10000); // Small amount for real transfers
     
     // Get recent blockhash for transaction
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+    console.log('Getting recent blockhash...');
+    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
+    console.log('Received blockhash:', blockhash);
     
     // Create a new transaction
     const transaction = new Transaction({
@@ -50,41 +55,49 @@ export const sendPhantomTransaction = async (
     
     // Modern Phantom wallet now supports signAndSendTransaction
     if (provider.signAndSendTransaction) {
-      const { signature } = await provider.signAndSendTransaction(transaction);
-      console.log('Phantom transaction sent with signature:', signature);
-      
-      // Wait for confirmation
-      const confirmation = await connection.confirmTransaction({
-        blockhash,
-        lastValidBlockHeight,
-        signature,
-      });
-      
-      if (confirmation.value.err) {
-        throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
+      try {
+        console.log('Using signAndSendTransaction method...');
+        const { signature } = await provider.signAndSendTransaction(transaction);
+        console.log('Phantom transaction sent with signature:', signature);
+        
+        // Wait for confirmation
+        const confirmation = await connection.confirmTransaction({
+          blockhash,
+          lastValidBlockHeight,
+          signature,
+        }, 'confirmed');
+        
+        if (confirmation.value.err) {
+          throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
+        }
+        
+        return signature;
+      } catch (error) {
+        console.error('Error with signAndSendTransaction:', error);
+        throw error;
       }
-      
-      return signature;
     } 
     // Fallback to separate sign and send methods
     else if (provider.signTransaction) {
-      const signedTransaction = await provider.signTransaction(transaction);
-      const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-      
-      console.log('Phantom transaction sent with signature (fallback method):', signature);
-      
-      // Wait for confirmation
-      const confirmation = await connection.confirmTransaction({
-        blockhash,
-        lastValidBlockHeight,
-        signature,
-      });
-      
-      if (confirmation.value.err) {
-        throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
+      try {
+        console.log('Using separate sign and send transaction methods...');
+        const signedTransaction = await provider.signTransaction(transaction);
+        const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        
+        console.log('Phantom transaction sent with signature (fallback method):', signature);
+        
+        // Wait for confirmation
+        const confirmation = await connection.confirmTransaction(signature, 'confirmed');
+        
+        if (confirmation.value.err) {
+          throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
+        }
+        
+        return signature;
+      } catch (error) {
+        console.error('Error with sign and send transaction:', error);
+        throw error;
       }
-      
-      return signature;
     } else {
       throw new Error('Phantom wallet does not support required transaction methods');
     }

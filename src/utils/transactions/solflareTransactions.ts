@@ -1,6 +1,6 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
-import { PublicKey, Transaction, SystemProgram, Connection, clusterApiUrl } from '@solana/web3.js';
+import { PublicKey, Transaction, SystemProgram, Connection } from '@solana/web3.js';
 
 // Handle transactions specifically for Solflare wallet
 export const sendSolflareTransaction = async (
@@ -15,8 +15,11 @@ export const sendSolflareTransaction = async (
       throw new Error('Wallet not properly connected');
     }
 
-    // Get network connection (using mainnet-beta for production)
-    const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+    // Use a reliable RPC endpoint for mainnet
+    const connection = new Connection(
+      'https://api.mainnet-beta.solana.com', 
+      { commitment: 'confirmed' }
+    );
     
     // Convert USDC amount to lamports (SOL)
     // 1 SOL = 1 billion lamports
@@ -24,7 +27,9 @@ export const sendSolflareTransaction = async (
     const amountInLamports = Math.ceil(amount * 10000); // Small amount for real transfers
     
     // Get recent blockhash for transaction
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+    console.log('Getting recent blockhash for Solflare...');
+    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
+    console.log('Received blockhash for Solflare:', blockhash);
     
     // Create a new transaction
     const transaction = new Transaction({
@@ -54,6 +59,7 @@ export const sendSolflareTransaction = async (
     // Modern signAndSendTransaction method
     if (provider.signAndSendTransaction) {
       try {
+        console.log('Using Solflare signAndSendTransaction method...');
         const result = await provider.signAndSendTransaction(transaction);
         signature = typeof result === 'string' ? result : result.signature;
         console.log('Solflare transaction sent using signAndSendTransaction:', signature);
@@ -66,6 +72,7 @@ export const sendSolflareTransaction = async (
     // Fallback to separate sign and send if the first method failed
     if (!signature && provider.signTransaction) {
       try {
+        console.log('Using Solflare separate sign and send transaction methods...');
         const signedTransaction = await provider.signTransaction(transaction);
         signature = await connection.sendRawTransaction(signedTransaction.serialize());
         console.log('Solflare transaction sent using separate sign and send:', signature);
@@ -80,11 +87,8 @@ export const sendSolflareTransaction = async (
     }
     
     // Wait for confirmation
-    const confirmation = await connection.confirmTransaction({
-      blockhash,
-      lastValidBlockHeight,
-      signature,
-    });
+    console.log('Waiting for Solflare transaction confirmation...');
+    const confirmation = await connection.confirmTransaction(signature, 'confirmed');
     
     if (confirmation.value.err) {
       throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
