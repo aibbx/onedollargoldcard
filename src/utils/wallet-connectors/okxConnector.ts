@@ -25,20 +25,15 @@ export const connectOKXWallet = async (network: NetworkType = 'mainnet-beta'): P
   }
   
   // Request connection to the wallet
-  try {
-    const response = await provider.connect();
-    const address = response.publicKey.toString();
-    
-    console.log(`Connected to OKX wallet on ${network}`);
-    
-    return {
-      address,
-      provider
-    };
-  } catch (error) {
-    console.error('Error connecting to OKX wallet:', error);
-    throw new Error(`Failed to connect to OKX wallet: ${error.message}`);
-  }
+  const response = await provider.connect();
+  const address = response.publicKey.toString();
+  
+  console.log(`Connected to OKX wallet on ${network}`);
+  
+  return {
+    address,
+    provider
+  };
 };
 
 // Auto-connect to OKX wallet if already connected
@@ -63,20 +58,14 @@ export const autoConnectOKXWallet = async (network: NetworkType = 'mainnet-beta'
     // Continue anyway
   }
   
-  // Check if already connected
-  try {
-    if (provider.isConnected && provider.publicKey) {
-      const address = provider.publicKey.toString();
-      if (address) {
-        console.log(`Auto-connected to OKX wallet: ${address.substring(0, 8)}...`);
-        return {
-          address,
-          provider
-        };
-      }
+  if (provider.isConnected) {
+    const address = provider.publicKey?.toString() || '';
+    if (address) {
+      return {
+        address,
+        provider
+      };
     }
-  } catch (error) {
-    console.error('Error checking OKX connection status:', error);
   }
   
   // If not already connected, try explicit connect
@@ -93,7 +82,6 @@ export const disconnectOKXWallet = (): void => {
   if (typeof window !== 'undefined' && window.okxwallet?.solana) {
     try {
       window.okxwallet.solana.disconnect();
-      console.log('Disconnected from OKX wallet');
     } catch (err) {
       console.error('Error disconnecting OKX wallet:', err);
     }

@@ -3,10 +3,12 @@ import { Connection, TransactionSignature } from '@solana/web3.js';
 import { toast } from "@/hooks/use-toast";
 import { getBackupConnection } from './connectionUtils';
 
-// Define the confirmation response type
+// Define a more specific type for the confirmation response
 interface ConfirmationResponse {
   value: {
     err: any | null;
+    slot?: number;
+    confirmations?: number;
   } | null;
 }
 
@@ -47,41 +49,34 @@ export const confirmTransaction = async (
       
       // Confirm with increasing timeouts on retries
       const timeout = 30000 + (confirmationAttempts * 10000); // Increase timeout with each attempt
+      const confirmation = await Promise.race([
+        currentConnection.confirmTransaction({
+          signature,
+          blockhash,
+          lastValidBlockHeight
+        }, 'confirmed'),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error(`Confirmation timeout (${timeout}ms)`)), timeout)
+        )
+      ]) as ConfirmationResponse;
       
-      try {
-        // Use Promise.race to implement timeout
-        const confirmation = await Promise.race([
-          currentConnection.confirmTransaction({
-            signature,
-            blockhash,
-            lastValidBlockHeight
-          }, 'confirmed'),
-          new Promise((_, reject) => 
-            setTimeout(() => reject(new Error(`Confirmation timeout (${timeout}ms)`)), timeout)
-          )
-        ]) as ConfirmationResponse;
+      // Check if promise was resolved with confirmation
+      if (confirmation) {
+        confirmed = true;
         
-        // Check if promise was resolved with confirmation
-        if (confirmation) {
-          confirmed = true;
-          
-          if (confirmation?.value && confirmation.value.err) {
-            throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
-          }
-          
-          console.log('Solflare USDT transaction confirmed successfully');
-          
-          // Show success toast
-          toast({
-            title: "Transaction Successful",
-            description: "Your USDT transaction has been confirmed on the Solana network!",
-          });
-          
-          return;
+        if (confirmation.value && confirmation.value.err) {
+          throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
         }
-      } catch (timeoutError) {
-        console.error(`Confirmation timeout on attempt ${confirmationAttempts}:`, timeoutError);
-        // Will retry on next iteration
+        
+        console.log('Solflare USDC transaction confirmed successfully');
+        
+        // Show success toast
+        toast({
+          title: "Transaction Successful",
+          description: "Your USDC transaction has been confirmed on the Solana network!",
+        });
+        
+        return;
       }
     } catch (confirmError) {
       console.error(`Confirmation attempt ${confirmationAttempts} failed:`, confirmError);

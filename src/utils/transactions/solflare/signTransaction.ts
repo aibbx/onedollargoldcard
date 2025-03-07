@@ -11,10 +11,6 @@ export const signAndSendTransaction = async (
   console.log('Sending transaction with Solflare wallet...');
   console.log('Available Solflare methods:', Object.keys(provider));
   
-  if (!provider) {
-    throw new Error('Solflare provider is not available');
-  }
-  
   let signature: string | null = null;
   
   try {
@@ -29,7 +25,7 @@ export const signAndSendTransaction = async (
     await new Promise(resolve => setTimeout(resolve, 800));
     
     // Try the preferred signAndSendTransaction method first
-    if (typeof provider.signAndSendTransaction === 'function') {
+    if (provider.signAndSendTransaction) {
       console.log('Using Solflare signAndSendTransaction method...');
       try {
         console.log('Transaction before sending:', transaction);
@@ -39,25 +35,14 @@ export const signAndSendTransaction = async (
         return signature;
       } catch (e) {
         console.error('Error with signAndSendTransaction:', e);
-        if (e.message && e.message.toLowerCase().includes('user rejected')) {
-          toast({
-            title: "Transaction Cancelled",
-            description: "You cancelled the transaction in your Solflare wallet",
-            variant: "destructive",
-          });
-          throw new Error('Transaction was rejected by user in wallet');
-        }
         // Continue to fallback methods
       }
     }
     
     // Then try signTransaction + sendRawTransaction if the first method failed
-    if (!signature && typeof provider.signTransaction === 'function') {
+    if (!signature && provider.signTransaction) {
       console.log('Using Solflare separate sign and send transaction methods...');
       try {
-        // Add delay before signing
-        await new Promise(resolve => setTimeout(resolve, 300));
-        
         const signedTransaction = await provider.signTransaction(transaction);
         console.log('Transaction signed, now sending to network...');
         
@@ -71,25 +56,15 @@ export const signAndSendTransaction = async (
         return signature;
       } catch (e) {
         console.error('Error with signTransaction method:', e);
-        if (e.message && e.message.toLowerCase().includes('user rejected')) {
-          toast({
-            title: "Transaction Cancelled",
-            description: "You cancelled the transaction in your Solflare wallet",
-            variant: "destructive",
-          });
-          throw new Error('Transaction was rejected by user in wallet');
-        }
         throw e;
       }
     }
     
     // Try basic sign method as last resort
-    if (!signature && typeof provider.sign === 'function') {
+    if (!signature && provider.sign) {
       console.log('Using Solflare basic sign method as fallback...');
       try {
         const signedTransaction = await provider.sign(transaction);
-        console.log('Transaction signed with basic sign method');
-        
         signature = await connection.sendRawTransaction(
           signedTransaction.serialize ? signedTransaction.serialize() : signedTransaction
         );
@@ -97,14 +72,6 @@ export const signAndSendTransaction = async (
         return signature;
       } catch (e) {
         console.error('Error with basic sign method:', e);
-        if (e.message && e.message.toLowerCase().includes('user rejected')) {
-          toast({
-            title: "Transaction Cancelled",
-            description: "You cancelled the transaction in your Solflare wallet",
-            variant: "destructive",
-          });
-          throw new Error('Transaction was rejected by user in wallet');
-        }
         throw e;
       }
     }
@@ -123,19 +90,23 @@ export const signAndSendTransaction = async (
   } catch (e) {
     console.error('Error with all Solflare transaction methods:', e);
     
-    // If we already showed a toast for user rejection, just propagate the error
-    if (e.message && e.message.includes('rejected by user')) {
-      throw e;
-    }
-    
     // Provide more helpful error messages
     if (e.message && e.message.includes('insufficient funds')) {
       toast({
         title: "Insufficient Balance",
-        description: "You don't have enough USDT for this transaction. Please add more USDT to your wallet.",
+        description: "You don't have enough USDC for this transaction. Please add more USDC to your wallet.",
         variant: "destructive",
       });
-      throw new Error('Insufficient USDT balance for this transaction. Please add more USDT to your wallet.');
+      throw new Error('Insufficient USDC balance for this transaction. Please add more USDC to your wallet.');
+    }
+    
+    if (e.message && e.message.includes('User rejected')) {
+      toast({
+        title: "Transaction Cancelled",
+        description: "You cancelled the transaction in your Solflare wallet.",
+        variant: "destructive",
+      });
+      throw new Error('Transaction was rejected by user in wallet');
     }
     
     toast({
