@@ -1,9 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from '../../context/WalletContext';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, RefreshCw } from 'lucide-react';
 
 // Import components
 import DonationIncentive from './DonationIncentive';
@@ -23,13 +23,15 @@ interface DonationCardContentProps {
 
 const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletModal }) => {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const { 
     isWalletConnected, 
     walletType, 
     walletAddress, 
     donations,
     totalDonationAmount,
-    winningChance
+    winningChance,
+    recoverDonation
   } = useWallet();
   
   const {
@@ -56,6 +58,36 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
   });
 
   const [showHistory, setShowHistory] = useState(false);
+  
+  // Effect to check for and recover the specific transaction on mount
+  useEffect(() => {
+    const transactionToRecover = "97wMvMN9ZVKhUbPVYAtQwRVXeB6fa7EaB1y6cuGwS42B";
+    const donationAmount = 10.5; // The amount for this specific donation
+    
+    if (isWalletConnected && transactionToRecover) {
+      // Check if this donation is already in the records
+      const existingDonation = donations.find(d => d.transactionId === transactionToRecover);
+      
+      if (!existingDonation) {
+        // Offer recovery via toast notification
+        toast({
+          title: "Donation Record Found",
+          description: (
+            <div>
+              <p>We found a donation transaction from your wallet.</p>
+              <button 
+                onClick={() => recoverDonation(transactionToRecover, donationAmount)}
+                className="bg-gold-500 text-white px-3 py-1 rounded-md mt-2 flex items-center text-sm"
+              >
+                <RefreshCw className="w-3 h-3 mr-1" /> Recover Donation Record
+              </button>
+            </div>
+          ),
+          duration: 10000, // Show for 10 seconds
+        });
+      }
+    }
+  }, [isWalletConnected, donations]);
 
   const handleShareOnX = () => {
     const text = `I just donated $${total} USDT to OneDollarGoldCard! Join me in supporting this initiative that democratizes access to immigration opportunities. #OneDollarGoldCard`;
@@ -73,6 +105,13 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
   const lastDonationTime = donations.length > 0 
     ? new Date(donations[donations.length - 1].timestamp) 
     : undefined;
+
+  // Function to manually recover the specific donation
+  const handleRecoverSpecificDonation = () => {
+    const transactionId = "97wMvMN9ZVKhUbPVYAtQwRVXeB6fa7EaB1y6cuGwS42B";
+    const donationAmount = 10.5;
+    recoverDonation(transactionId, donationAmount);
+  };
 
   return (
     <>
@@ -104,6 +143,16 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
             donationCount={donations.length}
             lastDonationTime={lastDonationTime}
           />
+        )}
+        
+        {isWalletConnected && (
+          <button
+            onClick={handleRecoverSpecificDonation}
+            className="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 text-sm flex items-center justify-center rounded-md transition-colors text-gray-600"
+          >
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Recover Transaction 97wMvMN9...
+          </button>
         )}
         
         {isWalletConnected && donations.length > 0 && (

@@ -36,6 +36,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     totalDonationAmount,
     winningChance,
     sendDonation,
+    recoverDonation,
     updateDonationStats,
     isProcessing
   } = useDonationHandlers(isWalletConnected, walletAddress, walletType, provider, initialDonations);
@@ -135,6 +136,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
       connectWallet, 
       disconnectWallet,
       sendDonation,
+      recoverDonation,
       donations,
       totalDonationAmount,
       winningChance,

@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { DonationRecord, WalletType } from '../types/wallet';
 import { getExplorerUrl } from '../utils/walletUtils';
@@ -135,12 +135,85 @@ export const useDonationHandlers = (
     }
   };
 
+  // Recover donation function
+  const recoverDonation = (transactionId: string, amount: number): boolean => {
+    try {
+      // Check if donation with this transactionId already exists
+      const existingDonation = donations.find(d => d.transactionId === transactionId);
+      
+      if (existingDonation) {
+        toast({
+          title: "Donation Already Recorded",
+          description: `A donation with this transaction ID is already in your records.`,
+        });
+        return false;
+      }
+      
+      // Create a new donation record
+      const newDonation: DonationRecord = {
+        id: `donation_${Date.now()}`,
+        amount: amount,
+        timestamp: new Date(),
+        transactionId: transactionId
+      };
+      
+      // Update donations state
+      const updatedDonations = [...donations, newDonation];
+      setDonations(updatedDonations);
+      
+      // Save to localStorage
+      try {
+        localStorage.setItem('donations', JSON.stringify(updatedDonations.map(d => ({
+          ...d,
+          timestamp: d.timestamp.toISOString()
+        }))));
+      } catch (err) {
+        console.error('Error saving donations to localStorage:', err);
+        return false;
+      }
+      
+      // Update donation statistics
+      updateDonationStats();
+      
+      // Show success message with explorer link
+      const explorerUrl = getExplorerUrl(transactionId, walletType);
+      
+      toast({
+        title: "Donation Record Recovered",
+        description: (
+          <div>
+            <p>{`Successfully recovered your donation of $${amount.toFixed(2)} USDT!`}</p>
+            <a 
+              href={explorerUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gold-600 hover:text-gold-700 underline mt-2 inline-block"
+            >
+              View transaction
+            </a>
+          </div>
+        ),
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('Error recovering donation:', error);
+      toast({
+        title: "Recovery Failed",
+        description: `The donation could not be recovered: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+      return false;
+    }
+  };
+
   return {
     donations,
     setDonations,
     totalDonationAmount,
     winningChance,
     sendDonation,
+    recoverDonation,
     updateDonationStats,
     isProcessing
   };

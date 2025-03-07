@@ -1,7 +1,23 @@
 
-export type WalletType = 'Phantom' | 'Solflare' | 'OKX' | '';
+import { PublicKey } from "@solana/web3.js";
 
-// Define donation record interface
+export type WalletType = 'Phantom' | 'Solflare' | 'OKX';
+
+export interface WalletContextType {
+  isWalletConnected: boolean;
+  walletType: WalletType;
+  walletAddress: string;
+  connectWallet: (type: WalletType) => Promise<void>;
+  disconnectWallet: () => Promise<void>;
+  sendDonation: (amount: number) => Promise<string | null>;
+  recoverDonation: (transactionId: string, amount: number) => boolean;
+  donations: DonationRecord[];
+  totalDonationAmount: number;
+  winningChance: number;
+  network: string;
+  isProcessing: boolean;
+}
+
 export interface DonationRecord {
   id: string;
   amount: number;
@@ -9,51 +25,13 @@ export interface DonationRecord {
   transactionId: string;
 }
 
-// Define wallet context interface
-export interface WalletContextType {
-  isWalletConnected: boolean;
-  walletType: WalletType;
-  walletAddress: string;
-  connectWallet: (type: WalletType) => Promise<void>;
-  disconnectWallet: () => void;
-  sendDonation: (amount: number) => Promise<string | null>;
-  donations: DonationRecord[];
-  totalDonationAmount: number;
-  winningChance: number;
-  network?: string;
-  isProcessing: boolean;
+export interface WalletDetectionResult {
+  phantom: boolean;
+  solflare: boolean;
+  okx: boolean;
 }
 
-// Add type definitions for wallet providers (Solana only)
-declare global {
-  interface Window {
-    solana?: {
-      isPhantom?: boolean;
-      isConnected: boolean;
-      connect: () => Promise<{ publicKey: { toString: () => string } }>;
-      disconnect: () => Promise<void>;
-      publicKey?: { toString: () => string };
-      request?: (args: { method: string; params?: any }) => Promise<any>;
-      switchNetwork?: (network: string) => Promise<void>;
-      signAndSendTransaction?: (args: any) => Promise<any>;
-    };
-    solflare?: {
-      isConnected: boolean;
-      connect: () => Promise<void>;
-      disconnect: () => Promise<void>;
-      publicKey?: { toString: () => string };
-      setSolanaNetwork?: (network: string) => void;
-      signAndSendTransaction?: (args: any) => Promise<any>;
-    };
-    okxwallet?: {
-      solana: {
-        isConnected: boolean;
-        connect: () => Promise<{ publicKey: { toString: () => string } }>;
-        disconnect: () => Promise<void>;
-        publicKey?: { toString: () => string };
-        switchNetwork?: (network: string) => Promise<void>;
-        signAndSendTransaction?: (args: any) => Promise<any>;
-      }
-    };
-  }
+export interface WalletConnectionDetail {
+  publicKey: PublicKey;
+  isConnected: boolean;
 }
