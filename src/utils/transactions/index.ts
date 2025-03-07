@@ -22,12 +22,6 @@ export const processTransaction = async (
       throw new Error('Wallet address is not available');
     }
     
-    // Ensure Buffer is available in the global space
-    if (typeof window !== 'undefined' && !window.Buffer) {
-      console.error('Buffer is not available globally');
-      throw new Error('Buffer polyfill is not properly configured');
-    }
-    
     // Process transaction based on wallet type
     switch (walletType) {
       case 'Phantom':

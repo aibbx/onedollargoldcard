@@ -1,13 +1,6 @@
 
 import { WalletType } from '../types/wallet';
 
-// Declare Buffer at the global level for TypeScript
-declare global {
-  interface Window {
-    Buffer: typeof Buffer;
-  }
-}
-
 // Solana contract addresses (mainnet)
 export const CONTRACT_ADDRESSES = {
   poolAddress: "BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt", // Pool address on mainnet

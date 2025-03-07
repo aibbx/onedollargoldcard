@@ -19,12 +19,6 @@ export const sendSolflareTransaction = async (
       throw new Error('Wallet not properly connected');
     }
 
-    // Check if Buffer is available
-    if (typeof window === 'undefined' || !window.Buffer) {
-      console.error('Buffer is not available');
-      throw new Error('Buffer polyfill is required for Solana transactions');
-    }
-
     // Establish connection to mainnet with confirmed commitment
     const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
     
@@ -98,3 +92,4 @@ export const sendSolflareTransaction = async (
     throw error;
   }
 };
+
