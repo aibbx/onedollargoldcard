@@ -41,9 +41,9 @@ export const sendSolflareTransaction = async (
     const transferAmountLamports = Math.floor(amount * LAMPORTS_PER_SOL * 0.0001);
     console.log('USDC transfer amount in lamports:', transferAmountLamports);
     
-    // Get recent blockhash for transaction using the correct parameters format
-    console.log('Getting recent blockhash for Solflare transaction...');
     try {
+      // Get recent blockhash for transaction
+      console.log('Getting recent blockhash for Solflare transaction...');
       const blockhashResponse = await connection.getLatestBlockhash();
       const { blockhash, lastValidBlockHeight } = blockhashResponse;
       console.log('Received blockhash:', blockhash.slice(0, 10) + '...');
@@ -58,7 +58,6 @@ export const sendSolflareTransaction = async (
       console.log('Pool address:', poolAddress.toString());
       
       // Use SOL transfer as a placeholder for USDC
-      // This is temporary until we can handle the Buffer issues
       transaction.add(
         SystemProgram.transfer({
           fromPubkey: provider.publicKey,

@@ -30,9 +30,7 @@ export const sendPhantomTransaction = async (
     const connection = getConnection();
     
     // For browser compatibility without Buffer, use SOL transfer with small amount
-    // This is a temporary solution until we figure out how to handle token transfers
-    // without the Buffer dependency
-    // Simulate USDC amount with a small fraction of SOL
+    // This is a temporary solution until we implement actual USDC transfer
     const transferAmountLamports = Math.floor(amount * LAMPORTS_PER_SOL * 0.0001);
     console.log('USDC transfer amount in lamports:', transferAmountLamports);
 
@@ -48,7 +46,6 @@ export const sendPhantomTransaction = async (
     transaction.recentBlockhash = blockhash;
 
     // Use SOL transfer as a placeholder for USDC
-    // This is temporary until we can handle the Buffer issues
     const recipientAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
     console.log('Recipient address:', recipientAddress.toString());
     
