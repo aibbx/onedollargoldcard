@@ -114,6 +114,27 @@
   .container-custom {
     @apply mx-auto px-4 md:px-8 max-w-7xl;
   }
+  
+  .wallet-modal-text {
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #4b5563;
+  }
+
+  .wallet-option-button {
+    @apply w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 
+           transition-colors flex items-center gap-4 text-left;
+  }
+
+  .wallet-option-text {
+    @apply font-normal text-xl text-gray-800;
+  }
+
+  .wallet-disclaimer {
+    @apply text-sm text-center text-gray-500 mt-8 font-normal;
+  }
 }
 
 /* Custom scrollbar */
@@ -193,19 +214,4 @@
 
 .animate-shimmer {
   animation: shimmer 1.5s infinite;
-}
-
-/* Wallet Modal Styles */
-.wallet-modal-title {
-  font-weight: 400;
-  letter-spacing: -0.01em;
-}
-
-.wallet-modal-text {
-  font-weight: 300;
-  letter-spacing: 0.01em;
-}
-
-.wallet-option {
-  font-weight: 400;
 }

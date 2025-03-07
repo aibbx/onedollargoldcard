@@ -31,9 +31,9 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
+      <div className="bg-white w-full max-w-md rounded-xl shadow-xl overflow-hidden">
         <div className="p-6 flex justify-between items-center border-b border-gray-100">
-          <h2 className="text-2xl font-normal text-gray-800">Connect Wallet</h2>
+          <h2 className="text-2xl font-medium text-gray-800">Connect Wallet</h2>
           <button 
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 transition-colors"
@@ -44,45 +44,45 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
         </div>
         
         <div className="p-6">
-          <p className="text-gray-600 mb-6 font-light text-left">
+          <p className="text-gray-600 mb-6 wallet-modal-text">
             Connect your Solana wallet to donate and participate in the Gold Card program.
           </p>
           
-          <div className="space-y-3">
+          <div className="space-y-4">
             <button
               onClick={() => handleWalletConnect('Phantom')}
-              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+              className="wallet-option-button"
             >
-              <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-8 h-8" />
-              <span className="font-normal text-lg">Phantom</span>
+              <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-10 h-10" />
+              <span className="wallet-option-text">Phantom</span>
             </button>
             
             <button
               onClick={() => handleWalletConnect('Solflare')}
-              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+              className="wallet-option-button"
             >
-              <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-8 h-8" />
-              <span className="font-normal text-lg">Solflare</span>
+              <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-10 h-10" />
+              <span className="wallet-option-text">Solflare</span>
             </button>
             
             <button
               onClick={() => handleWalletConnect('OKX')}
-              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+              className="wallet-option-button"
             >
-              <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-8 h-8" />
-              <span className="font-normal text-lg">OKX Wallet</span>
+              <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-10 h-10" />
+              <span className="wallet-option-text">OKX Wallet</span>
             </button>
             
             <button
               onClick={() => handleWalletConnect('MetaMask')}
-              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+              className="wallet-option-button"
             >
-              <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-8 h-8" />
-              <span className="font-normal text-lg">MetaMask</span>
+              <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-10 h-10" />
+              <span className="wallet-option-text">MetaMask</span>
             </button>
           </div>
           
-          <p className="text-sm text-center text-gray-500 mt-6 font-light">
+          <p className="text-sm text-center text-gray-500 mt-6 wallet-disclaimer">
             By connecting your wallet, you agree to our <Link to="/terms" className="text-gold-600 hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-gold-600 hover:underline">Privacy Policy</Link>.
           </p>
         </div>
