@@ -1,6 +1,10 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
-import { PublicKey, Transaction, SystemProgram } from '@solana/web3.js';
+import { PublicKey, Transaction } from '@solana/web3.js';
+import { Token, TOKEN_PROGRAM_ID } from '@solana/spl-token';
+
+// USDC token mint address on Solana
+const USDC_MINT = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
 
 // Handle transactions specifically for Solflare wallet
 export const sendSolflareTransaction = async (
@@ -15,33 +19,44 @@ export const sendSolflareTransaction = async (
       throw new Error('Wallet not properly connected');
     }
 
-    // Convert USDC amount to lamports (1 SOL = 1 billion lamports)
-    // For testing, we'll use a very small amount of SOL instead of actual USDC
-    const amountInLamports = Math.ceil(amount * 100); // Using a tiny fraction of SOL for testing
+    // Convert to USDC amount (USDC has 6 decimals)
+    const amountInUsdcUnits = Math.ceil(amount * 1000000);
     
     // Create a new transaction
     const transaction = new Transaction();
     
-    // Use the pool address from our constants
+    // Get the pool address from our constants
     const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
     
-    // Add a SOL transfer instruction
-    transaction.add(
-      SystemProgram.transfer({
-        fromPubkey: provider.publicKey,
-        toPubkey: poolAddress,
-        lamports: amountInLamports,
-      })
+    // Find the user's USDC token account
+    const userTokenAccount = await Token.getAssociatedTokenAddress(
+      TOKEN_PROGRAM_ID,
+      TOKEN_PROGRAM_ID,
+      USDC_MINT,
+      provider.publicKey
     );
     
+    // Create transfer instruction
+    const transferInstruction = Token.createTransferInstruction(
+      TOKEN_PROGRAM_ID,
+      userTokenAccount,
+      poolAddress,
+      provider.publicKey,
+      [],
+      amountInUsdcUnits
+    );
+    
+    // Add the transfer instruction to the transaction
+    transaction.add(transferInstruction);
+    
     // Sign and send the transaction using Solflare
-    console.log('Sending transaction with Solflare wallet...');
+    console.log('Sending USDC transaction with Solflare wallet...');
     const signature = await provider.signAndSendTransaction(transaction);
-    console.log('Solflare transaction sent with signature:', signature);
+    console.log('Solflare USDC transaction sent with signature:', signature);
     
     return signature;
   } catch (error) {
-    console.error('Error in Solflare transaction:', error);
+    console.error('Error in Solflare USDC transaction:', error);
     throw error;
   }
 };

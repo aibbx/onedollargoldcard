@@ -58,10 +58,7 @@ export const useDonationHandlers = (
       console.log('Starting donation process:', { amount, walletType, walletAddress });
       console.log('Provider info:', { 
         type: walletType,
-        hasPublicKey: walletType === 'OKX' ? !!provider?.solana?.publicKey : !!provider?.publicKey,
-        provider: JSON.stringify(provider, (key, value) => 
-          typeof value === 'function' ? 'function...' : value
-        )
+        hasPublicKey: walletType === 'OKX' ? !!provider?.solana?.publicKey : !!provider?.publicKey
       });
       
       // Process the transaction using our utility function
