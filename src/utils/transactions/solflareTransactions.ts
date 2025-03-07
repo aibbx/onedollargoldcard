@@ -1,9 +1,9 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
-import { PublicKey, Transaction } from '@solana/web3.js';
+import { PublicKey, Transaction, Connection, clusterApiUrl } from '@solana/web3.js';
 import { getAssociatedTokenAddress, createTransferInstruction } from '@solana/spl-token';
 
-// USDC token mint address on Solana
+// USDC token mint address on Solana mainnet
 const USDC_MINT = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
 
 // Handle transactions specifically for Solflare wallet
@@ -19,11 +19,21 @@ export const sendSolflareTransaction = async (
       throw new Error('Wallet not properly connected');
     }
 
-    // Convert to USDC amount (USDC has 6 decimals)
-    const amountInUsdcUnits = Math.ceil(amount * 1000000);
+    // Establish connection to mainnet
+    const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
     
-    // Create a new transaction
-    const transaction = new Transaction();
+    // Convert to USDC amount (USDC has 6 decimals)
+    const amountInUsdcUnits = Math.floor(amount * 1000000);
+    
+    // Get the latest blockhash for transaction
+    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+    
+    // Create a new transaction with blockhash and fee payer
+    const transaction = new Transaction({
+      feePayer: provider.publicKey,
+      blockhash: blockhash,
+      lastValidBlockHeight: lastValidBlockHeight
+    });
     
     // Get the pool address from our constants
     const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
@@ -56,6 +66,17 @@ export const sendSolflareTransaction = async (
     console.log('Sending USDC transaction with Solflare wallet...');
     const signature = await provider.signAndSendTransaction(transaction);
     console.log('Solflare USDC transaction sent with signature:', signature);
+    
+    // Confirm the transaction
+    const confirmation = await connection.confirmTransaction({
+      blockhash,
+      lastValidBlockHeight,
+      signature
+    });
+    
+    if (confirmation.value.err) {
+      throw new Error(`Transaction confirmed but failed: ${confirmation.value.err}`);
+    }
     
     return signature;
   } catch (error) {

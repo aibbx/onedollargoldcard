@@ -1,10 +1,10 @@
 
 import { WalletType } from '../types/wallet';
 
-// Solana contract addresses
+// Solana contract addresses (mainnet)
 export const CONTRACT_ADDRESSES = {
-  poolAddress: "BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt", // Pool address
-  feeAddress: "5ecoPEMgbz8CL8ymcLVhUNFkp3ded5mWH731L2So7e9Q", // Fee address
+  poolAddress: "BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt", // Pool address on mainnet
+  feeAddress: "5ecoPEMgbz8CL8ymcLVhUNFkp3ded5mWH731L2So7e9Q", // Fee address on mainnet
 };
 
 // Get the explorer URL for a transaction

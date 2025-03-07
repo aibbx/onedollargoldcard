@@ -1,5 +1,4 @@
 
-import { WalletType } from '../../types/wallet';
 import { NetworkType } from '../../hooks/useWalletConnectors';
 
 // Connect to Phantom wallet
@@ -18,11 +17,13 @@ export const connectPhantomWallet = async (network: NetworkType = 'mainnet-beta'
     try {
       await provider.connect();
       // Switch to the specified network
-      await provider.request({
-        method: 'switchNetwork',
-        params: { network }
-      });
-      console.log(`Switched to Solana ${network}`);
+      if (provider.request) {
+        await provider.request({
+          method: 'switchNetwork',
+          params: { network }
+        });
+        console.log(`Switched to Solana ${network}`);
+      }
     } catch (error) {
       console.error('Error switching network:', error);
       // Continue anyway as we want to connect regardless
@@ -53,7 +54,7 @@ export const autoConnectPhantomWallet = async (network: NetworkType = 'mainnet-b
   const provider = window.solana;
   
   // Try to switch to the specified network
-  if (provider.isPhantom) {
+  if (provider.isPhantom && provider.request) {
     try {
       // Switch to the specified network
       await provider.request({
