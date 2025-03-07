@@ -5,11 +5,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from '../context/WalletContext';
+import ConnectWalletModal from './wallet/ConnectWalletModal';
 
 // Import the components
 import DonationIncentive from './donation/DonationIncentive';
 import AmountSelector from './donation/AmountSelector';
-import WalletOptions from './donation/WalletOptions';
 import DonationStats from './donation/DonationStats';
 import DonationActions from './donation/DonationActions';
 import DonationHistory from './donation/DonationHistory';
@@ -33,7 +33,7 @@ const DonationCard = () => {
   const [total, setTotal] = useState('105.00');
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [error, setError] = useState('');
-  const [showWalletOptions, setShowWalletOptions] = useState(false);
+  const [showWalletModal, setShowWalletModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
 
@@ -66,15 +66,16 @@ const DonationCard = () => {
   const handleConnectWallet = async (type: 'Phantom' | 'Solflare' | 'OKX' | 'MetaMask') => {
     try {
       await connectWallet(type);
-      setShowWalletOptions(false);
+      return Promise.resolve();
     } catch (error) {
       console.error("Failed to connect wallet:", error);
+      return Promise.reject(error);
     }
   };
   
   const handleDonation = async () => {
     if (!isWalletConnected) {
-      setShowWalletOptions(true);
+      setShowWalletModal(true);
       return;
     }
     
@@ -203,11 +204,6 @@ const DonationCard = () => {
                   />
                 )}
                 
-                {/* Wallet Options */}
-                {showWalletOptions && !isWalletConnected && (
-                  <WalletOptions onConnect={handleConnectWallet} />
-                )}
-                
                 {/* Confirmation Checkbox */}
                 <div className="flex items-start space-x-2">
                   <Checkbox
@@ -244,6 +240,13 @@ const DonationCard = () => {
           </div>
         </div>
       </div>
+
+      {/* Connect Wallet Modal */}
+      <ConnectWalletModal
+        isOpen={showWalletModal}
+        onClose={() => setShowWalletModal(false)}
+        onConnectWallet={handleConnectWallet}
+      />
     </section>
   );
 };
