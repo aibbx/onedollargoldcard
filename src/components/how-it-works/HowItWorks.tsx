@@ -35,26 +35,37 @@ const HowItWorks = () => {
   };
 
   return (
-    <div>
-      {/* Tabs */}
-      <div className="flex flex-wrap justify-center gap-2 mb-8">
-        {tabs.map((tab) => (
-          <TabButton
-            key={tab.id}
-            id={tab.id}
-            label={tab.label}
-            icon={tab.icon}
-            isActive={activeTab === tab.id}
-            onClick={setActiveTab}
-          />
-        ))}
+    <section id="how-it-works" className="py-24 bg-gray-50">
+      <div className="container-custom">
+        <div className="text-center mb-16">
+          <h2 className="heading-lg mb-6">{t('howItWorks.title')}</h2>
+          <div className="w-20 h-1 bg-gold-400 mx-auto mb-6"></div>
+          <p className="text-gray-600 max-w-3xl mx-auto mb-8">
+            Our platform uses blockchain technology to ensure transparency and fairness
+            in the process of selecting winners for the Gold Card program.
+          </p>
+        </div>
+        
+        {/* Tabs */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          {tabs.map((tab) => (
+            <TabButton
+              key={tab.id}
+              id={tab.id}
+              label={tab.label}
+              icon={tab.icon}
+              isActive={activeTab === tab.id}
+              onClick={setActiveTab}
+            />
+          ))}
+        </div>
+        
+        {/* Tab Content */}
+        <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
+          {renderTabContent()}
+        </div>
       </div>
-      
-      {/* Tab Content */}
-      <div className="bg-white rounded-xl shadow-md p-6 md:p-8 border border-gold-100">
-        {renderTabContent()}
-      </div>
-    </div>
+    </section>
   );
 };
 
