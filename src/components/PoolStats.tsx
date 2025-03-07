@@ -7,9 +7,13 @@ import PoolProgress from './pool/PoolProgress';
 import PoolStatCard from './pool/PoolStatCard';
 import SharePoolCard from './pool/SharePoolCard';
 import { CONTRACT_ADDRESSES } from '../utils/walletUtils';
+import { useWallet } from '../context/WalletContext';
+import { toast } from '@/hooks/use-toast';
 
 const PoolStats = () => {
   const { t } = useLanguage();
+  const { donations } = useWallet();
+  
   const [poolAmount, setPoolAmount] = useState(0);
   const [targetAmount, setTargetAmount] = useState(10000000); // $10M target
   const [totalDonors, setTotalDonors] = useState(0);
@@ -23,34 +27,58 @@ const PoolStats = () => {
       try {
         setIsLoading(true);
         
-        // This would be replaced with actual blockchain API calls
-        // For example, querying the balance and metadata of the pool contract
-        const poolData = await fetchBlockchainData();
+        // Calculate the global pool amount from the donations stored in the WalletContext
+        const totalDonationsAmount = calculateTotalDonations();
         
-        setPoolAmount(poolData.currentAmount);
-        setTargetAmount(poolData.targetAmount);
-        setTotalDonors(poolData.donors);
-        
-        // Calculate time left until deadline
-        const now = new Date();
-        const diffTime = Math.abs(poolData.endDate.getTime() - now.getTime());
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
-        
-        setTimeLeft(`${diffDays}d ${diffHours}h ${diffMinutes}m`);
+        // Get additional pool data from blockchain, if available
+        try {
+          const poolData = await fetchBlockchainData();
+          
+          // Combine the blockchain data with our local donations data
+          // This ensures we have the latest data even if the blockchain API fails
+          const combinedAmount = Math.max(totalDonationsAmount, poolData.currentAmount);
+          
+          setPoolAmount(combinedAmount);
+          setTargetAmount(poolData.targetAmount);
+          setTotalDonors(Math.max(donations.length, poolData.donors));
+          
+          // Calculate time left until deadline
+          const now = new Date();
+          const diffTime = Math.abs(poolData.endDate.getTime() - now.getTime());
+          const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+          const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+          
+          setTimeLeft(`${diffDays}d ${diffHours}h ${diffMinutes}m`);
+        } catch (error) {
+          console.error("Error fetching blockchain data:", error);
+          
+          // If blockchain API fails, just use our local donation data
+          setPoolAmount(totalDonationsAmount);
+          setTotalDonors(donations.length > 0 ? donations.length : calculateEstimatedDonors(totalDonationsAmount));
+          
+          // Calculate time left - 30 days from now as default deadline
+          const endDate = new Date();
+          endDate.setDate(endDate.getDate() + 30);
+          const now = new Date();
+          const diffTime = Math.abs(endDate.getTime() - now.getTime());
+          const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+          const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+          
+          setTimeLeft(`${diffDays}d ${diffHours}h ${diffMinutes}m`);
+        }
         
         // Calculate progress percentage
-        const progressPercentage = (poolData.currentAmount / poolData.targetAmount) * 100;
+        const progressPercentage = (poolAmount / targetAmount) * 100;
         setProgress(progressPercentage);
       } catch (error) {
-        console.error("Error fetching pool data:", error);
-        // Use fallback data if the fetch fails
-        const fallbackData = getFallbackData();
-        setPoolAmount(fallbackData.currentAmount);
-        setTotalDonors(fallbackData.donors);
-        setTimeLeft(fallbackData.timeLeft);
-        setProgress((fallbackData.currentAmount / targetAmount) * 100);
+        console.error("Error updating pool data:", error);
+        toast({
+          title: "Error updating pool statistics",
+          description: "Could not retrieve the latest pool data. Using available data instead.",
+          variant: "destructive",
+        });
       } finally {
         setIsLoading(false);
       }
@@ -62,33 +90,25 @@ const PoolStats = () => {
     const refreshInterval = setInterval(fetchPoolData, 60000); // Refresh every minute
     
     return () => clearInterval(refreshInterval);
-  }, []);
+  }, [donations]);
   
-  // Get fallback data for when the blockchain API is unavailable
-  const getFallbackData = () => {
-    // Generate somewhat realistic fallback data
-    const currentAmount = 245678; // ~$245k in the pool
-    const donors = 3789; // ~3.8k donors
+  // Calculate the total donations amount from the WalletContext
+  const calculateTotalDonations = () => {
+    if (!donations || donations.length === 0) return 0;
     
-    // Calculate time left - hardcoded to 30 days from now
-    const endDate = new Date();
-    endDate.setDate(endDate.getDate() + 30);
-    const now = new Date();
-    const diffTime = Math.abs(endDate.getTime() - now.getTime());
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
-    
-    return {
-      currentAmount,
-      targetAmount: 10000000,
-      donors,
-      timeLeft: `${diffDays}d ${diffHours}h ${diffMinutes}m`,
-      endDate
-    };
+    return donations.reduce((total, donation) => total + donation.amount, 0);
   };
   
-  // Fetch real blockchain data
+  // Estimate donors count based on amount if we don't have exact data
+  const calculateEstimatedDonors = (amount: number) => {
+    if (amount <= 0) return 0;
+    
+    // Estimate based on average donation amount of $65
+    const avgDonationAmount = 65;
+    return Math.max(1, Math.floor(amount / avgDonationAmount));
+  };
+  
+  // Fetch blockchain data
   const fetchBlockchainData = async () => {
     try {
       // Try multiple endpoints to improve reliability
@@ -112,22 +132,19 @@ const PoolStats = () => {
         }
       }
       
-      // If we couldn't get data from any endpoint, throw an error to use fallback
+      // If we couldn't get data from any endpoint, throw an error
       if (!data) {
-        throw new Error('All blockchain API endpoints failed');
+        throw new Error('Could not fetch blockchain data');
       }
       
-      // Extract data from the response - actual structure depends on the blockchain and API
-      // This is a placeholder implementation
+      // Extract data from the response
       const currentAmount = data?.tokenAmount?.uiAmount || 0;
       
       // Get donor count - in a real implementation this would be from chain data
-      // For now, generate a number based on the current amount
-      const uniqueDonors = Math.floor(currentAmount / 65) + 12; // Rough estimate
+      const uniqueDonors = Math.max(donations.length, calculateEstimatedDonors(currentAmount));
       
       // Calculate the end date based on contract data
-      // This could be a fixed date or calculated based on deployment date
-      // For now, using a placeholder of 45 days from now
+      // Default to 45 days from now
       const endDate = new Date(Date.now() + 45 * 24 * 60 * 60 * 1000);
       
       return {
@@ -138,7 +155,6 @@ const PoolStats = () => {
       };
     } catch (error) {
       console.error('Error fetching blockchain data:', error);
-      // Throw the error up to be handled by the caller
       throw error;
     }
   };
