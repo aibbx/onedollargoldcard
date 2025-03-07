@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { Github, ExternalLink, Home, HelpCircle, FileText, MessageCircle, Sparkle } from 'lucide-react';
+import { Github, ExternalLink, Home, HelpCircle, FileText, MessageCircle, Sparkle, X } from 'lucide-react';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -132,20 +131,6 @@ const Footer = () => {
                 <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('footer.contact')}</span>
                 <ExternalLink className="ml-1 w-3 h-3 text-gray-400 group-hover:text-gold-500" />
               </a>
-              
-              <button 
-                onClick={() => handleScrollToSection('donation-section')}
-                className="flex items-center justify-center col-span-2 px-4 py-4 bg-gradient-to-r from-gold-400 to-gold-500 hover:from-gold-500 hover:to-gold-600 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-left group"
-              >
-                <span className="text-white font-medium">{t('hero.donateNow')}</span>
-                <svg className="w-5 h-5 ml-2 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 8c-2.8 0-5 1.5-5 4 0 2.3 2 3.8 5 4V8z"/>
-                  <path d="M12 8c2.8 0 5 1.5 5 4 0 2.3-2 3.8-5 4V8z"/>
-                  <circle cx="12" cy="4" r="2"/>
-                  <path d="M12 16v4"/>
-                  <path d="M8 20h8"/>
-                </svg>
-              </button>
             </div>
           </div>
         </div>
@@ -161,9 +146,7 @@ const Footer = () => {
               <span className="sr-only">GitHub</span>
             </a>
             <a href="#" className="text-gray-500 hover:text-gold-600 transition-all duration-200" onClick={handleShare}>
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
-              </svg>
+              <X className="h-5 w-5" />
               <span className="sr-only">Share on X</span>
             </a>
           </div>
