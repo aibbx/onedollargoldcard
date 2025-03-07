@@ -3,6 +3,13 @@ import { Connection, TransactionSignature } from '@solana/web3.js';
 import { toast } from "@/hooks/use-toast";
 import { getBackupConnection } from './connectionUtils';
 
+// Define the confirmation response type
+interface ConfirmationResponse {
+  value: {
+    err: any | null;
+  } | null;
+}
+
 // Confirm the transaction
 export const confirmTransaction = async (
   connection: Connection,
@@ -52,13 +59,13 @@ export const confirmTransaction = async (
           new Promise((_, reject) => 
             setTimeout(() => reject(new Error(`Confirmation timeout (${timeout}ms)`)), timeout)
           )
-        ]);
+        ]) as ConfirmationResponse;
         
         // Check if promise was resolved with confirmation
         if (confirmation) {
           confirmed = true;
           
-          if (confirmation.value && confirmation.value.err) {
+          if (confirmation?.value && confirmation.value.err) {
             throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
           }
           

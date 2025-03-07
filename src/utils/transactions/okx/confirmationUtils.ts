@@ -1,7 +1,14 @@
 
-import { Connection } from '@solana/web3.js';
+import { Connection, TransactionSignature } from '@solana/web3.js';
 import { toast } from "@/hooks/use-toast";
 import { getBackupConnection } from './connectionUtils';
+
+// Define the confirmation response type
+interface ConfirmationResponse {
+  value: {
+    err: any | null;
+  } | null;
+}
 
 // Function to confirm transaction with retry logic
 export const confirmTransaction = async (
@@ -41,11 +48,11 @@ export const confirmTransaction = async (
           new Promise((_, reject) => 
             setTimeout(() => reject(new Error(`Confirmation timeout (${timeoutDuration}ms)`)), timeoutDuration)
           )
-        ]);
+        ]) as ConfirmationResponse;
         
         confirmed = true;
         
-        if (confirmation.value && confirmation.value.err) {
+        if (confirmation?.value && confirmation.value.err) {
           console.error('Transaction error during confirmation:', confirmation.value.err);
           toast({
             title: "Transaction Failed on Network",
