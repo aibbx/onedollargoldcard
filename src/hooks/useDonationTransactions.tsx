@@ -27,27 +27,33 @@ export const useDonationTransactions = ({
   const [isLoading, setIsLoading] = useState(false);
   
   const handleDonation = async () => {
-    // If wallet is not connected, show wallet modal
-    if (!isWalletConnected) {
-      showWalletModal();
-      return;
-    }
-    
-    // Validate amount
-    const numericAmount = parseFloat(amount);
-    if (isNaN(numericAmount) || numericAmount < 1) {
-      setError(t('donation.minAmount'));
-      return;
-    }
-    
-    // Check confirmation
-    if (!isConfirmed) {
-      setError(t('donation.confirmation'));
-      return;
-    }
-    
     try {
+      // If wallet is not connected, show wallet modal
+      if (!isWalletConnected) {
+        showWalletModal();
+        return;
+      }
+      
+      // Validate amount
+      const numericAmount = parseFloat(amount);
+      if (isNaN(numericAmount) || numericAmount < 1) {
+        setError(t('donation.minAmount'));
+        return;
+      }
+      
+      // Check confirmation
+      if (!isConfirmed) {
+        setError(t('donation.confirmation'));
+        return;
+      }
+      
       setIsLoading(true);
+      
+      // Show initial toast
+      toast({
+        title: "Preparing Donation",
+        description: `Preparing your donation of $${numericAmount.toFixed(2)} USDC...`,
+      });
       
       // Calculate total with 5% fee
       const totalAmount = numericAmount * 1.05; 
@@ -56,14 +62,15 @@ export const useDonationTransactions = ({
       
       // Set a timeout to show a more helpful message if it's taking too long
       const timeoutId = setTimeout(() => {
-        toast({
-          title: "Processing Transaction",
-          description: "Please approve the transaction in your wallet. This might take a moment...",
-        });
-      }, 3000);
+        if (isLoading) {
+          toast({
+            title: "Processing Transaction",
+            description: "Please approve the transaction in your wallet. This might take a moment...",
+          });
+        }
+      }, 5000);
       
       // Try to send donation
-      // We're using SOL transfers as a placeholder until we can implement USDC tokens properly
       const transactionId = await sendDonation(totalAmount);
       
       // Clear the timeout
@@ -74,7 +81,7 @@ export const useDonationTransactions = ({
         resetForm();
         toast({
           title: "Donation Successful",
-          description: `Your donation of $${totalAmount.toFixed(2)} has been submitted. Thank you for your support!`,
+          description: `Thank you! Your donation of $${totalAmount.toFixed(2)} USDC has been confirmed.`,
         });
         return transactionId;
       } else {
@@ -82,13 +89,16 @@ export const useDonationTransactions = ({
       }
     } catch (error) {
       console.error('Donation failed:', error);
-      toast({
-        title: "Donation Failed",
-        description: error instanceof Error 
-          ? `There was an error: ${error.message}` 
-          : "There was an error processing your donation. Please try again.",
-        variant: "destructive",
-      });
+      // Only show toast if not shown by transaction handlers
+      if (!error.message?.includes("already shown")) {
+        toast({
+          title: "Donation Failed",
+          description: error instanceof Error 
+            ? `There was an error: ${error.message}` 
+            : "There was an error processing your donation. Please try again.",
+          variant: "destructive",
+        });
+      }
       return null;
     } finally {
       setIsLoading(false);

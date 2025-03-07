@@ -23,8 +23,15 @@ const DonationActions: React.FC<DonationActionsProps> = ({
   shareOnXText,
   isLoading = false
 }) => {
-  const { isProcessing } = useWallet();
+  const { isProcessing, walletType } = useWallet();
   const buttonDisabled = isLoading || isProcessing;
+  
+  const getButtonText = () => {
+    if (buttonDisabled) {
+      return "Processing...";
+    }
+    return isWalletConnected ? donateButtonText : connectWalletText;
+  };
   
   return (
     <div className="space-y-3">
@@ -36,6 +43,7 @@ const DonationActions: React.FC<DonationActionsProps> = ({
                    bg-gradient-to-r from-gold-400 to-gold-500 hover:from-gold-500 hover:to-gold-600 
                    transform hover:scale-[1.02] active:scale-[0.98] flex justify-center items-center group
                    disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+        aria-label={buttonDisabled ? "Processing donation" : (isWalletConnected ? "Donate USDC" : "Connect wallet")}
       >
         {/* Shimmer effect */}
         <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmerTranslate"></span>
@@ -43,7 +51,7 @@ const DonationActions: React.FC<DonationActionsProps> = ({
         {buttonDisabled ? (
           <>
             <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-            Processing...
+            Processing {walletType && `with ${walletType}`}...
           </>
         ) : isWalletConnected ? (
           <>

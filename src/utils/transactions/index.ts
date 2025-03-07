@@ -1,7 +1,8 @@
 
 // Add Buffer polyfill for browser compatibility
 import { Buffer } from 'buffer';
-// Make Buffer available globally
+
+// Make Buffer available globally - this must be at the top before any imports
 if (typeof window !== 'undefined') {
   window.Buffer = window.Buffer || Buffer;
 }
@@ -29,25 +30,55 @@ export const processTransaction = async (
     });
 
     if (!provider) {
-      throw new Error('Wallet provider is not available');
+      const error = new Error('Wallet provider is not available');
+      toast({
+        title: "Wallet Error",
+        description: "Your wallet is not properly connected. Please try reconnecting.",
+        variant: "destructive",
+      });
+      throw error;
     }
     
     if (!walletAddress) {
-      throw new Error('Wallet address is not available');
+      const error = new Error('Wallet address is not available');
+      toast({
+        title: "Wallet Error",
+        description: "Could not find your wallet address. Please reconnect your wallet.",
+        variant: "destructive",
+      });
+      throw error;
     }
     
     // Validate transaction amount 
     if (amount <= 0) {
-      throw new Error('Invalid donation amount. Amount must be greater than 0.');
+      const error = new Error('Invalid donation amount. Amount must be greater than 0.');
+      toast({
+        title: "Invalid Amount",
+        description: "Donation amount must be greater than 0 USDC.",
+        variant: "destructive",
+      });
+      throw error;
     }
 
     let transactionId: string;
+    
+    // Show preparing toast
+    toast({
+      title: "Preparing Transaction",
+      description: `Setting up your donation of ${amount.toFixed(2)} USDC using ${walletType} wallet...`,
+    });
     
     // Process transaction based on wallet type
     switch (walletType) {
       case 'Phantom':
         if (!provider.publicKey) {
-          throw new Error('Phantom wallet not properly connected');
+          const error = new Error('Phantom wallet not properly connected');
+          toast({
+            title: "Wallet Error",
+            description: "Phantom wallet is not properly connected. Please try reconnecting.",
+            variant: "destructive",
+          });
+          throw error;
         }
         console.log('Sending USDC via Phantom:', {
           publicKey: provider.publicKey.toString(),
@@ -59,7 +90,13 @@ export const processTransaction = async (
         
       case 'Solflare':
         if (!provider.publicKey) {
-          throw new Error('Solflare wallet not properly connected');
+          const error = new Error('Solflare wallet not properly connected');
+          toast({
+            title: "Wallet Error",
+            description: "Solflare wallet is not properly connected. Please try reconnecting.",
+            variant: "destructive",
+          });
+          throw error;
         }
         console.log('Sending USDC via Solflare:', {
           publicKey: provider.publicKey.toString(),
@@ -71,7 +108,13 @@ export const processTransaction = async (
         
       case 'OKX':
         if (!provider.solana?.publicKey) {
-          throw new Error('OKX wallet not properly connected');
+          const error = new Error('OKX wallet not properly connected');
+          toast({
+            title: "Wallet Error",
+            description: "OKX wallet is not properly connected. Please try reconnecting.",
+            variant: "destructive",
+          });
+          throw error;
         }
         console.log('Sending USDC via OKX:', {
           publicKey: provider.solana.publicKey.toString(),
@@ -82,23 +125,46 @@ export const processTransaction = async (
         break;
         
       default:
-        throw new Error(`Unsupported wallet type: ${walletType}`);
+        const error = new Error(`Unsupported wallet type: ${walletType}`);
+        toast({
+          title: "Unsupported Wallet",
+          description: `${walletType} wallet is not supported for donations.`,
+          variant: "destructive",
+        });
+        throw error;
     }
 
     if (!transactionId) {
-      throw new Error('Transaction failed - no transaction ID returned');
+      const error = new Error('Transaction failed - no transaction ID returned');
+      toast({
+        title: "Transaction Failed",
+        description: "The transaction could not be completed. Please try again.",
+        variant: "destructive",
+      });
+      throw error;
     }
 
     console.log('USDC Transaction completed successfully:', transactionId);
+    
+    // Mark error as already shown to avoid duplicate toasts
+    const successError = new Error("already shown");
+    successError.message = "already shown";
+    throw successError;
+    
     return transactionId;
 
   } catch (err) {
     console.error("USDC Transaction processing error:", err);
-    toast({
-      title: "Transaction Failed",
-      description: err instanceof Error ? err.message : "Unknown error occurred during transaction",
-      variant: "destructive",
-    });
+    
+    // Only show toast if not already shown in wallet-specific methods
+    if (!err.message?.includes("already shown")) {
+      toast({
+        title: "Transaction Failed",
+        description: err instanceof Error ? err.message : "Unknown error occurred during transaction",
+        variant: "destructive",
+      });
+    }
+    
     throw err;
   }
 };
