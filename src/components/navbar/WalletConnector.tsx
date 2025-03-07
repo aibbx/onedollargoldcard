@@ -6,6 +6,8 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useWallet, WalletType } from '../../context/WalletContext';
 import { getExplorerUrl } from '../../utils/walletUtils';
 import ConnectWalletModal from '../wallet/ConnectWalletModal';
+import { Button } from '../ui/button';
+import { cn } from '@/lib/utils';
 
 const WalletConnector: React.FC = () => {
   const { t } = useLanguage();
@@ -70,13 +72,16 @@ const WalletConnector: React.FC = () => {
     <div className="relative">
       {isWalletConnected ? (
         <div className="relative">
-          <button 
-            className="btn-gold flex items-center gap-2"
+          <Button 
+            variant="outline"
+            className="bg-gold-500 hover:bg-gold-600 text-black border-gold-400 hover:border-gold-500 font-medium rounded-md 
+                     shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform 
+                     hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
             onClick={() => setShowWalletMenu(!showWalletMenu)}
           >
             <span>{formatWalletAddress(walletAddress)}</span>
             <ChevronDown className="w-4 h-4" />
-          </button>
+          </Button>
           
           {/* Wallet menu dropdown */}
           {showWalletMenu && (
@@ -127,13 +132,16 @@ const WalletConnector: React.FC = () => {
           )}
         </div>
       ) : (
-        <button 
-          className="btn-gold flex items-center gap-2"
+        <Button 
+          variant="default"
+          className="bg-gold-500 hover:bg-gold-600 text-black font-medium rounded-md 
+                   shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform 
+                   hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
           onClick={handleDonateClick}
         >
           Connect Wallet
           <Wallet className="w-4 h-4" />
-        </button>
+        </Button>
       )}
 
       {/* Wallet connect modal */}

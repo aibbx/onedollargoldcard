@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { useLanguage } from '../../context/LanguageContext';
 import { Wallet } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Button } from '../ui/button';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -71,13 +72,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         >
           {t('nav.terms')}
         </Link>
-        <button 
-          className="btn-gold w-full mt-4 flex items-center justify-center gap-2"
+        <Button 
+          variant="default"
+          className="w-full mt-4 bg-gold-500 hover:bg-gold-600 text-black font-medium rounded-md 
+                   shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform 
+                   hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
           onClick={onDonateClick}
         >
           {isWalletConnected ? t('hero.donateNow') : "Connect Wallet"}
           {!isWalletConnected && <Wallet className="w-4 h-4" />}
-        </button>
+        </Button>
       </div>
     </div>
   );
