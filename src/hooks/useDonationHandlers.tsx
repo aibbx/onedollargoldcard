@@ -62,6 +62,7 @@ export const useDonationHandlers = (
       });
       
       // Process the transaction using our utility function
+      console.log('Calling processTransaction...');
       const transactionId = await processTransaction(
         walletType,
         provider,
