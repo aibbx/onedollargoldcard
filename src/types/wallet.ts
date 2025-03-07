@@ -1,5 +1,4 @@
-
-export type WalletType = 'Phantom' | 'Solflare' | 'OKX' | 'MetaMask' | '';
+export type WalletType = 'Phantom' | 'Solflare' | 'OKX' | '';
 
 // Define donation record interface
 export interface DonationRecord {
@@ -50,12 +49,6 @@ declare global {
         publicKey?: { toString: () => string };
         switchNetwork?: (network: string) => Promise<void>;
       }
-    };
-    ethereum?: {
-      isMetaMask?: boolean;
-      request: (args: { method: string; params?: any[] }) => Promise<any>;
-      on: (eventName: string, callback: (...args: any[]) => void) => void;
-      removeListener: (eventName: string, callback: (...args: any[]) => void) => void;
     };
   }
 }

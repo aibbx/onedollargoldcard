@@ -1,10 +1,8 @@
-
 import { WalletType } from '../../types/wallet';
 import { generateTransactionHash } from '../walletUtils';
 import { sendPhantomTransaction } from './phantomTransactions';
 import { sendSolflareTransaction } from './solflareTransactions';
 import { sendOKXTransaction } from './okxTransactions';
-import { sendMetaMaskTransaction } from './metamaskTransactions';
 
 // Process transaction based on wallet type
 export const processTransaction = async (
@@ -31,8 +29,6 @@ export const processTransaction = async (
         return await sendSolflareTransaction(provider, amount, walletAddress);
       case 'OKX':
         return await sendOKXTransaction(provider, amount, walletAddress);
-      case 'MetaMask':
-        return await sendMetaMaskTransaction(provider, amount, walletAddress);
       default:
         throw new Error(`Unsupported wallet type: ${walletType}`);
     }

@@ -21,12 +21,6 @@ import {
   disconnectOKXWallet 
 } from './okxConnector';
 
-import {
-  connectMetaMaskWallet,
-  autoConnectMetaMaskWallet,
-  disconnectMetaMaskWallet
-} from './metamaskConnector';
-
 // Connect to a wallet based on the given type
 export const connectWallet = async (type: WalletType, network: NetworkType = 'devnet'): Promise<{ 
   address: string; 
@@ -39,8 +33,6 @@ export const connectWallet = async (type: WalletType, network: NetworkType = 'de
       return connectSolflareWallet(network);
     case 'OKX':
       return connectOKXWallet(network);
-    case 'MetaMask':
-      return connectMetaMaskWallet();
     default:
       // Fallback for testing or if a non-supported wallet type is passed
       const mockAddress = generateMockAddress(type);
@@ -64,8 +56,6 @@ export const autoConnectWallet = async (type: WalletType, network: NetworkType =
         return await autoConnectSolflareWallet(network);
       case 'OKX':
         return await autoConnectOKXWallet(network);
-      case 'MetaMask':
-        return await autoConnectMetaMaskWallet();
       default:
         // Fallback for testing or if a non-supported wallet type is passed
         const mockAddress = generateMockAddress(type);
@@ -91,9 +81,6 @@ export const disconnectWallet = (type: WalletType): void => {
       break;
     case 'OKX':
       disconnectOKXWallet();
-      break;
-    case 'MetaMask':
-      disconnectMetaMaskWallet();
       break;
     default:
       // No action needed for mock wallets
