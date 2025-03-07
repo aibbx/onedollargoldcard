@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { DonationRecord } from '../types/wallet';
 import { CONTRACT_ADDRESSES } from '../utils/walletUtils';
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 
 export const useDonationStats = (donations: DonationRecord[] = []) => {
   const [totalDonationAmount, setTotalDonationAmount] = useState(0);
   const [winningChance, setWinningChance] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Update statistics when donations change
   const updateDonationStats = async () => {
@@ -15,7 +17,6 @@ export const useDonationStats = (donations: DonationRecord[] = []) => {
       
       // Calculate winning chance based on the current pool size
       try {
-        // In production, this would fetch the actual pool balance from the contract
         await fetchPoolSize(total);
       } catch (error) {
         console.error("Error updating donation stats:", error);
@@ -30,32 +31,45 @@ export const useDonationStats = (donations: DonationRecord[] = []) => {
   // Fetch current pool size from blockchain and calculate chances
   const fetchPoolSize = async (userContribution: number) => {
     try {
-      // This would be a real blockchain query in production
-      // Here we would query the contract at CONTRACT_ADDRESSES.poolAddress
+      setIsLoading(true);
       
-      // Placeholder for API call - this would be replaced with actual blockchain query
-      const response = await fetch(`https://api.solscan.io/account?account=${CONTRACT_ADDRESSES.poolAddress}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch pool data');
-      }
+      // Create connection to Solana network
+      const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
       
-      const data = await response.json();
+      // Create PublicKey from pool address
+      const poolPublicKey = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
       
-      // Extract the actual pool balance from the response
-      // This is a placeholder - actual structure would depend on the API response
-      const currentPoolSize = data?.tokenAmount?.uiAmount || 0;
+      // Get the actual balance from Solana
+      const balance = await connection.getBalance(poolPublicKey);
+      console.log('Pool balance in lamports:', balance);
+      
+      // Convert lamports to SOL (1 SOL = 1,000,000,000 lamports)
+      const solBalance = balance / 1_000_000_000;
+      console.log('Pool balance in SOL:', solBalance);
+      
+      // For real application, this value would be used
+      // For now, we'll use a minimum balance to give a meaningful percentage
+      const effectiveBalance = Math.max(solBalance, 0.1);
+      
+      // Calculate the USD equivalent (assuming 1 SOL = $100 for simplicity)
+      // In production, you would fetch the actual SOL price from an API
+      const assumedSolPrice = 100; // $100 per SOL
+      const poolUsdBalance = effectiveBalance * assumedSolPrice;
       
       // Calculate chance based on contribution vs. total pool
-      if (currentPoolSize > 0) {
-        const userEntries = userContribution * 1; // Each $1 = 1 entry
-        const totalEntries = currentPoolSize;
-        const chance = (userEntries / totalEntries) * 100;
-        
-        setWinningChance(chance);
-      } else {
-        // If pool is empty, set chance to 0 (or 100 if user has donated)
-        setWinningChance(userContribution > 0 ? 100 : 0);
-      }
+      const userEntries = userContribution; // Each $1 = 1 entry
+      const totalEntries = poolUsdBalance;
+      const chancePercentage = (userEntries / totalEntries) * 100;
+      
+      console.log('Chance calculation:', {
+        userContribution,
+        poolUsdBalance,
+        chancePercentage
+      });
+      
+      // Cap the percentage at 100% for very small pools
+      const cappedChance = Math.min(chancePercentage, 100);
+      setWinningChance(cappedChance);
     } catch (error) {
       console.error("Error fetching pool size:", error);
       
@@ -67,6 +81,8 @@ export const useDonationStats = (donations: DonationRecord[] = []) => {
       const chance = (userEntries / totalEntries) * 100;
       
       setWinningChance(chance);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -77,6 +93,7 @@ export const useDonationStats = (donations: DonationRecord[] = []) => {
   return {
     totalDonationAmount,
     winningChance,
-    updateDonationStats
+    updateDonationStats,
+    isLoading
   };
 };

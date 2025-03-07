@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { WalletType } from '../types/wallet';
-import { detectWallets } from '../utils/walletUtils';
+import { detectWallets, isValidSolanaAddress } from '../utils/walletUtils';
 import { 
   connectWallet as connectWalletUtil, 
   autoConnectWallet as autoConnectWalletUtil,
@@ -46,6 +46,11 @@ export const useWalletConnectors = () => {
       
       if (result) {
         const { address, provider: walletProvider } = result;
+        
+        // Validate the wallet address
+        if (!isValidSolanaAddress(address)) {
+          throw new Error(`Invalid Solana address: ${address}`);
+        }
         
         setProvider(walletProvider);
         setWalletType(type);
@@ -99,6 +104,11 @@ export const useWalletConnectors = () => {
         const result = await connectWalletUtil(type, network);
         const { address, provider: walletProvider } = result;
         
+        // Validate the wallet address
+        if (!isValidSolanaAddress(address)) {
+          throw new Error(`Invalid Solana address: ${address}`);
+        }
+        
         setProvider(walletProvider);
         setWalletType(type);
         setWalletAddress(address);
@@ -114,9 +124,10 @@ export const useWalletConnectors = () => {
         
         return Promise.resolve();
       } catch (err) {
+        console.error("Connection error:", err);
         toast({
           title: "Connection Rejected",
-          description: "The connection request was rejected by the user.",
+          description: "The connection request was rejected or failed.",
           variant: "destructive",
         });
         return Promise.reject(err);

@@ -32,7 +32,8 @@ export const useDonationTransactions = ({
       return;
     }
     
-    if (parseFloat(amount) < 1) {
+    const numericAmount = parseFloat(amount);
+    if (numericAmount < 1) {
       setError(t('donation.minAmount'));
       return;
     }
@@ -44,7 +45,7 @@ export const useDonationTransactions = ({
     
     try {
       setIsLoading(true);
-      const totalAmount = parseFloat(amount) * 1.05; // Adding 5% fee
+      const totalAmount = numericAmount * 1.05; // Adding 5% fee
       console.log('Initiating donation transaction for amount:', totalAmount);
       
       const transactionId = await sendDonation(totalAmount);

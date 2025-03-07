@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useWallet } from '../../context/WalletContext';
+import { Badge } from '@/components/ui/badge';
 
 interface DonationSummaryProps {
   fee: string;
@@ -31,9 +32,9 @@ const DonationSummary: React.FC<DonationSummaryProps> = ({
       
       {network && (
         <div className="flex justify-end py-1">
-          <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
+          <Badge variant="outline" className="font-medium text-green-600 bg-green-50 border-green-100">
             Solana {network}
-          </span>
+          </Badge>
         </div>
       )}
     </div>

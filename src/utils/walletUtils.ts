@@ -1,5 +1,6 @@
 
 import { WalletType } from '../types/wallet';
+import { PublicKey } from '@solana/web3.js';
 
 // Solana contract addresses
 export const CONTRACT_ADDRESSES = {
@@ -49,4 +50,24 @@ export const detectWallets = (): Record<string, boolean> => {
   
   console.log('Available wallets:', availableWallets);
   return availableWallets;
+};
+
+// Validate a Solana address
+export const isValidSolanaAddress = (address: string): boolean => {
+  try {
+    new PublicKey(address);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+// Convert SOL to lamports
+export const solToLamports = (sol: number): number => {
+  return Math.floor(sol * 1_000_000_000);
+};
+
+// Convert lamports to SOL
+export const lamportsToSol = (lamports: number): number => {
+  return lamports / 1_000_000_000;
 };
