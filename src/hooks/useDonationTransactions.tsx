@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { useWallet } from '../context/WalletContext';
+import { toast as sonnerToast } from "sonner";
 
 interface UseDonationTransactionsProps {
   isWalletConnected: boolean;
@@ -47,11 +48,18 @@ export const useDonationTransactions = ({
       const totalAmount = parseFloat(amount) * 1.05; // Adding 5% fee
       console.log('Initiating donation transaction for amount:', totalAmount);
       
+      // Show a processing toast with sonner for better UX
+      sonnerToast.loading("Processing your donation...");
+      
       const transactionId = await sendDonation(totalAmount);
       
       if (transactionId) {
         console.log('Transaction completed successfully with ID:', transactionId);
         resetForm();
+        
+        // Remove the loading toast
+        sonnerToast.dismiss();
+        
         toast({
           title: "Donation Successful",
           description: `Your donation of $${totalAmount.toFixed(2)} has been submitted. Thank you for your support!`,
@@ -61,6 +69,10 @@ export const useDonationTransactions = ({
       }
     } catch (error) {
       console.error('Donation failed:', error);
+      
+      // Remove the loading toast
+      sonnerToast.dismiss();
+      
       toast({
         title: "Donation Failed",
         description: error instanceof Error 

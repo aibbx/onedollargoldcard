@@ -28,17 +28,29 @@ export const processTransaction = async (
       throw new Error('Buffer polyfill is not properly configured');
     }
     
+    console.log('Buffer check passed, proceeding with transaction');
+    
     // Process transaction based on wallet type
+    let signature;
     switch (walletType) {
       case 'Phantom':
-        return await sendPhantomTransaction(provider, amount, walletAddress);
+        console.log('Using Phantom transaction handler');
+        signature = await sendPhantomTransaction(provider, amount, walletAddress);
+        break;
       case 'Solflare':
-        return await sendSolflareTransaction(provider, amount, walletAddress);
+        console.log('Using Solflare transaction handler');
+        signature = await sendSolflareTransaction(provider, amount, walletAddress);
+        break;
       case 'OKX':
-        return await sendOKXTransaction(provider, amount, walletAddress);
+        console.log('Using OKX transaction handler');
+        signature = await sendOKXTransaction(provider, amount, walletAddress);
+        break;
       default:
         throw new Error(`Unsupported wallet type: ${walletType}`);
     }
+    
+    console.log('Transaction completed successfully with signature:', signature);
+    return signature;
   } catch (err) {
     console.error("Error processing transaction:", err);
     throw err;

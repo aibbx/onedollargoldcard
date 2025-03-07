@@ -34,6 +34,7 @@ export const sendPhantomTransaction = async (
     
     // Get the latest blockhash for transaction
     const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
+    console.log('Got blockhash:', blockhash, 'lastValidBlockHeight:', lastValidBlockHeight);
     
     // Create a new transaction with blockhash and fee payer
     const transaction = new Transaction({
@@ -75,24 +76,36 @@ export const sendPhantomTransaction = async (
     // Sign and send the transaction
     console.log('Sending USDC transaction with Phantom wallet...');
     
-    // Phantom expects an object with the transaction
-    const { signature } = await provider.signAndSendTransaction(transaction);
-    console.log('Phantom transaction sent with signature:', signature);
-    
-    // Wait for confirmation with appropriate timeout
-    const confirmationStatus = await connection.confirmTransaction({
-      blockhash,
-      lastValidBlockHeight,
-      signature
-    }, 'confirmed');
-    
-    console.log('Transaction confirmation status:', confirmationStatus);
-    
-    if (confirmationStatus.value.err) {
-      throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmationStatus.value.err)}`);
+    try {
+      // Phantom expects an object with the transaction
+      const { signature } = await provider.signAndSendTransaction(transaction);
+      console.log('Phantom transaction sent with signature:', signature);
+      
+      // Wait for confirmation with appropriate timeout
+      const confirmationStatus = await connection.confirmTransaction({
+        blockhash,
+        lastValidBlockHeight,
+        signature
+      }, 'confirmed');
+      
+      console.log('Transaction confirmation status:', confirmationStatus);
+      
+      if (confirmationStatus.value.err) {
+        throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmationStatus.value.err)}`);
+      }
+      
+      return signature;
+    } catch (error) {
+      console.error('Error in Phantom wallet transaction:', error);
+      // Check for specific Phantom errors
+      if (error.code === 4001) {
+        throw new Error('Transaction rejected by user');
+      } else if (error.message && error.message.includes('insufficient funds')) {
+        throw new Error('Insufficient funds in wallet');
+      } else {
+        throw error;
+      }
     }
-    
-    return signature;
   } catch (error) {
     console.error('Error in Phantom USDC transaction:', error);
     throw error;
