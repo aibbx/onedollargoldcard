@@ -16,7 +16,7 @@ export const sendPhantomTransaction = async (
     }
 
     // Get network connection (mainnet-beta, devnet, or testnet)
-    const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+    const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
     
     // Convert USDC amount to lamports (SOL)
     // 1 SOL = 1 billion lamports
@@ -47,6 +47,12 @@ export const sendPhantomTransaction = async (
     
     // Sign and send the transaction
     console.log('Sending transaction with Phantom wallet...');
+    
+    // Check if the signAndSendTransaction method exists
+    if (!provider.signAndSendTransaction) {
+      throw new Error('Phantom wallet does not support signAndSendTransaction. Try disconnecting and reconnecting your wallet.');
+    }
+    
     const { signature } = await provider.signAndSendTransaction(transaction);
     console.log('Phantom transaction sent with signature:', signature);
     

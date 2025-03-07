@@ -16,7 +16,7 @@ export const sendSolflareTransaction = async (
     }
 
     // Get network connection (mainnet-beta, devnet, or testnet)
-    const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+    const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
     
     // Convert USDC amount to lamports (SOL)
     // 1 SOL = 1 billion lamports
@@ -47,21 +47,34 @@ export const sendSolflareTransaction = async (
     
     // Sign and send the transaction
     console.log('Sending transaction with Solflare wallet...');
-    const signature = await provider.signAndSendTransaction(transaction);
+    
+    // Check if signAndSendTransaction method exists and call it, otherwise try to sign and send separately
+    // Solflare's method signature can be different from Phantom
+    let signature;
+    
+    if (provider.signAndSendTransaction) {
+      signature = await provider.signAndSendTransaction(transaction);
+    } else if (provider.signTransaction && provider.sendTransaction) {
+      const signedTx = await provider.signTransaction(transaction);
+      signature = await connection.sendRawTransaction(signedTx.serialize());
+    } else {
+      throw new Error('Solflare wallet does not support required transaction methods');
+    }
+    
     console.log('Solflare transaction sent with signature:', signature);
     
     // Wait for confirmation
     const confirmation = await connection.confirmTransaction({
       blockhash,
       lastValidBlockHeight,
-      signature,
+      signature: typeof signature === 'string' ? signature : signature.signature,
     });
     
     if (confirmation.value.err) {
       throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
     }
     
-    return signature;
+    return typeof signature === 'string' ? signature : signature.signature;
   } catch (error) {
     console.error('Error in Solflare transaction:', error);
     throw error;

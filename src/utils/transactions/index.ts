@@ -38,17 +38,23 @@ export const processTransaction = async (
         if (!provider.publicKey) {
           throw new Error('Phantom wallet not properly connected. Please reconnect your wallet.');
         }
+        console.log('Sending transaction via Phantom wallet...');
         return await sendPhantomTransaction(provider, amount, walletAddress);
+        
       case 'Solflare':
         if (!provider.publicKey) {
           throw new Error('Solflare wallet not properly connected. Please reconnect your wallet.');
         }
+        console.log('Sending transaction via Solflare wallet...');
         return await sendSolflareTransaction(provider, amount, walletAddress);
+        
       case 'OKX':
         if (!provider.solana?.publicKey) {
           throw new Error('OKX wallet not properly connected. Please reconnect your wallet.');
         }
+        console.log('Sending transaction via OKX wallet...');
         return await sendOKXTransaction(provider, amount, walletAddress);
+        
       default:
         throw new Error(`Unsupported wallet type: ${walletType}`);
     }

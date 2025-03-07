@@ -23,7 +23,7 @@ export const useDonationTransactions = ({
   t
 }: UseDonationTransactionsProps) => {
   const { toast } = useToast();
-  const { sendDonation, isProcessing } = useWallet();
+  const { sendDonation, isProcessing, walletType } = useWallet();
   const [isLoading, setIsLoading] = useState(false);
   
   const handleDonation = async () => {
@@ -50,6 +50,7 @@ export const useDonationTransactions = ({
       setIsLoading(true);
       const totalAmount = numericAmount * 1.05; // Adding 5% fee
       console.log('Initiating donation transaction for amount:', totalAmount);
+      console.log('Current wallet type:', walletType);
       
       // Try to send donation
       const transactionId = await sendDonation(totalAmount);
