@@ -50,12 +50,13 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         >
           {t('nav.home')}
         </Link>
-        <button 
-          className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200 text-left w-full"
-          onClick={() => handleSectionNavigation('how-it-works')}
+        <Link 
+          to="/how-it-works"
+          className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
+          onClick={onClose}
         >
           {t('nav.howItWorks')}
-        </button>
+        </Link>
         <Link 
           to="/faq"
           className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"

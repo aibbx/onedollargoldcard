@@ -1,10 +1,8 @@
-
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Features from '../components/Features';
-import HowItWorks from '../components/how-it-works/HowItWorks';
 import DonationCard from '../components/DonationCard';
 import PoolStats from '../components/PoolStats';
 import Footer from '../components/Footer';
@@ -33,7 +31,6 @@ const Index = () => {
         <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
         <Hero />
         <Features />
-        <HowItWorks />
         <div className="relative">
           <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-gold-50/30 to-transparent" />
           <div id="donation-section">

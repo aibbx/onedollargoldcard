@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '../../context/LanguageContext';
@@ -42,15 +41,14 @@ const NavLinks: React.FC<NavLinksProps> = ({ isScrolled }) => {
         {t('nav.home')}
         {isActive('/') && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold-500 rounded-full"></span>}
       </Link>
-      <button 
-        onClick={() => handleSectionNavigation('how-it-works')}
-        className={cn(
-          'transition-all duration-200 hover:text-gold-600',
-          isScrolled ? 'text-gray-800' : 'text-gray-800'
-        )}
-      >
+      <Link to="/how-it-works" className={cn(
+        'transition-all duration-200 hover:text-gold-600 relative',
+        isScrolled ? 'text-gray-800' : 'text-gray-800',
+        isActive('/how-it-works') && 'font-medium text-gold-600'
+      )}>
         {t('nav.howItWorks')}
-      </button>
+        {isActive('/how-it-works') && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold-500 rounded-full"></span>}
+      </Link>
       <Link to="/faq" className={cn(
         'transition-all duration-200 hover:text-gold-600 relative',
         isScrolled ? 'text-gray-800' : 'text-gray-800',
