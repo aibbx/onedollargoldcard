@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -154,13 +153,6 @@ const Terms = () => {
         </p>
         
         <div className="space-y-6">
-          <div className="bg-white rounded-xl shadow-md p-8 border border-gold-100 transition-all duration-300 hover:shadow-lg">
-            <p className="text-gray-700 mb-8">
-              By using the OneDollarGoldCard platform, you acknowledge that you have read, understood, and agree 
-              to be bound by these Terms & Conditions. If you do not agree to these terms, please do not use the platform.
-            </p>
-          </div>
-          
           {sections.map((section, index) => (
             <div key={index} className="bg-white rounded-xl shadow-md p-8 border border-gold-100 transition-all duration-300 hover:shadow-lg">
               <h2 className="text-2xl font-semibold mb-6 text-gold-600 text-left">{section.title}</h2>
@@ -175,6 +167,10 @@ const Terms = () => {
           ))}
           
           <div className="bg-white rounded-xl shadow-md p-8 border border-gold-100 transition-all duration-300 hover:shadow-lg">
+            <p className="text-gray-700 mb-8">
+              By using the OneDollarGoldCard platform, you acknowledge that you have read, understood, and agree 
+              to be bound by these Terms & Conditions. If you do not agree to these terms, please do not use the platform.
+            </p>
             <p className="text-gray-500 text-sm text-center mb-8">
               Last updated: {currentDate}
             </p>
