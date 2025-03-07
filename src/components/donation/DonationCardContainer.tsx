@@ -4,20 +4,11 @@ import { useWallet, WalletType } from '../../context/WalletContext';
 import ConnectWalletModal from '../wallet/ConnectWalletModal';
 import DonationCardContent from './DonationCardContent';
 
-const DonationCardContainer = () => {
-  const [showWalletModal, setShowWalletModal] = useState(false);
-  const { connectWallet } = useWallet();
+interface DonationCardContainerProps {
+  showWalletModal: () => void;
+}
 
-  const handleConnectWallet = async (type: WalletType) => {
-    try {
-      await connectWallet(type);
-      return Promise.resolve();
-    } catch (error) {
-      console.error("Failed to connect wallet:", error);
-      return Promise.reject(error);
-    }
-  };
-
+const DonationCardContainer: React.FC<DonationCardContainerProps> = ({ showWalletModal }) => {
   return (
     <section className="py-24 bg-white" id="donation-section">
       <div className="container-custom">
@@ -26,18 +17,12 @@ const DonationCardContainer = () => {
             <div className="absolute -inset-1 rounded-2xl bg-gold-gradient opacity-30 blur-md"></div>
             <div className="bg-white rounded-xl shadow-xl overflow-hidden relative">
               <DonationCardContent 
-                showWalletModal={() => setShowWalletModal(true)} 
+                showWalletModal={showWalletModal} 
               />
             </div>
           </div>
         </div>
       </div>
-
-      <ConnectWalletModal
-        isOpen={showWalletModal}
-        onClose={() => setShowWalletModal(false)}
-        onConnectWallet={handleConnectWallet}
-      />
     </section>
   );
 };
