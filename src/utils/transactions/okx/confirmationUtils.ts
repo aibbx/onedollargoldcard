@@ -10,7 +10,7 @@ export const confirmTransaction = async (
   blockhash: string,
   lastValidBlockHeight: number
 ): Promise<void> => {
-  console.log('Waiting for OKX transaction confirmation...');
+  console.log('Waiting for OKX transaction confirmation...', signature);
   
   // Show processing toast
   toast({
@@ -21,34 +21,62 @@ export const confirmTransaction = async (
   let confirmationAttempts = 0;
   let confirmed = false;
   let currentConnection = connection;
+  let maxAttempts = 4;
   
-  while (!confirmed && confirmationAttempts < 3) {
+  while (!confirmed && confirmationAttempts < maxAttempts) {
     try {
       confirmationAttempts++;
-      console.log(`Confirmation attempt ${confirmationAttempts}...`);
+      console.log(`Confirmation attempt ${confirmationAttempts}/${maxAttempts}...`);
       
-      const confirmation = await currentConnection.confirmTransaction({
-        signature,
-        blockhash,
-        lastValidBlockHeight
-      }, 'confirmed');
+      // Use a timeout promise to limit wait time
+      const timeoutDuration = 30000 + (confirmationAttempts * 5000);
       
-      confirmed = true;
-      
-      if (confirmation.value.err) {
-        console.error('Transaction error during confirmation:', confirmation.value.err);
+      try {
+        const confirmation = await Promise.race([
+          currentConnection.confirmTransaction({
+            signature,
+            blockhash,
+            lastValidBlockHeight
+          }, 'confirmed'),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error(`Confirmation timeout (${timeoutDuration}ms)`)), timeoutDuration)
+          )
+        ]);
+        
+        confirmed = true;
+        
+        if (confirmation.value && confirmation.value.err) {
+          console.error('Transaction error during confirmation:', confirmation.value.err);
+          toast({
+            title: "Transaction Failed on Network",
+            description: `Transaction was sent but failed on the Solana network. Please check your wallet to verify.`,
+            variant: "destructive",
+          });
+          throw new Error(`Transaction failed during confirmation: ${JSON.stringify(confirmation.value.err)}`);
+        }
+        
+        console.log('OKX USDT transaction confirmed successfully!');
         toast({
-          title: "Transaction Failed on Network",
-          description: `Transaction was sent but failed on the Solana network. Please check your wallet to verify.`,
-          variant: "destructive",
+          title: "Transaction Successful",
+          description: "Your USDT transaction has been confirmed on the Solana network!",
         });
-        throw new Error(`Transaction failed during confirmation: ${JSON.stringify(confirmation.value.err)}`);
+        return;
+      } catch (timeoutError) {
+        console.error(`Confirmation timeout on attempt ${confirmationAttempts}:`, timeoutError);
+        // Will retry on next iteration
       }
     } catch (confirmError) {
       console.error(`Confirmation attempt ${confirmationAttempts} failed:`, confirmError);
       
-      if (confirmationAttempts >= 3) {
-        throw confirmError;
+      if (confirmationAttempts >= maxAttempts) {
+        // If we've tried the maximum number of times, inform the user but don't throw
+        toast({
+          title: "Confirmation Status Unknown",
+          description: "The transaction was submitted, but confirmation timed out. It may still complete successfully.",
+          variant: "default",
+        });
+        console.log('Transaction may still be processing despite confirmation timeout');
+        return;
       }
       
       // Try with backup connection if we have confirmation issues
@@ -58,10 +86,9 @@ export const confirmTransaction = async (
       }
       
       // Wait a bit before retrying
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const delay = 2000 * confirmationAttempts;
+      console.log(`Waiting ${delay}ms before retry...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
-  
-  // Show success toast
-  console.log('OKX USDC transaction confirmed successfully!');
 };

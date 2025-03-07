@@ -25,19 +25,28 @@ export const connectSolflareWallet = async (network: NetworkType = 'mainnet-beta
   }
   
   // Request connection to the wallet
-  await provider.connect();
-  const address = provider.publicKey?.toString();
-  
-  if (!address) {
-    throw new Error('No public key found after connection');
+  try {
+    await provider.connect();
+    
+    // Small delay to ensure connection is established
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const address = provider.publicKey?.toString();
+    
+    if (!address) {
+      throw new Error('No public key found after connection');
+    }
+    
+    console.log(`Connected to Solflare wallet on ${network}: ${address.substring(0, 8)}...`);
+    
+    return {
+      address,
+      provider
+    };
+  } catch (error) {
+    console.error('Error connecting to Solflare wallet:', error);
+    throw new Error(`Failed to connect to Solflare wallet: ${error.message}`);
   }
-  
-  console.log(`Connected to Solflare wallet on ${network}`);
-  
-  return {
-    address,
-    provider
-  };
 };
 
 // Auto-connect to Solflare wallet if already connected
@@ -62,14 +71,20 @@ export const autoConnectSolflareWallet = async (network: NetworkType = 'mainnet-
     }
   }
   
-  if (provider.isConnected) {
-    const address = provider.publicKey?.toString() || '';
-    if (address) {
-      return {
-        address,
-        provider
-      };
+  // Check if already connected
+  try {
+    if (provider.isConnected && provider.publicKey) {
+      const address = provider.publicKey.toString();
+      if (address) {
+        console.log(`Auto-connected to Solflare wallet: ${address.substring(0, 8)}...`);
+        return {
+          address,
+          provider
+        };
+      }
     }
+  } catch (error) {
+    console.error('Error checking Solflare connection status:', error);
   }
   
   // If not already connected, try explicit connect
@@ -86,6 +101,7 @@ export const disconnectSolflareWallet = (): void => {
   if (typeof window !== 'undefined' && window.solflare) {
     try {
       window.solflare.disconnect();
+      console.log('Disconnected from Solflare wallet');
     } catch (err) {
       console.error('Error disconnecting Solflare wallet:', err);
     }
