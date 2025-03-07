@@ -25,7 +25,7 @@ export const de = {
   'features.fair.title': 'Faires Chancensystem',
   'features.fair.desc': 'Ihre Chancen steigen proportional zu Ihrem Spendenbetrag.',
   'features.secure.title': 'Sicher durch Design',
-  'features.secure.desc': 'Auf dem sicheren Vertrag von Solana aufgebaut, um den Preispool von einer Million Dollar sicher zu übermitteln.',
+  'features.secure.desc': 'Auf dem sicheren Solana-Vertrag aufgebaut, um den Millionen-Dollar-Preispool sicher zu liefern.',
 
   // How It Works
   'howItWorks.title': 'Wie es funktioniert',

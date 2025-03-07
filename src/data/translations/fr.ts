@@ -25,7 +25,7 @@ export const fr = {
   'features.fair.title': 'Système de chance équitable',
   'features.fair.desc': 'Vos chances augmentent proportionnellement au montant de votre don.',
   'features.secure.title': 'Sécurisé par conception',
-  'features.secure.desc': 'Construit sur le contrat sécurisé de Solana pour délivrer en toute sécurité la cagnotte d\'un million de dollars.',
+  'features.secure.desc': 'Construit sur le contrat sécurisé de Solana pour livrer en toute sécurité le fonds de prix d\'un million de dollars.',
 
   // How It Works
   'howItWorks.title': 'Comment ça marche',
