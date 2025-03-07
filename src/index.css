@@ -114,14 +114,6 @@
   .container-custom {
     @apply mx-auto px-4 md:px-8 max-w-7xl;
   }
-  
-  .wallet-icon-container {
-    @apply rounded-full w-8 h-8 flex items-center justify-center overflow-hidden bg-white;
-  }
-  
-  .wallet-icon {
-    @apply w-6 h-6 object-contain;
-  }
 }
 
 /* Custom scrollbar */

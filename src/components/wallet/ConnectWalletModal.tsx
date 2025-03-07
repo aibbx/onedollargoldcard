@@ -29,29 +29,6 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
     }
   };
 
-  const wallets = [
-    {
-      type: 'Phantom' as WalletType,
-      logoUrl: "https://phantom.app/favicon.ico",
-      alt: "Phantom"
-    },
-    {
-      type: 'Solflare' as WalletType,
-      logoUrl: "https://solflare.com/favicon-32x32.png",
-      alt: "Solflare"
-    },
-    {
-      type: 'OKX' as WalletType,
-      logoUrl: "https://www.okx.com/cdn/static/favicon.ico",
-      alt: "OKX"
-    },
-    {
-      type: 'MetaMask' as WalletType,
-      logoUrl: "https://metamask.io/images/favicon-32x32.png",
-      alt: "MetaMask"
-    }
-  ];
-
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
@@ -72,27 +49,37 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
           </p>
           
           <div className="space-y-3">
-            {wallets.map((wallet) => (
-              <button
-                key={wallet.type}
-                onClick={() => handleWalletConnect(wallet.type)}
-                className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
-              >
-                <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
-                  <img 
-                    src={wallet.logoUrl} 
-                    alt={wallet.alt} 
-                    className="w-6 h-6 object-contain" 
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://placehold.co/24x24/FFD700/000000?text=W';
-                    }}
-                  />
-                </div>
-                <span className="font-normal text-lg">
-                  {wallet.type === 'OKX' ? `${wallet.alt} Wallet` : wallet.alt}
-                </span>
-              </button>
-            ))}
+            <button
+              onClick={() => handleWalletConnect('Phantom')}
+              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+            >
+              <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-8 h-8" />
+              <span className="font-normal text-lg">Phantom</span>
+            </button>
+            
+            <button
+              onClick={() => handleWalletConnect('Solflare')}
+              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+            >
+              <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-8 h-8" />
+              <span className="font-normal text-lg">Solflare</span>
+            </button>
+            
+            <button
+              onClick={() => handleWalletConnect('OKX')}
+              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+            >
+              <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-8 h-8" />
+              <span className="font-normal text-lg">OKX Wallet</span>
+            </button>
+            
+            <button
+              onClick={() => handleWalletConnect('MetaMask')}
+              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+            >
+              <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-8 h-8" />
+              <span className="font-normal text-lg">MetaMask</span>
+            </button>
           </div>
           
           <p className="text-sm text-center text-gray-500 mt-6 font-light">
