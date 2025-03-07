@@ -10,9 +10,9 @@ import {
 
 // Function to get connection
 const getConnection = (): Connection => {
-  // Use public Solana RPC endpoint which doesn't require API key
-  const endpoint = "https://api.mainnet-beta.solana.com";
-  console.log('Using public Solana RPC endpoint for Phantom transactions');
+  // Use QuickNode RPC endpoint
+  const endpoint = "https://snowy-capable-night.solana-mainnet.quiknode.pro/72424723ee91618f3c3a7c1415e06e6f66ff1035/";
+  console.log('Using QuickNode RPC endpoint for Phantom transactions');
   return new Connection(endpoint, {
     commitment: 'confirmed',
     confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
