@@ -59,7 +59,7 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
   const [showHistory, setShowHistory] = useState(false);
   
   const transactionToRecover = "7USXgX4s1SNs31TszqKXW7EBNo7eTVrUpPhjehiRi7ECuzySP97hK5PBuJJkyEuN6ndDND4LK73nKkXcnUvQH2C";
-  const donationAmount = 10.5; // The amount for this specific donation
+  const donationAmount = 1.05; // Corrected amount from 10.5 to 1.05 USDT
   
   useEffect(() => {
     if (isWalletConnected && transactionToRecover) {
@@ -144,7 +144,7 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
             className="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 text-sm flex items-center justify-center rounded-md transition-colors text-gray-600"
           >
             <RefreshCw className="w-4 h-4 mr-2" />
-            Recover Solana Transaction
+            Recover Solana Transaction (1.05 USDT)
           </button>
         )}
         

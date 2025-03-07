@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Users, Clock } from 'lucide-react';
+import { Users, Clock, RefreshCw } from 'lucide-react';
 import PoolAddressCard from './pool/PoolAddressCard';
 import PoolProgress from './pool/PoolProgress';
 import PoolStatCard from './pool/PoolStatCard';
@@ -24,9 +24,13 @@ const PoolStats = () => {
   };
 
   const handleShareOnX = () => {
-    const text = `Check out the OneDollarGoldCard pool! Already reached $${formatNumber(poolAmount)} with ${formatNumber(totalDonors)} donors. Join us! #OneDollarGoldCard`;
+    const text = `Check out the OneDollarGoldCard pool! Already reached $${formatNumber(poolAmount.toFixed(2))} with ${formatNumber(totalDonors)} donors. Join us! #OneDollarGoldCard`;
     const url = window.location.href;
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+  };
+
+  const handleRefresh = () => {
+    window.location.reload();
   };
 
   return (
@@ -51,6 +55,16 @@ const PoolStats = () => {
                 </div>
               ) : (
                 <>
+                  <div className="flex justify-end mb-2">
+                    <button 
+                      onClick={handleRefresh}
+                      className="flex items-center space-x-1 text-xs text-gray-500 hover:text-gray-700"
+                    >
+                      <RefreshCw className="w-3 h-3" />
+                      <span>Refresh data</span>
+                    </button>
+                  </div>
+                  
                   {/* Pool Progress */}
                   <PoolProgress 
                     poolAmount={poolAmount}
