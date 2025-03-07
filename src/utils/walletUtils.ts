@@ -1,14 +1,6 @@
 
 import { WalletType } from '../types/wallet';
 
-// Buffer polyfill for browser environments
-if (typeof window !== 'undefined') {
-  // We access the global Buffer directly without using require
-  if (!window.Buffer) {
-    window.Buffer = window.Buffer || Buffer;
-  }
-}
-
 // Solana contract addresses (mainnet)
 export const CONTRACT_ADDRESSES = {
   poolAddress: "BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt", // Pool address on mainnet
