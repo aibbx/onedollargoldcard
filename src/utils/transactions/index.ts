@@ -6,8 +6,9 @@ import { sendOKXTransaction } from './okxTransactions';
 
 // Ensure Buffer is available in browser
 if (typeof window !== 'undefined') {
+  // Access Buffer directly without using require
   if (!window.Buffer) {
-    window.Buffer = window.Buffer || require('buffer/').Buffer;
+    window.Buffer = window.Buffer || Buffer;
   }
 }
 

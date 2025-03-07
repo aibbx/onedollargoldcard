@@ -3,8 +3,9 @@ import { WalletType } from '../types/wallet';
 
 // Buffer polyfill for browser environments
 if (typeof window !== 'undefined') {
+  // We access the global Buffer directly without using require
   if (!window.Buffer) {
-    window.Buffer = window.Buffer || require('buffer/').Buffer;
+    window.Buffer = window.Buffer || Buffer;
   }
 }
 
