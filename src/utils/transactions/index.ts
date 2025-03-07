@@ -4,9 +4,11 @@ import { sendPhantomTransaction } from './phantomTransactions';
 import { sendSolflareTransaction } from './solflareTransactions';
 import { sendOKXTransaction } from './okxTransactions';
 
-// Ensure Buffer is available
-if (typeof window !== 'undefined' && !window.Buffer) {
-  window.Buffer = require('buffer/').Buffer;
+// Ensure Buffer is available in browser
+if (typeof window !== 'undefined') {
+  if (!window.Buffer) {
+    window.Buffer = window.Buffer || require('buffer/').Buffer;
+  }
 }
 
 // Process transaction based on wallet type

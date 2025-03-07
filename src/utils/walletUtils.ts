@@ -1,9 +1,11 @@
 
 import { WalletType } from '../types/wallet';
 
-// Polyfill Buffer for browser environments
-if (typeof window !== 'undefined' && !window.Buffer) {
-  window.Buffer = require('buffer/').Buffer;
+// Buffer polyfill for browser environments
+if (typeof window !== 'undefined') {
+  if (!window.Buffer) {
+    window.Buffer = window.Buffer || require('buffer/').Buffer;
+  }
 }
 
 // Solana contract addresses (mainnet)
