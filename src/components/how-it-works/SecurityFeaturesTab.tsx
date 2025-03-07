@@ -1,7 +1,6 @@
 
 import React from 'react';
 import InfoPoint from './InfoPoint';
-import ContractAddresses from './ContractAddresses';
 
 const SecurityFeaturesTab: React.FC = () => {
   return (
@@ -40,8 +39,6 @@ const SecurityFeaturesTab: React.FC = () => {
           <InfoPoint text="No centralized control over funds" />
         </ul>
       </div>
-
-      <ContractAddresses />
     </div>
   );
 };
