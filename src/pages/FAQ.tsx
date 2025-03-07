@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
-import { TwitterIcon } from 'lucide-react';
+import { ExternalLinkIcon } from 'lucide-react';
 
 const FAQ = () => {
   const { t } = useLanguage();
@@ -140,12 +139,11 @@ const FAQ = () => {
         <div className="mt-12 text-center">
           <h3 className="text-xl font-semibold mb-4">Have a question that's not answered here?</h3>
           <Button
-            variant="outline"
-            className="inline-flex items-center gap-2 hover:bg-gold-50 hover:text-gold-600 border-gold-200"
+            className="bg-gold-500 hover:bg-gold-600 text-black font-medium py-2 px-6 rounded-md transition-all inline-flex items-center gap-2"
             onClick={() => window.open('https://twitter.com/intent/tweet?text=@OneDollarGoldCard', '_blank')}
           >
-            <TwitterIcon className="w-5 h-5" />
-            Ask on Twitter
+            <ExternalLinkIcon className="w-5 h-5" />
+            Ask on X
           </Button>
         </div>
       </main>
