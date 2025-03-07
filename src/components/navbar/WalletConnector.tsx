@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from '../../context/LanguageContext';
 import { useWallet, WalletType } from '../../context/WalletContext';
 import { getExplorerUrl } from '../../utils/walletUtils';
+import ConnectWalletModal from '../wallet/ConnectWalletModal';
 
 const WalletConnector: React.FC = () => {
   const { t } = useLanguage();
@@ -17,8 +18,9 @@ const WalletConnector: React.FC = () => {
     disconnectWallet,
     donations 
   } = useWallet();
-  const [showWalletOptions, setShowWalletOptions] = useState(false);
+  
   const [showWalletMenu, setShowWalletMenu] = useState(false);
+  const [showWalletModal, setShowWalletModal] = useState(false);
 
   const handleDonateClick = () => {
     if (isWalletConnected) {
@@ -28,15 +30,14 @@ const WalletConnector: React.FC = () => {
         donationSection.scrollIntoView({ behavior: 'smooth' });
       }
     } else {
-      // If wallet is not connected, show wallet options
-      setShowWalletOptions(!showWalletOptions);
+      // If wallet is not connected, show wallet modal
+      setShowWalletModal(true);
     }
   };
 
   const handleConnectWallet = async (type: WalletType) => {
     try {
       await connectWallet(type);
-      setShowWalletOptions(false);
       
       // After connecting wallet, scroll to donation section
       setTimeout(() => {
@@ -45,8 +46,11 @@ const WalletConnector: React.FC = () => {
           donationSection.scrollIntoView({ behavior: 'smooth' });
         }
       }, 500);
+      
+      return Promise.resolve();
     } catch (error) {
       console.error("Failed to connect wallet:", error);
+      throw error;
     }
   };
 
@@ -132,42 +136,12 @@ const WalletConnector: React.FC = () => {
         </button>
       )}
 
-      {/* Wallet options dropdown */}
-      {showWalletOptions && !isWalletConnected && (
-        <div className="absolute right-0 mt-2 w-52 bg-white rounded-md shadow-lg py-1 z-50">
-          <div className="px-4 py-2 text-sm text-gray-700 font-medium border-b border-gray-100">
-            Select Wallet
-          </div>
-          <button
-            className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gold-50"
-            onClick={() => handleConnectWallet('Phantom')}
-          >
-            <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-5 h-5 mr-3" />
-            Phantom
-          </button>
-          <button
-            className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gold-50"
-            onClick={() => handleConnectWallet('Solflare')}
-          >
-            <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-5 h-5 mr-3" />
-            Solflare
-          </button>
-          <button
-            className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gold-50"
-            onClick={() => handleConnectWallet('OKX')}
-          >
-            <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-5 h-5 mr-3" />
-            OKX Wallet
-          </button>
-          <button
-            className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gold-50"
-            onClick={() => handleConnectWallet('MetaMask')}
-          >
-            <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-5 h-5 mr-3" />
-            MetaMask
-          </button>
-        </div>
-      )}
+      {/* Wallet connect modal */}
+      <ConnectWalletModal
+        isOpen={showWalletModal}
+        onClose={() => setShowWalletModal(false)}
+        onConnectWallet={handleConnectWallet}
+      />
     </div>
   );
 };

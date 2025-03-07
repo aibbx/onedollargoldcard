@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSelector from './LanguageSelector';
@@ -41,7 +42,7 @@ const Navbar = () => {
   return (
     <nav
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out',
+        'fixed top-0 left-0 right-0 z-40 transition-all duration-300 ease-in-out',
         isScrolled
           ? 'bg-white/90 backdrop-blur-md shadow-sm py-3'
           : 'bg-transparent py-5'
