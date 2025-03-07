@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useWalletConnectors } from '../hooks/useWalletConnectors';
 import { useDonationHandlers } from '../hooks/useDonationHandlers';
@@ -101,30 +102,20 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     }
   }, [donations]);
 
-  // Wallet connection event handlers
+  // Handle wallet changes for Solana wallets
   useEffect(() => {
-    const handleAccountsChanged = (accounts: string[]) => {
-      if (accounts.length === 0) {
-        // User disconnected their wallet
-        disconnectWallet();
-      } else if (accounts[0] !== walletAddress) {
-        // User switched accounts
-        window.location.reload();
-      }
+    const handleWalletAccountChange = () => {
+      // If the wallet address changes, refresh the page
+      // This is a simple approach to handle account changes
+      window.location.reload();
     };
 
-    // Add event listeners for wallet changes
-    if (isWalletConnected && window.ethereum) {
-      window.ethereum.on('accountsChanged', handleAccountsChanged);
-      window.ethereum.on('chainChanged', () => window.location.reload());
-    }
+    // Add any wallet-specific event listeners if needed
+    // For example, Phantom and other wallets might have their own events
+    // This depends on the specific wallet implementations
 
     return () => {
-      // Remove event listeners when component unmounts
-      if (window.ethereum) {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-        window.ethereum.removeListener('chainChanged', () => {});
-      }
+      // Clean up any wallet-specific listeners if needed
     };
   }, [isWalletConnected, walletAddress]);
 
