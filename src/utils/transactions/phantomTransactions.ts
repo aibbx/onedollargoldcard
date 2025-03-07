@@ -11,11 +11,13 @@ import {
 
 // Function to get connection
 const getConnection = (): Connection => {
-  const endpoint = clusterApiUrl('mainnet-beta');
-  console.log('Using RPC endpoint:', endpoint);
+  // Use Helius RPC endpoint which is more reliable than the public one
+  const endpoint = "https://rpc.helius.xyz/?api-key=5f72607c-88c9-4019-9fe9-1a86d5805268";
+  console.log('Using Helius RPC endpoint for Phantom transactions');
   return new Connection(endpoint, {
     commitment: 'confirmed',
-    confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
+    confirmTransactionInitialTimeout: 60000, // 60 seconds timeout
+    wsEndpoint: "wss://rpc.helius.xyz/?api-key=5f72607c-88c9-4019-9fe9-1a86d5805268"
   });
 };
 
