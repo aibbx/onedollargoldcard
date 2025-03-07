@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
@@ -59,17 +58,14 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
 
   const [showHistory, setShowHistory] = useState(false);
   
-  // Effect to check for and recover the specific transaction on mount
+  const transactionToRecover = "7USXgX4s1SNs31TszqKXW7EBNo7eTVrUpPhjehiRi7ECuzySP97hK5PBuJJkyEuN6ndDND4LK73nKkXcnUvQH2C";
+  const donationAmount = 10.5; // The amount for this specific donation
+  
   useEffect(() => {
-    const transactionToRecover = "97wMvMN9ZVKhUbPVYAtQwRVXeB6fa7EaB1y6cuGwS42B";
-    const donationAmount = 10.5; // The amount for this specific donation
-    
     if (isWalletConnected && transactionToRecover) {
-      // Check if this donation is already in the records
       const existingDonation = donations.find(d => d.transactionId === transactionToRecover);
       
       if (!existingDonation) {
-        // Offer recovery via toast notification
         toast({
           title: "Donation Record Found",
           description: (
@@ -106,11 +102,8 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
     ? new Date(donations[donations.length - 1].timestamp) 
     : undefined;
 
-  // Function to manually recover the specific donation
   const handleRecoverSpecificDonation = () => {
-    const transactionId = "97wMvMN9ZVKhUbPVYAtQwRVXeB6fa7EaB1y6cuGwS42B";
-    const donationAmount = 10.5;
-    recoverDonation(transactionId, donationAmount);
+    recoverDonation(transactionToRecover, donationAmount);
   };
 
   return (
@@ -151,7 +144,7 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
             className="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 text-sm flex items-center justify-center rounded-md transition-colors text-gray-600"
           >
             <RefreshCw className="w-4 h-4 mr-2" />
-            Recover Transaction 97wMvMN9...
+            Recover Solana Transaction
           </button>
         )}
         
