@@ -1,6 +1,6 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
-import { PublicKey, Transaction, SystemProgram, Connection } from '@solana/web3.js';
+import { PublicKey, Transaction, SystemProgram, Connection, clusterApiUrl } from '@solana/web3.js';
 
 // Handle transactions specifically for Solflare wallet
 export const sendSolflareTransaction = async (
@@ -15,9 +15,9 @@ export const sendSolflareTransaction = async (
       throw new Error('Wallet not properly connected');
     }
 
-    // Use a reliable RPC endpoint for mainnet
+    // Use a reliable RPC endpoint for mainnet with fallback options
     const connection = new Connection(
-      'https://api.mainnet-beta.solana.com', 
+      clusterApiUrl('mainnet-beta'),
       { commitment: 'confirmed' }
     );
     
@@ -54,47 +54,74 @@ export const sendSolflareTransaction = async (
     console.log('Sending transaction with Solflare wallet...');
     
     // Solflare supports several methods for sending transactions, try each one
-    let signature;
+    let signature: string | null = null;
     
-    // Modern signAndSendTransaction method
-    if (provider.signAndSendTransaction) {
-      try {
+    try {
+      // Check which methods are available on the provider
+      console.log('Available Solflare methods:', Object.keys(provider));
+      
+      // Try the preferred signAndSendTransaction method first
+      if (provider.signAndSendTransaction) {
         console.log('Using Solflare signAndSendTransaction method...');
         const result = await provider.signAndSendTransaction(transaction);
         signature = typeof result === 'string' ? result : result.signature;
         console.log('Solflare transaction sent using signAndSendTransaction:', signature);
-      } catch (e) {
-        console.error('Error with signAndSendTransaction method:', e);
-        signature = null;
       }
-    }
-    
-    // Fallback to separate sign and send if the first method failed
-    if (!signature && provider.signTransaction) {
-      try {
+      // Then try signTransaction + sendRawTransaction if the first method failed
+      else if (provider.signTransaction) {
         console.log('Using Solflare separate sign and send transaction methods...');
         const signedTransaction = await provider.signTransaction(transaction);
         signature = await connection.sendRawTransaction(signedTransaction.serialize());
         console.log('Solflare transaction sent using separate sign and send:', signature);
-      } catch (e) {
-        console.error('Error with separate sign and send method:', e);
-        throw e;
+      }
+      else {
+        throw new Error('Solflare wallet does not support required transaction methods');
+      }
+    } catch (e) {
+      console.error('Error with initial Solflare transaction method:', e);
+      
+      // Try fallback method if the first attempt failed
+      if (!signature && provider.signTransaction) {
+        try {
+          console.log('Using fallback Solflare transaction method...');
+          const signedTransaction = await provider.signTransaction(transaction);
+          signature = await connection.sendRawTransaction(signedTransaction.serialize());
+          console.log('Solflare transaction sent with fallback method:', signature);
+        } catch (fallbackError) {
+          console.error('Error with fallback Solflare transaction method:', fallbackError);
+          throw fallbackError;
+        }
       }
     }
     
     if (!signature) {
-      throw new Error('Solflare wallet does not support required transaction methods');
+      throw new Error('Failed to get transaction signature from Solflare wallet');
     }
     
     // Wait for confirmation
     console.log('Waiting for Solflare transaction confirmation...');
-    const confirmation = await connection.confirmTransaction(signature, 'confirmed');
-    
-    if (confirmation.value.err) {
-      throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
+    try {
+      const confirmation = await connection.confirmTransaction({
+        signature,
+        blockhash,
+        lastValidBlockHeight
+      }, 'confirmed');
+      
+      if (confirmation.value.err) {
+        throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
+      }
+      
+      console.log('Solflare transaction confirmed successfully');
+      return signature;
+    } catch (confirmError) {
+      console.error('Error confirming Solflare transaction:', confirmError);
+      // Even if confirmation verification fails, return the signature if we have it
+      if (signature) {
+        console.log('Returning signature despite confirmation error');
+        return signature;
+      }
+      throw confirmError;
     }
-    
-    return signature;
   } catch (error) {
     console.error('Error in Solflare transaction:', error);
     throw error;

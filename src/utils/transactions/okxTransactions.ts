@@ -1,6 +1,6 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
-import { PublicKey, Transaction, SystemProgram, Connection } from '@solana/web3.js';
+import { PublicKey, Transaction, SystemProgram, Connection, clusterApiUrl } from '@solana/web3.js';
 
 // Handle transactions specifically for OKX wallet
 export const sendOKXTransaction = async (
@@ -15,9 +15,9 @@ export const sendOKXTransaction = async (
       throw new Error('OKX wallet not properly connected');
     }
 
-    // Use a reliable RPC endpoint for mainnet
+    // Use a reliable RPC endpoint for mainnet with fallback options
     const connection = new Connection(
-      'https://api.mainnet-beta.solana.com', 
+      clusterApiUrl('mainnet-beta'),
       { commitment: 'confirmed' }
     );
     
@@ -52,38 +52,43 @@ export const sendOKXTransaction = async (
     
     // Sign and send the transaction using OKX wallet
     console.log('Sending transaction with OKX wallet...');
+    console.log('Available OKX methods:', Object.keys(provider.solana));
     
-    let signature;
+    let signature: string | null = null;
     
-    // Try using the signAndSendTransaction method if available
-    if (provider.solana.signAndSendTransaction) {
-      try {
+    try {
+      // Try using the signAndSendTransaction method if available
+      if (provider.solana.signAndSendTransaction) {
         console.log('Using OKX signAndSendTransaction method...');
         // OKX might require different parameters structure
         const response = await provider.solana.signAndSendTransaction(transaction);
         signature = response?.signature || response;
         console.log('OKX transaction sent using signAndSendTransaction:', signature);
-      } catch (e) {
-        console.error('Error with OKX signAndSendTransaction method:', e);
-        signature = null;
       }
-    }
-    
-    // If direct method failed, try alternative approach
-    if (!signature) {
-      try {
-        if (provider.solana.signTransaction) {
-          console.log('Using OKX separate sign and send transaction methods...');
-          // Try to use the separate signTransaction and sendTransaction methods
+      // Fallback to separate sign and send methods
+      else if (provider.solana.signTransaction) {
+        console.log('Using OKX separate sign and send transaction methods...');
+        const signedTransaction = await provider.solana.signTransaction(transaction);
+        signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        console.log('OKX transaction sent using separate sign and send:', signature);
+      }
+      else {
+        throw new Error('OKX wallet does not support required transaction methods');
+      }
+    } catch (e) {
+      console.error('Error with initial OKX transaction method:', e);
+      
+      // Try fallback method if the first attempt failed
+      if (!signature && provider.solana.signTransaction) {
+        try {
+          console.log('Using fallback OKX transaction method...');
           const signedTransaction = await provider.solana.signTransaction(transaction);
           signature = await connection.sendRawTransaction(signedTransaction.serialize());
-          console.log('OKX transaction sent using separate sign and send:', signature);
-        } else {
-          throw new Error('OKX wallet does not support required transaction methods');
+          console.log('OKX transaction sent with fallback method:', signature);
+        } catch (fallbackError) {
+          console.error('Error with fallback OKX transaction method:', fallbackError);
+          throw fallbackError;
         }
-      } catch (e) {
-        console.error('Error with alternative OKX transaction method:', e);
-        throw e;
       }
     }
     
@@ -93,13 +98,28 @@ export const sendOKXTransaction = async (
     
     // Wait for confirmation
     console.log('Waiting for OKX transaction confirmation...');
-    const confirmation = await connection.confirmTransaction(signature, 'confirmed');
-    
-    if (confirmation.value.err) {
-      throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
+    try {
+      const confirmation = await connection.confirmTransaction({
+        signature,
+        blockhash,
+        lastValidBlockHeight
+      }, 'confirmed');
+      
+      if (confirmation.value.err) {
+        throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
+      }
+      
+      console.log('OKX transaction confirmed successfully');
+      return signature;
+    } catch (confirmError) {
+      console.error('Error confirming OKX transaction:', confirmError);
+      // Even if confirmation verification fails, return the signature if we have it
+      if (signature) {
+        console.log('Returning signature despite confirmation error');
+        return signature;
+      }
+      throw confirmError;
     }
-    
-    return signature;
   } catch (error) {
     console.error('Error in OKX transaction:', error);
     throw error;

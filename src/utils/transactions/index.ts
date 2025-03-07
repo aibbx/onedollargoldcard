@@ -34,6 +34,12 @@ export const processTransaction = async (
           throw new Error('Phantom wallet not properly connected. Please reconnect your wallet.');
         }
         console.log('Sending transaction via Phantom wallet...');
+        console.log('Phantom provider details:', { 
+          publicKey: provider.publicKey.toString(),
+          isConnected: provider.isConnected,
+          hasSignAndSendTransaction: !!provider.signAndSendTransaction,
+          hasSignTransaction: !!provider.signTransaction 
+        });
         return await sendPhantomTransaction(provider, amount, walletAddress);
         
       case 'Solflare':
@@ -41,6 +47,12 @@ export const processTransaction = async (
           throw new Error('Solflare wallet not properly connected. Please reconnect your wallet.');
         }
         console.log('Sending transaction via Solflare wallet...');
+        console.log('Solflare provider details:', { 
+          publicKey: provider.publicKey.toString(),
+          isConnected: provider.isConnected,
+          hasSignAndSendTransaction: !!provider.signAndSendTransaction,
+          hasSignTransaction: !!provider.signTransaction 
+        });
         return await sendSolflareTransaction(provider, amount, walletAddress);
         
       case 'OKX':
@@ -48,6 +60,12 @@ export const processTransaction = async (
           throw new Error('OKX wallet not properly connected. Please reconnect your wallet.');
         }
         console.log('Sending transaction via OKX wallet...');
+        console.log('OKX provider details:', { 
+          publicKey: provider.solana.publicKey.toString(),
+          isConnected: provider.solana.isConnected,
+          hasSignAndSendTransaction: !!provider.solana.signAndSendTransaction,
+          hasSignTransaction: !!provider.solana.signTransaction 
+        });
         return await sendOKXTransaction(provider, amount, walletAddress);
         
       default:
