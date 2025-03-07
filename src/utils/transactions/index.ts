@@ -4,6 +4,11 @@ import { sendPhantomTransaction } from './phantomTransactions';
 import { sendSolflareTransaction } from './solflareTransactions';
 import { sendOKXTransaction } from './okxTransactions';
 
+// Ensure Buffer is available
+if (typeof window !== 'undefined' && !window.Buffer) {
+  window.Buffer = require('buffer/').Buffer;
+}
+
 // Process transaction based on wallet type
 export const processTransaction = async (
   walletType: WalletType,
