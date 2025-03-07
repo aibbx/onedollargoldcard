@@ -1,6 +1,5 @@
 
 import { WalletType } from '../../types/wallet';
-import { generateMockAddress } from '../walletUtils';
 import { NetworkType } from '../../hooks/useWalletConnectors';
 
 import { 
@@ -34,12 +33,7 @@ export const connectWallet = async (type: WalletType, network: NetworkType = 'de
     case 'OKX':
       return connectOKXWallet(network);
     default:
-      // Fallback for testing or if a non-supported wallet type is passed
-      const mockAddress = generateMockAddress(type);
-      return {
-        address: mockAddress,
-        provider: null
-      };
+      throw new Error(`Unsupported wallet type: ${type}`);
   }
 };
 
@@ -57,12 +51,7 @@ export const autoConnectWallet = async (type: WalletType, network: NetworkType =
       case 'OKX':
         return await autoConnectOKXWallet(network);
       default:
-        // Fallback for testing or if a non-supported wallet type is passed
-        const mockAddress = generateMockAddress(type);
-        return {
-          address: mockAddress,
-          provider: null
-        };
+        throw new Error(`Unsupported wallet type: ${type}`);
     }
   } catch (error) {
     console.error('Error auto-connecting wallet:', error);
@@ -83,7 +72,7 @@ export const disconnectWallet = (type: WalletType): void => {
       disconnectOKXWallet();
       break;
     default:
-      // No action needed for mock wallets
+      console.warn(`No disconnect handler for wallet type: ${type}`);
       break;
   }
 };

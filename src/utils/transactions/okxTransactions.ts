@@ -10,24 +10,57 @@ export const sendOKXTransaction = async (
   try {
     console.log('Processing OKX transaction', { amount, walletAddress });
     
-    // In production, this should use proper Solana transaction building with @solana/web3.js
-    // This is a simplified implementation for demonstration
-    const transaction = {
-      to: CONTRACT_ADDRESSES.poolAddress,
-      amount: amount,
-      from: walletAddress
-    };
+    // Build a transaction for OKX
+    const transaction = await buildOKXTransaction(provider, amount, walletAddress);
     
-    const encodedTransaction = btoa(JSON.stringify(transaction));
-    
+    // Execute with OKX wallet provider
     const result = await provider.solana.signAndSendTransaction({
-      transaction: encodedTransaction
+      transaction: transaction
     });
     
     console.log('OKX transaction result:', result);
     return result?.signature || result;
   } catch (error) {
     console.error('Error in OKX transaction:', error);
+    throw error;
+  }
+};
+
+// Build a proper Solana transaction for OKX
+const buildOKXTransaction = async (provider: any, amount: number, walletAddress: string) => {
+  try {
+    // In production, this should build a proper Solana transaction
+    // Here we're preparing a transaction structure that OKX would understand
+    const connection = provider.solana.connection;
+    
+    // Note: This is a placeholder structure - the actual transaction would 
+    // be built using proper Solana web3.js methods
+    const transaction = {
+      feePayer: walletAddress,
+      recentBlockhash: await connection.getRecentBlockhash(),
+      instructions: [
+        {
+          programId: CONTRACT_ADDRESSES.poolAddress,
+          keys: [
+            {
+              pubkey: walletAddress,
+              isSigner: true,
+              isWritable: true
+            },
+            {
+              pubkey: CONTRACT_ADDRESSES.poolAddress,
+              isSigner: false,
+              isWritable: true
+            }
+          ],
+          data: Buffer.from([0, ...new Uint8Array(Buffer.from(amount.toString()))]) // Simplified data structure
+        }
+      ]
+    };
+    
+    return transaction;
+  } catch (error) {
+    console.error('Error building OKX transaction:', error);
     throw error;
   }
 };
