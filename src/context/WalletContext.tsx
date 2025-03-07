@@ -104,17 +104,17 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   // Wallet connection event handlers
   useEffect(() => {
     const handleAccountsChanged = (accounts: string[]) => {
-      if (walletType === 'MetaMask' && accounts.length === 0) {
+      if (accounts.length === 0) {
         // User disconnected their wallet
         disconnectWallet();
-      } else if (walletType === 'MetaMask' && accounts[0] !== walletAddress) {
+      } else if (accounts[0] !== walletAddress) {
         // User switched accounts
         window.location.reload();
       }
     };
 
     // Add event listeners for wallet changes
-    if (isWalletConnected && walletType === 'MetaMask' && window.ethereum) {
+    if (isWalletConnected && window.ethereum) {
       window.ethereum.on('accountsChanged', handleAccountsChanged);
       window.ethereum.on('chainChanged', () => window.location.reload());
     }
@@ -126,7 +126,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
         window.ethereum.removeListener('chainChanged', () => {});
       }
     };
-  }, [isWalletConnected, walletType, walletAddress]);
+  }, [isWalletConnected, walletAddress]);
 
   return (
     <WalletContext.Provider value={{ 

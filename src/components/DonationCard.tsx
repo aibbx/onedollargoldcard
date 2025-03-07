@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useWallet } from '../context/WalletContext';
+import { useWallet, WalletType } from '../context/WalletContext';
 import ConnectWalletModal from './wallet/ConnectWalletModal';
 
 // Import the components
@@ -63,7 +62,7 @@ const DonationCard = () => {
     }
   };
 
-  const handleConnectWallet = async (type: 'Phantom' | 'Solflare' | 'OKX' | 'MetaMask') => {
+  const handleConnectWallet = async (type: WalletType) => {
     try {
       await connectWallet(type);
       return Promise.resolve();
@@ -121,9 +120,7 @@ const DonationCard = () => {
     if (!txId) return;
     
     // In production, this would open the transaction on a blockchain explorer
-    const explorerUrl = walletType === 'MetaMask' 
-      ? `https://etherscan.io/tx/${txId}` 
-      : `https://solscan.io/tx/${txId}`;
+    const explorerUrl = `https://solscan.io/tx/${txId}`;
       
     window.open(explorerUrl, '_blank');
   };

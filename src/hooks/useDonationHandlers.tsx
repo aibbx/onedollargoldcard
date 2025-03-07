@@ -44,12 +44,8 @@ export const useDonationHandlers = (
       // Simulate network delay
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      if (walletType === 'MetaMask') {
-        transactionId = generateTransactionHash('ethereum');
-      } else {
-        // Solana-based wallets (Phantom, Solflare, OKX)
-        transactionId = generateTransactionHash('solana');
-      }
+      // All wallets use Solana
+      transactionId = generateTransactionHash('solana');
       
       // Create a donation record with realistic data
       const newDonation: DonationRecord = {

@@ -24,8 +24,6 @@ const WalletButton: React.FC<WalletButtonProps> = ({
         return 'border-orange-200 hover:bg-orange-50';
       case 'OKX':
         return 'border-blue-200 hover:bg-blue-50';
-      case 'MetaMask':
-        return 'border-amber-200 hover:bg-amber-50';
       default:
         return 'border-gray-200 hover:bg-gray-50';
     }
