@@ -66,3 +66,4 @@ export const disconnectMetaMaskWallet = (): void => {
   // MetaMask doesn't support programmatic disconnection
   console.log('Note: MetaMask does not support programmatic disconnection');
 };
+

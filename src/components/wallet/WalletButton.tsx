@@ -51,6 +51,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
           : 'border-gray-200 bg-gray-50 opacity-70'
       }`}
       disabled={!isAvailable}
+      data-wallet-type={walletType}
     >
       <div className="flex items-center">
         <WalletIcon walletType={walletType} className="w-10 h-10" />

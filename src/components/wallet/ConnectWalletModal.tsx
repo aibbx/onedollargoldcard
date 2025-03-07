@@ -6,7 +6,7 @@ import { WalletType } from '../../types/wallet';
 import { Link } from 'react-router-dom';
 import WalletButton from './WalletButton';
 import { useWalletDetection } from '../../hooks/useWalletDetection';
-import { WALLET_CONFIGS, getWalletInstallUrl } from '../../utils/walletConfig';
+import { WALLET_CONFIGS } from '../../utils/walletConfig';
 
 interface ConnectWalletModalProps {
   isOpen: boolean;
@@ -26,6 +26,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
 
   const handleWalletConnect = async (type: WalletType) => {
     try {
+      console.log(`Connecting to ${type} wallet...`);
       await onConnectWallet(type);
       onClose();
     } catch (error) {
