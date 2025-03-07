@@ -34,14 +34,6 @@ const WalletIcon: React.FC<WalletIconProps> = ({ walletType, className = "w-4 h-
           <rect x="22" y="22" width="8" height="8" fill="black"/>
         </svg>
       );
-    case 'MetaMask':
-      return (
-        <svg width="20" height="20" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-          <circle cx="20" cy="20" r="20" fill="white"/>
-          <path d="M32.0502 8.94995L22.101 16.2262L24.3748 11.2758L32.0502 8.94995Z" fill="#E17726" stroke="#E17726" strokeWidth="0.25" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M7.9498 8.94995L17.8158 16.2927L15.6252 11.2758L7.9498 8.94995Z" fill="#E27625" stroke="#E27625" strokeWidth="0.25" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      );
     default:
       return null;
   }

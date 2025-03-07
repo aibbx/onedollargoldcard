@@ -1,5 +1,5 @@
 
-export type WalletType = 'Phantom' | 'Solflare' | 'OKX' | 'MetaMask' | '';
+export type WalletType = 'Phantom' | 'Solflare' | 'OKX' | '';
 
 // Define donation record interface
 export interface DonationRecord {

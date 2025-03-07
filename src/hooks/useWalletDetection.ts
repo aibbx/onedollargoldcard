@@ -6,15 +6,13 @@ interface DetectedWallets {
   phantom: boolean;
   solflare: boolean;
   okx: boolean;
-  metamask: boolean;
 }
 
 export const useWalletDetection = () => {
   const [availableWallets, setAvailableWallets] = useState<DetectedWallets>({
     phantom: false,
     solflare: false,
-    okx: false,
-    metamask: false
+    okx: false
   });
   const [detectionComplete, setDetectionComplete] = useState(false);
 
@@ -26,8 +24,7 @@ export const useWalletDetection = () => {
       const detected: DetectedWallets = {
         phantom: false,
         solflare: false,
-        okx: false,
-        metamask: false
+        okx: false
       };
       
       // Log for debugging

@@ -29,13 +29,6 @@ export const WALLET_CONFIGS: WalletConfig[] = [
     installUrl: 'https://www.okx.com/web3',
     detectionKey: 'okxwallet',
     secondaryCheck: (window) => !!(window.okxwallet?.solana)
-  },
-  {
-    type: 'MetaMask',
-    name: 'MetaMask',
-    installUrl: 'https://metamask.io/',
-    detectionKey: 'ethereum',
-    secondaryCheck: (window) => !!(window.ethereum?.isMetaMask)
   }
 ];
 

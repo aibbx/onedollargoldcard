@@ -88,14 +88,6 @@ export const useWalletConnectors = () => {
         });
         window.open("https://www.okx.com/web3", "_blank");
         return Promise.reject(new Error('OKX wallet not installed'));
-      } else if (type === 'MetaMask' && (typeof window === 'undefined' || !window.ethereum)) {
-        toast({
-          title: "Wallet Not Found",
-          description: "Please install the MetaMask extension and refresh the page.",
-          variant: "destructive",
-        });
-        window.open("https://metamask.io/", "_blank");
-        return Promise.reject(new Error('MetaMask wallet not installed'));
       }
       
       try {
