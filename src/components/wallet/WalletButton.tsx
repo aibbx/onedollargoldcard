@@ -36,9 +36,15 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     window.open(installUrl, '_blank');
   };
 
+  const handleClick = () => {
+    if (isAvailable) {
+      onClick();
+    }
+  };
+
   return (
     <button
-      onClick={onClick}
+      onClick={handleClick}
       className={`wallet-option-button flex items-center justify-between w-full p-4 rounded-lg border ${
         isAvailable 
           ? getButtonStyle() 

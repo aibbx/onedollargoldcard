@@ -13,17 +13,22 @@ export const connectMetaMaskWallet = async (): Promise<{
   
   const provider = window.ethereum;
   
-  // Request connection to the wallet
-  const accounts = await provider.request({ method: 'eth_requestAccounts' });
-  
-  if (!accounts || accounts.length === 0) {
-    throw new Error('No accounts found');
+  try {
+    // Request connection to the wallet
+    const accounts = await provider.request({ method: 'eth_requestAccounts' });
+    
+    if (!accounts || accounts.length === 0) {
+      throw new Error('No accounts found');
+    }
+    
+    return {
+      address: accounts[0],
+      provider
+    };
+  } catch (error) {
+    console.error('MetaMask connection error:', error);
+    throw error;
   }
-  
-  return {
-    address: accounts[0],
-    provider
-  };
 };
 
 // Auto-connect to MetaMask wallet if already connected
@@ -48,8 +53,7 @@ export const autoConnectMetaMaskWallet = async (): Promise<{
       };
     }
     
-    // If no accounts are available, try requesting them
-    return await connectMetaMaskWallet();
+    return null;
   } catch (error) {
     console.error('Error auto-connecting to MetaMask:', error);
     return null;

@@ -44,4 +44,3 @@ export const getWalletInstallUrl = (type: WalletType): string => {
   const config = WALLET_CONFIGS.find(config => config.type === type);
   return config?.installUrl || '';
 };
-
