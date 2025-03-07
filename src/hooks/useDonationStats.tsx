@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { DonationRecord } from '../types/wallet';
 import { CONTRACT_ADDRESSES } from '../utils/walletUtils';
@@ -33,7 +34,7 @@ export const useDonationStats = (donations: DonationRecord[] = []) => {
     try {
       setIsLoading(true);
       
-      // Create connection to Solana network
+      // Create connection to Solana mainnet
       const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
       
       // Create PublicKey from pool address
@@ -47,14 +48,22 @@ export const useDonationStats = (donations: DonationRecord[] = []) => {
       const solBalance = balance / 1_000_000_000;
       console.log('Pool balance in SOL:', solBalance);
       
-      // For real application, this value would be used
-      // For now, we'll use a minimum balance to give a meaningful percentage
-      const effectiveBalance = Math.max(solBalance, 0.1);
+      // For real application with real SOL we use the actual balance
+      const effectiveBalance = Math.max(solBalance, 0.001); // Small minimum to avoid division by zero
       
-      // Calculate the USD equivalent (assuming 1 SOL = $100 for simplicity)
-      // In production, you would fetch the actual SOL price from an API
-      const assumedSolPrice = 100; // $100 per SOL
-      const poolUsdBalance = effectiveBalance * assumedSolPrice;
+      // Get current SOL price from a public API
+      let solPrice = 100; // Default fallback price
+      try {
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
+        const data = await response.json();
+        solPrice = data.solana.usd;
+        console.log('Current SOL price (USD):', solPrice);
+      } catch (e) {
+        console.error('Error fetching SOL price, using fallback value:', e);
+      }
+      
+      // Calculate pool value in USD
+      const poolUsdBalance = effectiveBalance * solPrice;
       
       // Calculate chance based on contribution vs. total pool
       const userEntries = userContribution; // Each $1 = 1 entry
@@ -67,20 +76,19 @@ export const useDonationStats = (donations: DonationRecord[] = []) => {
         chancePercentage
       });
       
-      // Cap the percentage at 100% for very small pools
+      // Cap the percentage at 100%
       const cappedChance = Math.min(chancePercentage, 100);
       setWinningChance(cappedChance);
     } catch (error) {
       console.error("Error fetching pool size:", error);
       
-      // Fallback calculation if we can't fetch real data
-      // This assumes a current pool size of approximately $1M for calculation
-      const estimatedPoolSize = 1000000;
-      const userEntries = userContribution * 1;
+      // Fallback calculation
+      const estimatedPoolSize = 1000; // Smaller pool size to show more realistic chances
+      const userEntries = userContribution;
       const totalEntries = estimatedPoolSize;
       const chance = (userEntries / totalEntries) * 100;
       
-      setWinningChance(chance);
+      setWinningChance(Math.min(chance, 100));
     } finally {
       setIsLoading(false);
     }

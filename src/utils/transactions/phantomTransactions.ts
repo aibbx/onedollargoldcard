@@ -48,26 +48,46 @@ export const sendPhantomTransaction = async (
     // Sign and send the transaction
     console.log('Sending transaction with Phantom wallet...');
     
-    // Check if the signAndSendTransaction method exists
-    if (!provider.signAndSendTransaction) {
-      throw new Error('Phantom wallet does not support signAndSendTransaction. Try disconnecting and reconnecting your wallet.');
+    // Modern Phantom wallet now supports signAndSendTransaction
+    if (provider.signAndSendTransaction) {
+      const { signature } = await provider.signAndSendTransaction(transaction);
+      console.log('Phantom transaction sent with signature:', signature);
+      
+      // Wait for confirmation
+      const confirmation = await connection.confirmTransaction({
+        blockhash,
+        lastValidBlockHeight,
+        signature,
+      });
+      
+      if (confirmation.value.err) {
+        throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
+      }
+      
+      return signature;
+    } 
+    // Fallback to separate sign and send methods
+    else if (provider.signTransaction) {
+      const signedTransaction = await provider.signTransaction(transaction);
+      const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+      
+      console.log('Phantom transaction sent with signature (fallback method):', signature);
+      
+      // Wait for confirmation
+      const confirmation = await connection.confirmTransaction({
+        blockhash,
+        lastValidBlockHeight,
+        signature,
+      });
+      
+      if (confirmation.value.err) {
+        throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
+      }
+      
+      return signature;
+    } else {
+      throw new Error('Phantom wallet does not support required transaction methods');
     }
-    
-    const { signature } = await provider.signAndSendTransaction(transaction);
-    console.log('Phantom transaction sent with signature:', signature);
-    
-    // Wait for confirmation
-    const confirmation = await connection.confirmTransaction({
-      blockhash,
-      lastValidBlockHeight,
-      signature,
-    });
-    
-    if (confirmation.value.err) {
-      throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
-    }
-    
-    return signature;
   } catch (error) {
     console.error('Error in Phantom transaction:', error);
     throw error;

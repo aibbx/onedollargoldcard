@@ -48,33 +48,49 @@ export const sendSolflareTransaction = async (
     // Sign and send the transaction
     console.log('Sending transaction with Solflare wallet...');
     
-    // Check if signAndSendTransaction method exists and call it, otherwise try to sign and send separately
-    // Solflare's method signature can be different from Phantom
+    // Solflare supports several methods for sending transactions, try each one
     let signature;
     
+    // Modern signAndSendTransaction method
     if (provider.signAndSendTransaction) {
-      signature = await provider.signAndSendTransaction(transaction);
-    } else if (provider.signTransaction && provider.sendTransaction) {
-      const signedTx = await provider.signTransaction(transaction);
-      signature = await connection.sendRawTransaction(signedTx.serialize());
-    } else {
-      throw new Error('Solflare wallet does not support required transaction methods');
+      try {
+        const result = await provider.signAndSendTransaction(transaction);
+        signature = typeof result === 'string' ? result : result.signature;
+        console.log('Solflare transaction sent using signAndSendTransaction:', signature);
+      } catch (e) {
+        console.error('Error with signAndSendTransaction method:', e);
+        signature = null;
+      }
     }
     
-    console.log('Solflare transaction sent with signature:', signature);
+    // Fallback to separate sign and send if the first method failed
+    if (!signature && provider.signTransaction) {
+      try {
+        const signedTransaction = await provider.signTransaction(transaction);
+        signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        console.log('Solflare transaction sent using separate sign and send:', signature);
+      } catch (e) {
+        console.error('Error with separate sign and send method:', e);
+        throw e;
+      }
+    }
+    
+    if (!signature) {
+      throw new Error('Solflare wallet does not support required transaction methods');
+    }
     
     // Wait for confirmation
     const confirmation = await connection.confirmTransaction({
       blockhash,
       lastValidBlockHeight,
-      signature: typeof signature === 'string' ? signature : signature.signature,
+      signature,
     });
     
     if (confirmation.value.err) {
       throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
     }
     
-    return typeof signature === 'string' ? signature : signature.signature;
+    return signature;
   } catch (error) {
     console.error('Error in Solflare transaction:', error);
     throw error;

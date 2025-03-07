@@ -22,11 +22,6 @@ export const processTransaction = async (
       throw new Error('Wallet address is not available');
     }
     
-    // Simulate network connection check to avoid silent failures
-    if (navigator.onLine === false) {
-      throw new Error('You appear to be offline. Please check your internet connection.');
-    }
-    
     // Validate transaction amount 
     if (amount <= 0) {
       throw new Error('Invalid donation amount. Amount must be greater than 0.');
