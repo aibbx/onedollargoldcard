@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import DonationCardContainer from './donation/DonationCardContainer';
 import ConnectWalletModal from './wallet/ConnectWalletModal';
 import { useWallet, WalletType } from '../context/WalletContext';
-// Import buffer polyfill early
+// Import buffer polyfill early - ensure it's imported at the top
 import '../utils/buffer-polyfill';
 
 const DonationCard = () => {
@@ -12,9 +12,16 @@ const DonationCard = () => {
 
   // Initialize buffer polyfill on component mount
   useEffect(() => {
-    // Buffer should be available globally now
-    console.log('DonationCard loaded, Buffer availability:', 
-      typeof window !== 'undefined' ? !!window.Buffer : 'Not in browser');
+    // Additional check to ensure Buffer is properly polyfilled
+    if (typeof window !== 'undefined' && !window.Buffer) {
+      console.error('Buffer polyfill not properly initialized');
+      // Force re-initialize if needed
+      import('../utils/buffer-polyfill').then(() => {
+        console.log('Buffer polyfill loaded dynamically');
+      });
+    } else {
+      console.log('Buffer polyfill verified:', !!window.Buffer);
+    }
   }, []);
 
   const handleConnectWallet = async (type: WalletType) => {

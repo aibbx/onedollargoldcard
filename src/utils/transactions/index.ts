@@ -1,11 +1,5 @@
-
-// Use proper Buffer polyfill that works in the browser
-import { Buffer } from 'buffer';
-
-// Make Buffer available globally
-if (typeof window !== 'undefined') {
-  window.Buffer = Buffer;
-}
+// Import Buffer polyfill first to ensure it's available globally
+import '../buffer-polyfill';
 
 import { WalletType } from '../../types/wallet';
 import { sendPhantomTransaction } from './phantomTransactions';

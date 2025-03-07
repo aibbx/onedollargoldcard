@@ -1,14 +1,11 @@
 
-// Buffer Polyfill Implementation
-import { Buffer as BufferImpl } from 'buffer';
+// Polyfill for Buffer in the browser
+import { Buffer as BufferPolyfill } from 'buffer';
 
-// Ensure Buffer is available globally in the browser
+// Make Buffer available globally for browser environment
 if (typeof window !== 'undefined') {
-  window.Buffer = BufferImpl;
+  window.Buffer = BufferPolyfill;
 }
 
 // Export for direct imports
-export const Buffer = BufferImpl;
-
-// Initialize the polyfill immediately
-console.log('Buffer polyfill initialized');
+export { BufferPolyfill as Buffer };
