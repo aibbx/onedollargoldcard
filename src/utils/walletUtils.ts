@@ -7,9 +7,9 @@ export const CONTRACT_ADDRESSES = {
   feeAddress: "5ecoPEMgbz8CL8ymcLVhUNFkp3ded5mWH731L2So7e9Q", // Fee address on mainnet
 };
 
-// Get the explorer URL for a transaction
+// Get the explorer URL for a transaction - using Solscan for better visibility
 export const getExplorerUrl = (transactionId: string, walletType: WalletType): string => {
-  // Solana explorer URL (mainnet)
+  // Solana explorer URL (mainnet) - Solscan provides better UI and more details
   return `https://solscan.io/tx/${transactionId}`;
 };
 
