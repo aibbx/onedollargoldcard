@@ -36,8 +36,16 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     totalDonationAmount,
     winningChance,
     sendDonation,
-    updateDonationStats
+    updateDonationStats,
+    isProcessing
   } = useDonationHandlers(isWalletConnected, walletAddress, walletType, provider, initialDonations);
+
+  // Log provider to debug
+  useEffect(() => {
+    if (isWalletConnected && provider) {
+      console.log(`Wallet provider available for ${walletType}:`, provider);
+    }
+  }, [isWalletConnected, provider, walletType]);
 
   // Load saved donations from localStorage
   useEffect(() => {
@@ -130,7 +138,8 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
       donations,
       totalDonationAmount,
       winningChance,
-      network
+      network,
+      isProcessing
     }}>
       {children}
     </WalletContext.Provider>

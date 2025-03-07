@@ -12,6 +12,16 @@ export const processTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
+    console.log('Processing transaction for:', walletType, { amount, walletAddress });
+    
+    if (!provider) {
+      throw new Error('Wallet provider is not available');
+    }
+    
+    if (!walletAddress) {
+      throw new Error('Wallet address is not available');
+    }
+    
     // Process transaction based on wallet type
     switch (walletType) {
       case 'Phantom':

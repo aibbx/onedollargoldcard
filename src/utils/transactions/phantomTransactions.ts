@@ -7,19 +7,28 @@ export const sendPhantomTransaction = async (
   amount: number,
   walletAddress: string
 ): Promise<string> => {
-  // Create a simplified transaction for Phantom wallet
-  const transaction = {
-    to: CONTRACT_ADDRESSES.poolAddress,
-    amount: amount
-  };
-  
-  // For Phantom wallet
-  const result = await provider.request({
-    method: 'signAndSendTransaction',
-    params: { 
-      message: JSON.stringify(transaction) 
-    }
-  });
-  
-  return result?.signature || result;
+  try {
+    console.log('Processing Phantom transaction', { amount, walletAddress });
+    
+    // In production, this should use proper Solana transaction building with @solana/web3.js
+    // This is a simplified implementation for demonstration
+    const transaction = {
+      to: CONTRACT_ADDRESSES.poolAddress,
+      amount: amount,
+      from: walletAddress
+    };
+    
+    // For Phantom wallet
+    const encodedTransaction = btoa(JSON.stringify(transaction));
+    
+    const result = await provider.signAndSendTransaction({
+      transaction: encodedTransaction
+    });
+    
+    console.log('Phantom transaction result:', result);
+    return result?.signature || result;
+  } catch (error) {
+    console.error('Error in Phantom transaction:', error);
+    throw error;
+  }
 };

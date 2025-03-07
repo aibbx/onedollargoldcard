@@ -34,6 +34,16 @@ export const useDonationHandlers = (
       return null;
     }
     
+    if (!provider) {
+      toast({
+        title: "Wallet Error",
+        description: "Your wallet provider is not properly connected. Please reconnect your wallet.",
+        variant: "destructive",
+      });
+      console.error("No wallet provider available:", { walletType, walletAddress });
+      return null;
+    }
+    
     if (isProcessing) {
       toast({
         title: "Transaction in Progress",
@@ -45,6 +55,7 @@ export const useDonationHandlers = (
     
     try {
       setIsProcessing(true);
+      console.log('Starting donation process:', { amount, walletType, walletAddress });
       
       // Process the transaction using our utility function
       const transactionId = await processTransaction(
@@ -53,6 +64,8 @@ export const useDonationHandlers = (
         amount,
         walletAddress
       );
+      
+      console.log('Transaction completed with ID:', transactionId);
       
       // Create a donation record
       if (transactionId) {
@@ -108,7 +121,7 @@ export const useDonationHandlers = (
       console.error('Error sending donation:', error);
       toast({
         title: "Donation Failed",
-        description: "Your donation could not be processed. Please try again.",
+        description: `Your donation could not be processed: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
       return null;
