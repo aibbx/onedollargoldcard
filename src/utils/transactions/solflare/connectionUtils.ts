@@ -10,7 +10,7 @@ export const getConnection = (): Connection => {
   
   return new Connection(endpoint, {
     commitment: 'confirmed',
-    confirmTransactionInitialTimeout: 90000 // 90 seconds timeout
+    confirmTransactionInitialTimeout: 120000 // 120 seconds timeout
   });
 };
 
@@ -22,13 +22,17 @@ export const getBackupConnection = (): Connection => {
   
   return new Connection(endpoint, {
     commitment: 'confirmed',
-    confirmTransactionInitialTimeout: 90000 // 90 seconds timeout
+    confirmTransactionInitialTimeout: 150000 // 150 seconds timeout
   });
 };
 
 // Validate Solflare provider
 export const validateProvider = (provider: any): any => {
-  console.log('Validating Solflare provider:', provider);
+  console.log('Validating Solflare provider:', {
+    hasProvider: !!provider,
+    hasPublicKey: !!provider?.publicKey,
+    availableMethods: Object.keys(provider || {})
+  });
   
   if (!provider) {
     toast({

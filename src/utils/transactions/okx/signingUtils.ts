@@ -8,7 +8,20 @@ export const signAndSendTransaction = async (
   transaction: Transaction,
   connection: Connection
 ): Promise<string> => {
-  console.log('Requesting OKX wallet signature...');
+  console.log('Requesting OKX wallet signature...', {
+    availableMethods: Object.keys(solanaProvider)
+  });
+  
+  // Show wallet approval toast
+  toast({
+    title: "Wallet Approval Required",
+    description: "Please approve the transaction in your OKX wallet",
+    variant: "default",
+  });
+  
+  // Add delay to ensure toast is visible before wallet popup
+  await new Promise(resolve => setTimeout(resolve, 800));
+  
   let signature: string = '';
 
   // Try all available signing methods one by one
@@ -29,7 +42,11 @@ export const signAndSendTransaction = async (
     console.log('Using OKX signTransaction method');
     try {
       const signedTransaction = await solanaProvider.signTransaction(transaction);
-      signature = await connection.sendRawTransaction(signedTransaction.serialize());
+      signature = await connection.sendRawTransaction(
+        typeof signedTransaction.serialize === 'function'
+          ? signedTransaction.serialize()
+          : signedTransaction
+      );
       console.log('OKX transaction sent with signTransaction method:', signature);
       return signature;
     } catch (signError) {
@@ -53,6 +70,10 @@ export const signAndSendTransaction = async (
       console.error('Error with sign method:', signError);
       // Continue to next method
     }
+  }
+  
+  if (signature) {
+    return signature;
   }
   
   // If we reach here, no signing method worked

@@ -8,8 +8,9 @@ export const signAndSendTransaction = async (
   transaction: Transaction,
   connection: Connection
 ): Promise<string> => {
-  console.log('Sending transaction with Solflare wallet...');
-  console.log('Available Solflare methods:', Object.keys(provider));
+  console.log('Sending transaction with Solflare wallet...', {
+    availableMethods: Object.keys(provider || {})
+  });
   
   let signature: string | null = null;
   
@@ -22,7 +23,7 @@ export const signAndSendTransaction = async (
     });
     
     // Small delay to ensure toast is visible before wallet popup
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
     // Try the preferred signAndSendTransaction method first
     if (provider.signAndSendTransaction) {
@@ -50,13 +51,14 @@ export const signAndSendTransaction = async (
         await new Promise(resolve => setTimeout(resolve, 500));
         
         signature = await connection.sendRawTransaction(
-          signedTransaction.serialize ? signedTransaction.serialize() : signedTransaction
+          signedTransaction.serialize ? signedTransaction.serialize() : signedTransaction,
+          { maxRetries: 5 }
         );
         console.log('Solflare transaction sent using separate sign and send:', signature);
         return signature;
       } catch (e) {
         console.error('Error with signTransaction method:', e);
-        throw e;
+        // Continue to next method
       }
     }
     
@@ -66,7 +68,8 @@ export const signAndSendTransaction = async (
       try {
         const signedTransaction = await provider.sign(transaction);
         signature = await connection.sendRawTransaction(
-          signedTransaction.serialize ? signedTransaction.serialize() : signedTransaction
+          signedTransaction.serialize ? signedTransaction.serialize() : signedTransaction,
+          { maxRetries: 5 }
         );
         console.log('Solflare transaction sent with basic sign method:', signature);
         return signature;

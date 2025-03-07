@@ -64,7 +64,7 @@ export const confirmTransaction = async (
       if (confirmation) {
         confirmed = true;
         
-        if (confirmation.value && confirmation.value.err) {
+        if (confirmation?.value?.err) {
           throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
         }
         
@@ -73,7 +73,7 @@ export const confirmTransaction = async (
         // Show success toast
         toast({
           title: "Transaction Successful",
-          description: "Your USDC transaction has been confirmed on the Solana network!",
+          description: "Your transaction has been confirmed on the Solana network!",
         });
         
         return;

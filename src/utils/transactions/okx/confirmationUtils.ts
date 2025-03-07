@@ -71,4 +71,8 @@ export const confirmTransaction = async (
   
   // Show success toast
   console.log('OKX USDC transaction confirmed successfully!');
+  toast({
+    title: "Transaction Successful",
+    description: "Your transaction has been confirmed on the Solana network!",
+  });
 };

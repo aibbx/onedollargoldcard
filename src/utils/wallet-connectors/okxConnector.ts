@@ -13,6 +13,8 @@ export const connectOKXWallet = async (network: NetworkType = 'mainnet-beta'): P
   
   const provider = window.okxwallet.solana;
   
+  console.log('Connecting to OKX wallet with methods:', Object.keys(provider));
+  
   // Try to set the network
   try {
     if (provider.switchNetwork) {
@@ -25,15 +27,26 @@ export const connectOKXWallet = async (network: NetworkType = 'mainnet-beta'): P
   }
   
   // Request connection to the wallet
-  const response = await provider.connect();
-  const address = response.publicKey.toString();
-  
-  console.log(`Connected to OKX wallet on ${network}`);
-  
-  return {
-    address,
-    provider
-  };
+  try {
+    const response = await provider.connect();
+    console.log('OKX connect response:', response);
+    
+    if (!response || !response.publicKey) {
+      throw new Error('Failed to connect to OKX wallet: No public key returned');
+    }
+    
+    const address = response.publicKey.toString();
+    
+    console.log(`Connected to OKX wallet on ${network}, address:`, address);
+    
+    return {
+      address,
+      provider: window.okxwallet // Return the full provider
+    };
+  } catch (error) {
+    console.error('Error connecting to OKX wallet:', error);
+    throw new Error(`Failed to connect to OKX wallet: ${error.message || 'Unknown error'}`);
+  }
 };
 
 // Auto-connect to OKX wallet if already connected
@@ -47,6 +60,8 @@ export const autoConnectOKXWallet = async (network: NetworkType = 'mainnet-beta'
   
   const provider = window.okxwallet.solana;
   
+  console.log('Auto-connecting to OKX wallet with methods:', Object.keys(provider));
+  
   // Try to set the network
   try {
     if (provider.switchNetwork) {
@@ -58,12 +73,14 @@ export const autoConnectOKXWallet = async (network: NetworkType = 'mainnet-beta'
     // Continue anyway
   }
   
+  // Check if already connected
   if (provider.isConnected) {
     const address = provider.publicKey?.toString() || '';
     if (address) {
+      console.log(`OKX wallet already connected on ${network}, address:`, address);
       return {
         address,
-        provider
+        provider: window.okxwallet // Return the full provider
       };
     }
   }
@@ -82,6 +99,7 @@ export const disconnectOKXWallet = (): void => {
   if (typeof window !== 'undefined' && window.okxwallet?.solana) {
     try {
       window.okxwallet.solana.disconnect();
+      console.log('Disconnected from OKX wallet');
     } catch (err) {
       console.error('Error disconnecting OKX wallet:', err);
     }

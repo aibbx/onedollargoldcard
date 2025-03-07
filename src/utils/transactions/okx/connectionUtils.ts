@@ -10,19 +10,19 @@ export const getConnection = (): Connection => {
   
   return new Connection(endpoint, {
     commitment: 'confirmed',
-    confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
+    confirmTransactionInitialTimeout: 90000 // 90 seconds timeout
   });
 };
 
 // Create a backup connection using a different endpoint
 export const getBackupConnection = (): Connection => {
-  // Use QuickNode as backup
+  // Use QuickNode as backup with higher timeout
   const endpoint = "https://snowy-capable-night.solana-mainnet.quiknode.pro/72424723ee91618f3c3a7c1415e06e6f66ff1035/";
   console.log('Using backup RPC endpoint for OKX transactions');
   
   return new Connection(endpoint, {
     commitment: 'confirmed',
-    confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
+    confirmTransactionInitialTimeout: 120000 // 120 seconds timeout
   });
 };
 
