@@ -53,7 +53,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               onClick={() => handleWalletConnect('Phantom')}
               className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
             >
-              <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-8 h-8" />
+              <img src="https://phantom.app/favicon.ico" alt="Phantom" className="w-8 h-8" />
               <span className="font-normal text-lg">Phantom</span>
             </button>
             
@@ -61,7 +61,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               onClick={() => handleWalletConnect('Solflare')}
               className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
             >
-              <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-8 h-8" />
+              <img src="https://solflare.com/favicon-32x32.png" alt="Solflare" className="w-8 h-8" />
               <span className="font-normal text-lg">Solflare</span>
             </button>
             
@@ -69,7 +69,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               onClick={() => handleWalletConnect('OKX')}
               className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
             >
-              <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-8 h-8" />
+              <img src="https://www.okx.com/cdn/static/favicon.ico" alt="OKX" className="w-8 h-8" />
               <span className="font-normal text-lg">OKX Wallet</span>
             </button>
             
@@ -77,7 +77,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               onClick={() => handleWalletConnect('MetaMask')}
               className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
             >
-              <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-8 h-8" />
+              <img src="https://metamask.io/images/favicon-32x32.png" alt="MetaMask" className="w-8 h-8" />
               <span className="font-normal text-lg">MetaMask</span>
             </button>
           </div>
