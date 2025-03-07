@@ -60,7 +60,7 @@ const WalletOptions: React.FC<WalletOptionsProps> = ({ onConnect }) => {
       >
         Phantom 
         {availableWallets.phantom ? (
-          <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-5 h-5" />
+          <img src="/wallet-icons/phantom-icon.png" alt="Phantom" className="w-5 h-5" />
         ) : (
           <span 
             className="text-xs underline cursor-pointer" 
@@ -78,7 +78,7 @@ const WalletOptions: React.FC<WalletOptionsProps> = ({ onConnect }) => {
       >
         Solflare 
         {availableWallets.solflare ? (
-          <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-5 h-5" />
+          <img src="/wallet-icons/solflare-icon.png" alt="Solflare" className="w-5 h-5" />
         ) : (
           <span 
             className="text-xs underline cursor-pointer" 
@@ -96,7 +96,7 @@ const WalletOptions: React.FC<WalletOptionsProps> = ({ onConnect }) => {
       >
         OKX Wallet 
         {availableWallets.okx ? (
-          <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-5 h-5" />
+          <img src="/wallet-icons/okx-icon.png" alt="OKX" className="w-5 h-5" />
         ) : (
           <span 
             className="text-xs underline cursor-pointer" 
@@ -114,7 +114,7 @@ const WalletOptions: React.FC<WalletOptionsProps> = ({ onConnect }) => {
       >
         MetaMask 
         {availableWallets.metamask ? (
-          <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-5 h-5" />
+          <img src="/wallet-icons/metamask-icon.png" alt="MetaMask" className="w-5 h-5" />
         ) : (
           <span 
             className="text-xs underline cursor-pointer" 

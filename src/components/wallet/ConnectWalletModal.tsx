@@ -53,7 +53,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               onClick={() => handleWalletConnect('Phantom')}
               className="wallet-option-button"
             >
-              <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-10 h-10" />
+              <img src="/wallet-icons/phantom-icon.png" alt="Phantom" className="w-10 h-10" />
               <span className="wallet-option-text">Phantom</span>
             </button>
             
@@ -61,7 +61,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               onClick={() => handleWalletConnect('Solflare')}
               className="wallet-option-button"
             >
-              <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-10 h-10" />
+              <img src="/wallet-icons/solflare-icon.png" alt="Solflare" className="w-10 h-10" />
               <span className="wallet-option-text">Solflare</span>
             </button>
             
@@ -69,7 +69,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               onClick={() => handleWalletConnect('OKX')}
               className="wallet-option-button"
             >
-              <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-10 h-10" />
+              <img src="/wallet-icons/okx-icon.png" alt="OKX" className="w-10 h-10" />
               <span className="wallet-option-text">OKX Wallet</span>
             </button>
             
@@ -77,7 +77,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               onClick={() => handleWalletConnect('MetaMask')}
               className="wallet-option-button"
             >
-              <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-10 h-10" />
+              <img src="/wallet-icons/metamask-icon.png" alt="MetaMask" className="w-10 h-10" />
               <span className="wallet-option-text">MetaMask</span>
             </button>
           </div>
