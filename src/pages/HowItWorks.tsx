@@ -18,6 +18,10 @@ const HowItWorks = () => {
             {t('howItWorks.title')}
           </h1>
           <div className="w-20 h-1 bg-gold-400 mx-auto mb-6"></div>
+          <p className="text-gray-600 max-w-3xl mx-auto">
+            Our platform uses blockchain technology to ensure transparency and fairness
+            in the process of selecting winners for the Gold Card program.
+          </p>
         </div>
         
         <HowItWorksContent />
