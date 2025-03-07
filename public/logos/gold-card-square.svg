@@ -1,7 +1,7 @@
 
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
   <rect width="512" height="512" rx="64" fill="url(#paint0_linear)"/>
-  <text x="256" y="280" font-family="Arial" font-weight="bold" font-size="120" text-anchor="middle" fill="#000">$1</text>
+  <text x="256" y="290" font-family="Arial" font-weight="bold" font-size="160" text-anchor="middle" fill="#000">$1</text>
   <path d="M128 192H384" stroke="#332700" stroke-width="24" stroke-linecap="round"/>
   <path d="M128 320H384" stroke="#332700" stroke-width="24" stroke-linecap="round"/>
   <defs>
