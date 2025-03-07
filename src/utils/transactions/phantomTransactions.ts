@@ -1,6 +1,32 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
-import { PublicKey, Transaction, SystemProgram, Connection, clusterApiUrl } from '@solana/web3.js';
+import { PublicKey, Transaction, SystemProgram, Connection, Keypair, clusterApiUrl, LAMPORTS_PER_SOL } from '@solana/web3.js';
+
+// List of reliable Solana RPC endpoints
+const RPC_ENDPOINTS = [
+  clusterApiUrl('mainnet-beta'),
+  'https://api.mainnet-beta.solana.com',
+  'https://solana-mainnet.g.alchemy.com/v2/demo',
+  'https://solana-api.projectserum.com'
+];
+
+// Function to get a working connection with fallbacks
+const getConnection = async (): Promise<Connection> => {
+  // Try endpoints in sequence until one works
+  for (const endpoint of RPC_ENDPOINTS) {
+    try {
+      const connection = new Connection(endpoint, { commitment: 'confirmed' });
+      // Quick test to ensure connection works
+      await connection.getVersion();
+      console.log(`Connected to Solana RPC: ${endpoint}`);
+      return connection;
+    } catch (error) {
+      console.warn(`Failed to connect to ${endpoint}:`, error);
+      // Try next endpoint
+    }
+  }
+  throw new Error("All RPC endpoints failed. Please try again later.");
+};
 
 // Handle transactions specifically for Phantom wallet
 export const sendPhantomTransaction = async (
@@ -12,24 +38,22 @@ export const sendPhantomTransaction = async (
     console.log('Processing Phantom transaction', { amount, walletAddress });
     
     if (!provider || !provider.publicKey) {
-      throw new Error('Wallet not properly connected');
+      throw new Error('Phantom wallet not properly connected');
     }
 
-    // Use a reliable RPC endpoint for mainnet with fallback options
-    const connection = new Connection(
-      clusterApiUrl('mainnet-beta'),
-      { commitment: 'confirmed' }
-    );
+    // Get a reliable connection
+    console.log('Establishing connection to Solana network...');
+    const connection = await getConnection();
     
-    // Convert USDC amount to lamports (SOL)
-    // 1 SOL = 1 billion lamports
-    // For testing, we'll use a very small fraction of SOL
-    const amountInLamports = Math.ceil(amount * 10000); // Small amount for real transfers
+    // For testing/development we use a very small SOL amount
+    // 1 SOL = 1 billion lamports (LAMPORTS_PER_SOL)
+    const amountInLamports = Math.ceil(amount * 10000); // Small amount for testing
+    console.log(`Transaction amount in lamports: ${amountInLamports}`);
     
     // Get recent blockhash for transaction
-    console.log('Getting recent blockhash for Phantom...');
+    console.log('Getting recent blockhash...');
     const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
-    console.log('Received blockhash for Phantom:', blockhash);
+    console.log('Received blockhash:', blockhash);
     
     // Create a new transaction
     const transaction = new Transaction({
@@ -40,6 +64,7 @@ export const sendPhantomTransaction = async (
     
     // Use the pool address from our constants
     const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
+    console.log('Pool address:', poolAddress.toString());
     
     // Add a SOL transfer instruction
     transaction.add(
@@ -97,7 +122,7 @@ export const sendPhantomTransaction = async (
     }
     
     // Wait for confirmation
-    console.log('Waiting for Phantom transaction confirmation...');
+    console.log('Waiting for transaction confirmation...');
     try {
       const confirmation = await connection.confirmTransaction({
         signature,
@@ -109,10 +134,10 @@ export const sendPhantomTransaction = async (
         throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
       }
       
-      console.log('Phantom transaction confirmed successfully');
+      console.log('Transaction confirmed successfully');
       return signature;
     } catch (confirmError) {
-      console.error('Error confirming Phantom transaction:', confirmError);
+      console.error('Error confirming transaction:', confirmError);
       // Even if confirmation verification fails, return the signature if we have it
       if (signature) {
         console.log('Returning signature despite confirmation error');

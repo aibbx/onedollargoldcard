@@ -3,6 +3,7 @@ import { WalletType } from '../../types/wallet';
 import { sendPhantomTransaction } from './phantomTransactions';
 import { sendSolflareTransaction } from './solflareTransactions';
 import { sendOKXTransaction } from './okxTransactions';
+import { toast } from "@/components/ui/use-toast";
 
 // Process transaction based on wallet type
 export const processTransaction = async (
@@ -73,6 +74,12 @@ export const processTransaction = async (
     }
   } catch (err) {
     console.error("Error processing transaction:", err);
+    // Display error toast to user
+    toast({
+      title: "Transaction Failed",
+      description: err instanceof Error ? err.message : "Unknown error occurred during transaction",
+      variant: "destructive",
+    });
     throw err;
   }
 };
