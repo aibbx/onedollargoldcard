@@ -134,7 +134,10 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
       walletType, 
       walletAddress,
       connectWallet, 
-      disconnectWallet,
+      disconnectWallet: async () => {
+        disconnectWallet();
+        return Promise.resolve();
+      },
       sendDonation,
       recoverDonation,
       donations,

@@ -5,7 +5,7 @@ interface WalletConfig {
   type: WalletType;
   name: string;
   installUrl: string;
-  detectionKey: keyof typeof window;
+  detectionKey: string;
   secondaryCheck?: (window: Window) => boolean;
 }
 

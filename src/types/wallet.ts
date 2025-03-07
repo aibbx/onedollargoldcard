@@ -35,3 +35,37 @@ export interface WalletConnectionDetail {
   publicKey: PublicKey;
   isConnected: boolean;
 }
+
+// Add custom wallet type declarations
+export interface PhantomWallet {
+  isPhantom?: boolean;
+  connect: () => Promise<{ publicKey: PublicKey }>;
+  disconnect: () => Promise<void>;
+  signTransaction: (transaction: any) => Promise<any>;
+  signAllTransactions: (transactions: any[]) => Promise<any[]>;
+  request: (request: { method: string; params?: any }) => Promise<any>;
+  publicKey?: PublicKey;
+  isConnected?: boolean;
+}
+
+export interface SolflareWallet {
+  connect: () => Promise<void>;
+  disconnect: () => Promise<void>;
+  signTransaction: (transaction: any) => Promise<any>;
+  signAllTransactions: (transactions: any[]) => Promise<any[]>;
+  publicKey?: PublicKey;
+  isConnected?: boolean;
+  setSolanaNetwork?: (network: string) => void;
+}
+
+export interface OKXWallet {
+  solana?: {
+    connect: () => Promise<{ publicKey: PublicKey }>;
+    disconnect: () => Promise<void>;
+    signTransaction: (transaction: any) => Promise<any>;
+    signAllTransactions: (transactions: any[]) => Promise<any[]>;
+    publicKey?: PublicKey;
+    isConnected?: boolean;
+    switchNetwork?: (network: string) => Promise<void>;
+  };
+}

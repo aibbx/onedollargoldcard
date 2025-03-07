@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { WalletType } from '../types/wallet';
@@ -15,7 +14,7 @@ export type NetworkType = 'mainnet-beta' | 'testnet' | 'devnet';
 export const useWalletConnectors = () => {
   const { toast } = useToast();
   const [provider, setProvider] = useState<any>(null);
-  const [walletType, setWalletType] = useState<WalletType>('');
+  const [walletType, setWalletType] = useState<WalletType>('Phantom');
   const [walletAddress, setWalletAddress] = useState('');
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [walletDetectionComplete, setWalletDetectionComplete] = useState(false);
@@ -150,7 +149,7 @@ export const useWalletConnectors = () => {
     }
     
     setProvider(null);
-    setWalletType('');
+    setWalletType('Phantom');
     setWalletAddress('');
     setIsWalletConnected(false);
     
