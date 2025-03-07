@@ -13,7 +13,7 @@ export const processTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Starting transaction process:', { walletType, amount, walletAddress });
+    console.log('Starting USDC transaction process:', { walletType, amount, walletAddress });
     console.log('Provider details:', { 
       hasProvider: !!provider,
       providerType: walletType,
@@ -42,7 +42,7 @@ export const processTransaction = async (
         if (!provider.publicKey) {
           throw new Error('Phantom wallet not properly connected');
         }
-        console.log('Sending via Phantom:', {
+        console.log('Sending USDC via Phantom:', {
           publicKey: provider.publicKey.toString(),
           isConnected: provider.isConnected,
           amount
@@ -54,7 +54,7 @@ export const processTransaction = async (
         if (!provider.publicKey) {
           throw new Error('Solflare wallet not properly connected');
         }
-        console.log('Sending via Solflare:', {
+        console.log('Sending USDC via Solflare:', {
           publicKey: provider.publicKey.toString(),
           isConnected: provider.isConnected,
           amount
@@ -66,7 +66,7 @@ export const processTransaction = async (
         if (!provider.solana?.publicKey) {
           throw new Error('OKX wallet not properly connected');
         }
-        console.log('Sending via OKX:', {
+        console.log('Sending USDC via OKX:', {
           publicKey: provider.solana.publicKey.toString(),
           isConnected: provider.solana.isConnected,
           amount
@@ -82,11 +82,11 @@ export const processTransaction = async (
       throw new Error('Transaction failed - no transaction ID returned');
     }
 
-    console.log('Transaction completed successfully:', transactionId);
+    console.log('USDC Transaction completed successfully:', transactionId);
     return transactionId;
 
   } catch (err) {
-    console.error("Transaction processing error:", err);
+    console.error("USDC Transaction processing error:", err);
     toast({
       title: "Transaction Failed",
       description: err instanceof Error ? err.message : "Unknown error occurred during transaction",

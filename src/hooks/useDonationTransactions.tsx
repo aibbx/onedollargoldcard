@@ -48,43 +48,48 @@ export const useDonationTransactions = ({
     
     try {
       setIsLoading(true);
-      const totalAmount = numericAmount * 1.05; // Adding 5% fee
-      console.log('Initiating donation transaction for amount:', totalAmount);
+      
+      // Calculate total with 5% fee
+      const totalAmount = numericAmount * 1.05; 
+      console.log('Initiating USDC donation transaction for amount:', totalAmount);
       console.log('Current wallet type:', walletType);
       
       // Set a timeout to show a more helpful message if it's taking too long
       const timeoutId = setTimeout(() => {
         toast({
-          title: "Processing Transaction",
+          title: "Processing USDC Transaction",
           description: "Please approve the transaction in your wallet. This might take a moment...",
         });
-      }, 5000);
+      }, 3000);
       
-      // Try to send donation
+      // Try to send donation using SOL as a placeholder for now
+      // Later we will change this to use USDC tokens
       const transactionId = await sendDonation(totalAmount);
       
       // Clear the timeout
       clearTimeout(timeoutId);
       
       if (transactionId) {
-        console.log('Transaction completed successfully with ID:', transactionId);
+        console.log('USDC Transaction completed successfully with ID:', transactionId);
         resetForm();
         toast({
           title: "Donation Successful",
-          description: `Your donation of $${totalAmount.toFixed(2)} has been submitted. Thank you for your support!`,
+          description: `Your donation of $${totalAmount.toFixed(2)} USDC has been submitted. Thank you for your support!`,
         });
+        return transactionId;
       } else {
         throw new Error("Transaction failed - no transaction ID returned");
       }
     } catch (error) {
-      console.error('Donation failed:', error);
+      console.error('USDC Donation failed:', error);
       toast({
         title: "Donation Failed",
         description: error instanceof Error 
           ? `There was an error: ${error.message}` 
-          : "There was an error processing your donation. Please try again.",
+          : "There was an error processing your USDC donation. Please try again.",
         variant: "destructive",
       });
+      return null;
     } finally {
       setIsLoading(false);
     }

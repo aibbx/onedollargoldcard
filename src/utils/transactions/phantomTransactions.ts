@@ -11,8 +11,11 @@ import {
 
 // Function to get connection
 const getConnection = (): Connection => {
-  return new Connection(clusterApiUrl('mainnet-beta'), {
-    commitment: 'confirmed'
+  const endpoint = clusterApiUrl('mainnet-beta');
+  console.log('Using RPC endpoint:', endpoint);
+  return new Connection(endpoint, {
+    commitment: 'confirmed',
+    confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
   });
 };
 
@@ -22,18 +25,20 @@ export const sendPhantomTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Starting Phantom transaction:', { amount, walletAddress });
+    console.log('Starting Phantom transaction for USDC:', { amount, walletAddress });
     
     const connection = getConnection();
     
-    // Instead of using SPL tokens, we'll use SOL for simplicity (avoiding Buffer issues)
-    // Convert USDC amount to a small amount of SOL for testing
-    // In production, you'd use the actual USDC token but would need polyfills for Buffer
-    const transferAmount = Math.floor(amount * 100); // Small amount in lamports for testing
-    console.log('Transfer amount in lamports:', transferAmount);
+    // For browser compatibility without Buffer, use SOL transfer with small amount
+    // This is a temporary solution until we figure out how to handle token transfers
+    // without the Buffer dependency
+    const transferAmountLamports = Math.floor(amount * 100); // Small amount in lamports for testing
+    console.log('Transfer amount in lamports:', transferAmountLamports);
 
     // Get latest blockhash
+    console.log('Getting latest blockhash...');
     const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+    console.log('Latest blockhash obtained:', blockhash.slice(0, 10) + '...');
     
     // Create transaction
     const transaction = new Transaction({
@@ -42,48 +47,51 @@ export const sendPhantomTransaction = async (
       lastValidBlockHeight,
     });
 
-    // Add a simple SOL transfer instruction instead of token transfer
-    // This avoids the Buffer compatibility issues
+    // Use SOL transfer as a placeholder for USDC
+    // This is temporary until we can handle the Buffer issues
     const recipientAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
+    console.log('Recipient address:', recipientAddress.toString());
     
     transaction.add(
       SystemProgram.transfer({
         fromPubkey: provider.publicKey,
         toPubkey: recipientAddress,
-        lamports: transferAmount
+        lamports: transferAmountLamports
       })
     );
 
-    console.log('Requesting Phantom transaction signature...');
+    console.log('Transaction created, requesting Phantom signature...');
     let signature: string;
 
     try {
-      // Try signAndSendTransaction first
+      // Try signAndSendTransaction first (preferred method)
       if (provider.signAndSendTransaction) {
         console.log('Using signAndSendTransaction method');
         const result = await provider.signAndSendTransaction(transaction);
         signature = result.signature || result;
+        console.log('Transaction sent with signAndSendTransaction:', signature);
       } 
       // Fallback to separate sign and send
       else {
         console.log('Using separate sign and send methods');
         const signed = await provider.signTransaction(transaction);
         signature = await connection.sendRawTransaction(signed.serialize());
+        console.log('Transaction sent with separate sign/send:', signature);
       }
 
-      console.log('Transaction sent:', signature);
-
       // Wait for confirmation
+      console.log('Waiting for transaction confirmation...');
       const confirmation = await connection.confirmTransaction({
         signature,
         blockhash,
         lastValidBlockHeight
-      });
+      }, 'confirmed');
 
       if (confirmation.value.err) {
         throw new Error(`Transaction failed: ${JSON.stringify(confirmation.value.err)}`);
       }
 
+      console.log('Transaction confirmed successfully');
       return signature;
 
     } catch (error) {

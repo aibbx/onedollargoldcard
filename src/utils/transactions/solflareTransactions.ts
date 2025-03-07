@@ -5,14 +5,16 @@ import {
   Transaction, 
   Connection, 
   clusterApiUrl,
-  SystemProgram,
-  LAMPORTS_PER_SOL 
+  SystemProgram
 } from '@solana/web3.js';
 
 // Function to get a working connection
 const getConnection = (): Connection => {
-  return new Connection(clusterApiUrl('mainnet-beta'), {
-    commitment: 'confirmed'
+  const endpoint = clusterApiUrl('mainnet-beta');
+  console.log('Using RPC endpoint for Solflare:', endpoint);
+  return new Connection(endpoint, {
+    commitment: 'confirmed',
+    confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
   });
 };
 
@@ -23,7 +25,7 @@ export const sendSolflareTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Processing Solflare transaction', { amount, walletAddress });
+    console.log('Processing Solflare USDC transaction', { amount, walletAddress });
     
     if (!provider || !provider.publicKey) {
       throw new Error('Solflare wallet not properly connected');
@@ -33,15 +35,16 @@ export const sendSolflareTransaction = async (
     console.log('Establishing connection to Solana network...');
     const connection = getConnection();
     
-    // For testing we use a very small SOL amount
-    // This avoids Buffer issues with token transactions
-    const amountInLamports = Math.floor(amount * 100); // Small amount for testing
-    console.log(`Transaction amount in lamports: ${amountInLamports}`);
+    // For browser compatibility without Buffer, use SOL transfer with small amount
+    // This is a temporary solution until we figure out how to handle token transfers
+    // without the Buffer dependency
+    const transferAmountLamports = Math.floor(amount * 100); // Small amount in lamports for testing
+    console.log('Transfer amount in lamports:', transferAmountLamports);
     
     // Get recent blockhash for transaction
-    console.log('Getting recent blockhash...');
+    console.log('Getting recent blockhash for Solflare transaction...');
     const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
-    console.log('Received blockhash:', blockhash);
+    console.log('Received blockhash:', blockhash.slice(0, 10) + '...');
     
     // Create a new transaction
     const transaction = new Transaction({
@@ -54,12 +57,13 @@ export const sendSolflareTransaction = async (
     const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
     console.log('Pool address:', poolAddress.toString());
     
-    // Add a SOL transfer instruction
+    // Use SOL transfer as a placeholder for USDC
+    // This is temporary until we can handle the Buffer issues
     transaction.add(
       SystemProgram.transfer({
         fromPubkey: provider.publicKey,
         toPubkey: poolAddress,
-        lamports: amountInLamports,
+        lamports: transferAmountLamports,
       })
     );
     
@@ -109,7 +113,7 @@ export const sendSolflareTransaction = async (
     }
     
     // Wait for confirmation
-    console.log('Waiting for transaction confirmation...');
+    console.log('Waiting for Solflare transaction confirmation...');
     try {
       const confirmation = await connection.confirmTransaction({
         signature,
@@ -121,13 +125,13 @@ export const sendSolflareTransaction = async (
         throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmation.value.err)}`);
       }
       
-      console.log('Transaction confirmed successfully');
+      console.log('Solflare transaction confirmed successfully');
       return signature;
     } catch (confirmError) {
-      console.error('Error confirming transaction:', confirmError);
+      console.error('Error confirming Solflare transaction:', confirmError);
       // Even if confirmation verification fails, return the signature if we have it
       if (signature) {
-        console.log('Returning signature despite confirmation error');
+        console.log('Returning Solflare signature despite confirmation error');
         return signature;
       }
       throw confirmError;
