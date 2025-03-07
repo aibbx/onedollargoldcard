@@ -1,15 +1,15 @@
 
 import { WalletType } from '../types/wallet';
 
-// Solana contract addresses (mainnet)
+// Solana contract addresses
 export const CONTRACT_ADDRESSES = {
-  poolAddress: "BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt", // Pool address on mainnet
-  feeAddress: "5ecoPEMgbz8CL8ymcLVhUNFkp3ded5mWH731L2So7e9Q", // Fee address on mainnet
+  poolAddress: "BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt", // Pool address
+  feeAddress: "5ecoPEMgbz8CL8ymcLVhUNFkp3ded5mWH731L2So7e9Q", // Fee address
 };
 
-// Get the explorer URL for a transaction - using Solscan for better visibility
+// Get the explorer URL for a transaction
 export const getExplorerUrl = (transactionId: string, walletType: WalletType): string => {
-  // Solana explorer URL (mainnet) - Solscan provides better UI and more details
+  // Solana explorer URL (mainnet)
   return `https://solscan.io/tx/${transactionId}`;
 };
 

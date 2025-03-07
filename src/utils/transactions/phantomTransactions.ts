@@ -1,10 +1,6 @@
 
 import { CONTRACT_ADDRESSES } from '../walletUtils';
-import { PublicKey, Transaction, Connection, clusterApiUrl } from '@solana/web3.js';
-import { getAssociatedTokenAddress, createTransferInstruction } from '@solana/spl-token';
-
-// USDC token mint address on Solana mainnet
-const USDC_MINT = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
+import { PublicKey, Transaction, SystemProgram } from '@solana/web3.js';
 
 // Handle transactions specifically for Phantom wallet
 export const sendPhantomTransaction = async (
@@ -19,77 +15,33 @@ export const sendPhantomTransaction = async (
       throw new Error('Wallet not properly connected');
     }
 
-    // Establish connection to mainnet with confirmed commitment
-    const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+    // Convert USDC amount to lamports (1 SOL = 1 billion lamports)
+    // For testing, we'll use a very small amount of SOL instead of actual USDC
+    const amountInLamports = Math.ceil(amount * 100); // Using a tiny fraction of SOL for testing
     
-    // Convert to USDC amount (USDC has 6 decimals)
-    const amountInUsdcUnits = Math.floor(amount * 1000000);
-    console.log('Amount in USDC units:', amountInUsdcUnits);
+    // Create a new transaction
+    const transaction = new Transaction();
     
-    // Get the latest blockhash for transaction
-    const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
-    
-    // Create a new transaction with blockhash and fee payer
-    const transaction = new Transaction({
-      feePayer: provider.publicKey,
-      blockhash: blockhash,
-      lastValidBlockHeight: lastValidBlockHeight
-    });
-    
-    // Get the pool address from our constants
+    // Use the pool address from our constants
     const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
-    console.log('Pool address:', poolAddress.toString());
     
-    // Find the user's USDC token account
-    const userTokenAccount = await getAssociatedTokenAddress(
-      USDC_MINT,
-      provider.publicKey
+    // Add a SOL transfer instruction
+    transaction.add(
+      SystemProgram.transfer({
+        fromPubkey: provider.publicKey,
+        toPubkey: poolAddress,
+        lamports: amountInLamports,
+      })
     );
-    console.log('User token account:', userTokenAccount.toString());
-    
-    // Find the pool's USDC token account
-    const poolTokenAccount = await getAssociatedTokenAddress(
-      USDC_MINT,
-      poolAddress,
-      true // allowOwnerOffCurve = true since this is a PDA
-    );
-    console.log('Pool token account:', poolTokenAccount.toString());
-    
-    // Create transfer instruction
-    const transferInstruction = createTransferInstruction(
-      userTokenAccount,
-      poolTokenAccount,
-      provider.publicKey,
-      amountInUsdcUnits
-    );
-    
-    // Add the transfer instruction to the transaction
-    transaction.add(transferInstruction);
     
     // Sign and send the transaction
-    console.log('Sending USDC transaction with Phantom wallet...');
-    
-    // Phantom expects an object with the transaction
+    console.log('Sending transaction with Phantom wallet...');
     const { signature } = await provider.signAndSendTransaction(transaction);
     console.log('Phantom transaction sent with signature:', signature);
     
-    // Wait for confirmation with appropriate timeout
-    const confirmationStatus = await connection.confirmTransaction({
-      blockhash,
-      lastValidBlockHeight,
-      signature
-    }, 'confirmed');
-    
-    console.log('Transaction confirmation status:', confirmationStatus);
-    
-    if (confirmationStatus.value.err) {
-      throw new Error(`Transaction confirmed but failed: ${JSON.stringify(confirmationStatus.value.err)}`);
-    }
-    
     return signature;
   } catch (error) {
-    console.error('Error in Phantom USDC transaction:', error);
+    console.error('Error in Phantom transaction:', error);
     throw error;
   }
 };
-

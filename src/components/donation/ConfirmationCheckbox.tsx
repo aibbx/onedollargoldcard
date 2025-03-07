@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { AlertCircle } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 
@@ -16,13 +16,6 @@ const ConfirmationCheckbox: React.FC<ConfirmationCheckboxProps> = ({
   error,
   confirmationText
 }) => {
-  // Set isConfirmed to true by default when component mounts
-  useEffect(() => {
-    if (!isConfirmed) {
-      setIsConfirmed(true);
-    }
-  }, []);
-
   return (
     <>
       <div className="flex items-start space-x-2">

@@ -1,4 +1,5 @@
 
+import { WalletType } from '../../types/wallet';
 import { NetworkType } from '../../hooks/useWalletConnectors';
 
 // Connect to Solflare wallet

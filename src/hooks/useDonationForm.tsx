@@ -7,7 +7,7 @@ export const useDonationForm = (initialAmount = '100.00') => {
   const [amount, setAmount] = useState(initialAmount);
   const [fee, setFee] = useState('5.00');
   const [total, setTotal] = useState('105.00');
-  const [isConfirmed, setIsConfirmed] = useState(true); // Set to true by default
+  const [isConfirmed, setIsConfirmed] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export const useDonationForm = (initialAmount = '100.00') => {
 
   const resetForm = () => {
     setAmount(initialAmount);
-    setIsConfirmed(true); // Keep it true when resetting
+    setIsConfirmed(false);
   };
 
   return {

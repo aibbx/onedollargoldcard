@@ -1,4 +1,5 @@
 
+import { WalletType } from '../../types/wallet';
 import { NetworkType } from '../../hooks/useWalletConnectors';
 
 // Connect to OKX wallet
@@ -10,12 +11,12 @@ export const connectOKXWallet = async (network: NetworkType = 'mainnet-beta'): P
     throw new Error('OKX wallet not installed');
   }
   
-  const provider = window.okxwallet;
+  const provider = window.okxwallet.solana;
   
   // Try to set the network
   try {
-    if (provider.solana.switchNetwork) {
-      await provider.solana.switchNetwork(network);
+    if (provider.switchNetwork) {
+      await provider.switchNetwork(network);
       console.log(`Switched to Solana ${network}`);
     }
   } catch (error) {
@@ -24,7 +25,7 @@ export const connectOKXWallet = async (network: NetworkType = 'mainnet-beta'): P
   }
   
   // Request connection to the wallet
-  const response = await provider.solana.connect();
+  const response = await provider.connect();
   const address = response.publicKey.toString();
   
   console.log(`Connected to OKX wallet on ${network}`);
@@ -44,12 +45,12 @@ export const autoConnectOKXWallet = async (network: NetworkType = 'mainnet-beta'
     return null;
   }
   
-  const provider = window.okxwallet;
+  const provider = window.okxwallet.solana;
   
   // Try to set the network
   try {
-    if (provider.solana.switchNetwork) {
-      await provider.solana.switchNetwork(network);
+    if (provider.switchNetwork) {
+      await provider.switchNetwork(network);
       console.log(`Switched to Solana ${network}`);
     }
   } catch (error) {
@@ -57,8 +58,8 @@ export const autoConnectOKXWallet = async (network: NetworkType = 'mainnet-beta'
     // Continue anyway
   }
   
-  if (provider.solana.isConnected) {
-    const address = provider.solana.publicKey?.toString() || '';
+  if (provider.isConnected) {
+    const address = provider.publicKey?.toString() || '';
     if (address) {
       return {
         address,
