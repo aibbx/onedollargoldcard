@@ -27,17 +27,20 @@ export const useDonationTransactions = ({
   const [isLoading, setIsLoading] = useState(false);
   
   const handleDonation = async () => {
+    // If wallet is not connected, show wallet modal
     if (!isWalletConnected) {
       showWalletModal();
       return;
     }
     
+    // Validate amount
     const numericAmount = parseFloat(amount);
-    if (numericAmount < 1) {
+    if (isNaN(numericAmount) || numericAmount < 1) {
       setError(t('donation.minAmount'));
       return;
     }
     
+    // Check confirmation
     if (!isConfirmed) {
       setError(t('donation.confirmation'));
       return;
@@ -48,6 +51,7 @@ export const useDonationTransactions = ({
       const totalAmount = numericAmount * 1.05; // Adding 5% fee
       console.log('Initiating donation transaction for amount:', totalAmount);
       
+      // Try to send donation
       const transactionId = await sendDonation(totalAmount);
       
       if (transactionId) {

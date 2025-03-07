@@ -22,13 +22,32 @@ export const processTransaction = async (
       throw new Error('Wallet address is not available');
     }
     
+    // Simulate network connection check to avoid silent failures
+    if (navigator.onLine === false) {
+      throw new Error('You appear to be offline. Please check your internet connection.');
+    }
+    
+    // Validate transaction amount 
+    if (amount <= 0) {
+      throw new Error('Invalid donation amount. Amount must be greater than 0.');
+    }
+    
     // Process transaction based on wallet type
     switch (walletType) {
       case 'Phantom':
+        if (!provider.publicKey) {
+          throw new Error('Phantom wallet not properly connected. Please reconnect your wallet.');
+        }
         return await sendPhantomTransaction(provider, amount, walletAddress);
       case 'Solflare':
+        if (!provider.publicKey) {
+          throw new Error('Solflare wallet not properly connected. Please reconnect your wallet.');
+        }
         return await sendSolflareTransaction(provider, amount, walletAddress);
       case 'OKX':
+        if (!provider.solana?.publicKey) {
+          throw new Error('OKX wallet not properly connected. Please reconnect your wallet.');
+        }
         return await sendOKXTransaction(provider, amount, walletAddress);
       default:
         throw new Error(`Unsupported wallet type: ${walletType}`);
