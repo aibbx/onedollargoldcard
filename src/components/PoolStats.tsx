@@ -14,7 +14,7 @@ const PoolStats = () => {
   const { t } = useLanguage();
   const { donations } = useWallet();
   
-  // Use the custom hook to get pool data
+  // Use the custom hook to get real pool data
   const { 
     poolAmount, 
     targetAmount, 
