@@ -129,19 +129,33 @@ export const sendOKXTransaction = async (
     let signature: string;
 
     try {
-      // Try signAndSendTransaction method first
+      console.log('OKX wallet methods:', Object.keys(solanaProvider));
+      // For OKX wallet, we need to handle the transaction differently
+      // First try signAndSendTransaction method
       if (solanaProvider.signAndSendTransaction) {
         console.log('Using OKX signAndSendTransaction method');
         const result = await solanaProvider.signAndSendTransaction(transaction);
         signature = result.signature || result;
         console.log('OKX transaction sent with signAndSendTransaction:', signature);
       } 
-      // Fallback to separate sign and send
-      else {
+      // Then try the separate methods
+      else if (solanaProvider.signTransaction) {
         console.log('Using OKX separate sign and send methods');
         const signedTransaction = await solanaProvider.signTransaction(transaction);
         signature = await connection.sendRawTransaction(signedTransaction.serialize());
         console.log('OKX transaction sent with separate sign/send:', signature);
+      }
+      else {
+        // Special handling for OKX which may have a different API
+        console.log('Trying OKX-specific transaction method');
+        // This is a fallback for OKX wallet which might have a different API structure
+        const signedTransaction = await solanaProvider.sign(transaction);
+        signature = await connection.sendRawTransaction(signedTransaction.serialize());
+        console.log('OKX transaction sent with sign method:', signature);
+      }
+
+      if (!signature) {
+        throw new Error('Failed to get transaction signature from OKX wallet');
       }
 
       // Wait for confirmation with proper handling
