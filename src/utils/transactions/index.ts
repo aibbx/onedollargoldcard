@@ -19,7 +19,7 @@ export const processTransaction = async (
       console.log("USING SIMULATION MODE - This should NOT happen in production");
       // Simulate transaction delay
       await new Promise(resolve => setTimeout(resolve, 1500));
-      return generateTransactionHash('solana');
+      return generateTransactionHash();
     }
     
     // Process transaction based on wallet type
@@ -39,7 +39,7 @@ export const processTransaction = async (
     // For development & debugging - if transaction fails, create a mock hash
     if (isDevelopment) {
       console.warn("Using fallback transaction ID for development - REMOVE IN PRODUCTION");
-      return generateTransactionHash('solana');
+      return generateTransactionHash();
     }
     
     throw err;

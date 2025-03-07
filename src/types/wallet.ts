@@ -1,3 +1,4 @@
+
 export type WalletType = 'Phantom' | 'Solflare' | 'OKX' | '';
 
 // Define donation record interface
@@ -22,7 +23,7 @@ export interface WalletContextType {
   network?: string;
 }
 
-// Add type definitions for wallet providers
+// Add type definitions for wallet providers (Solana only)
 declare global {
   interface Window {
     solana?: {

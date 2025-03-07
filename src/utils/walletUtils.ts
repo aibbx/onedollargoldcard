@@ -1,11 +1,10 @@
 
 import { WalletType } from '../types/wallet';
 
-// Real mainnet contract addresses
+// Solana contract addresses
 export const CONTRACT_ADDRESSES = {
-  // Solana contract addresses
-  poolAddress: "BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt", // Updated pool address
-  feeAddress: "5ecoPEMgbz8CL8ymcLVhUNFkp3ded5mWH731L2So7e9Q", // Updated fee address
+  poolAddress: "BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt", // Pool address
+  feeAddress: "5ecoPEMgbz8CL8ymcLVhUNFkp3ded5mWH731L2So7e9Q", // Fee address
 };
 
 // Get the explorer URL for a transaction
@@ -40,13 +39,13 @@ export const detectWallets = (): Record<string, boolean> => {
 };
 
 // For simulation purposes only - should not be used in production
-export const generateTransactionHash = (chain: string): string => {
-  // Production fallback for testing only
+export const generateTransactionHash = (): string => {
+  // Production fallback for testing only - Solana-like transaction hash
   return '4uQeVj5tqViQh7yWWGStvkEG1Zmhx6uasJtWCJziofM95jPq6MfP8y4g8iTGVvWiLPxAcm';
 };
 
 // For simulation purposes only - should not be used in production
 export const generateMockAddress = (type: string): string => {
-  // Production fallback for testing only
+  // Production fallback for testing only - Solana-like address
   return 'BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt';
 };
