@@ -15,8 +15,9 @@ export const sendOKXTransaction = async (
       throw new Error('OKX wallet not properly connected');
     }
 
-    // Convert USDC amount to lamports (assuming USDC decimal places)
-    const amountInLamports = amount * 1000000; // USDC has 6 decimal places
+    // Convert USDC amount to lamports (1 SOL = 1 billion lamports)
+    // For testing, we'll use a very small amount of SOL instead of actual USDC
+    const amountInLamports = Math.ceil(amount * 100); // Using a tiny fraction of SOL for testing
     
     // Create a new transaction
     const transaction = new Transaction();
@@ -24,17 +25,17 @@ export const sendOKXTransaction = async (
     // Use the pool address from our constants
     const poolAddress = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
     
-    // Add a simple SOL transfer instruction as placeholder
-    // In production, this would be a proper USDC transfer
+    // Add a SOL transfer instruction
     transaction.add(
       SystemProgram.transfer({
         fromPubkey: provider.solana.publicKey,
         toPubkey: poolAddress,
-        lamports: Math.round(amountInLamports),
+        lamports: amountInLamports,
       })
     );
     
     // Sign and send the transaction using OKX wallet
+    console.log('Sending transaction with OKX wallet...');
     const signature = await provider.solana.signAndSendTransaction({
       transaction: transaction
     });
