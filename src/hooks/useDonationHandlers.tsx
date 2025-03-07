@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { DonationRecord, WalletType } from '../types/wallet';
-import { getExplorerUrl, CONTRACT_ADDRESSES, generateTransactionHash } from '../utils/walletUtils';
+import { getExplorerUrl } from '../utils/walletUtils';
+import { processTransaction } from '../utils/transactions';
+import { useDonationStats } from './useDonationStats';
 
 export const useDonationHandlers = (
   isWalletConnected: boolean,
@@ -13,9 +15,13 @@ export const useDonationHandlers = (
 ) => {
   const { toast } = useToast();
   const [donations, setDonations] = useState<DonationRecord[]>(initialDonations);
-  const [totalDonationAmount, setTotalDonationAmount] = useState(0);
-  const [winningChance, setWinningChance] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  const { 
+    totalDonationAmount, 
+    winningChance, 
+    updateDonationStats 
+  } = useDonationStats(donations);
 
   // Send donation function
   const sendDonation = async (amount: number): Promise<string | null> => {
@@ -39,96 +45,18 @@ export const useDonationHandlers = (
     
     try {
       setIsProcessing(true);
-      let transactionId;
       
       // For demonstration and testing purposes
       const useSimulation = process.env.NODE_ENV === 'development' || !provider;
       
-      if (useSimulation) {
-        console.log("USING SIMULATION MODE - This should NOT happen in production");
-        // Simulate transaction with delay to mimic real transaction
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        transactionId = generateTransactionHash(walletType === 'MetaMask' ? 'ethereum' : 'solana');
-      } 
-      // Actual transaction logic for production
-      else if (provider) {
-        console.log("Creating real transaction with provider:", walletType);
-        
-        try {
-          if (walletType === 'MetaMask') {
-            // Create Ethereum transaction
-            const weiAmount = `0x${(amount * 0.0004 * 1e18).toString(16)}`;
-            
-            const txParams = {
-              from: walletAddress,
-              to: CONTRACT_ADDRESSES.ethereumPoolAddress,
-              value: weiAmount,
-              gas: '0x5208',
-              gasPrice: '0x9184e72a000',
-            };
-            
-            transactionId = await provider.request({
-              method: 'eth_sendTransaction',
-              params: [txParams],
-            });
-          } 
-          else if (walletType === 'Phantom') {
-            // Simplified for testing - in production, create a proper Solana transaction
-            // using @solana/web3.js with proper transaction building
-            const transaction = {
-              to: CONTRACT_ADDRESSES.poolAddress,
-              amount: amount
-            };
-            
-            // For Phantom wallet
-            const result = await provider.request({
-              method: 'signAndSendTransaction',
-              params: { 
-                message: JSON.stringify(transaction) 
-              }
-            });
-            
-            transactionId = result?.signature || result;
-          } 
-          else if (walletType === 'Solflare') {
-            // For Solflare wallet
-            const transaction = {
-              to: CONTRACT_ADDRESSES.poolAddress,
-              amount: amount
-            };
-            
-            // This is a simplified version - in production use proper Solana transaction building
-            const result = await provider.signAndSendTransaction(transaction);
-            transactionId = result?.signature || result;
-          }
-          else if (walletType === 'OKX') {
-            // For OKX wallet
-            const transaction = {
-              to: CONTRACT_ADDRESSES.poolAddress,
-              amount: amount
-            };
-            
-            const result = await provider.solana.signAndSendTransaction(transaction);
-            transactionId = result?.signature || result;
-          }
-          else {
-            throw new Error(`Unsupported wallet type: ${walletType}`);
-          }
-        } catch (err) {
-          console.error("Error processing transaction:", err);
-          
-          // For development & debugging - if transaction fails, create a mock hash
-          // This should be removed in strict production environments
-          if (process.env.NODE_ENV !== 'production') {
-            console.warn("Using fallback transaction ID for development - REMOVE IN PRODUCTION");
-            transactionId = generateTransactionHash(walletType === 'MetaMask' ? 'ethereum' : 'solana');
-          } else {
-            throw err;
-          }
-        }
-      } else {
-        throw new Error("No wallet provider available");
-      }
+      // Process the transaction using our utility function
+      const transactionId = await processTransaction(
+        walletType,
+        provider,
+        amount,
+        walletAddress,
+        useSimulation
+      );
       
       // Create a donation record
       if (transactionId) {
@@ -152,6 +80,9 @@ export const useDonationHandlers = (
         } catch (err) {
           console.error('Error saving donations to localStorage:', err);
         }
+        
+        // Update donation statistics
+        updateDonationStats();
         
         // Show success message with explorer link
         const explorerUrl = getExplorerUrl(transactionId, walletType);
@@ -187,27 +118,6 @@ export const useDonationHandlers = (
       return null;
     } finally {
       setIsProcessing(false);
-    }
-  };
-
-  // Update statistics when donations change
-  const updateDonationStats = () => {
-    if (donations.length > 0) {
-      const total = donations.reduce((sum, donation) => sum + donation.amount, 0);
-      setTotalDonationAmount(total);
-      
-      // Calculate winning chance based on actual pool size (for production)
-      // This should be fetched from the blockchain in a production app
-      const currentPoolSize = 1250000; // Should be fetched from the contract in production
-      const userContribution = total;
-      const userEntries = userContribution * 100; // $1 = 100 entries
-      const totalEntries = currentPoolSize * 100;
-      const chance = (userEntries / totalEntries) * 100;
-      
-      setWinningChance(chance);
-    } else {
-      setTotalDonationAmount(0);
-      setWinningChance(0);
     }
   };
 
