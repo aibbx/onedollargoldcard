@@ -114,6 +114,19 @@
   .container-custom {
     @apply mx-auto px-4 md:px-8 max-w-7xl;
   }
+
+  .wallet-option-button {
+    @apply w-full p-4 bg-white border border-gray-100 rounded-2xl hover:bg-gray-50 
+           transition-colors flex items-center gap-3 text-left;
+  }
+
+  .wallet-logo {
+    @apply w-10 h-10 object-contain rounded-md;
+  }
+
+  .wallet-name {
+    @apply font-normal text-lg text-gray-800;
+  }
 }
 
 /* Custom scrollbar */
