@@ -21,6 +21,11 @@ const Footer = () => {
     window.open('https://x.com/OneDollarGold', '_blank');
   };
 
+  const navigateToTop = (path: string) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
+
   const handleScrollToSection = (sectionId: string) => {
     // Navigate to home page if not already there
     if (window.location.pathname !== '/') {
@@ -94,25 +99,29 @@ const Footer = () => {
           <div className="flex flex-col">
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <div className="grid grid-cols-2 gap-3">
-              <Link to="/" 
-                className="flex items-center px-4 py-3 bg-white hover:bg-gold-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gold-200 group">
+              <button 
+                onClick={() => navigateToTop('/')}
+                className="flex items-center px-4 py-3 bg-white hover:bg-gold-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gold-200 group text-left"
+              >
                 <Home className="w-4 h-4 mr-2 text-gold-500" />
                 <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('nav.home')}</span>
-              </Link>
+              </button>
               
               <button 
-                onClick={() => handleScrollToSection('how-it-works')}
+                onClick={() => navigateToTop('/how-it-works')}
                 className="flex items-center justify-start px-4 py-3 bg-white hover:bg-gold-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gold-200 text-left group"
               >
                 <Sparkle className="w-4 h-4 mr-2 text-gold-500" />
                 <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('nav.howItWorks')}</span>
               </button>
               
-              <Link to="/faq" 
-                className="flex items-center px-4 py-3 bg-white hover:bg-gold-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gold-200 group">
+              <button 
+                onClick={() => navigateToTop('/faq')}
+                className="flex items-center px-4 py-3 bg-white hover:bg-gold-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 hover:border-gold-200 group text-left"
+              >
                 <HelpCircle className="w-4 h-4 mr-2 text-gold-500" />
                 <span className="text-gray-700 group-hover:text-gold-600 font-medium">{t('nav.faq')}</span>
-              </Link>
+              </button>
               
               <a 
                 href="#" 
