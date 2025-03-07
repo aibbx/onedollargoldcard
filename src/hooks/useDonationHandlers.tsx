@@ -46,16 +46,12 @@ export const useDonationHandlers = (
     try {
       setIsProcessing(true);
       
-      // For demonstration and testing purposes
-      const useSimulation = process.env.NODE_ENV === 'development' || !provider;
-      
       // Process the transaction using our utility function
       const transactionId = await processTransaction(
         walletType,
         provider,
         amount,
-        walletAddress,
-        useSimulation
+        walletAddress
       );
       
       // Create a donation record

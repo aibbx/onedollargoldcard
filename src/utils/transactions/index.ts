@@ -1,6 +1,5 @@
 
 import { WalletType } from '../../types/wallet';
-import { generateTransactionHash } from '../walletUtils';
 import { sendPhantomTransaction } from './phantomTransactions';
 import { sendSolflareTransaction } from './solflareTransactions';
 import { sendOKXTransaction } from './okxTransactions';
@@ -10,18 +9,9 @@ export const processTransaction = async (
   walletType: WalletType,
   provider: any,
   amount: number,
-  walletAddress: string,
-  isDevelopment: boolean = false
+  walletAddress: string
 ): Promise<string> => {
   try {
-    // For simulation or development environment
-    if (isDevelopment || !provider) {
-      console.log("USING SIMULATION MODE - This should NOT happen in production");
-      // Simulate transaction delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      return generateTransactionHash();
-    }
-    
     // Process transaction based on wallet type
     switch (walletType) {
       case 'Phantom':
@@ -35,13 +25,6 @@ export const processTransaction = async (
     }
   } catch (err) {
     console.error("Error processing transaction:", err);
-    
-    // For development & debugging - if transaction fails, create a mock hash
-    if (isDevelopment) {
-      console.warn("Using fallback transaction ID for development - REMOVE IN PRODUCTION");
-      return generateTransactionHash();
-    }
-    
     throw err;
   }
 };

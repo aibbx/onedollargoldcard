@@ -37,15 +37,3 @@ export const detectWallets = (): Record<string, boolean> => {
   
   return availableWallets;
 };
-
-// For simulation purposes only - should not be used in production
-export const generateTransactionHash = (): string => {
-  // Production fallback for testing only - Solana-like transaction hash
-  return '4uQeVj5tqViQh7yWWGStvkEG1Zmhx6uasJtWCJziofM95jPq6MfP8y4g8iTGVvWiLPxAcm';
-};
-
-// For simulation purposes only - should not be used in production
-export const generateMockAddress = (type: string): string => {
-  // Production fallback for testing only - Solana-like address
-  return 'BQ7HxJbuGjLxs6PDEg19RLmzHamdTjnByNqBiDTin3rt';
-};

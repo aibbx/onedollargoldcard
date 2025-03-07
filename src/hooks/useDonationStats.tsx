@@ -12,15 +12,25 @@ export const useDonationStats = (donations: DonationRecord[] = []) => {
       const total = donations.reduce((sum, donation) => sum + donation.amount, 0);
       setTotalDonationAmount(total);
       
-      // Calculate winning chance based on actual pool size (for production)
-      // This should be fetched from the blockchain in a production app
-      const currentPoolSize = 1250000; // Should be fetched from the contract in production
-      const userContribution = total;
-      const userEntries = userContribution * 100; // $1 = 100 entries
-      const totalEntries = currentPoolSize * 100;
-      const chance = (userEntries / totalEntries) * 100;
+      // Calculate winning chance based on the current pool size
+      // In production, this should fetch the actual pool size from the contract
+      const fetchPoolSize = async () => {
+        try {
+          // In production, this would be fetched from the blockchain contract
+          const currentPoolSize = 1250000; // Placeholder - should be replaced with contract call
+          const userContribution = total;
+          const userEntries = userContribution * 100; // $1 = 100 entries
+          const totalEntries = currentPoolSize * 100;
+          const chance = (userEntries / totalEntries) * 100;
+          
+          setWinningChance(chance);
+        } catch (error) {
+          console.error("Error fetching pool size:", error);
+          setWinningChance(0);
+        }
+      };
       
-      setWinningChance(chance);
+      fetchPoolSize();
     } else {
       setTotalDonationAmount(0);
       setWinningChance(0);
