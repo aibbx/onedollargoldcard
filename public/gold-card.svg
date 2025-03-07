@@ -2,8 +2,8 @@
 <svg width="120" height="80" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
   <rect x="10" y="10" width="100" height="60" rx="6" fill="url(#paint0_linear)"/>
   <path d="M35 30H85M35 40H65M35 50H75" stroke="#332700" stroke-width="2" stroke-linecap="round"/>
-  <circle cx="85" cy="45" r="14" fill="#FFF3CC" stroke="#332700" stroke-width="1.5"/>
-  <text x="85" y="50" font-family="Arial" font-weight="bold" font-size="20" text-anchor="middle" fill="#000">$1</text>
+  <circle cx="85" cy="45" r="16" fill="#FFF3CC" stroke="#332700" stroke-width="1.5"/>
+  <text x="85" y="52" font-family="Arial" font-weight="bold" font-size="26" text-anchor="middle" fill="#000000" stroke="#332700" stroke-width="0.5" paint-order="stroke">$1</text>
   <defs>
     <linearGradient id="paint0_linear" x1="10" y1="10" x2="110" y2="70" gradientUnits="userSpaceOnUse">
       <stop stop-color="#FFC300"/>
