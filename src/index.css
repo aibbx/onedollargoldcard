@@ -197,7 +197,7 @@
 
 /* Wallet Modal Styles */
 .wallet-modal-title {
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: -0.01em;
 }
 
@@ -208,4 +208,31 @@
 
 .wallet-option {
   font-weight: 400;
+}
+
+/* Wallet Logo Styling */
+.wallet-logo-container {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f8f8f8;
+  flex-shrink: 0;
+}
+
+.wallet-logo-image {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.wallet-logo-fallback {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
