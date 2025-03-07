@@ -11,30 +11,6 @@ interface ConnectWalletModalProps {
   onConnectWallet: (type: WalletType) => Promise<void>;
 }
 
-// Wallet configuration with logos matching the screenshot
-const walletConfig = [
-  {
-    type: 'Phantom' as WalletType,
-    name: 'Phantom',
-    logoUrl: '/lovable-uploads/84792d4f-9926-4001-8797-bfb6a849a92e.png'
-  },
-  {
-    type: 'Solflare' as WalletType,
-    name: 'Solflare',
-    logoUrl: '/wallet-icons/solflare-icon.svg'
-  },
-  {
-    type: 'OKX' as WalletType,
-    name: 'OKX Wallet',
-    logoUrl: '/wallet-icons/okx-icon.svg'
-  },
-  {
-    type: 'MetaMask' as WalletType,
-    name: 'MetaMask',
-    logoUrl: '/wallet-icons/metamask-icon.svg'
-  }
-];
-
 const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({ 
   isOpen, 
   onClose, 
@@ -55,8 +31,8 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-md rounded-3xl shadow-xl overflow-hidden">
-        <div className="py-4 px-6 flex justify-between items-center border-b border-gray-100">
+      <div className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
+        <div className="p-6 flex justify-between items-center border-b border-gray-100">
           <h2 className="text-2xl font-normal text-gray-800">Connect Wallet</h2>
           <button 
             onClick={onClose}
@@ -68,30 +44,46 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
         </div>
         
         <div className="p-6">
-          <p className="text-gray-600 mb-6 font-light">
+          <p className="text-gray-600 mb-6 font-light text-left">
             Connect your Solana wallet to donate and participate in the Gold Card program.
           </p>
           
-          <div className="space-y-4">
-            {walletConfig.map((wallet) => (
-              <button
-                key={wallet.type}
-                onClick={() => handleWalletConnect(wallet.type)}
-                className="connect-wallet-option"
-              >
-                <img 
-                  src={wallet.logoUrl} 
-                  alt={`${wallet.name} logo`} 
-                  className="wallet-logo-img"
-                  loading="lazy"
-                />
-                <span className="wallet-name-text">{wallet.name}</span>
-              </button>
-            ))}
+          <div className="space-y-3">
+            <button
+              onClick={() => handleWalletConnect('Phantom')}
+              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+            >
+              <img src="/wallet-icons/phantom-icon.svg" alt="Phantom" className="w-8 h-8" />
+              <span className="font-normal text-lg">Phantom</span>
+            </button>
+            
+            <button
+              onClick={() => handleWalletConnect('Solflare')}
+              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+            >
+              <img src="/wallet-icons/solflare-icon.svg" alt="Solflare" className="w-8 h-8" />
+              <span className="font-normal text-lg">Solflare</span>
+            </button>
+            
+            <button
+              onClick={() => handleWalletConnect('OKX')}
+              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+            >
+              <img src="/wallet-icons/okx-icon.svg" alt="OKX" className="w-8 h-8" />
+              <span className="font-normal text-lg">OKX Wallet</span>
+            </button>
+            
+            <button
+              onClick={() => handleWalletConnect('MetaMask')}
+              className="w-full p-4 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-3 text-left"
+            >
+              <img src="/wallet-icons/metamask-icon.svg" alt="MetaMask" className="w-8 h-8" />
+              <span className="font-normal text-lg">MetaMask</span>
+            </button>
           </div>
           
-          <p className="text-sm text-center text-gray-500 mt-8 mb-2 font-light">
-            By connecting your wallet, you agree to our <Link to="/terms" className="text-gray-500 hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-gray-500 hover:underline">Privacy Policy</Link>.
+          <p className="text-sm text-center text-gray-500 mt-6 font-light">
+            By connecting your wallet, you agree to our <Link to="/terms" className="text-gold-600 hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-gold-600 hover:underline">Privacy Policy</Link>.
           </p>
         </div>
       </div>
