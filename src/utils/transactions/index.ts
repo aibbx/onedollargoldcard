@@ -32,6 +32,8 @@ export const processTransaction = async (
       await import('../buffer-polyfill');
       if (!window.Buffer) {
         throw new Error('Buffer polyfill failed to initialize');
+      } else {
+        console.log('Buffer successfully re-initialized');
       }
     }
 

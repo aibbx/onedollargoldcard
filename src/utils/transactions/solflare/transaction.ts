@@ -20,8 +20,8 @@ export const sendSolflareTransaction = async (
     // Validate provider
     provider = validateProvider(provider);
 
-    // Get a reliable connection using QuickNode
-    console.log('Establishing connection to Solana network via QuickNode...');
+    // Get a reliable connection
+    console.log('Establishing connection to Solana network...');
     const connection = getConnection();
     
     // Convert dollar amount to USDC tokens (USDC has 6 decimals)
@@ -36,8 +36,10 @@ export const sendSolflareTransaction = async (
     
     // Get sender public key
     const senderPublicKey = provider.publicKey;
+    console.log('Sender public key:', senderPublicKey.toString());
     
     // Prepare token accounts
+    console.log('Preparing token accounts...');
     const { 
       usdcMint, 
       senderTokenAccount, 
@@ -46,7 +48,14 @@ export const sendSolflareTransaction = async (
       recipientAccountExists 
     } = await prepareTokenAccounts(connection, senderPublicKey);
     
+    console.log('Token accounts prepared:', {
+      senderTokenAccount: senderTokenAccount.toString(),
+      recipientTokenAccount: recipientTokenAccount.toString(),
+      recipientExists: recipientAccountExists
+    });
+    
     // Build transaction
+    console.log('Building transaction...');
     const { 
       transaction, 
       blockhash, 
@@ -66,10 +75,16 @@ export const sendSolflareTransaction = async (
     toast({
       title: "Wallet Approval Required",
       description: "Please approve the transaction in your Solflare wallet",
+      variant: "default",
     });
     
+    // Add delay to ensure toast is visible before wallet popup
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
     // Sign and send transaction
+    console.log('Signing and sending transaction...');
     const signature = await signAndSendTransaction(provider, transaction, connection);
+    console.log('Transaction sent with signature:', signature);
     
     // Show processing toast
     toast({
