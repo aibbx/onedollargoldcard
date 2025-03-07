@@ -1,10 +1,10 @@
 
-// Add Buffer polyfill for browser compatibility
+// Use proper Buffer polyfill that works in the browser
 import { Buffer } from 'buffer';
 
-// Make Buffer available globally - this must be at the top before any imports
+// Make Buffer available globally
 if (typeof window !== 'undefined') {
-  window.Buffer = window.Buffer || Buffer;
+  window.Buffer = Buffer;
 }
 
 import { WalletType } from '../../types/wallet';
@@ -145,12 +145,6 @@ export const processTransaction = async (
     }
 
     console.log('USDC Transaction completed successfully:', transactionId);
-    
-    // Mark error as already shown to avoid duplicate toasts
-    const successError = new Error("already shown");
-    successError.message = "already shown";
-    throw successError;
-    
     return transactionId;
 
   } catch (err) {

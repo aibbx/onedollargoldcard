@@ -65,16 +65,27 @@ export const useDonationTransactions = ({
         if (isLoading) {
           toast({
             title: "Processing Transaction",
-            description: "Please approve the transaction in your wallet. This might take a moment...",
+            description: `Please approve the transaction in your ${walletType} wallet. This might take a moment...`,
           });
         }
       }, 5000);
       
+      // Set another timeout for an extended wait
+      const extendedTimeoutId = setTimeout(() => {
+        if (isLoading) {
+          toast({
+            title: "Still Processing",
+            description: "This is taking longer than expected. Please check your wallet to ensure you've approved the transaction.",
+          });
+        }
+      }, 15000);
+      
       // Try to send donation
       const transactionId = await sendDonation(totalAmount);
       
-      // Clear the timeout
+      // Clear the timeouts
       clearTimeout(timeoutId);
+      clearTimeout(extendedTimeoutId);
       
       if (transactionId) {
         console.log('Transaction completed successfully with ID:', transactionId);
@@ -89,13 +100,27 @@ export const useDonationTransactions = ({
       }
     } catch (error) {
       console.error('Donation failed:', error);
+      
       // Only show toast if not shown by transaction handlers
       if (!error.message?.includes("already shown")) {
+        const errorMessage = error instanceof Error ? error.message : "There was an error processing your donation. Please try again.";
+        
+        // Provide more helpful guidance based on error messages
+        let helpfulMessage = errorMessage;
+        
+        if (errorMessage.includes("insufficient") || errorMessage.includes("Insufficient")) {
+          helpfulMessage = "You don't have enough USDC in your wallet. Please add more USDC and try again.";
+        } else if (errorMessage.includes("rejected") || errorMessage.includes("cancelled") || errorMessage.includes("denied")) {
+          helpfulMessage = "You rejected the transaction in your wallet. Please try again when you're ready to approve.";
+        } else if (errorMessage.includes("timeout") || errorMessage.includes("timed out")) {
+          helpfulMessage = "The transaction timed out. The Solana network might be congested. Please try again.";
+        } else if (errorMessage.includes("USDC token account") || errorMessage.includes("token account")) {
+          helpfulMessage = "You need a USDC token account. Please add some USDC to your wallet first.";
+        }
+        
         toast({
           title: "Donation Failed",
-          description: error instanceof Error 
-            ? `There was an error: ${error.message}` 
-            : "There was an error processing your donation. Please try again.",
+          description: helpfulMessage,
           variant: "destructive",
         });
       }

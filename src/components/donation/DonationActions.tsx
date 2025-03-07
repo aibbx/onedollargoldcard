@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Wallet, Sparkles, Loader2 } from 'lucide-react';
+import { CheckCircle2, Wallet, Sparkles, Loader2, AlertCircle } from 'lucide-react';
 import { useWallet } from '../../context/WalletContext';
 
 interface DonationActionsProps {
@@ -28,7 +28,7 @@ const DonationActions: React.FC<DonationActionsProps> = ({
   
   const getButtonText = () => {
     if (buttonDisabled) {
-      return "Processing...";
+      return walletType ? `Processing with ${walletType}...` : "Processing...";
     }
     return isWalletConnected ? donateButtonText : connectWalletText;
   };
@@ -51,7 +51,7 @@ const DonationActions: React.FC<DonationActionsProps> = ({
         {buttonDisabled ? (
           <>
             <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-            Processing {walletType && `with ${walletType}`}...
+            {walletType ? `Processing with ${walletType}...` : "Processing..."}
           </>
         ) : isWalletConnected ? (
           <>
@@ -65,6 +65,18 @@ const DonationActions: React.FC<DonationActionsProps> = ({
           </>
         )}
       </button>
+      
+      {buttonDisabled && (
+        <div className="p-3 bg-amber-50 border border-amber-200 rounded-md text-amber-700 text-sm">
+          <div className="flex items-center">
+            <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0" />
+            <p>
+              <strong>Please note:</strong> You'll need to approve this transaction in your {walletType} wallet.
+              If you don't see a prompt, check your wallet extension.
+            </p>
+          </div>
+        </div>
+      )}
       
       {isWalletConnected && handleShareOnX && shareOnXText && (
         <Button

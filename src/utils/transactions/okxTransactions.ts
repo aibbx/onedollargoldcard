@@ -3,7 +3,9 @@ import { CONTRACT_ADDRESSES } from '../walletUtils';
 import { 
   PublicKey, 
   Transaction, 
-  Connection
+  Connection,
+  sendAndConfirmTransaction,
+  Keypair
 } from '@solana/web3.js';
 import { 
   createTransferInstruction,
@@ -19,12 +21,25 @@ const USDC_TOKEN_ADDRESS = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 
 // Function to get connection with proper configuration
 const getConnection = (): Connection => {
-  // Use the provided QuickNode RPC endpoint
-  const endpoint = "https://snowy-capable-night.solana-mainnet.quiknode.pro/72424723ee91618f3c3a7c1415e06e6f66ff1035/";
-  console.log('Using QuickNode RPC endpoint for OKX transactions');
+  // Use a reliable RPC endpoint
+  const endpoint = "https://api.mainnet-beta.solana.com";
+  console.log('Using primary Solana RPC endpoint for OKX transactions');
+  
   return new Connection(endpoint, {
     commitment: 'confirmed',
-    confirmTransactionInitialTimeout: 120000 // 120 seconds timeout for better reliability
+    confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
+  });
+};
+
+// Create a backup connection using a different endpoint if needed
+const getBackupConnection = (): Connection => {
+  // Use QuickNode as backup
+  const endpoint = "https://snowy-capable-night.solana-mainnet.quiknode.pro/72424723ee91618f3c3a7c1415e06e6f66ff1035/";
+  console.log('Using backup RPC endpoint for OKX transactions');
+  
+  return new Connection(endpoint, {
+    commitment: 'confirmed',
+    confirmTransactionInitialTimeout: 60000 // 60 seconds timeout
   });
 };
 
@@ -64,9 +79,24 @@ export const sendOKXTransaction = async (
       throw new Error('OKX Solana wallet not properly connected');
     }
     
-    // Get connection using QuickNode
-    const connection = getConnection();
-    console.log('Connection established to QuickNode');
+    // Get primary connection
+    let connection: Connection;
+    try {
+      connection = getConnection();
+      console.log('Connection established to primary endpoint');
+      
+      // Test the connection
+      await connection.getVersion();
+    } catch (connError) {
+      console.error('Error with primary connection, trying backup:', connError);
+      toast({
+        title: "Network Connection Issue",
+        description: "Had trouble connecting to Solana. Trying backup network...",
+      });
+      
+      // Try backup connection
+      connection = getBackupConnection();
+    }
     
     // Convert dollar amount to USDC tokens (USDC has 6 decimals)
     const transferAmountUSDC = Math.floor(amount * 1000000);
@@ -178,48 +208,60 @@ export const sendOKXTransaction = async (
     let signature: string;
 
     try {
-      console.log('OKX wallet methods available:', Object.keys(solanaProvider));
-      
-      // Method 1: Try sign method which is most commonly available
-      if (solanaProvider.sign) {
-        console.log('Using OKX sign method');
-        const signedTransaction = await solanaProvider.sign(transaction);
-        
-        // Additional logging to debug transaction object
-        console.log('Transaction signed, sending to network...');
-        
-        signature = await connection.sendRawTransaction(
-          typeof signedTransaction.serialize === 'function' 
-            ? signedTransaction.serialize() 
-            : signedTransaction
-        );
-        console.log('OKX transaction sent with sign method:', signature);
-      }
-      // Method 2: Try signAndSendTransaction if available
-      else if (solanaProvider.signAndSendTransaction) {
+      // Try all available signing methods one by one
+      if (solanaProvider.signAndSendTransaction) {
         console.log('Using OKX signAndSendTransaction method');
-        const result = await solanaProvider.signAndSendTransaction(transaction);
-        signature = result.signature || result;
-        console.log('OKX transaction sent with signAndSendTransaction:', signature);
-      }
-      // Method 3: Try signTransaction method
+        try {
+          const result = await solanaProvider.signAndSendTransaction(transaction);
+          signature = result.signature || result;
+          console.log('OKX transaction sent with signAndSendTransaction:', signature);
+        } catch (signError) {
+          console.error('Error with signAndSendTransaction method:', signError);
+          throw signError;
+        }
+      } 
       else if (solanaProvider.signTransaction) {
         console.log('Using OKX signTransaction method');
-        const signedTransaction = await solanaProvider.signTransaction(transaction);
-        signature = await connection.sendRawTransaction(signedTransaction.serialize());
-        console.log('OKX transaction sent with signTransaction method:', signature);
+        try {
+          const signedTransaction = await solanaProvider.signTransaction(transaction);
+          signature = await connection.sendRawTransaction(signedTransaction.serialize());
+          console.log('OKX transaction sent with signTransaction method:', signature);
+        } catch (signError) {
+          console.error('Error with signTransaction method:', signError);
+          throw signError;
+        }
+      }
+      else if (solanaProvider.sign) {
+        console.log('Using OKX sign method');
+        try {
+          const signedTransaction = await solanaProvider.sign(transaction);
+          signature = await connection.sendRawTransaction(
+            typeof signedTransaction.serialize === 'function' 
+              ? signedTransaction.serialize() 
+              : signedTransaction
+          );
+          console.log('OKX transaction sent with sign method:', signature);
+        } catch (signError) {
+          console.error('Error with sign method:', signError);
+          throw signError;
+        }
       }
       else {
         console.error('No compatible signing method found for OKX wallet');
         toast({
           title: "Wallet Compatibility Error",
-          description: "Your OKX wallet version doesn't support the required transaction methods. Please update your wallet.",
+          description: "Your OKX wallet version doesn't support the required transaction methods. Please try using Phantom or Solflare wallet instead.",
           variant: "destructive",
         });
         throw new Error('No compatible signing methods available in OKX wallet');
       }
 
       if (!signature) {
+        toast({
+          title: "Transaction Failed",
+          description: "Couldn't get a transaction signature from your wallet. Please try again or use a different wallet.",
+          variant: "destructive",
+        });
         throw new Error('Failed to get transaction signature from OKX wallet');
       }
 
@@ -231,20 +273,45 @@ export const sendOKXTransaction = async (
 
       // Wait for confirmation with proper handling
       console.log('Waiting for OKX transaction confirmation...');
-      const confirmation = await connection.confirmTransaction({
-        signature,
-        blockhash,
-        lastValidBlockHeight
-      }, 'confirmed');
       
-      if (confirmation.value.err) {
-        console.error('Transaction error during confirmation:', confirmation.value.err);
-        toast({
-          title: "Transaction Failed",
-          description: `Transaction failed on the Solana network: ${JSON.stringify(confirmation.value.err)}`,
-          variant: "destructive",
-        });
-        throw new Error(`Transaction failed during confirmation: ${JSON.stringify(confirmation.value.err)}`);
+      let confirmationAttempts = 0;
+      let confirmed = false;
+      
+      while (!confirmed && confirmationAttempts < 3) {
+        try {
+          confirmationAttempts++;
+          const confirmation = await connection.confirmTransaction({
+            signature,
+            blockhash,
+            lastValidBlockHeight
+          }, 'confirmed');
+          
+          confirmed = true;
+          
+          if (confirmation.value.err) {
+            console.error('Transaction error during confirmation:', confirmation.value.err);
+            toast({
+              title: "Transaction Failed on Network",
+              description: `Transaction was sent but failed on the Solana network. Please check your wallet to verify.`,
+              variant: "destructive",
+            });
+            throw new Error(`Transaction failed during confirmation: ${JSON.stringify(confirmation.value.err)}`);
+          }
+        } catch (confirmError) {
+          console.error(`Confirmation attempt ${confirmationAttempts} failed:`, confirmError);
+          
+          if (confirmationAttempts >= 3) {
+            throw confirmError;
+          }
+          
+          // Try with backup connection if we have confirmation issues
+          if (confirmationAttempts === 2) {
+            connection = getBackupConnection();
+          }
+          
+          // Wait a bit before retrying
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
       }
 
       console.log('OKX USDC transaction confirmed successfully!');
@@ -275,6 +342,13 @@ export const sendOKXTransaction = async (
           variant: "destructive",
         });
         throw new Error('Transaction took too long to confirm. Please try again.');
+      } else if (error.message && error.message.includes('User rejected')) {
+        toast({
+          title: "Transaction Cancelled",
+          description: "You cancelled the transaction in your wallet.",
+          variant: "destructive",
+        });
+        throw new Error('Transaction was cancelled by the user');
       }
       
       toast({
