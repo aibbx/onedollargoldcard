@@ -60,12 +60,23 @@ export const usePoolStats = () => {
                 const accountKeys = tx.transaction.message.getAccountKeys?.() || 
                                    { keySegments: () => [{ pubkey: tx.transaction.message.staticAccountKeys?.[0] }] };
                 
-                // Fix the TypeScript error by checking the type before accessing pubkey
-                const sender = accountKeys.keySegments?.()?.length > 0 ? 
-                  (Array.isArray(accountKeys.keySegments?.()?.[0]) 
-                    ? tx.transaction.message.staticAccountKeys?.[0]?.toString()
-                    : accountKeys.keySegments?.()?.[0]?.pubkey?.toString())
-                  : tx.transaction.message.staticAccountKeys?.[0]?.toString();
+                // Fix the TypeScript error by properly type checking before accessing pubkey
+                let sender: string | undefined;
+                
+                if (accountKeys.keySegments && accountKeys.keySegments().length > 0) {
+                  const firstSegment = accountKeys.keySegments()[0];
+                  
+                  if (Array.isArray(firstSegment)) {
+                    // Handle the case where keySegments()[0] is an array of PublicKey
+                    sender = tx.transaction.message.staticAccountKeys?.[0]?.toString();
+                  } else if (firstSegment && 'pubkey' in firstSegment) {
+                    // Handle the case where keySegments()[0] is an object with a pubkey property
+                    sender = firstSegment.pubkey?.toString();
+                  }
+                } else if (tx.transaction.message.staticAccountKeys?.[0]) {
+                  // Fallback to using staticAccountKeys
+                  sender = tx.transaction.message.staticAccountKeys[0].toString();
+                }
                 
                 if (sender) {
                   uniqueWallets.add(sender);
