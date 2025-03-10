@@ -60,8 +60,12 @@ export const usePoolStats = () => {
                 const accountKeys = tx.transaction.message.getAccountKeys?.() || 
                                    { keySegments: () => [{ pubkey: tx.transaction.message.staticAccountKeys?.[0] }] };
                 
-                const sender = accountKeys.keySegments?.()?.[0]?.pubkey?.toString() || 
-                              tx.transaction.message.staticAccountKeys?.[0]?.toString();
+                // Fix the TypeScript error by checking the type before accessing pubkey
+                const sender = accountKeys.keySegments?.()?.length > 0 ? 
+                  (Array.isArray(accountKeys.keySegments?.()?.[0]) 
+                    ? tx.transaction.message.staticAccountKeys?.[0]?.toString()
+                    : accountKeys.keySegments?.()?.[0]?.pubkey?.toString())
+                  : tx.transaction.message.staticAccountKeys?.[0]?.toString();
                 
                 if (sender) {
                   uniqueWallets.add(sender);
@@ -84,7 +88,7 @@ export const usePoolStats = () => {
           const contractBalanceUsd = solBalance * solPrice;
           calculatedAmount = Math.max(calculatedAmount, contractBalanceUsd);
           
-          console.log('Blockchain pool data:', {
+          console.log('Blockchain Gold Card fund data:', {
             solBalance,
             solPrice,
             contractBalanceUsd,
