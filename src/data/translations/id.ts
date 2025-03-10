@@ -25,7 +25,7 @@ export const id = {
   'features.fair.title': 'Sistem Kesempatan yang Adil',
   'features.fair.desc': 'Peluang Anda meningkat secara proporsional dengan jumlah donasi Anda.',
   'features.secure.title': 'Aman Secara Desain',
-  'features.secure.desc': 'Dibangun pada kontrak aman Solana untuk menyalurkan kumpulan hadiah senilai satu juta dolar dengan aman.',
+  'features.secure.desc': 'Dibangun pada kontrak aman Solana untuk menyalurkan kumpulan dana senilai satu juta dolar dengan aman.',
 
   // How It Works
   'howItWorks.title': 'Cara Kerja',
@@ -54,13 +54,13 @@ export const id = {
   'donation.connectedWallet': 'Dompet Terhubung:',
 
   // Pool Stats
-  'pool.title': 'Statistik Kumpulan Hadiah',
-  'pool.currentAmount': 'Jumlah Pool Saat Ini',
+  'pool.title': 'Statistik Dana Gold Card',
+  'pool.currentAmount': 'Jumlah Dana Saat Ini',
   'pool.target': 'Jumlah Target',
   'pool.donors': 'Total Donatur',
   'pool.timeLeft': 'Perkiraan Waktu Hingga Undian',
   'pool.backupTitle': 'Perlindungan Ketidakaktifan 7 Hari',
-  'pool.backupInfo': 'Jika tidak ada donasi selama 7 hari, donatur terakhir menerima seluruh pool.',
+  'pool.backupInfo': 'Jika tidak ada donasi selama 7 hari, donatur terakhir menerima seluruh dana.',
   'pool.share': 'Bagikan di Media Sosial',
   'pool.sns': 'Layanan Nama Solana',
 

@@ -54,13 +54,13 @@ export const en = {
   'donation.connectedWallet': 'Connected Wallet:',
 
   // Pool Stats
-  'pool.title': 'Prize Pool Statistics',
-  'pool.currentAmount': 'Current Pool Amount',
+  'pool.title': 'Gold Card Fund Statistics',
+  'pool.currentAmount': 'Current Fund Amount',
   'pool.target': 'Target Amount',
   'pool.donors': 'Total Donors',
   'pool.timeLeft': 'Estimated Time Until Draw',
   'pool.backupTitle': '7-Day Inactivity Safeguard',
-  'pool.backupInfo': 'If no donations for 7 days, the last donor receives the entire pool.',
+  'pool.backupInfo': 'If no donations for 7 days, the last donor receives the entire fund.',
   'pool.share': 'Share on Social',
   'pool.sns': 'Solana Name Service',
 

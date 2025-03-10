@@ -118,7 +118,7 @@ export const usePoolStats = () => {
       } catch (error) {
         console.error('Error calculating pool stats:', error);
         toast({
-          title: "Couldn't fetch latest pool data",
+          title: "Couldn't fetch latest Gold Card fund data",
           description: "Using cached data instead. Please refresh to try again.",
           variant: "destructive",
         });

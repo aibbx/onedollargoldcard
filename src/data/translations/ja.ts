@@ -25,7 +25,7 @@ export const ja = {
   'features.fair.title': '公平なチャンスシステム',
   'features.fair.desc': '寄付額に比例してチャンスが増加します。',
   'features.secure.title': '設計から安全',
-  'features.secure.desc': 'Solanaの安全なコントラクト上に構築され、100万ドルの賞金プールを安全に配布します。',
+  'features.secure.desc': 'Solanaの安全なコントラクト上に構築され、100万ドルの基金を安全に配布します。',
 
   // How It Works
   'howItWorks.title': '仕組み',
@@ -54,13 +54,13 @@ export const ja = {
   'donation.connectedWallet': '接続中のウォレット：',
 
   // Pool Stats
-  'pool.title': '賞金プール統計',
-  'pool.currentAmount': '現在のプール金額',
+  'pool.title': 'ゴールドカード基金統計',
+  'pool.currentAmount': '現在の基金金額',
   'pool.target': '目標金額',
   'pool.donors': '寄付者総数',
   'pool.timeLeft': '抽選までの推定時間',
   'pool.backupTitle': '7日間の非アクティブ保護',
-  'pool.backupInfo': '7日間寄付がない場合、最後の寄付者がプール全体を受け取ります。',
+  'pool.backupInfo': '7日間寄付がない場合、最後の寄付者が基金全体を受け取ります。',
   'pool.share': 'ソーシャルメディアでシェア',
   'pool.sns': 'Solana ネームサービス',
 

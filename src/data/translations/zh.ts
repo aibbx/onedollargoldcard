@@ -54,13 +54,13 @@ export const zh = {
   'donation.connectedWallet': '已連接錢包:',
 
   // Pool Stats
-  'pool.title': '獎金池統計',
-  'pool.currentAmount': '當前獎金池金額',
+  'pool.title': '金卡基金統計',
+  'pool.currentAmount': '當前基金金額',
   'pool.target': '目標金額',
   'pool.donors': '捐贈者總數',
-  'pool.timeLeft': '預計抽獎前時間',
+  'pool.timeLeft': '預計抽選前時間',
   'pool.backupTitle': '7 天不活動保障',
-  'pool.backupInfo': '如果 7 天沒有捐贈，最後一位捐贈者將獲得整個獎金池。',
+  'pool.backupInfo': '如果 7 天沒有捐贈，最後一位捐贈者將獲得整個基金。',
   'pool.share': '在社交媒體上分享',
   'pool.sns': 'Solana 名稱服務',
 
