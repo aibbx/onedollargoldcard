@@ -63,15 +63,18 @@ export const usePoolStats = () => {
                 // Fix the TypeScript error by properly type checking before accessing pubkey
                 let sender: string | undefined;
                 
-                if (accountKeys.keySegments && accountKeys.keySegments().length > 0) {
-                  const firstSegment = accountKeys.keySegments()[0];
-                  
-                  if (Array.isArray(firstSegment)) {
-                    // Handle the case where keySegments()[0] is an array of PublicKey
-                    sender = tx.transaction.message.staticAccountKeys?.[0]?.toString();
-                  } else if (firstSegment && 'pubkey' in firstSegment) {
-                    // Handle the case where keySegments()[0] is an object with a pubkey property
-                    sender = firstSegment.pubkey?.toString();
+                if (accountKeys.keySegments && typeof accountKeys.keySegments === 'function') {
+                  const segments = accountKeys.keySegments();
+                  if (segments && segments.length > 0) {
+                    const firstSegment = segments[0];
+                    
+                    if (Array.isArray(firstSegment)) {
+                      // Handle the case where keySegments()[0] is an array of PublicKey
+                      sender = tx.transaction.message.staticAccountKeys?.[0]?.toString();
+                    } else if (firstSegment && typeof firstSegment === 'object' && 'pubkey' in firstSegment) {
+                      // Handle the case where keySegments()[0] is an object with a pubkey property
+                      sender = firstSegment.pubkey?.toString();
+                    }
                   }
                 } else if (tx.transaction.message.staticAccountKeys?.[0]) {
                   // Fallback to using staticAccountKeys
