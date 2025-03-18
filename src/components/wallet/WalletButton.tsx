@@ -24,7 +24,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
       case 'OKX':
         return 'border-blue-200 hover:bg-blue-50 from-blue-500/5 to-cyan-500/5';
       default:
-        return 'border-gray-200 hover:bg-gray-50';
+        return 'border-gold-200 hover:bg-gold-50 from-gold-300/5 to-gold-500/5';
     }
   };
 
@@ -62,10 +62,10 @@ const WalletButton: React.FC<WalletButtonProps> = ({
       </div>
       
       {isAvailable ? (
-        <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-gray-700 group-hover:translate-x-1 transition-all duration-300" />
+        <ArrowRight className="w-5 h-5 text-gold-600 group-hover:text-gold-700 group-hover:translate-x-1 transition-all duration-300" />
       ) : (
         <span 
-          className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-medium cursor-pointer hover:bg-purple-200 transition-colors" 
+          className="text-xs bg-gold-100 text-gold-700 px-3 py-1 rounded-full font-medium cursor-pointer hover:bg-gold-200 transition-colors" 
           onClick={openWalletSite}
         >
           Install

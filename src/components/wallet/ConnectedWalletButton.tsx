@@ -24,9 +24,9 @@ const ConnectedWalletButton: React.FC<ConnectedWalletButtonProps> = ({
   return (
     <Button 
       variant="outline"
-      className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-200 hover:border-indigo-300 
-               text-indigo-800 font-medium rounded-lg px-4 py-2
-               shadow-md hover:shadow-indigo-500/20 transition-all duration-300 ease-in-out transform 
+      className="bg-gradient-to-r from-gold-300/10 to-gold-500/10 border border-gold-300 hover:border-gold-400 
+               text-gold-800 font-medium rounded-lg px-4 py-2
+               shadow-md hover:shadow-gold-500/20 transition-all duration-300 ease-in-out transform 
                hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
       onClick={onClick}
     >

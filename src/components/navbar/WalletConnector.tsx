@@ -85,15 +85,15 @@ const WalletConnector: React.FC = () => {
       ) : (
         <Button 
           variant="default"
-          className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700
-                   text-white font-medium px-5 py-2.5 rounded-lg
-                   shadow-lg hover:shadow-purple-500/30 transition-all duration-300 ease-out transform 
+          className="bg-gold-gradient hover:shadow-gold-500/30 border border-gold-300
+                   text-black font-semibold px-5 py-2.5 rounded-lg
+                   shadow-lg transition-all duration-300 ease-out transform 
                    hover:scale-[1.03] active:scale-[0.98] flex items-center gap-2 relative overflow-hidden group"
           onClick={handleDonateClick}
         >
-          <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-400/20 via-transparent to-transparent 
+          <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-gold-300/20 via-transparent to-transparent 
                          -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></span>
-          <Plug className="w-4 h-4 text-white" />
+          <Wallet className="w-4 h-4 text-gold-900" />
           <span>Connect Wallet</span>
           <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
         </Button>
