@@ -2,10 +2,8 @@
 /// <reference types="vite/client" />
 
 interface Window {
-  solana?: any;
-  solflare?: any;
   okxwallet?: {
-    solana?: any;
+    ethereum?: any;
     [key: string]: any;
   };
 }

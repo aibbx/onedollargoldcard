@@ -50,7 +50,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
         
         <div className="p-6">
           <p className="text-gray-600 mb-6 text-left">
-            Connect your Solana wallet to donate and participate in the Gold Card program.
+            Connect your BSC wallet to donate and participate in the Gold Card program.
           </p>
           
           <div className="space-y-4">

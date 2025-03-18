@@ -1,6 +1,5 @@
 
 import { WalletType } from '../types/wallet';
-import { PublicKey } from '@solana/web3.js';
 
 // BSC contract addresses
 export const CONTRACT_ADDRESSES = {

@@ -3,15 +3,13 @@ import { useState, useEffect } from 'react';
 import { WALLET_CONFIGS } from '../utils/walletConfig';
 
 interface DetectedWallets {
-  phantom: boolean;
-  solflare: boolean;
+  metamask: boolean;
   okx: boolean;
 }
 
 export const useWalletDetection = () => {
   const [availableWallets, setAvailableWallets] = useState<DetectedWallets>({
-    phantom: false,
-    solflare: false,
+    metamask: false,
     okx: false
   });
   const [detectionComplete, setDetectionComplete] = useState(false);
@@ -22,8 +20,7 @@ export const useWalletDetection = () => {
       if (typeof window === 'undefined') return;
       
       const detected: DetectedWallets = {
-        phantom: false,
-        solflare: false,
+        metamask: false,
         okx: false
       };
       
