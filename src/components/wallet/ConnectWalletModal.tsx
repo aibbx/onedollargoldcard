@@ -35,72 +35,44 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-md rounded-xl shadow-xl overflow-hidden">
-        <div className="p-6 flex justify-between items-center">
-          <h2 className="text-3xl font-bold text-gray-900">Connect a Wallet</h2>
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-zinc-900 border border-gold-500/20 w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
+        <div className="p-6 flex justify-between items-center border-b border-gold-500/20">
+          <div>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-gold-300 to-gold-500 bg-clip-text text-transparent">Connect Wallet</h2>
+            <p className="text-zinc-400 text-sm mt-1">Select your preferred wallet</p>
+          </div>
           <button 
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
+            className="text-zinc-400 hover:text-white transition-colors bg-zinc-800/50 hover:bg-zinc-800 rounded-full p-2"
             aria-label="Close"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
         </div>
         
-        <div className="p-6 pt-0">
-          <h3 className="text-xl text-gray-500 font-medium mb-4">Available wallets</h3>
-          
-          <div className="space-y-4">
+        <div className="p-6 space-y-4">
+          <div className="grid gap-4">
             {WALLET_CONFIGS.map((config) => (
-              <button
+              <WalletButton
                 key={config.type}
+                walletType={config.type}
+                isAvailable={!!availableWallets[config.type.toLowerCase() as keyof typeof availableWallets]}
                 onClick={() => handleWalletConnect(config.type)}
-                disabled={!availableWallets[config.type.toLowerCase() as keyof typeof availableWallets]}
-                className="w-full p-4 flex items-center hover:bg-gray-50 rounded-lg transition-colors"
-              >
-                <div className="w-12 h-12 mr-3 flex-shrink-0">
-                  <WalletIcon walletType={config.type} />
-                </div>
-                <span className="text-xl font-medium text-gray-900">
-                  {config.name}
-                </span>
-              </button>
+                installUrl={config.installUrl}
+              />
             ))}
           </div>
           
-          <div className="border-t border-gray-200 mt-6 pt-6">
-            <p className="text-sm text-center text-gray-500">
-              By connecting your wallet, you agree to our <Link to="/terms" className="text-gold-600 hover:underline">Terms of Service</Link> and <Link to="/privacy" className="text-gold-600 hover:underline">Privacy Policy</Link>.
+          <div className="mt-8 pt-4 border-t border-zinc-800">
+            <p className="text-sm text-center text-zinc-500">
+              By connecting your wallet, you agree to our <Link to="/terms" className="text-gold-500 hover:text-gold-400 hover:underline transition-colors">Terms of Service</Link> and <Link to="/privacy" className="text-gold-500 hover:text-gold-400 hover:underline transition-colors">Privacy Policy</Link>.
             </p>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-const WalletIcon = ({ walletType }: { walletType: WalletType }) => {
-  switch (walletType) {
-    case 'MetaMask':
-      return (
-        <img 
-          src="/lovable-uploads/1d0e16e3-a930-4066-967e-657050af111a.png" 
-          alt="MetaMask" 
-          className="w-full h-full object-contain"
-        />
-      );
-    case 'OKX':
-      return (
-        <img 
-          src="/wallet-icons/okx-icon.svg" 
-          alt="OKX Wallet" 
-          className="w-full h-full object-contain"
-        />
-      );
-    default:
-      return null;
-  }
 };
 
 export default ConnectWalletModal;
