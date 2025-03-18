@@ -4,7 +4,7 @@ import { WalletType } from '../types/wallet';
 // BSC contract addresses
 export const CONTRACT_ADDRESSES = {
   poolAddress: "0x2CdF636C5C3Ef95811dFf26062cdC3c888CC93C0", // Updated Pool address
-  feeAddress: "0x8ea6bc46238afea82fd641ebb6af2e79de05a33f", // Fee address
+  feeAddress: "0x6c521c6eB53361e901EC2bC1a2D392c8e9796f77", // Updated Fee address
 };
 
 // Get the explorer URL for a transaction
