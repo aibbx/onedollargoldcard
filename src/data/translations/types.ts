@@ -1,5 +1,5 @@
 
-export type LanguageCode = 'en' | 'es' | 'pt' | 'ru' | 'fr' | 'de' | 'zh' | 'hi' | 'id' | 'ja';
+export type LanguageCode = 'en' | 'es' | 'pt' | 'ru' | 'fr' | 'de' | 'zh' | 'zh-CN' | 'hi' | 'id' | 'ja';
 
 export interface TranslationDictionary {
   [key: string]: string;
@@ -11,6 +11,7 @@ export interface Translations {
 
 export const availableLanguages: { code: LanguageCode; name: string }[] = [
   { code: 'en', name: 'English' },
+  { code: 'zh-CN', name: '简体中文' },
   { code: 'es', name: 'Español' },
   { code: 'pt', name: 'Português' },
   { code: 'ru', name: 'Русский' },
@@ -21,4 +22,3 @@ export const availableLanguages: { code: LanguageCode; name: string }[] = [
   { code: 'id', name: 'Bahasa Indonesia' },
   { code: 'ja', name: '日本語' },
 ];
-

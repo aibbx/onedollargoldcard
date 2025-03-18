@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { translations, availableLanguages, LanguageCode } from '../data/translations';
 
@@ -27,9 +28,22 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       setLanguageState(savedLanguage);
     } else {
       // Try to detect browser language
-      const browserLang = navigator.language.split('-')[0] as LanguageCode;
-      if (Object.keys(translations).includes(browserLang)) {
-        setLanguageState(browserLang);
+      const browserLang = navigator.language;
+      
+      // Check if it's a simplified Chinese locale (zh-CN, zh-Hans, etc.)
+      if (browserLang.startsWith('zh-CN') || browserLang === 'zh-Hans') {
+        setLanguageState('zh-CN');
+      } 
+      // Check for other Chinese variants (use traditional Chinese for them)
+      else if (browserLang.startsWith('zh')) {
+        setLanguageState('zh');
+      }
+      // For all other languages, just use the first part of the locale code
+      else {
+        const langCode = browserLang.split('-')[0] as LanguageCode;
+        if (Object.keys(translations).includes(langCode)) {
+          setLanguageState(langCode);
+        }
       }
     }
   }, []);

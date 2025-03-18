@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Flag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,7 +12,6 @@ import {
 
 const LanguageSelector = () => {
   const { language, setLanguage, availableLanguages } = useLanguage();
-  const [isOpen, setIsOpen] = useState(false);
   
   const getLanguageFlag = (code: string) => {
     return <Flag className="h-4 w-4 mr-2" />;

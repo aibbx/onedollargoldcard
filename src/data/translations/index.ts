@@ -7,6 +7,7 @@ import { ru } from './ru';
 import { fr } from './fr';
 import { de } from './de';
 import { zh } from './zh';
+import { zhCN } from './zh-CN';
 import { hi } from './hi';
 import { id } from './id';
 import { ja } from './ja';
@@ -20,6 +21,7 @@ const translations: Translations = {
   fr,
   de,
   zh,
+  'zh-CN': zhCN,
   hi,
   id,
   ja,
