@@ -9,7 +9,87 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      donations: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          transaction_id: string
+          wallet_address: string
+          wallet_type: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          transaction_id: string
+          wallet_address: string
+          wallet_type: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          transaction_id?: string
+          wallet_address?: string
+          wallet_type?: string
+        }
+        Relationships: []
+      }
+      pool_status: {
+        Row: {
+          fee_address: string
+          id: number
+          last_updated: string
+          participant_count: number
+          pool_address: string
+          target_amount: number
+          total_amount: number
+        }
+        Insert: {
+          fee_address?: string
+          id?: number
+          last_updated?: string
+          participant_count?: number
+          pool_address?: string
+          target_amount?: number
+          total_amount?: number
+        }
+        Update: {
+          fee_address?: string
+          id?: number
+          last_updated?: string
+          participant_count?: number
+          pool_address?: string
+          target_amount?: number
+          total_amount?: number
+        }
+        Relationships: []
+      }
+      user_stats: {
+        Row: {
+          donation_count: number
+          last_donation_at: string | null
+          total_donated: number
+          wallet_address: string
+          winning_chance: number | null
+        }
+        Insert: {
+          donation_count?: number
+          last_donation_at?: string | null
+          total_donated?: number
+          wallet_address: string
+          winning_chance?: number | null
+        }
+        Update: {
+          donation_count?: number
+          last_donation_at?: string | null
+          total_donated?: number
+          wallet_address?: string
+          winning_chance?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

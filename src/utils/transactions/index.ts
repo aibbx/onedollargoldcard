@@ -1,11 +1,12 @@
 
-// Import Buffer polyfill first to ensure it's available globally
+// 首先导入Buffer polyfill以确保它在全局可用
 import '../buffer-polyfill';
 
 import { WalletType } from '../../types/wallet';
 import { toast } from "@/hooks/use-toast";
+import { addDonation } from '../../services/supabaseService';
 
-// Process transaction based on wallet type
+// 根据钱包类型处理交易
 export const processTransaction = async (
   walletType: WalletType,
   provider: any,
@@ -13,52 +14,52 @@ export const processTransaction = async (
   walletAddress: string
 ): Promise<string> => {
   try {
-    console.log('Starting USDT transaction process:', { walletType, amount, walletAddress });
-    console.log('Provider details:', { 
+    console.log('开始USDT交易处理:', { walletType, amount, walletAddress });
+    console.log('提供商详情:', { 
       hasProvider: !!provider,
       providerType: walletType,
       providerKeys: Object.keys(provider),
       bufferAvailable: typeof window !== 'undefined' ? !!window.Buffer : false
     });
 
-    // Double check Buffer is available
+    // 再次检查Buffer是否可用
     if (typeof window !== 'undefined' && !window.Buffer) {
-      console.error('Buffer not available! Trying to re-initialize...');
-      // Force re-initialize
+      console.error('Buffer不可用！尝试重新初始化...');
+      // 强制重新初始化
       await import('../buffer-polyfill');
       if (!window.Buffer) {
-        throw new Error('Buffer polyfill failed to initialize');
+        throw new Error('Buffer polyfill初始化失败');
       } else {
-        console.log('Buffer successfully re-initialized');
+        console.log('Buffer成功重新初始化');
       }
     }
 
     if (!provider) {
-      const error = new Error('Wallet provider is not available');
+      const error = new Error('钱包提供商不可用');
       toast({
-        title: "Wallet Error",
-        description: "Your wallet is not properly connected. Please try reconnecting.",
+        title: "钱包错误",
+        description: "您的钱包未正确连接。请尝试重新连接。",
         variant: "destructive",
       });
       throw error;
     }
     
     if (!walletAddress) {
-      const error = new Error('Wallet address is not available');
+      const error = new Error('钱包地址不可用');
       toast({
-        title: "Wallet Error",
-        description: "Could not find your wallet address. Please reconnect your wallet.",
+        title: "钱包错误",
+        description: "无法找到您的钱包地址。请重新连接您的钱包。",
         variant: "destructive",
       });
       throw error;
     }
     
-    // Validate transaction amount 
+    // 验证交易金额 
     if (amount <= 0) {
-      const error = new Error('Invalid donation amount. Amount must be greater than 0.');
+      const error = new Error('无效的捐赠金额。金额必须大于0。');
       toast({
-        title: "Invalid Amount",
-        description: "Donation amount must be greater than 0 USDT.",
+        title: "无效金额",
+        description: "捐赠金额必须大于0 USDT。",
         variant: "destructive",
       });
       throw error;
@@ -66,65 +67,79 @@ export const processTransaction = async (
 
     let transactionId: string;
     
-    // Show preparing toast
+    // 显示准备toast
     toast({
-      title: "Preparing Transaction",
-      description: `Setting up your donation of ${amount.toFixed(2)} USDT using ${walletType} wallet...`,
+      title: "准备交易",
+      description: `正在使用${walletType}钱包设置您的${amount.toFixed(2)} USDT捐赠...`,
     });
     
-    // Process transaction based on wallet type
+    // 根据钱包类型处理交易
     switch (walletType) {
       case 'MetaMask':
-        console.log('Sending USDT via MetaMask:', {
+        console.log('通过MetaMask发送USDT:', {
           address: provider.selectedAddress,
           amount
         });
-        // Implementation for MetaMask transaction would go here
-        // For now, just returning a mock transaction ID
+        // 这里是MetaMask交易的实现
+        // 目前，只返回一个模拟的交易ID
         transactionId = `0x${Math.random().toString(16).substring(2, 42)}`;
         break;
         
       case 'OKX':
-        console.log('Sending USDT via OKX:', {
+        console.log('通过OKX发送USDT:', {
           address: provider.ethereum?.selectedAddress,
           amount
         });
-        // Implementation for OKX transaction would go here
-        // For now, just returning a mock transaction ID
+        // 这里是OKX交易的实现
+        // 目前，只返回一个模拟的交易ID
         transactionId = `0x${Math.random().toString(16).substring(2, 42)}`;
         break;
         
       default:
-        const error = new Error(`Unsupported wallet type: ${walletType}`);
+        const error = new Error(`不支持的钱包类型: ${walletType}`);
         toast({
-          title: "Unsupported Wallet",
-          description: `${walletType} wallet is not supported for donations.`,
+          title: "不支持的钱包",
+          description: `${walletType}钱包不支持捐赠。`,
           variant: "destructive",
         });
         throw error;
     }
 
     if (!transactionId) {
-      const error = new Error('Transaction failed - no transaction ID returned');
+      const error = new Error('交易失败 - 未返回交易ID');
       toast({
-        title: "Transaction Failed",
-        description: "The transaction could not be completed. Please try again.",
+        title: "交易失败",
+        description: "交易无法完成。请重试。",
         variant: "destructive",
       });
       throw error;
     }
+    
+    // 将捐赠记录添加到Supabase
+    try {
+      await addDonation({
+        wallet_address: walletAddress,
+        amount: amount,
+        transaction_id: transactionId,
+        wallet_type: walletType
+      });
+      console.log('捐赠记录已添加到Supabase');
+    } catch (dbError) {
+      console.error('将捐赠添加到Supabase错误:', dbError);
+      // 继续处理，即使数据库存储失败
+    }
 
-    console.log('USDT Transaction completed successfully:', transactionId);
+    console.log('USDT交易成功完成:', transactionId);
     return transactionId;
 
   } catch (err) {
-    console.error("USDT Transaction processing error:", err);
+    console.error("USDT交易处理错误:", err);
     
-    // Only show toast if not already shown in wallet-specific methods
+    // 仅在钱包特定方法中未显示的情况下显示toast
     if (!err.message?.includes("already shown")) {
       toast({
-        title: "Transaction Failed",
-        description: err instanceof Error ? err.message : "Unknown error occurred during transaction",
+        title: "交易失败",
+        description: err instanceof Error ? err.message : "交易期间发生未知错误",
         variant: "destructive",
       });
     }
