@@ -59,6 +59,9 @@ export interface OKXWallet {
 declare global {
   interface Window {
     ethereum?: MetaMaskWallet;
-    okxwallet?: OKXWallet;
+    okxwallet?: {
+      ethereum?: any;
+      [key: string]: any;
+    };
   }
 }

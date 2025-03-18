@@ -7,6 +7,7 @@ import ConnectWalletModal from '../wallet/ConnectWalletModal';
 import { Button } from '../ui/button';
 import ConnectedWalletButton from '../wallet/ConnectedWalletButton';
 import WalletMenu from '../wallet/WalletMenu';
+import { Wallet, Plug, ChevronRight } from 'lucide-react';
 
 const WalletConnector: React.FC = () => {
   const { t } = useLanguage();
@@ -84,17 +85,17 @@ const WalletConnector: React.FC = () => {
       ) : (
         <Button 
           variant="default"
-          className="bg-gold-500 hover:bg-gold-600 text-black font-medium rounded-md 
-                   shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform 
-                   hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"
+          className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700
+                   text-white font-medium px-5 py-2.5 rounded-lg
+                   shadow-lg hover:shadow-purple-500/30 transition-all duration-300 ease-out transform 
+                   hover:scale-[1.03] active:scale-[0.98] flex items-center gap-2 relative overflow-hidden group"
           onClick={handleDonateClick}
         >
-          Connect Wallet
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
-            <rect width="24" height="24" rx="4" fill="currentColor" opacity="0.2"/>
-            <path d="M18 7.5H6C5.17157 7.5 4.5 8.17157 4.5 9V15C4.5 15.8284 5.17157 16.5 6 16.5H18C18.8284 16.5 19.5 15.8284 19.5 15V9C19.5 8.17157 18.8284 7.5 18 7.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M16.5 13.5C17.3284 13.5 18 12.8284 18 12C18 11.1716 17.3284 10.5 16.5 10.5C15.6716 10.5 15 11.1716 15 12C15 12.8284 15.6716 13.5 16.5 13.5Z" fill="currentColor"/>
-          </svg>
+          <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-400/20 via-transparent to-transparent 
+                         -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></span>
+          <Plug className="w-4 h-4 text-white" />
+          <span>Connect Wallet</span>
+          <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" />
         </Button>
       )}
 

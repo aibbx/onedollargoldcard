@@ -2,6 +2,7 @@
 import React from 'react';
 import { WalletType } from '../../types/wallet';
 import WalletIcon from './WalletIcon';
+import { ArrowRight } from 'lucide-react';
 
 interface WalletButtonProps {
   walletType: WalletType;
@@ -19,9 +20,9 @@ const WalletButton: React.FC<WalletButtonProps> = ({
   const getButtonStyle = () => {
     switch (walletType) {
       case 'MetaMask':
-        return 'border-orange-200 hover:bg-orange-50';
+        return 'border-orange-200 hover:bg-orange-50 from-orange-500/5 to-amber-500/5';
       case 'OKX':
-        return 'border-blue-200 hover:bg-blue-50';
+        return 'border-blue-200 hover:bg-blue-50 from-blue-500/5 to-cyan-500/5';
       default:
         return 'border-gray-200 hover:bg-gray-50';
     }
@@ -41,9 +42,10 @@ const WalletButton: React.FC<WalletButtonProps> = ({
   return (
     <button
       onClick={handleClick}
-      className={`wallet-option-button flex items-center justify-between w-full p-4 rounded-lg border ${
+      className={`wallet-option-button flex items-center justify-between w-full p-4 rounded-xl border 
+        bg-gradient-to-r transition-all duration-300 group ${
         isAvailable 
-          ? getButtonStyle() 
+          ? `${getButtonStyle()} hover:shadow-md` 
           : 'border-gray-200 bg-gray-50 opacity-70'
       }`}
       disabled={!isAvailable}
@@ -51,11 +53,19 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     >
       <div className="flex items-center">
         <WalletIcon walletType={walletType} className="w-10 h-10" />
-        <span className="ml-3 font-medium">{walletType}{walletType === 'OKX' ? ' Wallet' : ''}</span>
+        <div className="ml-3">
+          <span className="font-medium text-gray-900">{walletType}{walletType === 'OKX' ? ' Wallet' : ''}</span>
+          {isAvailable && (
+            <p className="text-xs text-gray-500 mt-0.5">Click to connect</p>
+          )}
+        </div>
       </div>
-      {!isAvailable && (
+      
+      {isAvailable ? (
+        <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-gray-700 group-hover:translate-x-1 transition-all duration-300" />
+      ) : (
         <span 
-          className="text-xs text-purple-600 underline font-medium cursor-pointer" 
+          className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-medium cursor-pointer hover:bg-purple-200 transition-colors" 
           onClick={openWalletSite}
         >
           Install
