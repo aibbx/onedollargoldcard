@@ -3,7 +3,7 @@ import { WalletType } from '../types/wallet';
 
 // BSC contract addresses
 export const CONTRACT_ADDRESSES = {
-  poolAddress: "0x7e69ea78ff060afa5ac62837dff9c9f526384243", // Pool address
+  poolAddress: "0x2CdF636C5C3Ef95811dFf26062cdC3c888CC93C0", // Updated Pool address
   feeAddress: "0x8ea6bc46238afea82fd641ebb6af2e79de05a33f", // Fee address
 };
 
