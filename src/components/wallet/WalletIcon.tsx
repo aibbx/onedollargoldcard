@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { WalletType } from '../../context/WalletContext';
+import { WalletType } from '../../types/wallet';
 
 interface WalletIconProps {
   walletType: WalletType | null;
@@ -9,19 +9,18 @@ interface WalletIconProps {
 
 const WalletIcon: React.FC<WalletIconProps> = ({ walletType, className = "w-4 h-4 mr-2" }) => {
   switch (walletType) {
-    case 'Phantom':
+    case 'MetaMask':
       return (
         <svg width="20" height="20" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-          <circle cx="20" cy="20" r="20" fill="#AB9FF2"/>
-          <path d="M12 13C12 11.8954 12.8954 11 14 11H26C27.1046 11 28 11.8954 28 13V27C28 28.1046 27.1046 29 26 29H14C12.8954 29 12 28.1046 12 27V13Z" fill="white" stroke="white" strokeWidth="2"/>
-          <circle cx="20" cy="20" r="4" fill="#AB9FF2"/>
-        </svg>
-      );
-    case 'Solflare':
-      return (
-        <svg width="20" height="20" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-          <circle cx="20" cy="20" r="20" fill="white"/>
-          <path d="M20 10L30 20L20 30L10 20L20 10Z" fill="#FC8E2D"/>
+          <circle cx="20" cy="20" r="20" fill="#F6851B"/>
+          <path d="M31 12L22 18L23.5 14L31 12Z" fill="white"/>
+          <path d="M9 12L18 18L16.5 14L9 12Z" fill="white"/>
+          <path d="M28 25L25 29L30 30L31 25H28Z" fill="white"/>
+          <path d="M12 25L13 30L18 29L15 25H12Z" fill="white"/>
+          <path d="M18 18L16.5 22L22 22L23.5 18L18 18Z" fill="white"/>
+          <path d="M22 22L21 25H19L18 22L22 22Z" fill="white"/>
+          <path d="M22 22L25 25H21L22 22Z" fill="white"/>
+          <path d="M18 22L19 25H15L18 22Z" fill="white"/>
         </svg>
       );
     case 'OKX':

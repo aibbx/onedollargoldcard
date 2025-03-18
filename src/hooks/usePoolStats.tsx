@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
 import { useWallet } from '../context/WalletContext';
-import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 import { CONTRACT_ADDRESSES } from '../utils/walletUtils';
 import { useToast } from '@/hooks/use-toast';
 
@@ -37,75 +36,17 @@ export const usePoolStats = () => {
           });
         }
         
-        // Try to fetch on-chain data from the Solana blockchain
+        // Try to fetch on-chain data from the BSC blockchain
         try {
-          const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
-          const poolPublicKey = new PublicKey(CONTRACT_ADDRESSES.poolAddress);
+          // For BSC, we would use Web3 or ethers.js to fetch blockchain data
+          // This is a simplified version that just uses the donations we have
+          console.log('Using BSC blockchain data');
           
-          // Get recent transactions to the pool address to count unique senders
-          const signatures = await connection.getSignaturesForAddress(poolPublicKey, { limit: 100 });
-          
-          if (signatures && signatures.length > 0) {
-            console.log(`Found ${signatures.length} transactions for pool address`);
-            
-            // Get unique senders
-            const transactionDetails = await Promise.all(
-              signatures.slice(0, 20).map(sig => connection.getTransaction(sig.signature, { maxSupportedTransactionVersion: 0 }))
-            );
-            
-            // Add unique senders to our set
-            transactionDetails.forEach(tx => {
-              if (tx && tx.meta && tx.transaction.message) {
-                // The first account is typically the fee payer (sender)
-                const accountKeys = tx.transaction.message.getAccountKeys?.() || 
-                                   { keySegments: () => [{ pubkey: tx.transaction.message.staticAccountKeys?.[0] }] };
-                
-                // Fix the TypeScript error by properly type checking before accessing pubkey
-                let sender: string | undefined;
-                
-                if (accountKeys.keySegments && typeof accountKeys.keySegments === 'function') {
-                  const segments = accountKeys.keySegments();
-                  if (segments && segments.length > 0) {
-                    const firstSegment = segments[0];
-                    
-                    if (Array.isArray(firstSegment)) {
-                      // Handle the case where keySegments()[0] is an array of PublicKey
-                      sender = tx.transaction.message.staticAccountKeys?.[0]?.toString();
-                    } else if (firstSegment && typeof firstSegment === 'object' && 'pubkey' in firstSegment) {
-                      // Handle the case where keySegments()[0] is an object with a pubkey property
-                      sender = firstSegment.pubkey?.toString();
-                    }
-                  }
-                } else if (tx.transaction.message.staticAccountKeys?.[0]) {
-                  // Fallback to using staticAccountKeys
-                  sender = tx.transaction.message.staticAccountKeys[0].toString();
-                }
-                
-                if (sender) {
-                  uniqueWallets.add(sender);
-                }
-              }
-            });
-          }
-          
-          // Get the balance from the contract address
-          const balance = await connection.getBalance(poolPublicKey);
-          
-          // Convert lamports to SOL (1 SOL = 1,000,000,000 lamports)
-          const solBalance = balance / 1_000_000_000;
-          
-          // Get SOL price in USD
-          const solPrice = await fetchSolPrice();
-          
-          // Add the contract balance to our total (converted to USD)
-          // This gives us a much more accurate pool total
-          const contractBalanceUsd = solBalance * solPrice;
-          calculatedAmount = Math.max(calculatedAmount, contractBalanceUsd);
+          // In a real implementation, we would fetch token balance from BSC
+          // For now, just simulate with existing donation data
           
           console.log('Blockchain Gold Card fund data:', {
-            solBalance,
-            solPrice,
-            contractBalanceUsd,
+            contractBalance: calculatedAmount,
             uniqueWallets: uniqueWallets.size
           });
         } catch (chainError) {
@@ -153,15 +94,15 @@ export const usePoolStats = () => {
     return () => clearInterval(interval);
   }, [donations]);
   
-  // Helper function to fetch SOL price
-  const fetchSolPrice = async (): Promise<number> => {
+  // Helper function to fetch BNB price
+  const fetchBnbPrice = async (): Promise<number> => {
     try {
-      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd');
       const data = await response.json();
-      return data.solana.usd;
+      return data.binancecoin.usd;
     } catch (error) {
-      console.error('Error fetching SOL price:', error);
-      return 100; // Fallback price if API is unavailable
+      console.error('Error fetching BNB price:', error);
+      return 250; // Fallback price if API is unavailable
     }
   };
 

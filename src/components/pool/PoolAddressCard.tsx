@@ -16,8 +16,8 @@ const PoolAddressCard = () => {
     });
   };
 
-  const openSolscan = () => {
-    window.open(`https://solscan.io/account/${CONTRACT_ADDRESSES.poolAddress}`, '_blank');
+  const openBscScan = () => {
+    window.open(`https://bscscan.com/address/${CONTRACT_ADDRESSES.poolAddress}`, '_blank');
   };
 
   return (
@@ -25,11 +25,11 @@ const PoolAddressCard = () => {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-800 mb-1">Pool Address</h3>
-          <p className="text-sm text-gray-500">View and verify the smart contract on Solscan</p>
+          <p className="text-sm text-gray-500">View and verify the smart contract on BSCScan</p>
         </div>
         <div className="flex items-center gap-2 bg-gray-50 p-2 rounded-lg border border-gray-100 w-full md:w-auto">
           <code className="text-sm text-gold-600 font-mono">
-            {CONTRACT_ADDRESSES.poolAddress.slice(0, 4)}...{CONTRACT_ADDRESSES.poolAddress.slice(-4)}
+            {CONTRACT_ADDRESSES.poolAddress.slice(0, 6)}...{CONTRACT_ADDRESSES.poolAddress.slice(-4)}
           </code>
           <Button
             variant="ghost"
@@ -43,7 +43,7 @@ const PoolAddressCard = () => {
             variant="ghost"
             size="icon"
             className="h-8 w-8 text-gray-500 hover:text-gold-600"
-            onClick={openSolscan}
+            onClick={openBscScan}
           >
             <ExternalLink className="h-4 w-4" />
           </Button>

@@ -11,7 +11,7 @@ export const zh = {
   // Hero section
   'hero.title': 'OneDollarGoldCard',
   'hero.subtitle': '普及移民機會',
-  'hero.description': '一個在 Solana 區塊鏈上的去中心化捐贈平台，為非美國公民提供贏取足夠資金申請美國金卡的機會。',
+  'hero.description': '一個在 BSC 區塊鏈上的去中心化捐贈平台，為非美國公民提供贏取足夠資金申請美國金卡的機會。',
   'hero.donateButton': '立即捐款',
   'hero.donateNow': '立即捐款',
   'hero.learnMore': '了解更多',
@@ -25,7 +25,7 @@ export const zh = {
   'features.fair.title': '公平機會系統',
   'features.fair.desc': '您的機會隨著您的捐款金額成比例增加。',
   'features.secure.title': '安全設計',
-  'features.secure.desc': '建立在 Solana 的安全合約上，安全地交付百萬美元獎金池。',
+  'features.secure.desc': '建立在 BSC 的安全合約上，安全地交付百萬美元獎金池。',
 
   // How It Works
   'howItWorks.title': '運作方式',
@@ -62,7 +62,7 @@ export const zh = {
   'pool.backupTitle': '7 天不活動保障',
   'pool.backupInfo': '如果 7 天沒有捐贈，最後一位捐贈者將獲得整個基金。',
   'pool.share': '在社交媒體上分享',
-  'pool.sns': 'Solana 名稱服務',
+  'pool.bns': 'BNB 名稱服務',
 
   // Footer
   'footer.rights': '版權所有。',

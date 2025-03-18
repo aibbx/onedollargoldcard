@@ -1,7 +1,5 @@
 
-import { PublicKey } from "@solana/web3.js";
-
-export type WalletType = 'Phantom' | 'Solflare' | 'OKX';
+export type WalletType = 'MetaMask' | 'OKX';
 
 export interface WalletContextType {
   isWalletConnected: boolean;
@@ -26,46 +24,41 @@ export interface DonationRecord {
 }
 
 export interface WalletDetectionResult {
-  phantom: boolean;
-  solflare: boolean;
+  metamask: boolean;
   okx: boolean;
 }
 
 export interface WalletConnectionDetail {
-  publicKey: PublicKey;
+  address: string;
   isConnected: boolean;
 }
 
 // Add custom wallet type declarations
-export interface PhantomWallet {
-  isPhantom?: boolean;
-  connect: () => Promise<{ publicKey: PublicKey }>;
-  disconnect: () => Promise<void>;
-  signTransaction: (transaction: any) => Promise<any>;
-  signAllTransactions: (transactions: any[]) => Promise<any[]>;
-  request: (request: { method: string; params?: any }) => Promise<any>;
-  publicKey?: PublicKey;
-  isConnected?: boolean;
-}
-
-export interface SolflareWallet {
-  connect: () => Promise<void>;
-  disconnect: () => Promise<void>;
-  signTransaction: (transaction: any) => Promise<any>;
-  signAllTransactions: (transactions: any[]) => Promise<any[]>;
-  publicKey?: PublicKey;
-  isConnected?: boolean;
-  setSolanaNetwork?: (network: string) => void;
+export interface MetaMaskWallet {
+  isMetaMask?: boolean;
+  request: (request: { method: string; params?: any[] }) => Promise<any>;
+  on: (event: string, callback: (...args: any[]) => void) => void;
+  removeListener: (event: string, callback: (...args: any[]) => void) => void;
+  selectedAddress?: string;
+  isConnected?: () => boolean;
+  chainId?: string;
 }
 
 export interface OKXWallet {
-  solana?: {
-    connect: () => Promise<{ publicKey: PublicKey }>;
-    disconnect: () => Promise<void>;
-    signTransaction: (transaction: any) => Promise<any>;
-    signAllTransactions: (transactions: any[]) => Promise<any[]>;
-    publicKey?: PublicKey;
-    isConnected?: boolean;
-    switchNetwork?: (network: string) => Promise<void>;
+  ethereum?: {
+    isOKXWallet?: boolean;
+    request: (request: { method: string; params?: any[] }) => Promise<any>;
+    on: (event: string, callback: (...args: any[]) => void) => void;
+    removeListener: (event: string, callback: (...args: any[]) => void) => void;
+    selectedAddress?: string;
+    isConnected?: () => boolean;
+    chainId?: string;
   };
+}
+
+declare global {
+  interface Window {
+    ethereum?: MetaMaskWallet;
+    okxwallet?: OKXWallet;
+  }
 }

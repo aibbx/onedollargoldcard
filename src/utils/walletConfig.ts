@@ -11,24 +11,18 @@ interface WalletConfig {
 
 export const WALLET_CONFIGS: WalletConfig[] = [
   {
-    type: 'Phantom',
-    name: 'Phantom',
-    installUrl: 'https://phantom.app/',
-    detectionKey: 'solana',
-    secondaryCheck: (window) => !!(window.solana?.isPhantom)
-  },
-  {
-    type: 'Solflare',
-    name: 'Solflare',
-    installUrl: 'https://solflare.com/',
-    detectionKey: 'solflare'
+    type: 'MetaMask',
+    name: 'MetaMask',
+    installUrl: 'https://metamask.io/',
+    detectionKey: 'ethereum',
+    secondaryCheck: (window) => !!(window.ethereum?.isMetaMask)
   },
   {
     type: 'OKX',
     name: 'OKX Wallet',
     installUrl: 'https://www.okx.com/web3',
     detectionKey: 'okxwallet',
-    secondaryCheck: (window) => !!(window.okxwallet?.solana)
+    secondaryCheck: (window) => !!(window.okxwallet?.ethereum)
   }
 ];
 
