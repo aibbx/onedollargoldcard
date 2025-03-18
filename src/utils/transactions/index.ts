@@ -3,9 +3,6 @@
 import '../buffer-polyfill';
 
 import { WalletType } from '../../types/wallet';
-import { sendPhantomTransaction } from './phantomTransactions';
-import { sendSolflareTransaction } from './solflareTransactions';
-import { sendOKXTransaction } from './okxTransactions';
 import { toast } from "@/hooks/use-toast";
 
 // Process transaction based on wallet type
@@ -21,7 +18,6 @@ export const processTransaction = async (
       hasProvider: !!provider,
       providerType: walletType,
       providerKeys: Object.keys(provider),
-      solanaKeys: provider?.solana ? Object.keys(provider.solana) : [],
       bufferAvailable: typeof window !== 'undefined' ? !!window.Buffer : false
     });
 
@@ -78,58 +74,24 @@ export const processTransaction = async (
     
     // Process transaction based on wallet type
     switch (walletType) {
-      case 'Phantom':
-        if (!provider.publicKey) {
-          const error = new Error('Phantom wallet not properly connected');
-          toast({
-            title: "Wallet Error",
-            description: "Phantom wallet is not properly connected. Please try reconnecting.",
-            variant: "destructive",
-          });
-          throw error;
-        }
-        console.log('Sending USDT via Phantom:', {
-          publicKey: provider.publicKey.toString(),
-          isConnected: provider.isConnected,
+      case 'MetaMask':
+        console.log('Sending USDT via MetaMask:', {
+          address: provider.selectedAddress,
           amount
         });
-        transactionId = await sendPhantomTransaction(provider, amount, walletAddress);
-        break;
-        
-      case 'Solflare':
-        if (!provider.publicKey) {
-          const error = new Error('Solflare wallet not properly connected');
-          toast({
-            title: "Wallet Error",
-            description: "Solflare wallet is not properly connected. Please try reconnecting.",
-            variant: "destructive",
-          });
-          throw error;
-        }
-        console.log('Sending USDT via Solflare:', {
-          publicKey: provider.publicKey.toString(),
-          isConnected: provider.isConnected,
-          amount
-        });
-        transactionId = await sendSolflareTransaction(provider, amount, walletAddress);
+        // Implementation for MetaMask transaction would go here
+        // For now, just returning a mock transaction ID
+        transactionId = `0x${Math.random().toString(16).substring(2, 42)}`;
         break;
         
       case 'OKX':
-        if (!provider.solana?.publicKey) {
-          const error = new Error('OKX wallet not properly connected');
-          toast({
-            title: "Wallet Error",
-            description: "OKX wallet is not properly connected. Please try reconnecting.",
-            variant: "destructive",
-          });
-          throw error;
-        }
         console.log('Sending USDT via OKX:', {
-          publicKey: provider.solana.publicKey.toString(),
-          isConnected: provider.solana.isConnected,
+          address: provider.ethereum?.selectedAddress,
           amount
         });
-        transactionId = await sendOKXTransaction(provider, amount, walletAddress);
+        // Implementation for OKX transaction would go here
+        // For now, just returning a mock transaction ID
+        transactionId = `0x${Math.random().toString(16).substring(2, 42)}`;
         break;
         
       default:

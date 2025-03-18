@@ -18,9 +18,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
 }) => {
   const getButtonStyle = () => {
     switch (walletType) {
-      case 'Phantom':
-        return 'border-purple-200 hover:bg-purple-50';
-      case 'Solflare':
+      case 'MetaMask':
         return 'border-orange-200 hover:bg-orange-50';
       case 'OKX':
         return 'border-blue-200 hover:bg-blue-50';

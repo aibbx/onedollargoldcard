@@ -1,7 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { WalletType } from '../types/wallet';
-import { detectWallets, isValidSolanaAddress } from '../utils/walletUtils';
+import { detectWallets } from '../utils/walletUtils';
 import { 
   connectWallet as connectWalletUtil, 
   autoConnectWallet as autoConnectWalletUtil,
@@ -14,7 +15,7 @@ export type NetworkType = 'mainnet-beta' | 'testnet' | 'devnet';
 export const useWalletConnectors = () => {
   const { toast } = useToast();
   const [provider, setProvider] = useState<any>(null);
-  const [walletType, setWalletType] = useState<WalletType>('Phantom');
+  const [walletType, setWalletType] = useState<WalletType>('MetaMask');
   const [walletAddress, setWalletAddress] = useState('');
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [walletDetectionComplete, setWalletDetectionComplete] = useState(false);
@@ -46,11 +47,6 @@ export const useWalletConnectors = () => {
       if (result) {
         const { address, provider: walletProvider } = result;
         
-        // Validate the wallet address
-        if (!isValidSolanaAddress(address)) {
-          throw new Error(`Invalid Solana address: ${address}`);
-        }
-        
         setProvider(walletProvider);
         setWalletType(type);
         setWalletAddress(address);
@@ -73,23 +69,15 @@ export const useWalletConnectors = () => {
   const connectWallet = async (type: WalletType) => {
     try {
       // Check if wallet is installed and show appropriate message if not
-      if (type === 'Phantom' && (typeof window === 'undefined' || !window.solana)) {
+      if (type === 'MetaMask' && (typeof window === 'undefined' || !window.ethereum)) {
         toast({
           title: "Wallet Not Found",
-          description: "Please install the Phantom wallet extension and refresh the page.",
+          description: "Please install the MetaMask wallet extension and refresh the page.",
           variant: "destructive",
         });
-        window.open("https://phantom.app/", "_blank");
-        return Promise.reject(new Error('Phantom wallet not installed'));
-      } else if (type === 'Solflare' && (typeof window === 'undefined' || !window.solflare)) {
-        toast({
-          title: "Wallet Not Found",
-          description: "Please install the Solflare wallet extension and refresh the page.",
-          variant: "destructive",
-        });
-        window.open("https://solflare.com/", "_blank");
-        return Promise.reject(new Error('Solflare wallet not installed'));
-      } else if (type === 'OKX' && (typeof window === 'undefined' || !window.okxwallet || !window.okxwallet.solana)) {
+        window.open("https://metamask.io/", "_blank");
+        return Promise.reject(new Error('MetaMask wallet not installed'));
+      } else if (type === 'OKX' && (typeof window === 'undefined' || !window.okxwallet)) {
         toast({
           title: "Wallet Not Found",
           description: "Please install the OKX wallet extension and refresh the page.",
@@ -103,11 +91,6 @@ export const useWalletConnectors = () => {
         const result = await connectWalletUtil(type, network);
         const { address, provider: walletProvider } = result;
         
-        // Validate the wallet address
-        if (!isValidSolanaAddress(address)) {
-          throw new Error(`Invalid Solana address: ${address}`);
-        }
-        
         setProvider(walletProvider);
         setWalletType(type);
         setWalletAddress(address);
@@ -118,7 +101,7 @@ export const useWalletConnectors = () => {
         
         toast({
           title: "Wallet Connected",
-          description: `Your ${type} wallet has been connected successfully to Solana ${network}.`,
+          description: `Your ${type} wallet has been connected successfully to BSC ${network}.`,
         });
         
         return Promise.resolve();
@@ -149,7 +132,7 @@ export const useWalletConnectors = () => {
     }
     
     setProvider(null);
-    setWalletType('Phantom');
+    setWalletType('MetaMask');
     setWalletAddress('');
     setIsWalletConnected(false);
     
