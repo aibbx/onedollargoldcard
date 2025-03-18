@@ -11,7 +11,7 @@ export const en = {
   // Hero section
   'hero.title': 'OneDollarGoldCard',
   'hero.subtitle': 'Democratizing Access to Immigration Opportunities',
-  'hero.description': 'A decentralized donation platform on Solana blockchain offering non-US citizens a chance to win enough to apply for the US Gold Card residency.',
+  'hero.description': 'A decentralized donation platform on blockchain offering non-US citizens a chance to win enough to apply for the US Gold Card residency.',
   'hero.donateButton': 'Donate Now',
   'hero.donateNow': 'Donate Now',
   'hero.learnMore': 'Learn More',
@@ -25,7 +25,7 @@ export const en = {
   'features.fair.title': 'Fair Chance System',
   'features.fair.desc': 'Your chances increase proportionally with your donation amount.',
   'features.secure.title': 'Secure by Design',
-  'features.secure.desc': 'Built on Solana\'s secure contract to deliver the million dollar prize pool safely.',
+  'features.secure.desc': 'Built on secure smart contracts to deliver the million dollar prize pool safely.',
 
   // How It Works
   'howItWorks.title': 'How It Works',
@@ -62,7 +62,7 @@ export const en = {
   'pool.backupTitle': '7-Day Inactivity Safeguard',
   'pool.backupInfo': 'If no donations for 7 days, the last donor receives the entire fund.',
   'pool.share': 'Share on Social',
-  'pool.sns': 'Solana Name Service',
+  'pool.bns': 'Blockchain Name Service',
 
   // Footer
   'footer.rights': 'All rights reserved.',
