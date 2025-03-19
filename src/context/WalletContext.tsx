@@ -67,30 +67,15 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     try {
       console.log('准备连接钱包类型:', type);
       
-      let walletProvider;
-      let address = '';
+      const result = await connectWallet(type);
       
-      try {
-        // 使用 wallet-connectors 中的通用连接方法
-        const result = await connectWallet(type);
-        if (result && result.provider && result.address) {
-          walletProvider = result.provider;
-          address = result.address;
-        } else {
-          throw new Error(`无法连接到 ${type} 钱包`);
-        }
-      } catch (connError) {
-        console.error('使用连接器连接钱包失败:', connError);
+      // Check if result exists and has required properties
+      if (!result || !result.provider || !result.address) {
         throw new Error(`无法连接到 ${type} 钱包`);
       }
       
-      if (!walletProvider) {
-        throw new Error(`${type} 钱包未安装或不可用`);
-      }
-      
-      if (!address) {
-        throw new Error('无法获取钱包地址');
-      }
+      const walletProvider = result.provider;
+      const address = result.address;
       
       // 更新状态
       setIsWalletConnected(true);
@@ -223,7 +208,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
     
     return () => {
-      if (subscription) {
+      if (subscription && typeof subscription.unsubscribe === 'function') {
         subscription.unsubscribe();
       }
     };
