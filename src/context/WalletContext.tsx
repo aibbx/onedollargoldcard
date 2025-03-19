@@ -73,8 +73,12 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       try {
         // 使用 wallet-connectors 中的通用连接方法
         const result = await connectWallet(type);
-        walletProvider = result.provider;
-        address = result.address;
+        if (result) {
+          walletProvider = result.provider;
+          address = result.address;
+        } else {
+          throw new Error(`无法连接到 ${type} 钱包`);
+        }
       } catch (connError) {
         console.error('使用连接器连接钱包失败:', connError);
         throw new Error(`无法连接到 ${type} 钱包`);
@@ -209,16 +213,20 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   // 订阅用户统计信息的实时更新
   useEffect(() => {
+    let subscription: any = null;
+    
     if (isWalletConnected && walletAddress) {
-      const subscription = subscribeToUserStats(walletAddress, (stats) => {
+      subscription = subscribeToUserStats(walletAddress, (stats) => {
         console.log('收到用户统计信息更新:', stats);
         setUserStats(stats);
       });
-      
-      return () => {
-        subscription.unsubscribe();
-      };
     }
+    
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    };
   }, [isWalletConnected, walletAddress]);
 
   // 计算上下文值
