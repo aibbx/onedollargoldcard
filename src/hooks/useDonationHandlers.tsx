@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { DonationRecord, WalletType } from '../types/wallet';
@@ -6,7 +5,6 @@ import { getExplorerUrl } from '../utils/walletUtils';
 import { processTransaction } from '../utils/transactions';
 import { useDonationStats } from './useDonationStats';
 import { addDonation, getUserDonations, getUserStats } from '../services/supabaseService';
-import { supabase } from "@/integrations/supabase/client";
 
 export const useDonationHandlers = (
   isWalletConnected: boolean,

@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import DonationCardContainer from './donation/DonationCardContainer';
 import ConnectWalletModal from './wallet/ConnectWalletModal';
-import { useWallet, WalletType } from '../context/WalletContext';
+import { useWallet } from '../context/WalletContext';
+import { WalletType } from '../types/wallet';
 // Import buffer polyfill early - ensure it's imported at the top
 import '../utils/buffer-polyfill';
 

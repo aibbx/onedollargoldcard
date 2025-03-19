@@ -1,10 +1,11 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getPhantomWallet, getSolflareWallet, getOKXWallet } from '../utils/wallet-connectors';
+import { connectWallet, autoConnectWallet, disconnectWallet } from '../utils/wallet-connectors';
 import { DonationRecord, WalletType } from '../types/wallet';
 import { useDonationHandlers } from '../hooks/useDonationHandlers';
 import { getUserDonations, getUserStats, subscribeToUserStats, UserStats } from '../services/supabaseService';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from "@/integrations/supabase/client";
 
 interface WalletContextType {
   isWalletConnected: boolean;
@@ -19,7 +20,7 @@ interface WalletContextType {
   connectWallet: (type: WalletType) => Promise<void>;
   disconnectWallet: () => void;
   sendDonation: (amount: number) => Promise<string | null>;
-  recoverDonation: (transactionId: string, amount: number) => boolean;
+  recoverDonation: (transactionId: string, amount: number) => Promise<boolean>;
 }
 
 // 默认上下文值
@@ -36,7 +37,7 @@ const defaultWalletContext: WalletContextType = {
   connectWallet: async () => {},
   disconnectWallet: () => {},
   sendDonation: async () => null,
-  recoverDonation: () => false
+  recoverDonation: async () => false
 };
 
 const WalletContext = createContext<WalletContextType>(defaultWalletContext);
@@ -69,38 +70,18 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       let walletProvider;
       let address = '';
       
-      // 根据钱包类型选择不同的连接方法
-      switch (type) {
-        case 'Phantom':
-          walletProvider = await getPhantomWallet();
-          break;
-        case 'Solflare':
-          walletProvider = await getSolflareWallet();
-          break;
-        case 'OKX':
-          walletProvider = await getOKXWallet();
-          break;
-        default:
-          throw new Error(`不支持的钱包类型: ${type}`);
+      try {
+        // 使用 wallet-connectors 中的通用连接方法
+        const result = await connectWallet(type);
+        walletProvider = result.provider;
+        address = result.address;
+      } catch (connError) {
+        console.error('使用连接器连接钱包失败:', connError);
+        throw new Error(`无法连接到 ${type} 钱包`);
       }
       
       if (!walletProvider) {
         throw new Error(`${type} 钱包未安装或不可用`);
-      }
-      
-      // 获取钱包地址
-      if (type === 'OKX') {
-        // OKX 钱包处理
-        if (walletProvider.solana) {
-          const publicKey = await walletProvider.solana.connect();
-          address = publicKey.toString();
-        } else {
-          throw new Error('OKX 钱包不可用');
-        }
-      } else {
-        // Phantom/Solflare 处理
-        const publicKey = await walletProvider.connect();
-        address = publicKey.toString();
       }
       
       if (!address) {
@@ -148,11 +129,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     try {
       // 如果有提供者且有断开连接的方法，调用它
       if (provider) {
-        if (walletType === 'OKX' && provider.solana && provider.solana.disconnect) {
-          provider.solana.disconnect();
-        } else if (provider.disconnect) {
-          provider.disconnect();
-        }
+        disconnectWallet(walletType);
       }
       
       // 重置状态
@@ -239,13 +216,13 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       });
       
       return () => {
-        supabase.removeChannel(subscription);
+        subscription.unsubscribe();
       };
     }
   }, [isWalletConnected, walletAddress]);
 
   // 计算上下文值
-  const contextValue = {
+  const contextValue: WalletContextType = {
     isWalletConnected,
     walletType,
     walletAddress,

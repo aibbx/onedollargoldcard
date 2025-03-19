@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from '../../context/LanguageContext';
-import { useWallet, WalletType } from '../../context/WalletContext';
+import { useWallet } from '../../context/WalletContext';
+import { WalletType } from '../../types/wallet';
 import ConnectWalletModal from '../wallet/ConnectWalletModal';
 import { Button } from '../ui/button';
 import ConnectedWalletButton from '../wallet/ConnectedWalletButton';

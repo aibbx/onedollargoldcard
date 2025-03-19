@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { useWallet, WalletType } from '../../context/WalletContext';
+import { useWallet } from '../../context/WalletContext';
+import { WalletType } from '../../types/wallet';
 import ConnectWalletModal from '../wallet/ConnectWalletModal';
 import DonationCardContent from './DonationCardContent';
 

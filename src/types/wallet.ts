@@ -6,14 +6,15 @@ export interface WalletContextType {
   walletType: WalletType;
   walletAddress: string;
   connectWallet: (type: WalletType) => Promise<void>;
-  disconnectWallet: () => Promise<void>;
+  disconnectWallet: () => void;
   sendDonation: (amount: number) => Promise<string | null>;
-  recoverDonation: (transactionId: string, amount: number) => boolean;
+  recoverDonation: (transactionId: string, amount: number) => Promise<boolean>;
   donations: DonationRecord[];
   totalDonationAmount: number;
   winningChance: number;
   network: string;
   isProcessing: boolean;
+  provider: any;
 }
 
 export interface DonationRecord {

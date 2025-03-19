@@ -2,7 +2,7 @@
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Button } from '../ui/button';
-import { WalletType } from '../../context/WalletContext';
+import { WalletType } from '../../types/wallet';
 import WalletIcon from './WalletIcon';
 
 interface ConnectedWalletButtonProps {
