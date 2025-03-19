@@ -1,8 +1,9 @@
 
-import React, { createContext, useContext, ReactNode } from 'react';
-import { DonationRecord, WalletType } from '../../types/wallet';
+import { createContext, useContext } from 'react';
+import { WalletType, DonationRecord } from '../../types/wallet';
 
-export interface WalletContextType {
+// Define the shape of our wallet context
+interface WalletContextType {
   isWalletConnected: boolean;
   walletType: WalletType;
   walletAddress: string;
@@ -18,8 +19,8 @@ export interface WalletContextType {
   recoverDonation: (transactionId: string, amount: number) => Promise<boolean>;
 }
 
-// Default context values
-const defaultWalletContext: WalletContextType = {
+// Create the context with default values
+const WalletContext = createContext<WalletContextType>({
   isWalletConnected: false,
   walletType: 'OKX',
   walletAddress: '',
@@ -29,14 +30,13 @@ const defaultWalletContext: WalletContextType = {
   totalDonationAmount: 0,
   winningChance: 0,
   isProcessing: false,
-  connectWallet: async () => {},
-  disconnectWallet: () => {},
-  sendDonation: async () => null,
-  recoverDonation: async () => false
-};
+  connectWallet: async () => { throw new Error('WalletContext not initialized'); },
+  disconnectWallet: () => { throw new Error('WalletContext not initialized'); },
+  sendDonation: async () => { throw new Error('WalletContext not initialized'); },
+  recoverDonation: async () => { throw new Error('WalletContext not initialized'); }
+});
 
-const WalletContext = createContext<WalletContextType>(defaultWalletContext);
-
+// Create a hook to use the wallet context
 export const useWallet = () => useContext(WalletContext);
 
 export default WalletContext;
