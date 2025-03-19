@@ -73,7 +73,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       try {
         // 使用 wallet-connectors 中的通用连接方法
         const result = await connectWallet(type);
-        if (result) {
+        if (result && result.provider && result.address) {
           walletProvider = result.provider;
           address = result.address;
         } else {
