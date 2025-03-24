@@ -10,9 +10,9 @@ interface SharePoolCardProps {
 
 const SharePoolCard = ({ title, onShare }: SharePoolCardProps) => {
   const handleShare = () => {
-    // Replace Solana with BSC in the sharing text
+    // Share with custom domain URL
     const text = `Amazing! I am in #OneDollarGoldCard on #BSC to win $5M for the Gold Card application! Join now:`;
-    const url = window.location.href;
+    const url = "https://onedollargoldcard.com/";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 

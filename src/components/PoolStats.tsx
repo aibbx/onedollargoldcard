@@ -25,7 +25,7 @@ const PoolStats = () => {
 
   const handleShareOnX = () => {
     const text = `Check out the OneDollarGoldCard fund! Already reached $${formatNumber(Number(poolAmount.toFixed(2)))} with ${formatNumber(totalDonors)} donors. Join us! #OneDollarGoldCard`;
-    const url = window.location.href;
+    const url = "https://onedollargoldcard.com/";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
