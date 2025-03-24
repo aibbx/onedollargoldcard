@@ -55,7 +55,7 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
   });
 
   const handleShareOnX = () => {
-    const text = `I just donated $${total} USDT to OneDollarGoldCard! Join me in supporting this initiative that democratizes access to immigration opportunities. #OneDollarGoldCard`;
+    const text = `Amazing! I just donated $${total} on #OneDollarGoldCard on @solana to win $5M for the Gold Card application! Join now:`;
     const url = window.location.href;
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };

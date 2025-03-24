@@ -31,7 +31,7 @@ const Hero = () => {
 
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
-    const text = `Join me in supporting OneDollarGoldCard! #OneDollarGoldCard #GoldCard #Trump2024`;
+    const text = `Amazing! I am in #OneDollarGoldCard on @solana to win $5M for the Gold Card application! Join now:`;
     const url = window.location.href;
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
