@@ -2,20 +2,20 @@
 import { Connection, Transaction } from '@solana/web3.js';
 import { toast } from "@/hooks/use-toast";
 
-// Function to sign and send transaction with OKX wallet
+// Function to sign and send transaction with wallet
 export const signAndSendTransaction = async (
-  solanaProvider: any,
+  bscProvider: any,
   transaction: Transaction,
   connection: Connection
 ): Promise<string> => {
-  console.log('Requesting OKX wallet signature...', {
-    availableMethods: Object.keys(solanaProvider)
+  console.log('Requesting BSC wallet signature...', {
+    availableMethods: Object.keys(bscProvider)
   });
   
   // Show wallet approval toast
   toast({
     title: "Wallet Approval Required",
-    description: "Please approve the transaction in your OKX wallet",
+    description: "Please approve the transaction in your wallet",
     variant: "default",
   });
   
@@ -25,12 +25,12 @@ export const signAndSendTransaction = async (
   let signature: string = '';
 
   // Try all available signing methods one by one
-  if (solanaProvider.signAndSendTransaction) {
-    console.log('Using OKX signAndSendTransaction method');
+  if (bscProvider.signAndSendTransaction) {
+    console.log('Using signAndSendTransaction method');
     try {
-      const result = await solanaProvider.signAndSendTransaction(transaction);
+      const result = await bscProvider.signAndSendTransaction(transaction);
       signature = result.signature || result;
-      console.log('OKX transaction sent with signAndSendTransaction:', signature);
+      console.log('BSC transaction sent with signAndSendTransaction:', signature);
       return signature;
     } catch (signError) {
       console.error('Error with signAndSendTransaction method:', signError);
@@ -38,16 +38,16 @@ export const signAndSendTransaction = async (
     }
   } 
   
-  if (solanaProvider.signTransaction) {
-    console.log('Using OKX signTransaction method');
+  if (bscProvider.signTransaction) {
+    console.log('Using signTransaction method');
     try {
-      const signedTransaction = await solanaProvider.signTransaction(transaction);
+      const signedTransaction = await bscProvider.signTransaction(transaction);
       signature = await connection.sendRawTransaction(
         typeof signedTransaction.serialize === 'function'
           ? signedTransaction.serialize()
           : signedTransaction
       );
-      console.log('OKX transaction sent with signTransaction method:', signature);
+      console.log('BSC transaction sent with signTransaction method:', signature);
       return signature;
     } catch (signError) {
       console.error('Error with signTransaction method:', signError);
@@ -55,16 +55,16 @@ export const signAndSendTransaction = async (
     }
   }
   
-  if (solanaProvider.sign) {
-    console.log('Using OKX sign method');
+  if (bscProvider.sign) {
+    console.log('Using sign method');
     try {
-      const signedTransaction = await solanaProvider.sign(transaction);
+      const signedTransaction = await bscProvider.sign(transaction);
       signature = await connection.sendRawTransaction(
         typeof signedTransaction.serialize === 'function' 
           ? signedTransaction.serialize() 
           : signedTransaction
       );
-      console.log('OKX transaction sent with sign method:', signature);
+      console.log('BSC transaction sent with sign method:', signature);
       return signature;
     } catch (signError) {
       console.error('Error with sign method:', signError);
@@ -77,11 +77,11 @@ export const signAndSendTransaction = async (
   }
   
   // If we reach here, no signing method worked
-  console.error('No compatible signing method found for OKX wallet');
+  console.error('No compatible signing method found for wallet');
   toast({
     title: "Wallet Compatibility Error",
-    description: "Your OKX wallet version doesn't support the required transaction methods. Please try using Phantom or Solflare wallet instead.",
+    description: "Your wallet version doesn't support the required transaction methods. Please try another wallet.",
     variant: "destructive",
   });
-  throw new Error('No compatible signing methods available in OKX wallet');
+  throw new Error('No compatible signing methods available in wallet');
 };

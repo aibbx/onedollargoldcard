@@ -18,8 +18,8 @@ export const sendOKXTransaction = async (
   try {
     console.log('Starting OKX USDT transaction:', { amount, walletAddress });
     
-    // Validate provider and get solana provider
-    const solanaProvider = validateProvider(provider);
+    // Validate provider and get provider
+    const bscProvider = validateProvider(provider);
     
     // Get connection
     let connection;
@@ -33,7 +33,7 @@ export const sendOKXTransaction = async (
       console.error('Error with primary connection, trying backup:', connError);
       toast({
         title: "Network Connection Issue",
-        description: "Had trouble connecting to Solana. Trying backup network...",
+        description: "Had trouble connecting to BSC. Trying backup network...",
       });
       
       // Use backup connection
@@ -55,7 +55,7 @@ export const sendOKXTransaction = async (
     });
 
     // Get sender public key
-    const senderPublicKey = new PublicKey(solanaProvider.publicKey.toString());
+    const senderPublicKey = new PublicKey(bscProvider.publicKey.toString());
     
     // Prepare token accounts
     const { 
@@ -87,7 +87,7 @@ export const sendOKXTransaction = async (
     );
     
     // Sign and send transaction
-    const signature = await signAndSendTransaction(solanaProvider, transaction, connection);
+    const signature = await signAndSendTransaction(bscProvider, transaction, connection);
     
     // Confirm transaction
     await confirmTransaction(connection, signature, blockhash, lastValidBlockHeight);

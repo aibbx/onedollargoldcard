@@ -22,10 +22,10 @@ export const buildTransaction = async (
   transferAmountUSDT: number,
   recipientAccountExists: boolean
 ) => {
-  console.log('Building OKX transaction...');
+  console.log('Building BSC transaction...');
   
   // Get latest blockhash
-  console.log('Getting latest blockhash for OKX transaction...');
+  console.log('Getting latest blockhash for BSC transaction...');
   const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('confirmed');
   console.log('Blockhash obtained:', blockhash.slice(0, 10) + '...');
   
@@ -61,7 +61,7 @@ export const buildTransaction = async (
   // Show toast to inform user that we're requesting wallet approval
   toast({
     title: "Wallet Approval Required",
-    description: "Please approve the transaction in your OKX wallet",
+    description: "Please approve the transaction in your wallet",
   });
   
   return { transaction, blockhash, lastValidBlockHeight };

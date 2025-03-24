@@ -6,7 +6,7 @@ import { toast } from "@/hooks/use-toast";
 export const getConnection = (): Connection => {
   // Use a reliable RPC endpoint
   const endpoint = "https://api.mainnet-beta.solana.com";
-  console.log('Using primary Solana RPC endpoint for OKX transactions');
+  console.log('Using primary BSC RPC endpoint for transactions');
   
   return new Connection(endpoint, {
     commitment: 'confirmed',
@@ -18,7 +18,7 @@ export const getConnection = (): Connection => {
 export const getBackupConnection = (): Connection => {
   // Use QuickNode as backup with higher timeout
   const endpoint = "https://snowy-capable-night.solana-mainnet.quiknode.pro/72424723ee91618f3c3a7c1415e06e6f66ff1035/";
-  console.log('Using backup RPC endpoint for OKX transactions');
+  console.log('Using backup RPC endpoint for BSC transactions');
   
   return new Connection(endpoint, {
     commitment: 'confirmed',
@@ -28,9 +28,9 @@ export const getBackupConnection = (): Connection => {
 
 // Function to validate and get the provider
 export const validateProvider = (provider: any): any => {
-  console.log('Validating OKX provider:', { 
+  console.log('Validating provider:', { 
     hasProvider: !!provider,
-    providerType: 'OKX',
+    providerType: 'BSC',
     providerKeys: Object.keys(provider),
     hasOkxSolana: !!provider.solana,
     solanaKeys: provider?.solana ? Object.keys(provider.solana) : [],
@@ -39,20 +39,20 @@ export const validateProvider = (provider: any): any => {
   if (!provider || !provider.solana) {
     toast({
       title: "Wallet Error",
-      description: "OKX wallet provider not properly connected. Please reconnect your wallet.",
+      description: "BSC wallet provider not properly connected. Please reconnect your wallet.",
       variant: "destructive",
     });
-    throw new Error('OKX wallet provider not properly connected');
+    throw new Error('BSC wallet provider not properly connected');
   }
   
   const solanaProvider = provider.solana;
   if (!solanaProvider.publicKey) {
     toast({
       title: "Wallet Error",
-      description: "OKX Solana wallet not properly connected. Please reconnect your wallet.",
+      description: "BSC wallet not properly connected. Please reconnect your wallet.",
       variant: "destructive",
     });
-    throw new Error('OKX Solana wallet not properly connected');
+    throw new Error('BSC wallet not properly connected');
   }
   
   return solanaProvider;

@@ -1,18 +1,18 @@
 
 import { toast } from "@/hooks/use-toast";
 
-// Function to handle OKX transaction errors
+// Function to handle transaction errors
 export const handleTransactionError = (error: any): never => {
-  console.error('OKX transaction error:', error);
+  console.error('BSC transaction error:', error);
   
   // More helpful error messages
   if (error.message && error.message.includes('insufficient funds')) {
     toast({
       title: "Insufficient Funds",
-      description: "Insufficient USDC balance for this transaction. Please add more USDC to your wallet.",
+      description: "Insufficient USDT balance for this transaction. Please add more USDT to your wallet.",
       variant: "destructive",
     });
-    throw new Error('Insufficient USDC balance for this transaction. Please add more USDC to your wallet.');
+    throw new Error('Insufficient USDT balance for this transaction. Please add more USDT to your wallet.');
   } else if (error.message && error.message.includes('Blockhash not found')) {
     toast({
       title: "Transaction Timeout",
@@ -31,9 +31,9 @@ export const handleTransactionError = (error: any): never => {
   
   toast({
     title: "Transaction Failed",
-    description: `OKX transaction failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    description: `BSC transaction failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
     variant: "destructive",
   });
   
-  throw new Error(`OKX transaction failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  throw new Error(`BSC transaction failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
 };

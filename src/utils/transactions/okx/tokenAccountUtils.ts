@@ -10,7 +10,7 @@ import {
 } from '@solana/spl-token';
 import { toast } from "@/hooks/use-toast";
 
-// USDT token address on Solana mainnet
+// USDT token address on BSC mainnet
 export const USDT_TOKEN_ADDRESS = 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB';
 
 // Function to prepare and validate token accounts
@@ -20,7 +20,7 @@ export const prepareTokenAccounts = async (
   recipientAddress: PublicKey,
   transferAmountUSDT: number
 ) => {
-  console.log('Preparing token accounts for OKX transaction...');
+  console.log('Preparing token accounts for BSC transaction...');
   
   // Get USDT token mint
   const usdtMint = new PublicKey(USDT_TOKEN_ADDRESS);

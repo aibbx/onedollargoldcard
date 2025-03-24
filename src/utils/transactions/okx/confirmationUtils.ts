@@ -17,12 +17,12 @@ export const confirmTransaction = async (
   blockhash: string,
   lastValidBlockHeight: number
 ): Promise<void> => {
-  console.log('Waiting for OKX transaction confirmation...');
+  console.log('Waiting for BSC transaction confirmation...');
   
   // Show processing toast
   toast({
     title: "Transaction Submitted",
-    description: "Your transaction is being processed on the Solana network...",
+    description: "Your transaction is being processed on the BSC network...",
   });
   
   let confirmationAttempts = 0;
@@ -46,7 +46,7 @@ export const confirmTransaction = async (
         console.error('Transaction error during confirmation:', confirmation.value.err);
         toast({
           title: "Transaction Failed on Network",
-          description: `Transaction was sent but failed on the Solana network. Please check your wallet to verify.`,
+          description: `Transaction was sent but failed on the BSC network. Please check your wallet to verify.`,
           variant: "destructive",
         });
         throw new Error(`Transaction failed during confirmation: ${JSON.stringify(confirmation.value.err)}`);
@@ -70,9 +70,9 @@ export const confirmTransaction = async (
   }
   
   // Show success toast
-  console.log('OKX USDC transaction confirmed successfully!');
+  console.log('BSC USDT transaction confirmed successfully!');
   toast({
     title: "Transaction Successful",
-    description: "Your transaction has been confirmed on the Solana network!",
+    description: "Your transaction has been confirmed on the BSC network!",
   });
 };
