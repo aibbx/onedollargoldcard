@@ -13,6 +13,8 @@ const SharePoolCard = ({ title, onShare }: SharePoolCardProps) => {
     // Share with custom domain URL
     const text = `Amazing! I am in #OneDollarGoldCard on #BSC to win $5M for the Gold Card application! Join now:`;
     const url = "https://onedollargoldcard.com/";
+    
+    // Open X.com (Twitter) share intent with the custom domain URL
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
