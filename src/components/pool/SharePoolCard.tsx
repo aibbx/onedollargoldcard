@@ -10,7 +10,10 @@ interface SharePoolCardProps {
 
 const SharePoolCard = ({ title, onShare }: SharePoolCardProps) => {
   const handleShare = () => {
-    onShare();
+    // Replace Solana with BSC in the sharing text
+    const text = `Amazing! I am in #OneDollarGoldCard on #BSC to win $5M for the Gold Card application! Join now:`;
+    const url = window.location.href;
+    window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
   return (
