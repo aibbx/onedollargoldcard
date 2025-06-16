@@ -35,28 +35,28 @@ const NavLinks: React.FC<NavLinksProps> = ({ isScrolled }) => {
   return (
     <>
       <Link to="/" className={cn(
-        'transition-all duration-200 hover:text-gold-600 relative',
-        isScrolled ? 'text-gray-800' : 'text-gray-800',
-        isActive('/') && 'font-medium text-gold-600'
+        'transition-all duration-200 hover:text-gold-300 relative font-medium',
+        'text-white hover:text-gold-300',
+        isActive('/') && 'text-gold-400'
       )}>
         {t('nav.home')}
-        {isActive('/') && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold-500 rounded-full"></span>}
+        {isActive('/') && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold-400 rounded-full"></span>}
       </Link>
       <Link to="/faq" className={cn(
-        'transition-all duration-200 hover:text-gold-600 relative',
-        isScrolled ? 'text-gray-800' : 'text-gray-800',
-        isActive('/faq') && 'font-medium text-gold-600'
+        'transition-all duration-200 hover:text-gold-300 relative font-medium',
+        'text-white hover:text-gold-300',
+        isActive('/faq') && 'text-gold-400'
       )}>
         {t('nav.faq')}
-        {isActive('/faq') && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold-500 rounded-full"></span>}
+        {isActive('/faq') && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold-400 rounded-full"></span>}
       </Link>
       <Link to="/terms" className={cn(
-        'transition-all duration-200 hover:text-gold-600 relative',
-        isScrolled ? 'text-gray-800' : 'text-gray-800',
-        isActive('/terms') && 'font-medium text-gold-600'
+        'transition-all duration-200 hover:text-gold-300 relative font-medium',
+        'text-white hover:text-gold-300',
+        isActive('/terms') && 'text-gold-400'
       )}>
         {t('nav.terms')}
-        {isActive('/terms') && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold-500 rounded-full"></span>}
+        {isActive('/terms') && <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gold-400 rounded-full"></span>}
       </Link>
     </>
   );

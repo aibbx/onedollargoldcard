@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSelector from './LanguageSelector';
 import { cn } from '@/lib/utils';
-import { Menu, X, Shield } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import WalletConnector from './navbar/WalletConnector';
 import MobileMenu from './navbar/MobileMenu';
 import NavLinks from './navbar/NavLinks';
@@ -68,13 +68,9 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center space-x-6">
-          <NavLinks isScrolled={true} />
+          <NavLinks isScrolled={isScrolled} />
           <WalletConnector />
           <LanguageSelector />
-          <div className="flex items-center gap-2 bg-green-500/20 border border-green-400 rounded-full px-3 py-1">
-            <Shield className="w-4 h-4 text-green-400" />
-            <span className="text-green-300 text-xs font-semibold uppercase tracking-wide">Secure</span>
-          </div>
         </div>
 
         <div className="md:hidden flex items-center">

@@ -28,7 +28,7 @@ const LanguageSelector = () => {
         <Button 
           variant="ghost" 
           size="sm"
-          className="flex items-center gap-1 rounded-full px-2 py-1.5 text-sm text-foreground hover:bg-accent transition-all duration-300"
+          className="flex items-center gap-1 rounded-full px-2 py-1.5 text-sm text-white hover:text-gold-300 hover:bg-blue-800/50 transition-all duration-300 font-medium"
         >
           {getLanguageFlag(language)}
           <span className="hidden sm:inline">{getLanguageName(language)}</span>
