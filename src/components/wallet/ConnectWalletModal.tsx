@@ -75,7 +75,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 pt-20"
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm"
       onClick={handleBackdropClick}
       style={{
         position: 'fixed',
@@ -84,11 +84,18 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
         right: 0,
         bottom: 0,
         margin: 0,
-        zIndex: 9999
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        paddingTop: '100px',
+        paddingLeft: '16px',
+        paddingRight: '16px',
+        paddingBottom: '16px'
       }}
     >
       <div 
-        className="relative bg-zinc-900 border border-gold-500/30 w-full max-w-md mx-auto rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-100"
+        className="relative bg-zinc-900 border border-gold-500/30 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-100"
         onClick={(e) => e.stopPropagation()}
         style={{
           maxHeight: 'calc(100vh - 120px)',
