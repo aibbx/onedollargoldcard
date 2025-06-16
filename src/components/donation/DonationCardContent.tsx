@@ -60,7 +60,7 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
   });
 
   const handleShareOnX = () => {
-    const text = `🎯 One USD1 for $5M! Just joined the on-chain lottery to win $5M for Gold Card application! 💰 Pure blockchain system + amazing referral rewards! Your turn:`;
+    const text = `🎯 One USD1 for $5M! Just joined the on-chain system to win $5M for Gold Card application! 💰 Pure blockchain system + amazing referral rewards! Your turn:`;
     const url = "https://onedollargoldcard.com/";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
@@ -99,9 +99,9 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
         <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
           <div className="flex items-start gap-3">
             <Gift className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-            <div className="flex-1">
-              <h4 className="font-semibold text-green-800 mb-2 text-left">Earn Referral Rewards!</h4>
-              <p className="text-green-700 text-sm mb-3 text-left">
+            <div className="flex-1 text-left">
+              <h4 className="font-semibold text-green-800 mb-2">Earn Referral Rewards!</h4>
+              <p className="text-green-700 text-sm mb-3">
                 Share your referral code and earn up to <strong>50% service fee</strong> on every donation from your referrals. 
                 The more you share, the more you earn!
               </p>
