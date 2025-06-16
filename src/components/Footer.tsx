@@ -3,6 +3,7 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Github, ExternalLink, Home, HelpCircle, FileText, MessageCircle, Sparkle, X, Shield, Award } from 'lucide-react';
+import Logo from './Logo';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -11,7 +12,7 @@ const Footer = () => {
   
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
-    const text = "Join the OneDollarGoldCard Gold Card initiative - your pathway to American opportunity! #GoldCard #OneDollarGoldCard";
+    const text = "Join the USD1GoldCard Gold Card initiative - your pathway to American opportunity! #GoldCard #USD1GoldCard";
     const url = "https://onedollargoldcard.com";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
@@ -100,12 +101,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-b from-gold-400 to-gold-600 border-2 border-white flex items-center justify-center">
-                <div className="text-blue-900 font-bold text-xs">dApp</div>
-              </div>
+              <Logo size="md" />
               <div>
-                <span className="font-bold text-2xl text-white">OneDollarGoldCard</span>
-                <div className="text-gold-400 text-sm font-semibold uppercase tracking-wide">Fully On-Chain Platform</div>
+                <span className="font-bold text-2xl text-white" style={{ fontFamily: 'Georgia, serif' }}>
+                  USD1GoldCard
+                </span>
+                <div className="text-gold-400 text-sm font-semibold uppercase tracking-wide">Fully On-Chain</div>
               </div>
             </div>
             <p className="text-blue-200 mb-6 max-w-lg leading-relaxed">
