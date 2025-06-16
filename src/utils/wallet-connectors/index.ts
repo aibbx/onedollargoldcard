@@ -1,6 +1,6 @@
 
 import { WalletType } from '../../types/wallet';
-import { NetworkType } from '../../hooks/useWalletConnectors';
+import { NetworkType, WalletConnectionResult } from './types';
 import { 
   connectMetaMaskWallet, 
   autoConnectMetaMaskWallet, 
@@ -23,10 +23,7 @@ import {
 } from './bitget';
 
 // Connect to a wallet based on the given type
-export const connectWallet = async (type: WalletType, network: NetworkType = 'mainnet-beta'): Promise<{ 
-  address: string; 
-  provider: any;
-}> => {
+export const connectWallet = async (type: WalletType, network: NetworkType = 'mainnet-beta'): Promise<WalletConnectionResult> => {
   console.log(`正在连接 ${type} 钱包...`);
   
   switch (type) {
@@ -44,10 +41,7 @@ export const connectWallet = async (type: WalletType, network: NetworkType = 'ma
 };
 
 // Auto-connect to a wallet based on the given type
-export const autoConnectWallet = async (type: WalletType, network: NetworkType = 'mainnet-beta'): Promise<{ 
-  address: string; 
-  provider: any;
-} | null> => {
+export const autoConnectWallet = async (type: WalletType, network: NetworkType = 'mainnet-beta'): Promise<WalletConnectionResult | null> => {
   try {
     console.log(`尝试自动连接 ${type} 钱包...`);
     

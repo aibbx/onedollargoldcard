@@ -1,5 +1,7 @@
 
-export const connectBitgetWallet = async (): Promise<{ address: string; provider: any }> => {
+import { WalletConnectionResult } from './types';
+
+export const connectBitgetWallet = async (): Promise<WalletConnectionResult> => {
   console.log('检查 Bitget 钱包...');
   
   if (typeof window === 'undefined' || !window.bitkeep || !window.bitkeep.ethereum) {
@@ -29,7 +31,7 @@ export const connectBitgetWallet = async (): Promise<{ address: string; provider
   }
 };
 
-export const autoConnectBitgetWallet = async (): Promise<{ address: string; provider: any } | null> => {
+export const autoConnectBitgetWallet = async (): Promise<WalletConnectionResult | null> => {
   if (typeof window === 'undefined' || !window.bitkeep || !window.bitkeep.ethereum) {
     return null;
   }

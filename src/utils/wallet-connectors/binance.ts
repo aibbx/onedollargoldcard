@@ -1,5 +1,7 @@
 
-export const connectBinanceWallet = async (): Promise<{ address: string; provider: any }> => {
+import { WalletConnectionResult } from './types';
+
+export const connectBinanceWallet = async (): Promise<WalletConnectionResult> => {
   console.log('检查 Binance 钱包...');
   
   if (typeof window === 'undefined' || !window.BinanceChain) {
@@ -29,7 +31,7 @@ export const connectBinanceWallet = async (): Promise<{ address: string; provide
   }
 };
 
-export const autoConnectBinanceWallet = async (): Promise<{ address: string; provider: any } | null> => {
+export const autoConnectBinanceWallet = async (): Promise<WalletConnectionResult | null> => {
   if (typeof window === 'undefined' || !window.BinanceChain) {
     return null;
   }

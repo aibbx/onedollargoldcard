@@ -1,7 +1,7 @@
 
-import { WalletType } from '../../types/wallet';
+import { WalletConnectionResult } from './types';
 
-export const connectMetaMaskWallet = async (): Promise<{ address: string; provider: any }> => {
+export const connectMetaMaskWallet = async (): Promise<WalletConnectionResult> => {
   console.log('检查 MetaMask 钱包...');
   
   if (typeof window === 'undefined' || !window.ethereum) {
@@ -37,7 +37,7 @@ export const connectMetaMaskWallet = async (): Promise<{ address: string; provid
   }
 };
 
-export const autoConnectMetaMaskWallet = async (): Promise<{ address: string; provider: any } | null> => {
+export const autoConnectMetaMaskWallet = async (): Promise<WalletConnectionResult | null> => {
   if (typeof window === 'undefined' || !window.ethereum || !window.ethereum.isMetaMask) {
     return null;
   }

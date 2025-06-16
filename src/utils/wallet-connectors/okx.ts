@@ -1,5 +1,7 @@
 
-export const connectOKXWallet = async (): Promise<{ address: string; provider: any }> => {
+import { WalletConnectionResult } from './types';
+
+export const connectOKXWallet = async (): Promise<WalletConnectionResult> => {
   console.log('检查 OKX 钱包...');
   
   if (typeof window === 'undefined' || !window.okxwallet || !window.okxwallet.ethereum) {
@@ -29,7 +31,7 @@ export const connectOKXWallet = async (): Promise<{ address: string; provider: a
   }
 };
 
-export const autoConnectOKXWallet = async (): Promise<{ address: string; provider: any } | null> => {
+export const autoConnectOKXWallet = async (): Promise<WalletConnectionResult | null> => {
   if (typeof window === 'undefined' || !window.okxwallet || !window.okxwallet.ethereum) {
     return null;
   }
