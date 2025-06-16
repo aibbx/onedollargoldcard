@@ -4,7 +4,6 @@ import { useWallet } from '../context/WalletContext';
 import { CONTRACT_ADDRESSES } from '../utils/walletUtils';
 import { useToast } from '@/hooks/use-toast';
 import { getPoolStatus, subscribeToPoolStatus } from '../services/supabaseService';
-import { supabase } from "@/integrations/supabase/client";
 
 export const usePoolStats = () => {
   const { donations } = useWallet();
@@ -98,7 +97,7 @@ export const usePoolStats = () => {
     // 设置刷新间隔 - 每5分钟刷新一次
     const interval = setInterval(fetchPoolStats, 300000);
     
-    // 订阅奖池状态的实时更新
+    // 订阅奖池状态的实时更新 - 确保只订阅一次
     const subscription = subscribeToPoolStatus((status) => {
       console.log('收到奖池状态更新:', status);
       
@@ -114,9 +113,12 @@ export const usePoolStats = () => {
     
     return () => {
       clearInterval(interval);
-      supabase.removeChannel(subscription);
+      // 正确清理订阅
+      if (subscription && subscription.unsubscribe) {
+        subscription.unsubscribe();
+      }
     };
-  }, [donations, toast]);
+  }, [donations, toast]); // 移除不必要的依赖以避免重复订阅
 
   return {
     poolAmount,
