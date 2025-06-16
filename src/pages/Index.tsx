@@ -1,12 +1,10 @@
 
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Features from '../components/Features';
 import DonationCard from '../components/DonationCard';
 import PoolStats from '../components/PoolStats';
-import Footer from '../components/Footer';
 
 const Index = () => {
   const location = useLocation();
@@ -27,7 +25,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gold-50/30 to-white">
-      <Navbar />
       <main className="relative">
         <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
         <Hero />
@@ -40,7 +37,6 @@ const Index = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

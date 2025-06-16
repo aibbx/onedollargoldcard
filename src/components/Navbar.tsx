@@ -69,8 +69,8 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center space-x-6">
           <NavLinks isScrolled={isScrolled} />
-          <WalletConnector />
           <LanguageSelector />
+          <WalletConnector />
         </div>
 
         <div className="md:hidden flex items-center">
