@@ -69,6 +69,11 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
     ? new Date(donations[donations.length - 1].timestamp) 
     : undefined;
 
+  // Create change handler for AmountSelector
+  const handleAmountInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleAmountChange(e.target.value);
+  };
+
   return (
     <>
       <DonationHeader title={t('donation.title')} />
@@ -78,7 +83,7 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
 
         <AmountSelector 
           amount={amount}
-          onChange={handleAmountChange}
+          onChange={handleAmountInputChange}
           presetAmounts={presetAmounts}
           setAmount={setAmount}
         />
@@ -90,8 +95,8 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
         />
         
         <DonationSummary 
-          fee={fee}
-          total={total}
+          fee={fee.toFixed(2)}
+          total={total.toFixed(2)}
           translatedFee={t('donation.fee')}
           translatedTotal={t('donation.total')}
         />
