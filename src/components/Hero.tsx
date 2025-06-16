@@ -32,7 +32,7 @@ const Hero = () => {
 
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
-    const text = `Join the OneDollarGoldCard initiative - your chance to win $5M for the Gold Card application! #OneDollarGoldCard #GoldCard`;
+    const text = `🚀 Join the USD1 On-Chain Lottery! Win $5M for Gold Card application! 💰 Pure blockchain donation & draw system + HUGE referral rewards! Start with just 1 USD1! #OneDollarGoldCard #USD1 #OnChainLottery #GoldCard`;
     const url = "https://onedollargoldcard.com/";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };

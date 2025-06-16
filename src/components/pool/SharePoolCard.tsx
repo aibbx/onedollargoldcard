@@ -10,8 +10,8 @@ interface SharePoolCardProps {
 
 const SharePoolCard = ({ title, onShare }: SharePoolCardProps) => {
   const handleShare = () => {
-    // Share with custom domain URL
-    const text = `Amazing! I am in #OneDollarGoldCard on #EVM to win $5M for the Gold Card application! Join now:`;
+    // Share with custom domain URL - optimized messaging for USD1 on-chain lottery and referral rewards
+    const text = `🔥 Amazing USD1 On-Chain Lottery! Just donated to win $5M for Gold Card! 💎 Pure blockchain system + incredible referral rewards! Join the revolution:`;
     const url = "https://onedollargoldcard.com/";
     
     // Open X.com (Twitter) share intent with the custom domain URL

@@ -59,7 +59,7 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
   });
 
   const handleShareOnX = () => {
-    const text = `Amazing! I just donated $${total} on #OneDollarGoldCard on #EVM to win $5M for the Gold Card application! Join now:`;
+    const text = `🎯 Just joined the USD1 On-Chain Lottery with $${total}! Win $5M for Gold Card application! 💰 Pure blockchain system + amazing referral rewards! Your turn:`;
     const url = "https://onedollargoldcard.com/";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
