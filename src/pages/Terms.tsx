@@ -32,13 +32,13 @@ const Terms = () => {
       title: "2. Platform Operation",
       items: [
         {
-          point: "2.1. OneDollarGoldCard operates as a donation platform where participants donate USDC tokens on the Solana blockchain.",
+          point: "2.1. OneDollarGoldCard operates as a donation platform where participants donate USD1 tokens on the Solana blockchain.",
         },
         {
           point: "2.2. 100% of each donation goes directly to the prize pool. An additional 5% service fee is charged separately and is allocated to platform fees for audits, legal compliance, and operations.",
         },
         {
-          point: "2.3. When the pool reaches $10 million, a winner is randomly selected using Switchboard VRF to receive $5 million USDC.",
+          point: "2.3. When the pool reaches $10 million, a winner is randomly selected using Switchboard VRF to receive $5 million USD1.",
         },
         {
           point: "2.4. If the pool doesn't reach $10 million and there are no donations for 7 consecutive days, the last donor wins the entire pool.",
@@ -55,7 +55,7 @@ const Terms = () => {
           point: "3.1. All donations are final and non-refundable.",
         },
         {
-          point: "3.2. The minimum donation amount is 1.05 USDC.",
+          point: "3.2. The minimum donation amount is 1.05 USD1.",
         },
         {
           point: "3.3. Participants may make multiple donations to increase their chances of winning.",
@@ -69,7 +69,7 @@ const Terms = () => {
       title: "4. Prize Distribution",
       items: [
         {
-          point: "4.1. The prize of $5 million USDC will be automatically transferred to the winner's Solana wallet address.",
+          point: "4.1. The prize of $5 million USD1 will be automatically transferred to the winner's Solana wallet address.",
         },
         {
           point: "4.2. The winner is solely responsible for any taxes, fees, or other obligations related to receiving the prize.",

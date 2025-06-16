@@ -15,7 +15,7 @@ export const faqSections: FAQSection[] = [
     questions: [
       {
         q: 'What is OneDollarGoldCard?',
-        a: 'OneDollarGoldCard is a decentralized donation platform built on Solana blockchain that allows non-US citizens to donate USDC and potentially win $5 million to fund their Gold Card application.'
+        a: 'OneDollarGoldCard is a decentralized donation platform built on Solana blockchain that allows non-US citizens to donate USD1 and potentially win $5 million to fund their Gold Card application.'
       },
       {
         q: 'What is the "Gold Card"?',
@@ -36,7 +36,7 @@ export const faqSections: FAQSection[] = [
     questions: [
       {
         q: 'What is the minimum donation amount?',
-        a: 'The minimum donation is 1.05 USDC (approximately $1.05 USD), of which 1 USDC goes to the prize pool and 0.05 USDC covers platform fees.'
+        a: 'The minimum donation is 1.05 USD1 (approximately $1.05 USD), of which 1 USD1 goes to the prize pool and 0.05 USD1 covers platform fees.'
       },
       {
         q: 'What happens to my donation?',
@@ -48,7 +48,7 @@ export const faqSections: FAQSection[] = [
       },
       {
         q: 'Which wallets are supported?',
-        a: 'You can use any Solana-compatible wallet, including Phantom, Solflare, and others. The wallet must be able to hold and transfer USDC-SPL tokens.'
+        a: 'You can use any Solana-compatible wallet, including Phantom, Solflare, and others. The wallet must be able to hold and transfer USD1-SPL tokens.'
       }
     ]
   },
@@ -69,7 +69,7 @@ export const faqSections: FAQSection[] = [
       },
       {
         q: 'How do I receive the prize if I win?',
-        a: 'The prize of $5 million USDC will be automatically transferred to your Solana wallet if you\'re selected as the winner. No further action is required.'
+        a: 'The prize of $5 million USD1 will be automatically transferred to your Solana wallet if you\'re selected as the winner. No further action is required.'
       }
     ]
   },
