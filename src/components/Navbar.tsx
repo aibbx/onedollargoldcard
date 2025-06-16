@@ -56,9 +56,6 @@ const Navbar = () => {
           : 'bg-blue-900/80 backdrop-blur-sm py-4'
       )}
     >
-      {/* Top banner */}
-      <div className="w-full h-1 bg-gradient-to-r from-red-600 via-white via-red-600 via-white to-red-600"></div>
-      
       <div className="container-custom mx-auto flex justify-between items-center">
         <div className="flex items-center">
           <a href="/" className="flex items-center gap-3">
