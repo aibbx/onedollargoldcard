@@ -130,10 +130,6 @@ const SmartContractSection: React.FC = () => {
               </code>
             </div>
           </div>
-          
-          <div className="text-center mt-4">
-            <span className="text-gray-400 text-sm">所有合约已在BSC区块链上部署并开源验证</span>
-          </div>
         </div>
       </div>
     </section>
