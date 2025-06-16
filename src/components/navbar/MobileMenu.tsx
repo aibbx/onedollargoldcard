@@ -38,6 +38,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
     onClose(); // Close the mobile menu after navigation
   };
 
+  const handleDonateButtonClick = () => {
+    console.log('Mobile donate button clicked, isWalletConnected:', isWalletConnected);
+    onDonateClick();
+    onClose();
+  };
+
   return (
     <div className={cn(
       'md:hidden bg-white absolute w-full left-0 right-0 shadow-md transition-all duration-300 ease-in-out overflow-hidden',
@@ -50,13 +56,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           onClick={onClose}
         >
           {t('nav.home')}
-        </Link>
-        <Link 
-          to="/how-it-works"
-          className="block py-2 text-gray-800 hover:text-gold-600 transition-all duration-200"
-          onClick={onClose}
-        >
-          {t('nav.howItWorks')}
         </Link>
         <Link 
           to="/faq"
@@ -77,7 +76,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           className="w-full mt-4 bg-gold-500 hover:bg-gold-600 text-black font-medium rounded-md 
                    shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform 
                    hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
-          onClick={onDonateClick}
+          onClick={handleDonateButtonClick}
         >
           {isWalletConnected ? t('hero.donateNow') : "Connect Wallet"}
           {!isWalletConnected && <Wallet className="w-4 h-4" />}

@@ -40,8 +40,8 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setIsWalletConnected,
     setWalletType,
     setWalletAddress,
-    loadUserDonations,
-    loadUserStats
+    loadUserDonations: () => loadUserDonations(walletAddress),
+    loadUserStats: () => loadUserStats(walletAddress)
   });
   
   // Use the stats subscription hook

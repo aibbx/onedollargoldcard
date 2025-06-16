@@ -26,6 +26,7 @@ const WalletConnector: React.FC = () => {
   const [showWalletModal, setShowWalletModal] = useState(false);
 
   const handleDonateClick = () => {
+    console.log('WalletConnector donate click, isWalletConnected:', isWalletConnected);
     if (isWalletConnected) {
       // If wallet is connected, scroll to donation section
       const donationSection = document.getElementById('donation-section');
@@ -34,6 +35,7 @@ const WalletConnector: React.FC = () => {
       }
     } else {
       // If wallet is not connected, show wallet modal
+      console.log('Opening wallet modal...');
       setShowWalletModal(true);
     }
   };
@@ -47,6 +49,7 @@ const WalletConnector: React.FC = () => {
 
   const handleConnectWallet = async (type: WalletType) => {
     try {
+      console.log('Attempting to connect wallet:', type);
       await connectWallet(type);
       
       // After connecting wallet, scroll to donation section
@@ -103,7 +106,10 @@ const WalletConnector: React.FC = () => {
       {/* Wallet connect modal */}
       <ConnectWalletModal
         isOpen={showWalletModal}
-        onClose={() => setShowWalletModal(false)}
+        onClose={() => {
+          console.log('Closing wallet modal...');
+          setShowWalletModal(false);
+        }}
         onConnectWallet={handleConnectWallet}
       />
     </div>
