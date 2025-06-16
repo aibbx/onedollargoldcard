@@ -1,4 +1,3 @@
-
 export const de = {
   // Navigation
   'nav.home': 'Startseite',
@@ -11,7 +10,7 @@ export const de = {
   // Hero section
   'hero.title': 'OneDollarGoldCard',
   'hero.subtitle': 'Demokratisierung des Zugangs zu Einwanderungsmöglichkeiten',
-  'hero.description': 'Eine dezentrale Spendenplattform auf der Solana-Blockchain, die Nicht-US-Bürgern die Möglichkeit bietet, genügend Geld zu gewinnen, um die Gold Card-Aufenthaltserlaubnis zu beantragen.',
+  'hero.description': 'Eine dezentrale Spendenplattform auf der Blockchain, die Nicht-US-Bürgern die Möglichkeit bietet, genügend Geld zu gewinnen, um die Gold Card-Aufenthaltserlaubnis zu beantragen.',
   'hero.donateButton': 'Jetzt spenden',
   'hero.donateNow': 'Jetzt spenden',
   'hero.learnMore': 'Mehr erfahren',
@@ -21,16 +20,16 @@ export const de = {
   'features.transparent.title': 'Vollständig transparent',
   'features.transparent.desc': 'Alle Transaktionen und die Gewinnerauswahl werden On-Chain verifiziert.',
   'features.accessible.title': 'Für jeden zugänglich',
-  'features.accessible.desc': 'Beginnen Sie mit nur 1,00 USDC plus einer geringen Gebühr.',
+  'features.accessible.desc': 'Beginnen Sie mit nur $1.05 USD1 ($1.00 zum Pool + $0.05 Gebühr).',
   'features.fair.title': 'Faires Chancensystem',
   'features.fair.desc': 'Ihre Chancen steigen proportional zu Ihrem Spendenbetrag.',
   'features.secure.title': 'Sicher durch Design',
-  'features.secure.desc': 'Auf dem sicheren Solana-Vertrag aufgebaut, um den Millionen-Dollar-Preispool sicher zu liefern.',
+  'features.secure.desc': 'Auf sicheren Smart-Contracts aufgebaut, um den Preispool sicher zu liefern.',
 
   // How It Works
   'howItWorks.title': 'Wie es funktioniert',
   'howItWorks.step1.title': 'Spenden Sie',
-  'howItWorks.step1.desc': 'Spenden Sie mindestens 1,00 USDC (zuzüglich 5% Servicegebühr).',
+  'howItWorks.step1.desc': 'Spenden Sie mindestens $1.05 USD1 ($1.00 zum Pool + $0.05 Servicegebühr).',
   'howItWorks.step2.title': 'Treten Sie dem Pool bei',
   'howItWorks.step2.desc': 'Ihre Spende erhöht proportional Ihre Gewinnchance.',
   'howItWorks.step3.title': 'Gewinnerauswahl',
@@ -44,7 +43,7 @@ export const de = {
   'donation.fee': 'Servicegebühr (5%)',
   'donation.total': 'Gesamtbetrag',
   'donation.button': 'Jetzt spenden',
-  'donation.minAmount': 'Die Mindestspende beträgt 1,00 USDC.',
+  'donation.minAmount': 'Die Mindestspende beträgt $1.05 USD1.',
   'donation.walletConnect': 'Wallet verbinden',
   'donation.confirmation': 'Ich bestätige, dass ich kein US-Bürger oder Green Card-Inhaber bin.',
   'donation.shareX': 'Auf X teilen',
@@ -62,7 +61,7 @@ export const de = {
   'pool.backupTitle': '7-Tage-Inaktivitätsschutz',
   'pool.backupInfo': 'Wenn 7 Tage lang keine Spenden eingehen, erhält der letzte Spender den gesamten Pool.',
   'pool.share': 'In sozialen Netzwerken teilen',
-  'pool.sns': 'Solana Name Service',
+  'pool.sns': 'Blockchain Name Service',
 
   // Footer
   'footer.rights': 'Alle Rechte vorbehalten.',

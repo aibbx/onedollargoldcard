@@ -1,4 +1,3 @@
-
 export const zh = {
   // Navigation
   'nav.home': '首頁',
@@ -21,7 +20,7 @@ export const zh = {
   'features.transparent.title': '完全透明',
   'features.transparent.desc': '所有交易和獲獎者選擇都在鏈上驗證。',
   'features.accessible.title': '人人皆可參與',
-  'features.accessible.desc': '只需 1.00 USDC 加上少量費用即可開始。',
+  'features.accessible.desc': '只需 $1.05 USD1（$1.00 進入獎池 + $0.05 手續費）即可開始。',
   'features.fair.title': '公平機會系統',
   'features.fair.desc': '您的機會隨著您的捐款金額成比例增加。',
   'features.secure.title': '安全設計',
@@ -30,7 +29,7 @@ export const zh = {
   // How It Works
   'howItWorks.title': '運作方式',
   'howItWorks.step1.title': '進行捐贈',
-  'howItWorks.step1.desc': '捐贈至少 1.00 USDC（加上 5% 的服務費）。',
+  'howItWorks.step1.desc': '捐贈至少 $1.05 USD1（$1.00 進入獎池 + $0.05 服務費）。',
   'howItWorks.step2.title': '加入獎金池',
   'howItWorks.step2.desc': '您的捐款成比例地增加您獲勝的機會。',
   'howItWorks.step3.title': '選擇獲獎者',
@@ -44,7 +43,7 @@ export const zh = {
   'donation.fee': '服務費 (5%)',
   'donation.total': '總金額',
   'donation.button': '立即捐款',
-  'donation.minAmount': '最低捐贈金額為 1.00 USDC。',
+  'donation.minAmount': '最低捐贈金額為 $1.05 USD1。',
   'donation.walletConnect': '連接錢包',
   'donation.confirmation': '我確認我不是美國公民或綠卡持有人。',
   'donation.shareX': '在 X 上分享',

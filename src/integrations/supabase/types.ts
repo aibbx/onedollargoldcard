@@ -9,7 +9,218 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      donations: {
+        Row: {
+          amount: number
+          block_number: number | null
+          created_at: string
+          id: string
+          is_valid_donation: boolean | null
+          lottery_numbers_assigned: number | null
+          transaction_id: string
+          wallet_address: string
+          wallet_type: string
+        }
+        Insert: {
+          amount: number
+          block_number?: number | null
+          created_at?: string
+          id?: string
+          is_valid_donation?: boolean | null
+          lottery_numbers_assigned?: number | null
+          transaction_id: string
+          wallet_address: string
+          wallet_type: string
+        }
+        Update: {
+          amount?: number
+          block_number?: number | null
+          created_at?: string
+          id?: string
+          is_valid_donation?: boolean | null
+          lottery_numbers_assigned?: number | null
+          transaction_id?: string
+          wallet_address?: string
+          wallet_type?: string
+        }
+        Relationships: []
+      }
+      lottery_numbers: {
+        Row: {
+          assigned_at: string
+          donation_id: string | null
+          id: number
+          lottery_number: number
+          round_number: number
+          wallet_address: string
+        }
+        Insert: {
+          assigned_at?: string
+          donation_id?: string | null
+          id?: number
+          lottery_number: number
+          round_number: number
+          wallet_address: string
+        }
+        Update: {
+          assigned_at?: string
+          donation_id?: string | null
+          id?: number
+          lottery_number?: number
+          round_number?: number
+          wallet_address?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lottery_numbers_donation_id_fkey"
+            columns: ["donation_id"]
+            isOneToOne: false
+            referencedRelation: "donations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lottery_rounds: {
+        Row: {
+          backup_reason: string | null
+          completed_at: string | null
+          created_at: string
+          final_pool_amount: number | null
+          id: number
+          is_backup_mechanism: boolean | null
+          is_completed: boolean | null
+          round_number: number
+          target_amount: number | null
+          total_lottery_numbers: number | null
+          total_participants: number | null
+          transaction_hash: string | null
+          winner_address: string | null
+          winner_prize: number | null
+          winning_lottery_number: number | null
+        }
+        Insert: {
+          backup_reason?: string | null
+          completed_at?: string | null
+          created_at?: string
+          final_pool_amount?: number | null
+          id?: number
+          is_backup_mechanism?: boolean | null
+          is_completed?: boolean | null
+          round_number: number
+          target_amount?: number | null
+          total_lottery_numbers?: number | null
+          total_participants?: number | null
+          transaction_hash?: string | null
+          winner_address?: string | null
+          winner_prize?: number | null
+          winning_lottery_number?: number | null
+        }
+        Update: {
+          backup_reason?: string | null
+          completed_at?: string | null
+          created_at?: string
+          final_pool_amount?: number | null
+          id?: number
+          is_backup_mechanism?: boolean | null
+          is_completed?: boolean | null
+          round_number?: number
+          target_amount?: number | null
+          total_lottery_numbers?: number | null
+          total_participants?: number | null
+          transaction_hash?: string | null
+          winner_address?: string | null
+          winner_prize?: number | null
+          winning_lottery_number?: number | null
+        }
+        Relationships: []
+      }
+      pool_status: {
+        Row: {
+          current_round: number | null
+          fee_address: string | null
+          fee_amount: number | null
+          id: number
+          is_active: boolean | null
+          last_updated: string
+          last_valid_donation_address: string | null
+          last_valid_donation_at: string | null
+          participant_count: number | null
+          pool_address: string | null
+          pool_amount: number | null
+          target_amount: number | null
+          total_amount: number | null
+          total_lottery_numbers: number | null
+        }
+        Insert: {
+          current_round?: number | null
+          fee_address?: string | null
+          fee_amount?: number | null
+          id?: number
+          is_active?: boolean | null
+          last_updated?: string
+          last_valid_donation_address?: string | null
+          last_valid_donation_at?: string | null
+          participant_count?: number | null
+          pool_address?: string | null
+          pool_amount?: number | null
+          target_amount?: number | null
+          total_amount?: number | null
+          total_lottery_numbers?: number | null
+        }
+        Update: {
+          current_round?: number | null
+          fee_address?: string | null
+          fee_amount?: number | null
+          id?: number
+          is_active?: boolean | null
+          last_updated?: string
+          last_valid_donation_address?: string | null
+          last_valid_donation_at?: string | null
+          participant_count?: number | null
+          pool_address?: string | null
+          pool_amount?: number | null
+          target_amount?: number | null
+          total_amount?: number | null
+          total_lottery_numbers?: number | null
+        }
+        Relationships: []
+      }
+      user_stats: {
+        Row: {
+          donation_count: number | null
+          last_donation_at: string | null
+          total_donated: number | null
+          total_lottery_numbers: number | null
+          updated_at: string
+          valid_donated: number | null
+          valid_donation_count: number | null
+          wallet_address: string
+          winning_chance: number | null
+        }
+        Insert: {
+          donation_count?: number | null
+          last_donation_at?: string | null
+          total_donated?: number | null
+          total_lottery_numbers?: number | null
+          updated_at?: string
+          valid_donated?: number | null
+          valid_donation_count?: number | null
+          wallet_address: string
+          winning_chance?: number | null
+        }
+        Update: {
+          donation_count?: number | null
+          last_donation_at?: string | null
+          total_donated?: number | null
+          total_lottery_numbers?: number | null
+          updated_at?: string
+          valid_donated?: number | null
+          valid_donation_count?: number | null
+          wallet_address?: string
+          winning_chance?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

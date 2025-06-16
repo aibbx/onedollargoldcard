@@ -1,4 +1,3 @@
-
 export const pt = {
   // Navigation
   'nav.home': 'Início',
@@ -11,7 +10,7 @@ export const pt = {
   // Hero section
   'hero.title': 'OneDollarGoldCard',
   'hero.subtitle': 'Democratizando o Acesso a Oportunidades de Imigração',
-  'hero.description': 'Uma plataforma descentralizada de doações na blockchain Solana oferecendo a não-cidadãos dos EUA a chance de ganhar o suficiente para solicitar a residência Gold Card.',
+  'hero.description': 'Uma plataforma descentralizada de doações na blockchain oferecendo a não-cidadãos dos EUA a chance de ganhar o suficiente para solicitar a residência Gold Card.',
   'hero.donateButton': 'Doar Agora',
   'hero.donateNow': 'Doar Agora',
   'hero.learnMore': 'Saiba Mais',
@@ -21,16 +20,16 @@ export const pt = {
   'features.transparent.title': 'Totalmente Transparente',
   'features.transparent.desc': 'Todas as transações e seleção de ganhadores são verificadas na blockchain.',
   'features.accessible.title': 'Acessível para Todos',
-  'features.accessible.desc': 'Comece com apenas $1.00 USDC mais uma pequena taxa.',
+  'features.accessible.desc': 'Comece com apenas $1.05 USD1 ($1.00 para o pool + $0.05 taxa).',
   'features.fair.title': 'Sistema de Chance Justa',
   'features.fair.desc': 'Suas chances aumentam proporcionalmente com o valor da sua doação.',
   'features.secure.title': 'Seguro por Design',
-  'features.secure.desc': 'Construído no contrato seguro da Solana para entregar com segurança o fundo de prêmios de um milhão de dólares.',
+  'features.secure.desc': 'Construído em contratos inteligentes seguros para entregar com segurança o fundo de prêmios.',
 
   // How It Works
   'howItWorks.title': 'Como Funciona',
   'howItWorks.step1.title': 'Faça uma Doação',
-  'howItWorks.step1.desc': 'Doe um mínimo de $1.00 USDC (mais 5% de taxa de serviço).',
+  'howItWorks.step1.desc': 'Doe um mínimo de $1.05 USD1 ($1.00 para o pool + $0.05 taxa de serviço).',
   'howItWorks.step2.title': 'Junte-se ao Fundo',
   'howItWorks.step2.desc': 'Sua doação aumenta proporcionalmente sua chance de ganhar.',
   'howItWorks.step3.title': 'Seleção do Ganhador',
@@ -44,7 +43,7 @@ export const pt = {
   'donation.fee': 'Taxa de Serviço (5%)',
   'donation.total': 'Valor Total',
   'donation.button': 'Doar Agora',
-  'donation.minAmount': 'A doação mínima é $1.00 USDC.',
+  'donation.minAmount': 'A doação mínima é $1.05 USD1.',
   'donation.walletConnect': 'Conectar Carteira',
   'donation.confirmation': 'Confirmo que não sou cidadão americano ou portador de green card.',
   'donation.shareX': 'Compartilhar no X',
@@ -62,7 +61,7 @@ export const pt = {
   'pool.backupTitle': 'Salvaguarda de Inatividade de 7 Dias',
   'pool.backupInfo': 'Se não houver doações por 7 dias, o último doador recebe todo o fundo.',
   'pool.share': 'Compartilhar nas Redes',
-  'pool.sns': 'Serviço de Nomes Solana',
+  'pool.sns': 'Serviço de Nomes Blockchain',
 
   // Footer
   'footer.rights': 'Todos os direitos reservados.',

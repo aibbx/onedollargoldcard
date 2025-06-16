@@ -1,4 +1,3 @@
-
 export const ja = {
   // Navigation
   'nav.home': 'ホーム',
@@ -11,7 +10,7 @@ export const ja = {
   // Hero section
   'hero.title': 'OneDollarGoldCard',
   'hero.subtitle': '移民機会へのアクセスを民主化',
-  'hero.description': 'Solanaブロックチェーン上の分散型寄付プラットフォームで、米国市民以外の方に米国ゴールドカード永住権申請に十分な資金を獲得するチャンスを提供します。',
+  'hero.description': 'ブロックチェーン上の分散型寄付プラットフォームで、米国市民以外の方に米国ゴールドカード永住権申請に十分な資金を獲得するチャンスを提供します。',
   'hero.donateButton': '今すぐ寄付する',
   'hero.donateNow': '今すぐ寄付する',
   'hero.learnMore': '詳細を見る',
@@ -21,16 +20,16 @@ export const ja = {
   'features.transparent.title': '完全に透明',
   'features.transparent.desc': 'すべての取引と当選者の選択はチェーン上で検証されます。',
   'features.accessible.title': '誰でもアクセス可能',
-  'features.accessible.desc': '1.00 USDCと少額の手数料だけで始められます。',
+  'features.accessible.desc': '$1.05 USD1（$1.00 プールへ + $0.05 手数料）だけで始められます。',
   'features.fair.title': '公平なチャンスシステム',
   'features.fair.desc': '寄付額に比例してチャンスが増加します。',
   'features.secure.title': '設計から安全',
-  'features.secure.desc': 'Solanaの安全なコントラクト上に構築され、100万ドルの基金を安全に配布します。',
+  'features.secure.desc': '安全なスマートコントラクト上に構築され、賞金プールを安全に配布します。',
 
   // How It Works
   'howItWorks.title': '仕組み',
   'howItWorks.step1.title': '寄付する',
-  'howItWorks.step1.desc': '最低1.00 USDC（プラス5％のサービス料）を寄付します。',
+  'howItWorks.step1.desc': '最低$1.05 USD1（$1.00 プールへ + $0.05 サービス料）を寄付します。',
   'howItWorks.step2.title': 'プールに参加',
   'howItWorks.step2.desc': '寄付額に比例して当選確率が上がります。',
   'howItWorks.step3.title': '当選者選定',
@@ -44,7 +43,7 @@ export const ja = {
   'donation.fee': 'サービス料（5％）',
   'donation.total': '合計金額',
   'donation.button': '今すぐ寄付する',
-  'donation.minAmount': '最低寄付額は1.00 USDCです。',
+  'donation.minAmount': '最低寄付額は$1.05 USD1です。',
   'donation.walletConnect': 'ウォレットを接続',
   'donation.confirmation': '私は米国市民またはグリーンカード保持者ではないことを確認します。',
   'donation.shareX': 'Xでシェア',
@@ -62,7 +61,7 @@ export const ja = {
   'pool.backupTitle': '7日間の非アクティブ保護',
   'pool.backupInfo': '7日間寄付がない場合、最後の寄付者が基金全体を受け取ります。',
   'pool.share': 'ソーシャルメディアでシェア',
-  'pool.sns': 'Solana ネームサービス',
+  'pool.sns': 'ブロックチェーン ネームサービス',
 
   // Footer
   'footer.rights': '全著作権所有。',

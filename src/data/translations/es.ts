@@ -10,7 +10,7 @@ export const es = {
   // Hero section
   'hero.title': 'OneDollarGoldCard',
   'hero.subtitle': 'Democratizando el Acceso a Oportunidades de Inmigración',
-  'hero.description': 'Una plataforma descentralizada de donaciones en la blockchain Solana que ofrece a no ciudadanos de EE.UU. la oportunidad de ganar lo suficiente para solicitar la residencia Gold Card.',
+  'hero.description': 'Una plataforma descentralizada de donaciones en blockchain que ofrece a no ciudadanos de EE.UU. la oportunidad de ganar lo suficiente para solicitar la residencia Gold Card.',
   'hero.donateButton': 'Donar Ahora',
   'hero.donateNow': 'Donar Ahora',
   'hero.learnMore': 'Aprender Más',
@@ -20,16 +20,16 @@ export const es = {
   'features.transparent.title': 'Totalmente Transparente',
   'features.transparent.desc': 'Todas las transacciones y selección de ganadores se verifican en la cadena.',
   'features.accessible.title': 'Accesible para Todos',
-  'features.accessible.desc': 'Comienza con solo $1.00 USDC más una pequeña tarifa.',
+  'features.accessible.desc': 'Comienza con solo $1.05 USD1 ($1.00 al pool + $0.05 tarifa).',
   'features.fair.title': 'Sistema de Oportunidad Justa',
   'features.fair.desc': 'Tus posibilidades aumentan proporcionalmente con tu cantidad de donación.',
   'features.secure.title': 'Seguro por Diseño',
-  'features.secure.desc': 'Construido en la blockchain segura y eficiente de Solana.',
+  'features.secure.desc': 'Construido en contratos inteligentes seguros y eficientes.',
 
   // How It Works
   'howItWorks.title': 'Cómo Funciona',
   'howItWorks.step1.title': 'Haz una Donación',
-  'howItWorks.step1.desc': 'Dona un mínimo de $1.00 USDC (más 5% de tarifa de servicio).',
+  'howItWorks.step1.desc': 'Dona un mínimo de $1.05 USD1 ($1.00 al pool + $0.05 tarifa de servicio).',
   'howItWorks.step2.title': 'Únete al Fondo',
   'howItWorks.step2.desc': 'Tu donación aumenta proporcionalmente tu oportunidad de ganar.',
   'howItWorks.step3.title': 'Selección del Ganador',
@@ -43,7 +43,7 @@ export const es = {
   'donation.fee': 'Tarifa de Servicio (5%)',
   'donation.total': 'Cantidad Total',
   'donation.button': 'Donar Ahora',
-  'donation.minAmount': 'La donación mínima es $1.00 USDC.',
+  'donation.minAmount': 'La donación mínima es $1.05 USD1.',
   'donation.walletConnect': 'Conectar Billetera',
   'donation.confirmation': 'Confirmo que no soy ciudadano estadounidense ni titular de green card.',
   'donation.shareX': 'Compartir en X',
@@ -61,7 +61,7 @@ export const es = {
   'pool.backupTitle': 'Salvaguarda de Inactividad de 7 Días',
   'pool.backupInfo': 'Si no hay donaciones durante 7 días, el último donante recibe todo el fondo.',
   'pool.share': 'Compartir en Redes',
-  'pool.sns': 'Servicio de Nombres de Solana',
+  'pool.sns': 'Servicio de Nombres de Blockchain',
 
   // Footer
   'footer.rights': 'Todos los derechos reservados.',

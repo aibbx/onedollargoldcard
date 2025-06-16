@@ -1,4 +1,3 @@
-
 export const id = {
   // Navigation
   'nav.home': 'Beranda',
@@ -11,7 +10,7 @@ export const id = {
   // Hero section
   'hero.title': 'OneDollarGoldCard',
   'hero.subtitle': 'Demokratisasi Akses Kesempatan Imigrasi',
-  'hero.description': 'Platform donasi terdesentralisasi di blockchain Solana yang menawarkan kesempatan kepada non-warga AS untuk memenangkan dana yang cukup untuk mengajukan izin tinggal Gold Card AS.',
+  'hero.description': 'Platform donasi terdesentralisasi di blockchain yang menawarkan kesempatan kepada non-warga AS untuk memenangkan dana yang cukup untuk mengajukan izin tinggal Gold Card AS.',
   'hero.donateButton': 'Donasi Sekarang',
   'hero.donateNow': 'Donasi Sekarang',
   'hero.learnMore': 'Pelajari Lebih Lanjut',
@@ -21,16 +20,16 @@ export const id = {
   'features.transparent.title': 'Sepenuhnya Transparan',
   'features.transparent.desc': 'Semua transaksi dan pemilihan pemenang diverifikasi on-chain.',
   'features.accessible.title': 'Dapat Diakses Oleh Semua Orang',
-  'features.accessible.desc': 'Mulai dengan hanya $1.00 USDC plus biaya kecil.',
+  'features.accessible.desc': 'Mulai dengan hanya $1.05 USD1 ($1.00 ke pool + $0.05 biaya).',
   'features.fair.title': 'Sistem Kesempatan yang Adil',
   'features.fair.desc': 'Peluang Anda meningkat secara proporsional dengan jumlah donasi Anda.',
   'features.secure.title': 'Aman Secara Desain',
-  'features.secure.desc': 'Dibangun pada kontrak aman Solana untuk menyalurkan kumpulan dana senilai satu juta dolar dengan aman.',
+  'features.secure.desc': 'Dibangun pada kontrak aman untuk menyalurkan kumpulan dana senilai satu juta dolar dengan aman.',
 
   // How It Works
   'howItWorks.title': 'Cara Kerja',
   'howItWorks.step1.title': 'Buat Donasi',
-  'howItWorks.step1.desc': 'Donasikan minimal $1.00 USDC (plus biaya layanan 5%).',
+  'howItWorks.step1.desc': 'Donasikan minimal $1.05 USD1 ($1.00 ke pool + $0.05 biaya layanan).',
   'howItWorks.step2.title': 'Bergabung dengan Pool',
   'howItWorks.step2.desc': 'Donasi Anda meningkatkan peluang menang secara proporsional.',
   'howItWorks.step3.title': 'Pemilihan Pemenang',
@@ -44,7 +43,7 @@ export const id = {
   'donation.fee': 'Biaya Layanan (5%)',
   'donation.total': 'Jumlah Total',
   'donation.button': 'Donasi Sekarang',
-  'donation.minAmount': 'Donasi minimum adalah $1.00 USDC.',
+  'donation.minAmount': 'Donasi minimum adalah $1.05 USD1.',
   'donation.walletConnect': 'Hubungkan Dompet',
   'donation.confirmation': 'Saya mengonfirmasi bahwa saya bukan warga negara AS atau pemegang green card.',
   'donation.shareX': 'Bagikan di X',
@@ -62,7 +61,7 @@ export const id = {
   'pool.backupTitle': 'Perlindungan Ketidakaktifan 7 Hari',
   'pool.backupInfo': 'Jika tidak ada donasi selama 7 hari, donatur terakhir menerima seluruh dana.',
   'pool.share': 'Bagikan di Media Sosial',
-  'pool.sns': 'Layanan Nama Solana',
+  'pool.sns': 'Layanan Nama Blockchain',
 
   // Footer
   'footer.rights': 'Semua hak dilindungi undang-undang.',

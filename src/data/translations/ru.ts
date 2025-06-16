@@ -1,4 +1,3 @@
-
 export const ru = {
   // Navigation
   'nav.home': 'Главная',
@@ -11,7 +10,7 @@ export const ru = {
   // Hero section
   'hero.title': 'OneDollarGoldCard',
   'hero.subtitle': 'Демократизация доступа к иммиграционным возможностям',
-  'hero.description': 'Децентрализованная платформа пожертвований на блокчейне Solana, предлагающая не гражданам США шанс выиграть достаточно средств для подачи заявления на получение вида на жительство Gold Card.',
+  'hero.description': 'Децентрализованная платформа пожертвований на блокчейне, предлагающая не гражданам США шанс выиграть достаточно средств для подачи заявления на получение вида на жительство Gold Card.',
   'hero.donateButton': 'Пожертвовать сейчас',
   'hero.donateNow': 'Пожертвовать сейчас',
   'hero.learnMore': 'Узнать больше',
@@ -21,16 +20,16 @@ export const ru = {
   'features.transparent.title': 'Полностью прозрачно',
   'features.transparent.desc': 'Все транзакции и выбор победителей проверяются в сети.',
   'features.accessible.title': 'Доступно каждому',
-  'features.accessible.desc': 'Начните всего с 1.00 USDC плюс небольшая комиссия.',
+  'features.accessible.desc': 'Начните всего с $1.05 USD1 ($1.00 в пул + $0.05 комиссия).',
   'features.fair.title': 'Система честных шансов',
   'features.fair.desc': 'Ваши шансы увеличиваются пропорционально сумме вашего пожертвования.',
   'features.secure.title': 'Безопасность по дизайну',
-  'features.secure.desc': 'Построено на безопасном контракте Solana для надежной доставки призового фонда в миллион долларов.',
+  'features.secure.desc': 'Построено на безопасных смарт-контрактах для надежной доставки призового фонда.',
 
   // How It Works
   'howItWorks.title': 'Как это работает',
   'howItWorks.step1.title': 'Сделайте пожертвование',
-  'howItWorks.step1.desc': 'Пожертвуйте минимум 1.00 USDC (плюс 5% сервисный сбор).',
+  'howItWorks.step1.desc': 'Пожертвуйте минимум $1.05 USD1 ($1.00 в пул + $0.05 сервисный сбор).',
   'howItWorks.step2.title': 'Присоединяйтесь к пулу',
   'howItWorks.step2.desc': 'Ваше пожертвование пропорционально увеличивает ваш шанс на выигрыш.',
   'howItWorks.step3.title': 'Выбор победителя',
@@ -44,7 +43,7 @@ export const ru = {
   'donation.fee': 'Сервисный сбор (5%)',
   'donation.total': 'Общая сумма',
   'donation.button': 'Пожертвовать сейчас',
-  'donation.minAmount': 'Минимальная сумма пожертвования составляет 1.00 USDC.',
+  'donation.minAmount': 'Минимальная сумма пожертвования составляет $1.05 USD1.',
   'donation.walletConnect': 'Подключить кошелек',
   'donation.confirmation': 'Я подтверждаю, что не являюсь гражданином США или владельцем грин-карты.',
   'donation.shareX': 'Поделиться в X',
@@ -62,7 +61,7 @@ export const ru = {
   'pool.backupTitle': 'Защита от 7-дневной неактивности',
   'pool.backupInfo': 'Если в течение 7 дней не будет пожертвований, последний донор получит весь пул.',
   'pool.share': 'Поделиться в соцсетях',
-  'pool.sns': 'Сервис имен Solana',
+  'pool.sns': 'Сервис имен блокчейна',
 
   // Footer
   'footer.rights': 'Все права защищены.',

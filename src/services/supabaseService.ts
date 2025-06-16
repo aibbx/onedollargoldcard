@@ -48,7 +48,7 @@ export const addDonation = async (donation: DbDonation): Promise<string | null> 
     }
     
     console.log('捐赠记录已添加:', data);
-    return data[0]?.id || null;
+    return data?.[0]?.id || null;
   } catch (error) {
     console.error('添加捐赠记录异常:', error);
     return null;
@@ -62,7 +62,7 @@ export const getUserStats = async (walletAddress: string): Promise<UserStats | n
       .from('user_stats')
       .select('*')
       .eq('wallet_address', walletAddress)
-      .single();
+      .maybeSingle();
     
     if (error) {
       console.error('获取用户统计信息错误:', error);
@@ -94,7 +94,7 @@ export const getUserDonations = async (walletAddress: string): Promise<DonationR
     return (data || []).map(item => ({
       id: item.id,
       amount: Number(item.amount),
-      timestamp: new Date(item.created_at),
+      timestamp: new Date(item.created_at || ''),
       transactionId: item.transaction_id
     }));
   } catch (error) {
@@ -111,10 +111,14 @@ export const getPoolStatus = async (): Promise<PoolStatus | null> => {
       .select('*')
       .order('id', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
     
     if (error) {
       console.error('获取奖池状态错误:', error);
+      return null;
+    }
+    
+    if (!data) {
       return null;
     }
     
