@@ -24,12 +24,12 @@ const Index = () => {
   }, [location]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-950 to-black">
-      <main className="relative">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-950 to-black w-full">
+      <main className="relative w-full">
         <Hero />
         <Features />
-        <div className="relative bg-gradient-to-b from-slate-800 to-slate-900">
-          <div id="donation-section">
+        <div className="relative bg-gradient-to-b from-slate-800 to-slate-900 w-full">
+          <div id="donation-section" className="w-full">
             <DonationCard />
             <PoolStats />
           </div>

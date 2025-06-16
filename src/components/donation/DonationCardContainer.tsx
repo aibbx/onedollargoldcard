@@ -11,9 +11,9 @@ interface DonationCardContainerProps {
 
 const DonationCardContainer: React.FC<DonationCardContainerProps> = ({ showWalletModal }) => {
   return (
-    <section className="py-24 bg-white" id="donation-section">
+    <section className="py-12 sm:py-16 lg:py-24 bg-white w-full" id="donation-section">
       <div className="container-custom">
-        <div className="max-w-md mx-auto">
+        <div className="max-w-md mx-auto w-full">
           <div className="relative">
             <div className="absolute -inset-1 rounded-2xl bg-gold-gradient opacity-30 blur-md"></div>
             <div className="bg-white rounded-xl shadow-xl overflow-hidden relative">

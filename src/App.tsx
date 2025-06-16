@@ -30,9 +30,9 @@ function App() {
           <LanguageProvider>
             <WalletProvider>
               <BrowserRouter>
-                <div className="min-h-screen flex flex-col">
+                <div className="min-h-screen flex flex-col w-full">
                   <Navbar />
-                  <main className="flex-1">
+                  <main className="flex-1 w-full">
                     <Suspense fallback={
                       <div className="min-h-screen flex items-center justify-center">
                         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gold-600"></div>
