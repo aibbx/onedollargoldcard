@@ -1,124 +1,120 @@
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { cn } from '@/lib/utils';
-import { CheckCircle, ShieldCheck, Users, BarChart3, Award, Lock, Globe, Verified } from 'lucide-react';
+import { Shield, Zap, Globe, TrendingUp, Users, Lock } from 'lucide-react';
 
 const Features = () => {
   const { t } = useLanguage();
-  
-  const featureItemRef = (index: number) => {
-    return {
-      style: { '--delay': String(index * 2) } as React.CSSProperties,
-      className: 'reveal-animation'
-    };
-  };
-  
+
+  const features = [
+    {
+      icon: Shield,
+      title: "Blockchain Security",
+      description: "All donations secured by smart contracts on the EVM blockchain with full transparency.",
+      gradient: "from-blue-500 to-cyan-500"
+    },
+    {
+      icon: Zap,
+      title: "Instant Execution", 
+      description: "Automated winner selection using Chainlink VRF for provably fair randomness.",
+      gradient: "from-purple-500 to-pink-500"
+    },
+    {
+      icon: Globe,
+      title: "Global Participation",
+      description: "Open to non-US residents worldwide. Simple wallet connection required.",
+      gradient: "from-green-500 to-teal-500"
+    },
+    {
+      icon: TrendingUp,
+      title: "Growing Pool",
+      description: "Pool grows to $10M target. Winner receives $5M USD1 for Gold Card application.",
+      gradient: "from-orange-500 to-red-500"
+    },
+    {
+      icon: Users,
+      title: "Community Driven",
+      description: "Join thousands of participants in this revolutionary financial opportunity.",
+      gradient: "from-indigo-500 to-purple-500"
+    },
+    {
+      icon: Lock,
+      title: "Smart Contract",
+      description: "No intermediaries. Pure blockchain execution with mathematical certainty.",
+      gradient: "from-gray-600 to-gray-800"
+    }
+  ];
+
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
-      <div className="container-custom">
+    <section className="py-24 bg-gradient-to-b from-slate-800 to-slate-900 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
-          <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-blue-900 rounded-full flex items-center justify-center">
-              <Award className="w-8 h-8 text-gold-400" />
-            </div>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-blue-900" style={{ fontFamily: 'Georgia, serif' }}>
-            FULLY ON-CHAIN dApp FEATURES
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Why Choose
+            <span className="block bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              USD1GoldCard?
+            </span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-gold-400 to-gold-600 mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Built with enterprise-grade security standards and blockchain transparency for the Gold Card initiative
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Revolutionary blockchain technology meets life-changing opportunity
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Feature 1 - Blockchain Security */}
-          <div 
-            className="bg-white rounded-xl p-8 shadow-xl border-l-4 border-blue-600 hover:shadow-2xl hover:transform hover:scale-[1.02] transition-all duration-300"
-            {...featureItemRef(0)}
-          >
-            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-6 mx-auto">
-              <ShieldCheck size={28} />
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <div 
+              key={index}
+              className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-white/20 transition-all duration-500 hover:transform hover:scale-105"
+              style={{ '--delay': `${index * 100}ms` } as React.CSSProperties}
+            >
+              {/* Gradient overlay on hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-500`}></div>
+              
+              <div className="relative z-10">
+                <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${feature.gradient} mb-6`}>
+                  <feature.icon className="w-6 h-6 text-white" />
+                </div>
+                
+                <h3 className="text-xl font-semibold text-white mb-4">
+                  {feature.title}
+                </h3>
+                
+                <p className="text-gray-300 leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+
+              {/* Shine effect */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmerTranslate transition-opacity duration-1000"></div>
             </div>
-            <h3 className="text-xl font-bold mb-3 text-center text-blue-900 uppercase tracking-wide">
-              Blockchain Security
-            </h3>
-            <p className="text-gray-600 text-center leading-relaxed">
-              Enterprise-grade blockchain security with full transaction transparency and decentralized oversight.
-            </p>
-          </div>
-          
-          {/* Feature 2 - Fully On-Chain Platform */}
-          <div 
-            className="bg-white rounded-xl p-8 shadow-xl border-l-4 border-gold-500 hover:shadow-2xl hover:transform hover:scale-[1.02] transition-all duration-300"
-            {...featureItemRef(1)}
-          >
-            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-gold-100 text-gold-600 mb-6 mx-auto">
-              <Verified size={28} />
-            </div>
-            <h3 className="text-xl font-bold mb-3 text-center text-blue-900 uppercase tracking-wide">
-              Fully On-Chain dApp
-            </h3>
-            <p className="text-gray-600 text-center leading-relaxed">
-              Autonomous platform supporting the Gold Card program with minimum $1.05 USD1 participation.
-            </p>
-          </div>
-          
-          {/* Feature 3 - Democratic Access */}
-          <div 
-            className="bg-white rounded-xl p-8 shadow-xl border-l-4 border-green-500 hover:shadow-2xl hover:transform hover:scale-[1.02] transition-all duration-300"
-            {...featureItemRef(2)}
-          >
-            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-6 mx-auto">
-              <Users size={28} />
-            </div>
-            <h3 className="text-xl font-bold mb-3 text-center text-blue-900 uppercase tracking-wide">
-              Equal Opportunity
-            </h3>
-            <p className="text-gray-600 text-center leading-relaxed">
-              Democratic access to US residency opportunities through the community-driven Gold Card pathway.
-            </p>
-          </div>
-          
-          {/* Feature 4 - EVM Compatible */}
-          <div 
-            className="bg-white rounded-xl p-8 shadow-xl border-l-4 border-purple-500 hover:shadow-2xl hover:transform hover:scale-[1.02] transition-all duration-300"
-            {...featureItemRef(3)}
-          >
-            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-purple-100 text-purple-600 mb-6 mx-auto">
-              <Globe size={28} />
-            </div>
-            <h3 className="text-xl font-bold mb-3 text-center text-blue-900 uppercase tracking-wide">
-              EVM Platform
-            </h3>
-            <p className="text-gray-600 text-center leading-relaxed">
-              Global accessibility with EVM blockchain integration and multi-chain USD1 support.
-            </p>
-          </div>
+          ))}
         </div>
 
-        {/* Additional Trust Section */}
-        <div className="mt-16 bg-blue-900 rounded-2xl p-8 text-white">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold mb-4 text-gold-400">DECENTRALIZED & TRANSPARENT</h3>
-            <div className="w-20 h-1 bg-gold-400 mx-auto"></div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <Lock className="w-12 h-12 text-blue-300 mx-auto mb-4" />
-              <h4 className="font-bold text-lg mb-2">Secure Infrastructure</h4>
-              <p className="text-blue-200">Advanced encryption and blockchain security protocols</p>
-            </div>
-            <div className="text-center">
-              <BarChart3 className="w-12 h-12 text-blue-300 mx-auto mb-4" />
-              <h4 className="font-bold text-lg mb-2">Transparent Tracking</h4>
-              <p className="text-blue-200">Real-time monitoring of all contributions and distributions</p>
-            </div>
-            <div className="text-center">
-              <CheckCircle className="w-12 h-12 text-blue-300 mx-auto mb-4" />
-              <h4 className="font-bold text-lg mb-2">Community Driven</h4>
-              <p className="text-blue-200">Fully on-chain operation with community governance and oversight</p>
+        {/* Bottom CTA section */}
+        <div className="mt-20 text-center">
+          <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 backdrop-blur-sm rounded-3xl p-12 border border-white/10">
+            <h3 className="text-3xl font-bold text-white mb-4">
+              Ready to Change Your Life?
+            </h3>
+            <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
+              Join the revolution. One dollar could be your gateway to the American Dream.
+            </p>
+            <div className="flex justify-center items-center gap-6">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-400">$5M USD1</div>
+                <div className="text-gray-400 text-sm">Prize Pool</div>
+              </div>
+              <div className="w-px h-12 bg-white/20"></div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-400">$1 USD1</div>
+                <div className="text-gray-400 text-sm">Minimum Entry</div>
+              </div>
             </div>
           </div>
         </div>

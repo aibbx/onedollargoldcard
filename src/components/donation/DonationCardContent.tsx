@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from '../../context/WalletContext';
-import { Gift, Share2 } from 'lucide-react';
+import { Gift, Share2, Wallet, TrendingUp } from 'lucide-react';
 
 // Import components
 import DonationIncentive from './DonationIncentive';
@@ -56,7 +56,7 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
     setError,
     resetForm,
     t,
-    referralCode // Pass referral code to the transaction hook
+    referralCode
   });
 
   const handleShareOnX = () => {
@@ -70,16 +70,42 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
     ? new Date(donations[donations.length - 1].timestamp) 
     : undefined;
 
-  // Create change handler for AmountSelector
   const handleAmountInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleAmountChange(e.target.value);
   };
 
   return (
-    <>
-      <DonationHeader title={t('donation.title')} />
+    <div className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
+      {/* Header with gradient */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-center">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <Wallet className="w-6 h-6 text-white" />
+          <h2 className="text-2xl font-bold text-white">Join the Revolution</h2>
+        </div>
+        <p className="text-blue-100">One donation, life-changing opportunity</p>
+      </div>
       
-      <div className="p-6 space-y-6">
+      <div className="p-8 space-y-8">
+        {/* Live pool status */}
+        <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 rounded-2xl p-6 border border-green-500/20">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <TrendingUp className="w-4 h-4 text-green-400" />
+                <span className="text-green-400 font-medium">Live Pool Status</span>
+              </div>
+              <div className="text-2xl font-bold text-white">$2,143,567 USD1</div>
+              <div className="text-gray-300 text-sm">Target: $10,000,000 USD1</div>
+            </div>
+            <div className="text-right">
+              <div className="text-green-400 text-sm font-medium">21.4% Complete</div>
+              <div className="w-20 h-2 bg-gray-700 rounded-full mt-2">
+                <div className="w-1/5 h-full bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <DonationIncentive amount={amount} />
 
         <AmountSelector 
@@ -130,28 +156,30 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
           isLoading={isLoading}
         />
 
-        {/* Referral Rewards Information - moved below Connect Wallet */}
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
-          <div className="flex items-start gap-3">
-            <Gift className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-            <div className="flex-1 text-left">
-              <h4 className="font-semibold text-green-800 mb-2">Earn Referral Rewards!</h4>
-              <p className="text-green-700 text-sm mb-3">
-                Share your referral code and earn up to <strong>50% service fee</strong> on every donation from your referrals. 
-                The more you share, the more you earn!
+        {/* Enhanced Referral Rewards Information */}
+        <div className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 border border-purple-500/20 rounded-2xl p-6">
+          <div className="flex items-start gap-4">
+            <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-xl">
+              <Gift className="w-6 h-6 text-white" />
+            </div>
+            <div className="flex-1">
+              <h4 className="font-bold text-white text-lg mb-3">Earn Big with Referrals!</h4>
+              <p className="text-gray-300 text-sm mb-4 leading-relaxed">
+                Share your referral code and earn up to <strong className="text-purple-400">50% service fee</strong> on every 
+                donation from your referrals. Build your network and maximize your earnings!
               </p>
               <button
                 onClick={handleShareOnX}
-                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                className="flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 shadow-lg shadow-purple-500/25"
               >
                 <Share2 className="w-4 h-4" />
-                Share & Start Earning
+                Start Earning Now
               </button>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,255 +1,106 @@
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+import { Button } from '@/components/ui/button';
 import { useLanguage } from '../context/LanguageContext';
-import { Share2, Sparkles, Shield, CheckCircle, Gift } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
-import Logo from './Logo';
+import { ArrowRight, Shield, Zap, Globe } from 'lucide-react';
 
 const Hero = () => {
   const { t } = useLanguage();
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLDivElement>(null);
-  const descRef = useRef<HTMLParagraphElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
-  const safeguardRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const elements = [
-      { ref: titleRef, delay: 0 },
-      { ref: subtitleRef, delay: 2 },
-      { ref: descRef, delay: 4 },
-      { ref: buttonsRef, delay: 6 },
-      { ref: safeguardRef, delay: 8 },
-    ];
-
-    elements.forEach(({ ref, delay }) => {
-      if (ref.current) {
-        ref.current.style.setProperty('--delay', String(delay));
-        ref.current.classList.add('slide-up');
-      }
-    });
-  }, []);
-
-  const handleShare = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const text = `🎯 One USD1 for $5M! Just joined the on-chain system to win $5M for Gold Card application! 💰 Pure blockchain system + HUGE referral rewards! Your turn:`;
-    const url = "https://onedollargoldcard.com/";
-    window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-  };
-
-  const handleDonateClick = () => {
-    scrollToDonationSection();
-  };
-  
-  const scrollToDonationSection = () => {
+  const scrollToDonation = () => {
     const donationSection = document.getElementById('donation-section');
     if (donationSection) {
       donationSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "USD1GoldCard",
-    "url": "https://onedollargoldcard.com",
-    "logo": "https://onedollargoldcard.com/gold-card.svg",
-    "description": "One USD1 for $5M - Win $5 million for Gold Card application through our on-chain system with referral rewards.",
-    "sameAs": [
-      "https://onedollargoldcard.xyz",
-      "https://1dollargoldcard.com",
-      "https://1dollargoldcard.xyz"
-    ]
-  };
-
-  const productData = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": "One USD1 Gold Card System",
-    "description": "Win $5 million for Gold Card application with just one USD1 contribution to our on-chain system.",
-    "offers": {
-      "@type": "Offer",
-      "price": "1.05",
-      "priceCurrency": "USD",
-      "availability": "https://schema.org/InStock"
-    }
-  };
-
-  const backgroundPattern = "data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E";
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900">
-      <Helmet>
-        <title>One USD1 for $5M - Gold Card Application System</title>
-        <meta name="description" content="Win $5 million for Gold Card application with just one USD1! On-chain system with massive referral rewards. Join now!" />
-        <meta property="og:title" content="One USD1 for $5M - Win Gold Card Application Money!" />
-        <meta property="og:description" content="Join our on-chain system with just $1.05 USD1 and win $5M for your Gold Card application! Blockchain transparency + huge referral rewards!" />
-        <meta property="og:image" content="https://onedollargoldcard.com/social-share-card-updated.png" />
-        <meta property="og:url" content="https://onedollargoldcard.com" />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="One USD1 for $5M - Win Gold Card Application Money!" />
-        <meta name="twitter:description" content="Join our on-chain system with just $1.05 USD1 and win $5M for your Gold Card application! Blockchain transparency + huge referral rewards!" />
-        <meta name="twitter:image" content="https://onedollargoldcard.com/social-share-card-updated.png" />
-        <link rel="canonical" href="https://onedollargoldcard.com" />
-        <link rel="alternate" href="https://onedollargoldcard.com" hrefLang="x-default" />
-        <link rel="alternate" href="https://onedollargoldcard.com" hrefLang="en" />
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify(productData)}
-        </script>
-      </Helmet>
-      
-      {/* Background Pattern */}
-      <div 
-        className="absolute inset-0 opacity-20"
-        style={{ backgroundImage: `url("${backgroundPattern}")` }}
-      ></div>
-      
-      {/* American Flag Elements */}
-      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-600 via-white via-red-600 via-white via-red-600 via-white to-red-600"></div>
-      <div className="absolute top-2 left-0 w-full h-1 bg-white opacity-80"></div>
-      
-      <div className="container-custom relative z-10 text-center px-4 py-24 md:py-32">
-        {/* Platform Logo */}
-        <div className="flex justify-center mb-8">
-          <Logo size="lg" className="drop-shadow-2xl" />
-        </div>
+    <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-blue-500/5 to-transparent rounded-full"></div>
+      </div>
 
-        <h1 
-          ref={titleRef}
-          className="text-4xl md:text-7xl font-bold mb-4 text-white tracking-wide"
-          style={{ fontFamily: 'Georgia, serif' }}
-        >
-          USD1 GOLD CARD
-        </h1>
-        
-        <div 
-          ref={subtitleRef}
-          className="mb-6 max-w-4xl mx-auto"
-        >
-          <h2 className="text-2xl md:text-4xl font-bold text-gold-400 uppercase tracking-wider mb-2">
-            Fully Secured On-Chain Donation Initiatives
-          </h2>
-          <div className="w-32 h-1 bg-gold-400 mx-auto mb-4"></div>
-          <p className="text-xl md:text-2xl text-blue-100 font-semibold">
-            Decentralized EVM Platform for Gold Card Applications
-          </p>
-        </div>
-        
-        <p 
-          ref={descRef}
-          className="text-lg md:text-xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed"
-        >
-          Independent blockchain-based dApp supporting the Gold Card initiative. 
-          Participate with USD1 contributions for a chance to win $5 million toward your Gold Card application. 
-          Fully transparent, secure, and built on EVM chains with no government affiliation.
-        </p>
-        
-        {/* Referral Rewards Highlight */}
-        <div className="mb-8 max-w-4xl mx-auto">
-          <div className="bg-gradient-to-r from-gold-500/20 to-gold-600/20 backdrop-blur-sm border border-gold-400/50 rounded-xl p-6 shadow-2xl">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Gift className="w-8 h-8 text-gold-400 flex-shrink-0" />
-              <h3 className="text-2xl font-bold text-gold-400 uppercase tracking-wide">MASSIVE REFERRAL REWARDS</h3>
-            </div>
-            <p className="text-blue-100 leading-relaxed text-lg mb-4">
-              <strong>Earn Big by Sharing!</strong> Get rewarded for every person you refer to our USD1 on-chain system. 
-              The more you share, the more you earn. Build your referral network and enjoy passive income from our 
-              decentralized reward system!
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <div className="bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
-                <span className="text-gold-400 font-bold">💰 Take 50% Service Fee</span>
-              </div>
-              <div className="bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
-                <span className="text-gold-400 font-bold">🔗 Blockchain Verified</span>
-              </div>
-              <div className="bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
-                <span className="text-gold-400 font-bold">⚡ Instant Payouts</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Trust Indicators */}
-        <div className="mb-8 flex flex-wrap justify-center gap-4 text-blue-200">
-          <div className="flex items-center gap-2 bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
-            <CheckCircle className="w-5 h-5 text-green-400" />
-            <span className="text-sm font-semibold">Blockchain Verified</span>
-          </div>
-          <div className="flex items-center gap-2 bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
-            <Shield className="w-5 h-5 text-blue-300" />
-            <span className="text-sm font-semibold">Decentralized dApp</span>
-          </div>
-          <div className="flex items-center gap-2 bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
-            <Sparkles className="w-5 h-5 text-gold-400" />
-            <span className="text-sm font-semibold">EVM Compatible</span>
-          </div>
-        </div>
-        
-        <div 
-          ref={buttonsRef}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
-        >
-          <button 
-            className="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-blue-900 font-bold py-4 px-8 rounded-lg shadow-2xl transform hover:scale-105 transition-all duration-200 min-w-[220px] text-lg uppercase tracking-wide border-2 border-gold-400"
-            onClick={handleDonateClick}
-            aria-label="Participate in the Gold Card initiative dApp"
-          >
-            <span className="flex items-center justify-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              PARTICIPATE NOW
-            </span>
-          </button>
-          <button 
-            onClick={handleShare}
-            className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-4 px-8 rounded-lg transition-all duration-200 min-w-[220px] text-lg uppercase tracking-wide border-2 border-green-500 shadow-2xl transform hover:scale-105"
-            aria-label="Share to earn referral rewards"
-          >
-            <span className="flex items-center justify-center gap-2">
-              <Gift className="w-5 h-5" />
-              SHARE & EARN
-            </span>
-          </button>
-        </div>
-        
-        <div
-          ref={safeguardRef}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="bg-white/10 backdrop-blur-sm border border-blue-400/30 rounded-xl p-6 shadow-2xl">
-            <div className="flex items-center gap-3 mb-3">
-              <Shield className="w-8 h-8 text-red-400 flex-shrink-0" />
-              <h3 className="text-xl font-bold text-white uppercase tracking-wide">Smart Contract Security</h3>
-            </div>
-            <p className="text-blue-100 leading-relaxed">
-              <strong>7-Day Safeguard Mechanism:</strong> Our advanced smart contract includes enterprise-grade security protocols. 
-              If no qualifying contributions are received within 7 days, all pooled funds are automatically secured and 
-              transferred to the final qualified participant. Your contribution is protected by blockchain technology 
-              on EVM-compatible networks.
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+CjxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiPgo8cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMDUpIiBzdHJva2Utd2lkdGg9IjEiLz4KPC9wYXR0ZXJuPgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz4KPHN2Zz4=')] opacity-20"></div>
+
+      <div className="relative z-10 container mx-auto px-4 pt-32 pb-20">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Main heading */}
+          <div className="mb-8">
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              One Dollar,
+              <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 bg-clip-text text-transparent">
+                One Dream
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Join the revolutionary on-chain system. Donate $1 USD1 for a chance to win $5 million 
+              and secure your path to the US Gold Card.
             </p>
           </div>
-        </div>
 
-        {/* Bottom Notice */}
-        <div className="mt-8 text-blue-200 text-sm">
-          <p className="mb-2">
-            <strong>NOTICE:</strong> This is an independent dApp platform with no government affiliation
-          </p>
-          <p>
-            Minimum participation: $1.05 USD1 • EVM blockchain security • Transparent verification
-          </p>
+          {/* Key features */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+              <Shield className="w-8 h-8 text-blue-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-white mb-2">100% Transparent</h3>
+              <p className="text-gray-400 text-sm">All transactions verified on blockchain</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+              <Zap className="w-8 h-8 text-purple-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-white mb-2">Instant Processing</h3>
+              <p className="text-gray-400 text-sm">Smart contract automation</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+              <Globe className="w-8 h-8 text-blue-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-white mb-2">Global Access</h3>
+              <p className="text-gray-400 text-sm">Available worldwide (non-US residents)</p>
+            </div>
+          </div>
+
+          {/* CTA Button */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button 
+              onClick={scrollToDonation}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-2xl shadow-blue-500/25 transform hover:scale-105 transition-all duration-300 border-0"
+            >
+              Start Your Journey
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+            <div className="text-gray-400 text-sm">
+              Current Pool: <span className="text-blue-400 font-semibold">$2.1M USD1</span>
+            </div>
+          </div>
+
+          {/* Statistics */}
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white mb-2">21,543</div>
+              <div className="text-gray-400 text-sm">Total Participants</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white mb-2">$2.1M</div>
+              <div className="text-gray-400 text-sm">Current Pool</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white mb-2">24/7</div>
+              <div className="text-gray-400 text-sm">Live Updates</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white mb-2">100%</div>
+              <div className="text-gray-400 text-sm">Transparent</div>
+            </div>
+          </div>
         </div>
       </div>
-      
-      <div className="hidden md:block absolute bottom-10 left-1/2 transform -translate-x-1/2 cursor-pointer animate-bounce">
-        <div className="w-12 h-12 rounded-full border-2 border-gold-400 bg-gold-400/20 flex items-center justify-center">
-          <svg className="w-6 h-6 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>

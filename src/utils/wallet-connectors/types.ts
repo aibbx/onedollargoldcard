@@ -1,16 +1,13 @@
-
-import { WalletType } from '../../types/wallet';
-import { NetworkType } from '../../hooks/useWalletConnectors';
-
-export interface WalletConnectResult {
+export interface WalletConnectionResult {
   address: string;
   provider: any;
 }
 
 export interface WalletConnector {
-  connect: () => Promise<WalletConnectResult>;
-  autoConnect: () => Promise<WalletConnectResult | null>;
+  connect: () => Promise<WalletConnectionResult>;
+  autoConnect: () => Promise<WalletConnectionResult | null>;
   disconnect: () => void;
 }
 
-export { WalletType, NetworkType };
+// Fix TypeScript export errors
+export type { WalletConnectionResult, WalletConnector };
