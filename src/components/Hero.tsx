@@ -112,7 +112,7 @@ const Hero = () => {
           className="text-4xl md:text-7xl font-bold mb-4 text-white tracking-wide"
           style={{ fontFamily: 'Georgia, serif' }}
         >
-          ONE DOLLAR GOLD CARD
+          ONE USD1 GOLD CARD
         </h1>
         
         <div 
