@@ -31,7 +31,7 @@ const Hero = () => {
 
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
-    const text = `Join the official OneDollarGoldCard initiative - your chance to win $5M for the Gold Card application! #OneDollarGoldCard #GoldCard`;
+    const text = `Join the OneDollarGoldCard initiative - your chance to win $5M for the Gold Card application! #OneDollarGoldCard #GoldCard`;
     const url = "https://onedollargoldcard.com/";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
@@ -53,7 +53,7 @@ const Hero = () => {
     "name": "OneDollarGoldCard",
     "url": "https://onedollargoldcard.com",
     "logo": "https://onedollargoldcard.com/gold-card.svg",
-    "description": "Official platform for the Gold Card initiative - democratizing access to US residency opportunities.",
+    "description": "Independent blockchain platform for the Gold Card initiative - democratizing access to US residency opportunities.",
     "sameAs": [
       "https://onedollargoldcard.xyz",
       "https://1dollargoldcard.com",
@@ -65,7 +65,7 @@ const Hero = () => {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "Gold Card Opportunity",
-    "description": "Official opportunity to win $5 million for applying to the Gold Card program.",
+    "description": "Independent opportunity to win $5 million for applying to the Gold Card program.",
     "offers": {
       "@type": "Offer",
       "price": "1.05",
@@ -101,11 +101,11 @@ const Hero = () => {
       <div className="absolute top-2 left-0 w-full h-1 bg-white opacity-80"></div>
       
       <div className="container-custom relative z-10 text-center px-4 py-24 md:py-32">
-        {/* Official Seal Mockup */}
+        {/* Platform Seal Mockup */}
         <div className="flex justify-center mb-8">
           <div className="w-24 h-24 rounded-full bg-gradient-to-b from-gold-400 to-gold-600 border-4 border-white shadow-2xl flex items-center justify-center">
             <div className="w-16 h-16 rounded-full bg-blue-900 flex items-center justify-center">
-              <div className="text-gold-400 font-bold text-xs">USA</div>
+              <div className="text-gold-400 font-bold text-xs">dApp</div>
             </div>
           </div>
         </div>
@@ -115,7 +115,7 @@ const Hero = () => {
           className="text-4xl md:text-7xl font-bold mb-4 text-white tracking-wide"
           style={{ fontFamily: 'Georgia, serif' }}
         >
-          OFFICIAL GOLD CARD
+          ONE DOLLAR GOLD CARD
         </h1>
         
         <div 
@@ -123,11 +123,11 @@ const Hero = () => {
           className="mb-6 max-w-4xl mx-auto"
         >
           <h2 className="text-2xl md:text-4xl font-bold text-gold-400 uppercase tracking-wider mb-2">
-            INITIATIVE PLATFORM
+            INDEPENDENT dApp PLATFORM
           </h2>
           <div className="w-32 h-1 bg-gold-400 mx-auto mb-4"></div>
           <p className="text-xl md:text-2xl text-blue-100 font-semibold">
-            Authorized Digital Platform for Gold Card Applications
+            Decentralized EVM Platform for Gold Card Applications
           </p>
         </div>
         
@@ -135,9 +135,9 @@ const Hero = () => {
           ref={descRef}
           className="text-lg md:text-xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed"
         >
-          Official blockchain-based platform supporting the Gold Card initiative. 
+          Independent blockchain-based dApp supporting the Gold Card initiative. 
           Participate with USD1 contributions for a chance to win $5 million toward your Gold Card application. 
-          Fully transparent, secure, and compliant with federal oversight standards.
+          Fully transparent, secure, and built on EVM chains with no government affiliation.
         </p>
         
         {/* Trust Indicators */}
@@ -148,11 +148,11 @@ const Hero = () => {
           </div>
           <div className="flex items-center gap-2 bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
             <Shield className="w-5 h-5 text-blue-300" />
-            <span className="text-sm font-semibold">Federally Compliant</span>
+            <span className="text-sm font-semibold">Decentralized dApp</span>
           </div>
           <div className="flex items-center gap-2 bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
             <Sparkles className="w-5 h-5 text-gold-400" />
-            <span className="text-sm font-semibold">Official Initiative</span>
+            <span className="text-sm font-semibold">EVM Compatible</span>
           </div>
         </div>
         
@@ -163,7 +163,7 @@ const Hero = () => {
           <button 
             className="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-blue-900 font-bold py-4 px-8 rounded-lg shadow-2xl transform hover:scale-105 transition-all duration-200 min-w-[220px] text-lg uppercase tracking-wide border-2 border-gold-400"
             onClick={handleDonateClick}
-            aria-label="Participate in the official Gold Card initiative"
+            aria-label="Participate in the Gold Card initiative dApp"
           >
             <span className="flex items-center justify-center gap-2">
               <Sparkles className="w-5 h-5" />
@@ -189,13 +189,13 @@ const Hero = () => {
           <div className="bg-white/10 backdrop-blur-sm border border-blue-400/30 rounded-xl p-6 shadow-2xl">
             <div className="flex items-center gap-3 mb-3">
               <Shield className="w-8 h-8 text-red-400 flex-shrink-0" />
-              <h3 className="text-xl font-bold text-white uppercase tracking-wide">Federal Security Protocol</h3>
+              <h3 className="text-xl font-bold text-white uppercase tracking-wide">Smart Contract Security</h3>
             </div>
             <p className="text-blue-100 leading-relaxed">
-              <strong>7-Day Safeguard Mechanism:</strong> Our advanced smart contract includes federal-grade security protocols. 
+              <strong>7-Day Safeguard Mechanism:</strong> Our advanced smart contract includes enterprise-grade security protocols. 
               If no qualifying contributions are received within 7 days, all pooled funds are automatically secured and 
               transferred to the final qualified participant. Your contribution is protected by blockchain technology 
-              and government compliance standards.
+              on EVM-compatible networks.
             </p>
           </div>
         </div>
@@ -203,10 +203,10 @@ const Hero = () => {
         {/* Bottom Notice */}
         <div className="mt-8 text-blue-200 text-sm">
           <p className="mb-2">
-            <strong>NOTICE:</strong> This platform operates under strict compliance with federal regulations
+            <strong>NOTICE:</strong> This is an independent dApp platform with no government affiliation
           </p>
           <p>
-            Minimum participation: $1.05 USD1 • Maximum security • Transparent blockchain verification
+            Minimum participation: $1.05 USD1 • EVM blockchain security • Transparent verification
           </p>
         </div>
       </div>

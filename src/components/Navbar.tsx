@@ -54,7 +54,7 @@ const Navbar = () => {
       <div className="container-custom mx-auto flex justify-between items-center">
         <div className="flex items-center">
           <a href="/" className="flex items-center gap-3">
-            {/* Official seal */}
+            {/* dApp seal */}
             <div className="w-10 h-10 rounded-full bg-gradient-to-b from-gold-400 to-gold-600 border-2 border-white shadow-lg flex items-center justify-center">
               <div className="w-6 h-6 rounded-full bg-blue-900 flex items-center justify-center">
                 <Award className="w-3 h-3 text-gold-400" />
@@ -65,7 +65,7 @@ const Navbar = () => {
                 OneDollarGoldCard
               </span>
               <div className="text-gold-400 text-xs font-semibold uppercase tracking-wider -mt-1">
-                Official Initiative
+                Independent dApp
               </div>
             </div>
           </a>
