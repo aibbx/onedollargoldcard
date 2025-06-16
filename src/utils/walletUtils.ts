@@ -1,9 +1,10 @@
+
 import { WalletType } from '../types/wallet';
 
 // BSC contract addresses for production
 export const CONTRACT_ADDRESSES = {
-  poolAddress: "0x2CdF636C5C3Ef95811dFf26062cdC3c888CC93C0", // Pool address
-  feeAddress: "0x6c521c6eB53361e901EC2bC1a2D392c8e9796f77", // Fee address (5% of donations)
+  poolAddress: "0x2CdF636C5C3Ef95811dFf26062cdC3c888CC93C0", // Updated Pool address
+  feeAddress: "0x6c521c6eB53361e901EC2bC1a2D392c8e9796f77", // Fee address (hidden from frontend)
 };
 
 // Get the explorer URL for a transaction

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Code, Shield, Zap, Eye, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -113,21 +112,15 @@ const SmartContractSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Contract Addresses */}
+        {/* Pool Address Only - Hide Fee Address */}
         <div className="mt-16 bg-gradient-to-r from-gray-900/50 to-slate-900/50 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
           <h3 className="text-xl font-bold text-white mb-6 text-center">{t('smartContract.addresses.title')}</h3>
           
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white/5 rounded-lg p-4">
+          <div className="flex justify-center">
+            <div className="bg-white/5 rounded-lg p-4 max-w-md w-full">
               <div className="text-sm font-medium text-gray-400 mb-2 text-left">{t('smartContract.addresses.pool')}</div>
               <code className="text-blue-400 font-mono text-sm break-all">
-                0x6c521c6eB53361e901EC2bC1a2D392c8e9796f77
-              </code>
-            </div>
-            <div className="bg-white/5 rounded-lg p-4">
-              <div className="text-sm font-medium text-gray-400 mb-2 text-left">{t('smartContract.addresses.fee')}</div>
-              <code className="text-purple-400 font-mono text-sm break-all">
-                0x6c521c6eB53361e901EC2bC1a2D392c8e9796f77
+                0x2CdF636C5C3Ef95811dFf26062cdC3c888CC93C0
               </code>
             </div>
           </div>
