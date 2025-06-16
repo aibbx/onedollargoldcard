@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Zap } from 'lucide-react';
 import type { ContractSection } from '../types/contract';
@@ -12,9 +13,9 @@ pub fn select_winner(ctx: Context<SelectWinner>) -> Result<()> {
     let pool = &mut ctx.accounts.pool;
     let clock = Clock::get()?;
     
-    // Pool target is 10 million USD1
-    const POOL_TARGET_AMOUNT: u64 = 10_000_000 * 1_000_000; // 10M USD1 in 6 decimals
-    const PRIZE_AMOUNT: u64 = 5_000_000 * 1_000_000; // 5M USD1 prize
+    // Pool target is 10 million USD1 (您要求的金额)
+    const POOL_TARGET_AMOUNT: u64 = 10_000_000 * 1_000_000; // 1000万 USD1 in 6 decimals
+    const PRIZE_AMOUNT: u64 = 5_000_000 * 1_000_000; // 500万 USD1 prize
     
     // Verify pool has reached required amount
     require!(
@@ -68,7 +69,7 @@ pub fn select_winner(ctx: Context<SelectWinner>) -> Result<()> {
     pool.last_distribution = clock.unix_timestamp;
     pool.winning_lottery_number = winning_number;
     
-    // Transfer accumulated fees to fee address
+    // Transfer accumulated fees to fee address (0x6c521c6eB53361e901EC2bC1a2D392c8e9796f77)
     if pool.accumulated_fee > 0 {
         let cpi_accounts_fee = token::Transfer {
             from: ctx.accounts.pool_token.to_account_info(),
@@ -101,11 +102,11 @@ pub fn select_winner(ctx: Context<SelectWinner>) -> Result<()> {
     Ok(())
 }`,
   securityPoints: [
-    'Triggers when pool reaches exactly 10 million USD1',
+    'Triggers when pool reaches exactly 10 million USD1 (您指定的金额)',
     'Awards exactly 5 million USD1 to randomly selected winner',
     'Winner selected based on lottery numbers proportional to donations',
     'Remaining 5 million USD1 stays in pool for next round',
-    'Accumulated fees are transferred to fee address',
+    'Accumulated fees are transferred to fee address (0x6c521c6eB53361e901EC2bC1a2D392c8e9796f77)',
     'Pool continues with remaining balance for new donations'
   ]
 };

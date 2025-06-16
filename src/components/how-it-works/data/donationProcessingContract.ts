@@ -70,9 +70,9 @@ pub fn donate(
     // Accumulate fee amount
     pool.accumulated_fee += fee_amount;
     
-    // Check for automatic fee transfer (every 20,000 USD1 in pool)
-    const FEE_TRANSFER_THRESHOLD: u64 = 20_000 * 1_000_000; // 20K USD1
-    if pool.pool_balance >= FEE_TRANSFER_THRESHOLD {
+    // Check for automatic fee transfer (every 20,000 USD1 in POOL, not total donations)
+    const FEE_TRANSFER_THRESHOLD: u64 = 20_000 * 1_000_000; // 20K USD1 in pool
+    if pool.pool_balance >= FEE_TRANSFER_THRESHOLD && pool.accumulated_fee > 0 {
         let fee_to_transfer = pool.accumulated_fee;
         
         // Transfer accumulated fees to fee address
@@ -81,12 +81,26 @@ pub fn donate(
             to: ctx.accounts.fee_wallet.to_account_info(),
             authority: ctx.accounts.authority.to_account_info(),
         };
-        token::transfer(CpiContext::new(
-            ctx.accounts.token_program.to_account_info(),
-            cpi_accounts_fee
-        ), fee_to_transfer)?;
         
+        let seeds = &[b"pool", &[pool.bump]];
+        let signer = &[&seeds[..]];
+        let cpi_ctx = CpiContext::new_with_signer(
+            ctx.accounts.token_program.to_account_info(),
+            cpi_accounts_fee,
+            signer,
+        );
+        
+        token::transfer(cpi_ctx, fee_to_transfer)?;
+        
+        // Reset accumulated fee after transfer
         pool.accumulated_fee = 0;
+        
+        // Emit fee transfer event
+        emit!(FeeTransferEvent {
+            fee_amount: fee_to_transfer,
+            pool_balance_at_transfer: pool.pool_balance,
+            timestamp: Clock::get()?.unix_timestamp,
+        });
     }
     
     // Emit event for tracking
@@ -101,13 +115,21 @@ pub fn donate(
     });
     
     Ok(())
+}
+
+// Event for fee transfers
+#[event]
+pub struct FeeTransferEvent {
+    pub fee_amount: u64,
+    pub pool_balance_at_transfer: u64,
+    pub timestamp: i64,
 }`,
   securityPoints: [
     'Minimum valid donation is 1.05 USD1 (1 USD1 to pool + 0.05 USD1 fee)',
     'Invalid donations (< 1.05 USD1) go entirely to fee, no lottery numbers assigned',
     'Each 1 USD1 donated to pool earns exactly 1 lottery number',
-    'Automatic fee transfer triggered every 20,000 USD1 in pool',
-    'Strict separation between pool and fee calculations',
+    'Automatic fee transfer triggered when pool reaches 20,000 USD1',
+    'Fee includes both 5% from valid donations and 100% from invalid donations',
     'Only valid donations count toward pool balance and lottery entries'
   ]
 };
