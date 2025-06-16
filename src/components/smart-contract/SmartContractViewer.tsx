@@ -380,7 +380,7 @@ contract USD1GoldCardLottery is VRFConsumerBaseV2, Ownable, ReentrancyGuard {
         </div>
         
         <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-          <pre className="text-sm text-gray-100 whitespace-pre-wrap">
+          <pre className="text-sm text-gray-100 whitespace-pre text-left">
             <code>{contractCode}</code>
           </pre>
         </div>
