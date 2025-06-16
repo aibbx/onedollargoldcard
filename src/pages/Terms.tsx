@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -184,6 +183,14 @@ const Terms = () => {
               </Button>
             </div>
           </div>
+        </div>
+
+        {/* Important Notice */}
+        <div className="mt-12 bg-blue-50 border border-blue-200 rounded-xl p-6">
+          <h3 className="text-lg font-semibold text-blue-800 mb-3">Important Notice</h3>
+          <p className="text-blue-700">
+            This platform operates as a fully secured on-chain dApp and is not affiliated with any government agency or WFLI company.
+          </p>
         </div>
       </main>
       
