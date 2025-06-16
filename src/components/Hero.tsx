@@ -1,8 +1,8 @@
-
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Share2, Sparkles, Shield, CheckCircle } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import Logo from './Logo';
 
 const Hero = () => {
   const { t } = useLanguage();
@@ -101,13 +101,9 @@ const Hero = () => {
       <div className="absolute top-2 left-0 w-full h-1 bg-white opacity-80"></div>
       
       <div className="container-custom relative z-10 text-center px-4 py-24 md:py-32">
-        {/* Platform Seal Mockup */}
+        {/* Platform Logo */}
         <div className="flex justify-center mb-8">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-b from-gold-400 to-gold-600 border-4 border-white shadow-2xl flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-blue-900 flex items-center justify-center">
-              <div className="text-gold-400 font-bold text-xs">dApp</div>
-            </div>
-          </div>
+          <Logo size="lg" className="drop-shadow-2xl" />
         </div>
 
         <h1 

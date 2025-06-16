@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSelector from './LanguageSelector';
 import { cn } from '@/lib/utils';
-import { Menu, X, Shield, Award } from 'lucide-react';
+import { Menu, X, Shield } from 'lucide-react';
 import WalletConnector from './navbar/WalletConnector';
 import MobileMenu from './navbar/MobileMenu';
 import NavLinks from './navbar/NavLinks';
 import { useWallet } from '../context/WalletContext';
+import Logo from './Logo';
 
 const Navbar = () => {
   const { t } = useLanguage();
@@ -54,12 +55,7 @@ const Navbar = () => {
       <div className="container-custom mx-auto flex justify-between items-center">
         <div className="flex items-center">
           <a href="/" className="flex items-center gap-3">
-            {/* dApp seal */}
-            <div className="w-10 h-10 rounded-full bg-gradient-to-b from-gold-400 to-gold-600 border-2 border-white shadow-lg flex items-center justify-center">
-              <div className="w-6 h-6 rounded-full bg-blue-900 flex items-center justify-center">
-                <Award className="w-3 h-3 text-gold-400" />
-              </div>
-            </div>
+            <Logo size="md" />
             <div>
               <span className="font-bold text-xl text-white" style={{ fontFamily: 'Georgia, serif' }}>
                 OneDollarGoldCard
@@ -74,11 +70,11 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-6">
           <NavLinks isScrolled={true} />
           <WalletConnector />
-          <div className="flex items-center gap-2">
+          <LanguageSelector />
+          <div className="flex items-center gap-2 bg-green-500/20 border border-green-400 rounded-full px-3 py-1">
             <Shield className="w-4 h-4 text-green-400" />
             <span className="text-green-300 text-xs font-semibold uppercase tracking-wide">Secure</span>
           </div>
-          <LanguageSelector />
         </div>
 
         <div className="md:hidden flex items-center">
