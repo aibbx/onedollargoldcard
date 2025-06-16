@@ -58,7 +58,7 @@ const Navbar = () => {
             <Logo size="md" />
             <div>
               <span className="font-bold text-xl text-white" style={{ fontFamily: 'Georgia, serif' }}>
-                OneDollarGoldCard
+                OneUSD1GoldCard
               </span>
               <div className="text-gold-400 text-xs font-semibold uppercase tracking-wider -mt-1">
                 Fully On-Chain
