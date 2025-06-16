@@ -75,7 +75,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+      className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
       onClick={handleBackdropClick}
       style={{
         position: 'fixed',
@@ -84,7 +84,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
         right: 0,
         bottom: 0,
         margin: 0,
-        zIndex: 99999
+        zIndex: 50
       }}
     >
       <div 
