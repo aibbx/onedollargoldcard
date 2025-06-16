@@ -38,6 +38,26 @@ export const en = {
   'howItWorks.step4.title': 'Receive Funds',
   'howItWorks.step4.desc': 'The winner receives $5M, and $5M stays for the next round.',
 
+  // Smart Contract Section
+  'smartContract.title': 'Smart Contract Ensures Fair and Transparent',
+  'smartContract.description': 'Our platform is built on audited smart contracts, ensuring every donation and lottery draw is completely transparent and immutable',
+  'smartContract.features.transparent.title': 'Fully Transparent',
+  'smartContract.features.transparent.desc': 'All donations and lottery processes are publicly verified on blockchain',
+  'smartContract.features.automated.title': 'Automated Execution',
+  'smartContract.features.automated.desc': 'Smart contracts automatically handle donations, winner selection and prize distribution',
+  'smartContract.features.verifiable.title': 'Verifiable Random',
+  'smartContract.features.verifiable.desc': 'Uses Chainlink VRF to ensure winner selection is completely fair',
+  'smartContract.rules.title': 'Contract Rules',
+  'smartContract.rules.1': 'Minimum donation 1.05 USD1 (1 USD1 to pool + 0.05 USD1 service fee)',
+  'smartContract.rules.2': 'Winner automatically selected when pool reaches 10 million USD1',
+  'smartContract.rules.3': 'Winner receives 5 million USD1, requires admin confirmation before transfer',
+  'smartContract.rules.4': 'If no donations for 7 days, last donor receives entire pool',
+  'smartContract.viewContract': 'View Complete Contract Code',
+  'smartContract.addresses.title': 'Verified Contract Addresses',
+  'smartContract.addresses.pool': 'Prize Pool Contract Address',
+  'smartContract.addresses.fee': 'Service Fee Receiver Address',
+  'smartContract.addresses.note': 'All contracts deployed and open source verified on BSC blockchain',
+
   // Donation Card
   'donation.title': 'Make a Donation',
   'donation.amount': 'Donation Amount',
