@@ -20,14 +20,14 @@ export const usePoolStats = () => {
       try {
         setIsLoading(true);
         
-        // 从Supabase获取奖池状态
+        // 从Supabase获取真实奖池状态
         const poolStatus = await getPoolStatus();
         
         if (poolStatus) {
           console.log('从Supabase获取的奖池状态:', poolStatus);
           
           // 设置奖池金额 - 只计算pool部分（95%），不包括fee
-          const poolOnlyAmount = poolStatus.pool_amount || (poolStatus.total_amount * 0.95);
+          const poolOnlyAmount = poolStatus.pool_amount || 0;
           setPoolAmount(poolOnlyAmount);
           
           // 设置目标金额
@@ -40,28 +40,12 @@ export const usePoolStats = () => {
           const progressPercentage = (poolOnlyAmount / poolStatus.target_amount) * 100;
           setProgress(progressPercentage);
         } else {
-          console.warn('无法从Supabase获取奖池状态，使用本地计算');
+          console.log('尚未获取到奖池状态，使用默认值');
           
-          // 使用捐赠数据计算默认值
-          let calculatedTotal = 0;
-          let uniqueWallets = new Set();
-          
-          if (donations && donations.length > 0) {
-            calculatedTotal = donations.reduce((sum, donation) => sum + donation.amount, 0);
-            donations.forEach(donation => {
-              if (donation.transactionId) {
-                uniqueWallets.add(donation.transactionId);
-              }
-            });
-          }
-          
-          // 计算pool金额（用户捐赠总额的95%进入pool，5%进入fee）
-          const poolOnlyAmount = calculatedTotal * 0.95;
-          setPoolAmount(poolOnlyAmount);
-          setTotalDonors(Math.max(uniqueWallets.size, 1)); // 至少1个捐赠者
-          
-          const progressPercentage = (poolOnlyAmount / targetAmount) * 100;
-          setProgress(progressPercentage);
+          // 使用默认值而不是假数据
+          setPoolAmount(0);
+          setTotalDonors(0);
+          setProgress(0);
         }
         
         // 计算剩余时间 - 设置截止日期为3个月后
@@ -75,10 +59,10 @@ export const usePoolStats = () => {
         
         setTimeLeft(`${diffDays}d ${diffHours}h ${diffMinutes}m`);
       } catch (error) {
-        console.error('计算奖池统计数据错误:', error);
+        console.error('获取奖池统计数据错误:', error);
         toast({
           title: "无法获取最新的Gold Card基金数据",
-          description: "使用缓存数据代替。请刷新重试。",
+          description: "请刷新重试。",
           variant: "destructive",
         });
         
@@ -97,12 +81,12 @@ export const usePoolStats = () => {
     // 设置刷新间隔 - 每5分钟刷新一次
     const interval = setInterval(fetchPoolStats, 300000);
     
-    // 订阅奖池状态的实时更新 - 使用改进的订阅管理
+    // 订阅奖池状态的实时更新
     const subscription = subscribeToPoolStatus((status) => {
       console.log('收到奖池状态更新:', status);
       
       // 计算pool金额（95%进入pool，5%进入fee）
-      const poolOnlyAmount = status.pool_amount || (status.total_amount * 0.95);
+      const poolOnlyAmount = status.pool_amount || 0;
       setPoolAmount(poolOnlyAmount);
       setTargetAmount(status.target_amount);
       setTotalDonors(status.participant_count);
@@ -113,10 +97,9 @@ export const usePoolStats = () => {
     
     return () => {
       clearInterval(interval);
-      // 使用返回的清理函数
       subscription.unsubscribe();
     };
-  }, []); // 移除所有依赖以避免重复订阅
+  }, []); // 移除依赖以避免重复订阅
 
   return {
     poolAmount,

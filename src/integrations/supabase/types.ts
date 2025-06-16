@@ -329,7 +329,7 @@ export type Database = {
     }
     Functions: {
       generate_referral_code: {
-        Args: { wallet_address: string }
+        Args: Record<PropertyKey, never> | { wallet_address: string }
         Returns: string
       }
     }
