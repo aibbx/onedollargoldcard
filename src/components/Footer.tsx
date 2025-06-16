@@ -159,7 +159,7 @@ const Footer = () => {
         <div className="border-t border-blue-700 pt-6 flex justify-between flex-col md:flex-row items-center">
           <div>
             <p className="text-sm text-blue-200 mb-2">
-              &copy; {currentYear} OneDollarGoldCard Fully On-Chain dApp Platform. All rights reserved.
+              &copy; {currentYear} USD1GoldCard Fully On-Chain dApp Platform. All rights reserved.
             </p>
             <p className="text-xs text-blue-300">
               Blockchain transparency • Fully on-chain operation • Equal opportunity access
