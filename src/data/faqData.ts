@@ -15,7 +15,7 @@ export const faqSections: FAQSection[] = [
     questions: [
       {
         q: 'What is OneDollarGoldCard?',
-        a: 'OneDollarGoldCard is a decentralized donation platform built on Solana blockchain that allows non-US citizens to donate USD1 and potentially win $5 million to fund their Gold Card application.'
+        a: 'OneDollarGoldCard is a decentralized donation platform built on EVM blockchain that allows non-US citizens to donate USD1 and potentially win $5 million to fund their Gold Card application.'
       },
       {
         q: 'What is the "Gold Card"?',
@@ -48,7 +48,7 @@ export const faqSections: FAQSection[] = [
       },
       {
         q: 'Which wallets are supported?',
-        a: 'You can use any Solana-compatible wallet, including Phantom, Solflare, and others. The wallet must be able to hold and transfer USD1-SPL tokens.'
+        a: 'You can use any EVM-compatible wallet, including MetaMask, OKX, and others. The wallet must be able to hold and transfer USD1 tokens on EVM networks.'
       }
     ]
   },
@@ -57,7 +57,7 @@ export const faqSections: FAQSection[] = [
     questions: [
       {
         q: 'How are winners selected?',
-        a: 'Winners are selected using Switchboard VRF (Verifiable Random Function) when the pool reaches $10 million. The selection is proportional to donation amounts, so larger donors have higher chances of winning.'
+        a: 'Winners are selected using Chainlink VRF (Verifiable Random Function) when the pool reaches $10 million. The selection is proportional to donation amounts, so larger donors have higher chances of winning.'
       },
       {
         q: 'What are my chances of winning?',
@@ -69,7 +69,7 @@ export const faqSections: FAQSection[] = [
       },
       {
         q: 'How do I receive the prize if I win?',
-        a: 'The prize of $5 million USD1 will be automatically transferred to your Solana wallet if you\'re selected as the winner. No further action is required.'
+        a: 'The prize of $5 million USD1 will be automatically transferred to your EVM wallet if you\'re selected as the winner. No further action is required.'
       }
     ]
   },
@@ -78,15 +78,15 @@ export const faqSections: FAQSection[] = [
     questions: [
       {
         q: 'Is the platform secure?',
-        a: 'Yes, our smart contracts are open source, audited, and use proven blockchain technology. All transactions are transparent and verifiable on the Solana blockchain.'
+        a: 'Yes, our smart contracts are open source, audited, and use proven blockchain technology. All transactions are transparent and verifiable on the EVM blockchain.'
       },
       {
         q: 'Can I verify that the selection is fair?',
-        a: 'Absolutely. We use Switchboard\'s Verifiable Random Function (VRF), which provides cryptographic proof that the selection was random and not manipulated. All contract code is open source.'
+        a: 'Absolutely. We use Chainlink\'s Verifiable Random Function (VRF), which provides cryptographic proof that the selection was random and not manipulated. All contract code is open source.'
       },
       {
         q: 'Where can I view the smart contract?',
-        a: 'The smart contract code is available on GitHub and can be viewed on Solana explorers. Links to these resources are available in the footer of our website.'
+        a: 'The smart contract code is available on GitHub and can be viewed on EVM explorers. Links to these resources are available in the footer of our website.'
       }
     ]
   },

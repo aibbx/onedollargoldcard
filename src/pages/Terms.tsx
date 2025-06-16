@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -32,13 +33,13 @@ const Terms = () => {
       title: "2. Platform Operation",
       items: [
         {
-          point: "2.1. OneDollarGoldCard operates as a donation platform where participants donate USD1 tokens on the Solana blockchain.",
+          point: "2.1. OneDollarGoldCard operates as a donation platform where participants donate USD1 tokens on the EVM blockchain.",
         },
         {
           point: "2.2. 100% of each donation goes directly to the prize pool. An additional 5% service fee is charged separately and is allocated to platform fees for audits, legal compliance, and operations.",
         },
         {
-          point: "2.3. When the pool reaches $10 million, a winner is randomly selected using Switchboard VRF to receive $5 million USD1.",
+          point: "2.3. When the pool reaches $10 million, a winner is randomly selected using Chainlink VRF to receive $5 million USD1.",
         },
         {
           point: "2.4. If the pool doesn't reach $10 million and there are no donations for 7 consecutive days, the last donor wins the entire pool.",
@@ -69,7 +70,7 @@ const Terms = () => {
       title: "4. Prize Distribution",
       items: [
         {
-          point: "4.1. The prize of $5 million USD1 will be automatically transferred to the winner's Solana wallet address.",
+          point: "4.1. The prize of $5 million USD1 will be automatically transferred to the winner's EVM wallet address.",
         },
         {
           point: "4.2. The winner is solely responsible for any taxes, fees, or other obligations related to receiving the prize.",
@@ -95,7 +96,7 @@ const Terms = () => {
           point: "5.3. The platform relies on blockchain technology and smart contracts. While we take security seriously, we cannot guarantee the absence of technical vulnerabilities.",
         },
         {
-          point: "5.4. We are not responsible for issues related to the Solana blockchain, including but not limited to network congestion, outages, or wallet malfunctions.",
+          point: "5.4. We are not responsible for issues related to the EVM blockchain, including but not limited to network congestion, outages, or wallet malfunctions.",
         },
       ]
     },
@@ -103,7 +104,7 @@ const Terms = () => {
       title: "6. Privacy",
       items: [
         {
-          point: "6.1. All donations are recorded on the Solana blockchain and are publicly viewable.",
+          point: "6.1. All donations are recorded on the EVM blockchain and are publicly viewable.",
         },
         {
           point: "6.2. Wallet addresses of participants and winners will be publicly visible on the blockchain.",
