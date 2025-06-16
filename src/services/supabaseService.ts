@@ -22,10 +22,11 @@ export interface UserStats {
   winning_chance: number;
 }
 
-// 奖池状态接口
+// 奖池状态接口 - 添加pool_amount属性
 export interface PoolStatus {
   id?: number;
   total_amount: number;
+  pool_amount: number; // 添加这个属性
   participant_count: number;
   target_amount: number;
   pool_address: string;

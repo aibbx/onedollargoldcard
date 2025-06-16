@@ -7,24 +7,37 @@ export const donationProcessingContract: ContractSection = {
   id: 'donation-processing',
   title: 'Donation Processing Contract',
   icon: React.createElement(Code, { className: "w-6 h-6 text-gold-600" }),
-  description: 'This smart contract handles the donation process, validates the service fee, and maintains records of all donors:',
-  code: `// Part 1: Donation Processing
+  description: 'This smart contract handles the donation process with strict rules for valid donations and lottery number assignment:',
+  code: `// Part 1: Donation Processing with Enhanced Rules
 pub fn donate(
     ctx: Context<Donate>,
-    donation_amount: u64,
-    service_fee: u64,
+    total_amount: u64, // Total amount user sends (pool + fee)
 ) -> Result<()> {
     let pool = &mut ctx.accounts.pool;
     let donor = ctx.accounts.donor.key();
     
-    // Verify service fee is exactly 5% of donation amount
-    require!(
-        service_fee == donation_amount / 20, 
-        "Service fee must be exactly 5% of donation amount"
-    );
+    // Minimum valid donation is 1.05 USD1 (1 USD1 to pool + 0.05 USD1 fee)
+    const MIN_VALID_DONATION: u64 = 1_050_000; // 1.05 USD1 in 6 decimals
+    const MIN_POOL_AMOUNT: u64 = 1_000_000; // 1 USD1 in 6 decimals
     
-    // Calculate total amount to transfer (donation + service fee)
-    let total_transfer_amount = donation_amount + service_fee;
+    let is_valid_donation = total_amount >= MIN_VALID_DONATION;
+    let pool_amount: u64;
+    let fee_amount: u64;
+    let lottery_numbers: u32;
+    
+    if is_valid_donation {
+        // Valid donation: calculate pool (95%) and fee (5%)
+        pool_amount = (total_amount * 95) / 100;
+        fee_amount = total_amount - pool_amount;
+        
+        // Each 1 USD1 to pool = 1 lottery number
+        lottery_numbers = (pool_amount / MIN_POOL_AMOUNT) as u32;
+    } else {
+        // Invalid donation: entire amount goes to fee
+        pool_amount = 0;
+        fee_amount = total_amount;
+        lottery_numbers = 0;
+    }
     
     // Transfer total amount from donor to contract
     let cpi_accounts = token::Transfer {
@@ -35,43 +48,66 @@ pub fn donate(
     token::transfer(CpiContext::new(
         ctx.accounts.token_program.to_account_info(),
         cpi_accounts
-    ), total_transfer_amount)?;
+    ), total_amount)?;
     
-    // Transfer service fee to platform wallet
-    let cpi_accounts_fee = token::Transfer {
-        from: ctx.accounts.pool_token.to_account_info(),
-        to: ctx.accounts.platform_wallet.to_account_info(),
-        authority: ctx.accounts.authority.to_account_info(),
-    };
-    token::transfer(CpiContext::new(
-        ctx.accounts.token_program.to_account_info(),
-        cpi_accounts_fee
-    ), service_fee)?;
+    // Update pool with only valid donations
+    if is_valid_donation {
+        pool.pool_balance += pool_amount;
+        pool.total_participants += 1;
+        pool.last_donor = donor;
+        pool.last_donation_timestamp = Clock::get()?.unix_timestamp;
+        
+        // Assign lottery numbers to donor
+        for i in 0..lottery_numbers {
+            pool.lottery_entries.push(LotteryEntry {
+                donor: donor,
+                entry_number: pool.total_lottery_numbers + i as u64,
+            });
+        }
+        pool.total_lottery_numbers += lottery_numbers as u64;
+    }
     
-    // Update pool balance with donation amount
-    pool.pool_balance += donation_amount;
+    // Accumulate fee amount
+    pool.accumulated_fee += fee_amount;
     
-    // Record donation details for participant entry
-    pool.total_participants += 1;
-    pool.last_donor = donor;
-    pool.last_donation_timestamp = Clock::get()?.unix_timestamp;
+    // Check for automatic fee transfer (every 20,000 USD1 in pool)
+    const FEE_TRANSFER_THRESHOLD: u64 = 20_000 * 1_000_000; // 20K USD1
+    if pool.pool_balance >= FEE_TRANSFER_THRESHOLD {
+        let fee_to_transfer = pool.accumulated_fee;
+        
+        // Transfer accumulated fees to fee address
+        let cpi_accounts_fee = token::Transfer {
+            from: ctx.accounts.pool_token.to_account_info(),
+            to: ctx.accounts.fee_wallet.to_account_info(),
+            authority: ctx.accounts.authority.to_account_info(),
+        };
+        token::transfer(CpiContext::new(
+            ctx.accounts.token_program.to_account_info(),
+            cpi_accounts_fee
+        ), fee_to_transfer)?;
+        
+        pool.accumulated_fee = 0;
+    }
     
-    // Emit event for frontend tracking
+    // Emit event for tracking
     emit!(DonationEvent {
         donor: donor,
-        donation_amount: donation_amount,
-        service_fee: service_fee,
-        timestamp: pool.last_donation_timestamp,
+        total_amount: total_amount,
+        pool_amount: pool_amount,
+        fee_amount: fee_amount,
+        lottery_numbers: lottery_numbers,
+        is_valid: is_valid_donation,
+        timestamp: Clock::get()?.unix_timestamp,
     });
     
     Ok(())
 }`,
   securityPoints: [
-    'Ensures the service fee is exactly 5% of the donation amount',
-    'Collects both donation and service fee from the donor',
-    'Transfers donation to prize pool and service fee to platform wallet',
-    'Updates pool balance and participant records after each donation',
-    'Records timestamp of donation for the 7-day inactivity check',
-    'Emits blockchain events for transparent transaction tracking'
+    'Minimum valid donation is 1.05 USD1 (1 USD1 to pool + 0.05 USD1 fee)',
+    'Invalid donations (< 1.05 USD1) go entirely to fee, no lottery numbers assigned',
+    'Each 1 USD1 donated to pool earns exactly 1 lottery number',
+    'Automatic fee transfer triggered every 20,000 USD1 in pool',
+    'Strict separation between pool and fee calculations',
+    'Only valid donations count toward pool balance and lottery entries'
   ]
 };
