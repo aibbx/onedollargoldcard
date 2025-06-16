@@ -167,17 +167,17 @@ const Terms = () => {
             </div>
           ))}
           
-          <div className="bg-white rounded-xl shadow-md p-8 border border-gold-100 transition-all duration-300 hover:shadow-lg">
-            <p className="text-gray-700 mb-8">
+          <div className="bg-white rounded-xl shadow-md p-8 border border-gold-100">
+            <p className="text-gray-700 mb-4">
               By using the USD1GoldCard platform, you acknowledge that you have read, understood, and agree 
-              to be bound by these Terms & Conditions. If you do not agree to these terms, please do not use the platform.
+              to be bound by these Terms & Conditions.
             </p>
-            <p className="text-gray-500 text-sm text-center mb-8">
+            <p className="text-gray-500 text-sm mb-6">
               Last updated: {currentDate}
             </p>
             <div className="flex justify-center">
               <Button 
-                className="bg-gold-500 hover:bg-gold-600 text-black font-medium transition-all duration-300 transform hover:scale-105"
+                className="bg-gold-500 hover:bg-gold-600 text-black font-medium transition-all duration-300"
                 onClick={() => navigate('/')}
               >
                 I Agree & Want to Donate Now

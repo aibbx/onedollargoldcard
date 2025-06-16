@@ -17,7 +17,7 @@ const FAQ = () => {
       <main className="container mx-auto px-4 py-24 max-w-6xl">
         <FAQHeader />
         
-        <div className="space-y-6 mb-12">
+        <div className="space-y-6">
           {faqSections.map((section, index) => (
             <FAQSection 
               key={index} 
