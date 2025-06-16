@@ -51,7 +51,7 @@ const Hero = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "OneUSD1GoldCard",
+    "name": "USD1GoldCard",
     "url": "https://onedollargoldcard.com",
     "logo": "https://onedollargoldcard.com/gold-card.svg",
     "description": "One USD1 for $5M - Win $5 million for Gold Card application through our on-chain system with referral rewards.",
@@ -123,7 +123,7 @@ const Hero = () => {
           className="text-4xl md:text-7xl font-bold mb-4 text-white tracking-wide"
           style={{ fontFamily: 'Georgia, serif' }}
         >
-          ONE USD1 GOLD CARD
+          USD1 GOLD CARD
         </h1>
         
         <div 
