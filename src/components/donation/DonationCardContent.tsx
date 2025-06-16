@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
@@ -69,8 +68,8 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
   });
 
   const handleShareOnX = () => {
-    const text = `🎯 One USD1 for $5M! Just joined the on-chain system to win $5M for Gold Card application! 💰 Pure blockchain system + amazing referral rewards! Your turn:`;
-    const url = "https://onedollargoldcard.com/";
+    const text = `🚀 ONE USD1 = $5M CHANCE! 💰 Just joined the revolutionary on-chain system to win $5M for Gold Card application! ⚡ 20K+ already in! Your turn:`;
+    const url = "https://usd1goldcard.com/";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
@@ -191,17 +190,17 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
               <Gift className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
-              <h4 className="font-bold text-white text-lg mb-3">Earn Big with Referrals!</h4>
+              <h4 className="font-bold text-white text-lg mb-3">🔥 Viral Referral Rewards!</h4>
               <p className="text-gray-300 text-sm mb-4 leading-relaxed">
                 Share your referral code and earn up to <strong className="text-purple-400">50% service fee</strong> on every 
-                donation from your referrals. Build your network and maximize your earnings!
+                donation from your referrals. Make it viral and maximize your earnings!
               </p>
               <button
                 onClick={handleShareOnX}
                 className="flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 shadow-lg shadow-purple-500/25"
               >
                 <Share2 className="w-4 h-4" />
-                Start Earning Now
+                🚀 Go Viral Now!
               </button>
             </div>
           </div>

@@ -10,11 +10,11 @@ interface SharePoolCardProps {
 
 const SharePoolCard = ({ title, onShare }: SharePoolCardProps) => {
   const handleShare = () => {
-    // Share with updated messaging focusing on "One USD1 for $5M"
-    const text = `🔥 One USD1 for $5M! Amazing on-chain lottery to win $5M for Gold Card application! 💎 Pure blockchain system + incredible referral rewards! Join the revolution:`;
-    const url = "https://onedollargoldcard.com/";
+    // Updated viral messaging for maximum X engagement
+    const text = `🚀 ONE USD1 = $5M CHANCE! 💰 Just joined the revolutionary on-chain system to win $5M for Gold Card application! ⚡ 20K+ already participating! Your turn:`;
+    const url = "https://usd1goldcard.com/";
     
-    // Open X.com (Twitter) share intent with the custom domain URL
+    // Open X.com (Twitter) share intent with viral messaging
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
