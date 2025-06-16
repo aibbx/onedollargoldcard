@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Link, useNavigate } from 'react-router-dom';
@@ -131,7 +132,7 @@ const Footer = () => {
                 className="flex items-center px-4 py-3 bg-blue-800/50 hover:bg-blue-700/50 rounded-lg border border-blue-600/50 hover:border-blue-500 transition-all duration-200 group text-left"
               >
                 <Home className="w-5 h-5 mr-3 text-blue-300" />
-                <span className="text-blue-100 group-hover:text-white font-semibold">One USD1 Gold Card</span>
+                <span className="text-blue-100 group-hover:text-white font-semibold">USD1 Gold Card</span>
               </button>
               
               <button 
