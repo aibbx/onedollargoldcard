@@ -34,6 +34,10 @@ export interface PoolStatus {
   last_updated?: string;
 }
 
+// Global channel references to prevent multiple subscriptions
+let poolStatusChannel: any = null;
+const userStatsChannels = new Map<string, any>();
+
 // 添加捐赠记录
 export const addDonation = async (donation: DbDonation): Promise<string | null> => {
   try {
@@ -135,9 +139,16 @@ export const getPoolStatus = async (): Promise<PoolStatus | null> => {
   }
 };
 
-// 实时订阅奖池状态变化
+// 实时订阅奖池状态变化 - 使用单例模式防止重复订阅
 export const subscribeToPoolStatus = (callback: (status: PoolStatus) => void) => {
-  return supabase
+  // 如果已经有活跃的订阅，先清理它
+  if (poolStatusChannel) {
+    supabase.removeChannel(poolStatusChannel);
+    poolStatusChannel = null;
+  }
+
+  // 创建新的订阅
+  poolStatusChannel = supabase
     .channel('pool-status-changes')
     .on(
       'postgres_changes',
@@ -157,12 +168,32 @@ export const subscribeToPoolStatus = (callback: (status: PoolStatus) => void) =>
       }
     )
     .subscribe();
+
+  // 返回清理函数
+  return {
+    unsubscribe: () => {
+      if (poolStatusChannel) {
+        supabase.removeChannel(poolStatusChannel);
+        poolStatusChannel = null;
+      }
+    }
+  };
 };
 
-// 实时订阅用户统计信息变化
+// 实时订阅用户统计信息变化 - 使用单例模式防止重复订阅
 export const subscribeToUserStats = (walletAddress: string, callback: (stats: UserStats) => void) => {
-  return supabase
-    .channel(`user-stats-${walletAddress}`)
+  const channelKey = `user-stats-${walletAddress}`;
+  
+  // 如果已经有这个钱包地址的订阅，先清理它
+  if (userStatsChannels.has(channelKey)) {
+    const existingChannel = userStatsChannels.get(channelKey);
+    supabase.removeChannel(existingChannel);
+    userStatsChannels.delete(channelKey);
+  }
+
+  // 创建新的订阅
+  const channel = supabase
+    .channel(channelKey)
     .on(
       'postgres_changes',
       {
@@ -177,4 +208,18 @@ export const subscribeToUserStats = (walletAddress: string, callback: (stats: Us
       }
     )
     .subscribe();
+
+  // 存储频道引用
+  userStatsChannels.set(channelKey, channel);
+
+  // 返回清理函数
+  return {
+    unsubscribe: () => {
+      if (userStatsChannels.has(channelKey)) {
+        const channel = userStatsChannels.get(channelKey);
+        supabase.removeChannel(channel);
+        userStatsChannels.delete(channelKey);
+      }
+    }
+  };
 };
