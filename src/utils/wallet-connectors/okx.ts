@@ -1,12 +1,45 @@
 
 import { WalletConnectionResult } from './types';
 
+// Helper function to detect if we're on mobile
+const isMobileDevice = (): boolean => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
+// Helper function to open OKX mobile app
+const openOKXMobile = (dappUrl: string): void => {
+  const okxAppUrl = `okx://www.okx.com/web3/dapp?dappUrl=${encodeURIComponent(dappUrl)}`;
+  window.open(okxAppUrl, '_blank');
+  
+  // Fallback to OKX website if app doesn't open
+  setTimeout(() => {
+    window.open('https://www.okx.com/web3', '_blank');
+  }, 2000);
+};
+
 export const connectOKXWallet = async (): Promise<WalletConnectionResult> => {
   console.log('尝试连接 OKX 钱包...');
   
+  const isMobile = isMobileDevice();
+  
+  // On mobile, check if OKX is available
+  if (isMobile && typeof window !== 'undefined') {
+    // If no OKX provider on mobile, redirect to OKX app
+    if (!window.okxwallet || !window.okxwallet.ethereum) {
+      console.log('移动设备上未检测到 OKX 钱包，尝试打开 OKX 应用...');
+      const currentUrl = window.location.origin;
+      openOKXMobile(currentUrl);
+      throw new Error('正在打开 OKX 应用，请在应用中完成连接后返回');
+    }
+  }
+  
   if (typeof window === 'undefined' || !window.okxwallet || !window.okxwallet.ethereum) {
     console.error('OKX 钱包未安装');
-    throw new Error('OKX 钱包未安装，请先安装 OKX Wallet 扩展程序');
+    if (isMobile) {
+      throw new Error('请安装 OKX 移动应用，或在 OKX 浏览器中打开此页面');
+    } else {
+      throw new Error('OKX 钱包未安装，请先安装 OKX Wallet 扩展程序');
+    }
   }
   
   const provider = window.okxwallet.ethereum;
@@ -70,6 +103,8 @@ export const connectOKXWallet = async (): Promise<WalletConnectionResult> => {
       throw new Error('您拒绝了连接请求，请重试并在 OKX 钱包中确认连接');
     } else if (error.code === -32002) {
       throw new Error('OKX 钱包中已有待处理的连接请求，请检查您的钱包');
+    } else if (error.message && error.message.includes('打开 OKX 应用')) {
+      throw error; // 重新抛出移动端重定向消息
     } else if (error.message) {
       throw new Error(`OKX 钱包连接失败: ${error.message}`);
     } else {

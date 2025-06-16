@@ -1,12 +1,40 @@
 
 import { WalletConnectionResult } from './types';
 
+// Helper function to detect if we're on mobile
+const isMobileDevice = (): boolean => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
+// Helper function to open MetaMask mobile app
+const openMetaMaskMobile = (dappUrl: string): void => {
+  const metamaskAppUrl = `https://metamask.app.link/dapp/${encodeURIComponent(dappUrl)}`;
+  window.open(metamaskAppUrl, '_blank');
+};
+
 export const connectMetaMaskWallet = async (): Promise<WalletConnectionResult> => {
   console.log('尝试连接 MetaMask 钱包...');
   
+  const isMobile = isMobileDevice();
+  
+  // On mobile, check if MetaMask is available
+  if (isMobile && typeof window !== 'undefined') {
+    // If no ethereum provider on mobile, redirect to MetaMask app
+    if (!window.ethereum) {
+      console.log('移动设备上未检测到 MetaMask，尝试打开 MetaMask 应用...');
+      const currentUrl = window.location.origin;
+      openMetaMaskMobile(currentUrl);
+      throw new Error('正在打开 MetaMask 应用，请在应用中完成连接后返回');
+    }
+  }
+  
   if (typeof window === 'undefined' || !window.ethereum) {
     console.error('MetaMask 未安装');
-    throw new Error('MetaMask 钱包未安装，请先安装 MetaMask 扩展程序');
+    if (isMobile) {
+      throw new Error('请安装 MetaMask 移动应用，或在 MetaMask 浏览器中打开此页面');
+    } else {
+      throw new Error('MetaMask 钱包未安装，请先安装 MetaMask 扩展程序');
+    }
   }
   
   // 检查是否真的是 MetaMask
@@ -79,6 +107,8 @@ export const connectMetaMaskWallet = async (): Promise<WalletConnectionResult> =
       throw new Error('您拒绝了连接请求，请重试并在 MetaMask 中确认连接');
     } else if (error.code === -32002) {
       throw new Error('MetaMask 中已有待处理的连接请求，请检查您的钱包');
+    } else if (error.message && error.message.includes('打开 MetaMask 应用')) {
+      throw error; // 重新抛出移动端重定向消息
     } else if (error.message) {
       throw new Error(`MetaMask 连接失败: ${error.message}`);
     } else {
