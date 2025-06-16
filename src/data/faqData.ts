@@ -14,8 +14,8 @@ export const faqSections: FAQSection[] = [
     title: 'General Questions',
     questions: [
       {
-        q: 'What is OneDollarGoldCard?',
-        a: 'OneDollarGoldCard is a decentralized donation platform built on EVM blockchain that allows non-US citizens to donate USD1 and potentially win $5 million to fund their Gold Card application.'
+        q: 'What is USD1GoldCard?',
+        a: 'USD1GoldCard is a decentralized donation platform built on EVM blockchain that allows non-US citizens to donate USD1 and potentially win $5 million to fund their Gold Card application.'
       },
       {
         q: 'What is the "Gold Card"?',
@@ -27,7 +27,7 @@ export const faqSections: FAQSection[] = [
       },
       {
         q: 'Is this platform associated with the US government?',
-        a: 'No, OneDollarGoldCard is not affiliated with any government entity or official immigration program. We are an independent platform facilitating donations and prize distribution.'
+        a: 'No, USD1GoldCard is not affiliated with any government entity or official immigration program. We are an independent platform facilitating donations and prize distribution.'
       }
     ]
   },

@@ -16,7 +16,7 @@ const Terms = () => {
       title: "1. Eligibility",
       items: [
         {
-          point: "1.1. Participation in the OneDollarGoldCard platform is strictly limited to non-US citizens and non-green card holders.",
+          point: "1.1. Participation in the USD1GoldCard platform is strictly limited to non-US citizens and non-green card holders.",
         },
         {
           point: "1.2. US citizens and green card holders are expressly prohibited from participating.",
@@ -33,7 +33,7 @@ const Terms = () => {
       title: "2. Platform Operation",
       items: [
         {
-          point: "2.1. OneDollarGoldCard operates as a donation platform where participants donate USD1 tokens on the EVM blockchain.",
+          point: "2.1. USD1GoldCard operates as a donation platform where participants donate USD1 tokens on the EVM blockchain.",
         },
         {
           point: "2.2. 100% of each donation goes directly to the prize pool. An additional 5% service fee is charged separately and is allocated to platform fees for audits, legal compliance, and operations.",
@@ -76,7 +76,7 @@ const Terms = () => {
           point: "4.2. The winner is solely responsible for any taxes, fees, or other obligations related to receiving the prize.",
         },
         {
-          point: "4.3. OneDollarGoldCard does not guarantee that winning the prize will result in a successful Gold Card application or US residency.",
+          point: "4.3. USD1GoldCard does not guarantee that winning the prize will result in a successful Gold Card application or US residency.",
         },
         {
           point: "4.4. Winners should consult with qualified immigration attorneys regarding their Gold Card application.",
@@ -87,7 +87,7 @@ const Terms = () => {
       title: "5. Disclaimers",
       items: [
         {
-          point: "5.1. OneDollarGoldCard is not affiliated with any government entity or official immigration program.",
+          point: "5.1. USD1GoldCard is not affiliated with any government entity or official immigration program.",
         },
         {
           point: "5.2. Participation is at your own risk. We make no guarantees regarding the success of immigration applications.",
@@ -150,7 +150,7 @@ const Terms = () => {
           Terms & Conditions
         </h1>
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-          Please read these terms carefully before using OneDollarGoldCard.
+          Please read these terms carefully before using USD1GoldCard.
         </p>
         
         <div className="space-y-6">
@@ -169,7 +169,7 @@ const Terms = () => {
           
           <div className="bg-white rounded-xl shadow-md p-8 border border-gold-100 transition-all duration-300 hover:shadow-lg">
             <p className="text-gray-700 mb-8">
-              By using the OneDollarGoldCard platform, you acknowledge that you have read, understood, and agree 
+              By using the USD1GoldCard platform, you acknowledge that you have read, understood, and agree 
               to be bound by these Terms & Conditions. If you do not agree to these terms, please do not use the platform.
             </p>
             <p className="text-gray-500 text-sm text-center mb-8">

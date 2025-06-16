@@ -5,7 +5,6 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import FAQHeader from '../components/faq/FAQHeader';
 import FAQSection from '../components/faq/FAQSection';
-import ContactSection from '../components/faq/ContactSection';
 import { faqSections } from '../data/faqData';
 
 const FAQ = () => {
@@ -27,8 +26,6 @@ const FAQ = () => {
             />
           ))}
         </div>
-
-        <ContactSection />
       </main>
 
       <Footer />
