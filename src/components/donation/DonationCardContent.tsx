@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from '../../context/WalletContext';
+import { Gift, Share2 } from 'lucide-react';
 
 // Import components
 import DonationIncentive from './DonationIncentive';
@@ -93,6 +94,25 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
           setReferralCode={setReferralCode}
           disabled={isLoading}
         />
+        
+        {/* Referral Rewards Information */}
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-center gap-3 mb-2">
+            <Gift className="w-5 h-5 text-green-600" />
+            <h4 className="font-semibold text-green-800">Earn Referral Rewards!</h4>
+          </div>
+          <p className="text-green-700 text-sm mb-3">
+            Share your referral code and earn up to <strong>10% commission</strong> on every donation from your referrals. 
+            The more you share, the more you earn!
+          </p>
+          <button
+            onClick={handleShareOnX}
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+          >
+            <Share2 className="w-4 h-4" />
+            Share & Start Earning
+          </button>
+        </div>
         
         <DonationSummary 
           fee={fee.toFixed(2)}

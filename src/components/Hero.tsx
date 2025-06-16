@@ -1,7 +1,6 @@
-
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Share2, Sparkles, Shield, CheckCircle } from 'lucide-react';
+import { Share2, Sparkles, Shield, CheckCircle, Gift } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import Logo from './Logo';
 
@@ -137,6 +136,32 @@ const Hero = () => {
           Fully transparent, secure, and built on EVM chains with no government affiliation.
         </p>
         
+        {/* Referral Rewards Highlight */}
+        <div className="mb-8 max-w-4xl mx-auto">
+          <div className="bg-gradient-to-r from-gold-500/20 to-gold-600/20 backdrop-blur-sm border border-gold-400/50 rounded-xl p-6 shadow-2xl">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Gift className="w-8 h-8 text-gold-400 flex-shrink-0" />
+              <h3 className="text-2xl font-bold text-gold-400 uppercase tracking-wide">MASSIVE REFERRAL REWARDS</h3>
+            </div>
+            <p className="text-blue-100 leading-relaxed text-lg mb-4">
+              <strong>Earn Big by Sharing!</strong> Get rewarded for every person you refer to our USD1 on-chain lottery. 
+              The more you share, the more you earn. Build your referral network and enjoy passive income from our 
+              decentralized reward system!
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
+                <span className="text-gold-400 font-bold">💰 Up to 10% Commission</span>
+              </div>
+              <div className="bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
+                <span className="text-gold-400 font-bold">🔗 Blockchain Verified</span>
+              </div>
+              <div className="bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
+                <span className="text-gold-400 font-bold">⚡ Instant Payouts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         {/* Trust Indicators */}
         <div className="mb-8 flex flex-wrap justify-center gap-4 text-blue-200">
           <div className="flex items-center gap-2 bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
@@ -169,12 +194,12 @@ const Hero = () => {
           </button>
           <button 
             onClick={handleShare}
-            className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-900 font-bold py-4 px-8 rounded-lg transition-all duration-200 min-w-[220px] text-lg uppercase tracking-wide"
-            aria-label="Share the Gold Card initiative"
+            className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-4 px-8 rounded-lg transition-all duration-200 min-w-[220px] text-lg uppercase tracking-wide border-2 border-green-500 shadow-2xl transform hover:scale-105"
+            aria-label="Share to earn referral rewards"
           >
             <span className="flex items-center justify-center gap-2">
-              <Share2 className="w-5 h-5" />
-              SHARE INITIATIVE
+              <Gift className="w-5 h-5" />
+              SHARE & EARN
             </span>
           </button>
         </div>
