@@ -10,8 +10,8 @@ interface SharePoolCardProps {
 
 const SharePoolCard = ({ title, onShare }: SharePoolCardProps) => {
   const handleShare = () => {
-    // Share with custom domain URL - optimized messaging for USD1 on-chain lottery and referral rewards
-    const text = `🔥 Amazing USD1 On-Chain Lottery! Just donated to win $5M for Gold Card! 💎 Pure blockchain system + incredible referral rewards! Join the revolution:`;
+    // Share with updated messaging focusing on "One USD1 for $5M"
+    const text = `🔥 One USD1 for $5M! Amazing on-chain lottery to win $5M for Gold Card application! 💎 Pure blockchain system + incredible referral rewards! Join the revolution:`;
     const url = "https://onedollargoldcard.com/";
     
     // Open X.com (Twitter) share intent with the custom domain URL
@@ -35,7 +35,7 @@ const SharePoolCard = ({ title, onShare }: SharePoolCardProps) => {
           <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
         </svg>
         Share on X
-      </Button>
+      </button>
     </div>
   );
 };

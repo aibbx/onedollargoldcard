@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Share2, Sparkles, Shield, CheckCircle, Gift } from 'lucide-react';
@@ -31,7 +32,7 @@ const Hero = () => {
 
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
-    const text = `🚀 Join the USD1 On-Chain Lottery! Win $5M for Gold Card application! 💰 Pure blockchain donation & draw system + HUGE referral rewards! Start with just 1 USD1! #OneDollarGoldCard #USD1 #OnChainLottery #GoldCard`;
+    const text = `🎯 One USD1 for $5M! Just joined the on-chain lottery to win $5M for Gold Card application! 💰 Pure blockchain system + HUGE referral rewards! Your turn:`;
     const url = "https://onedollargoldcard.com/";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
@@ -53,7 +54,7 @@ const Hero = () => {
     "name": "OneDollarGoldCard",
     "url": "https://onedollargoldcard.com",
     "logo": "https://onedollargoldcard.com/gold-card.svg",
-    "description": "Independent blockchain platform for the Gold Card initiative - democratizing access to US residency opportunities.",
+    "description": "One USD1 for $5M - Win $5 million for Gold Card application through our on-chain lottery system with referral rewards.",
     "sameAs": [
       "https://onedollargoldcard.xyz",
       "https://1dollargoldcard.com",
@@ -64,8 +65,8 @@ const Hero = () => {
   const productData = {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": "Gold Card Opportunity",
-    "description": "Independent opportunity to win $5 million for applying to the Gold Card program.",
+    "name": "One USD1 Gold Card Lottery",
+    "description": "Win $5 million for Gold Card application with just one USD1 contribution to our on-chain lottery.",
     "offers": {
       "@type": "Offer",
       "price": "1.05",
@@ -79,6 +80,17 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900">
       <Helmet>
+        <title>One USD1 for $5M - Gold Card Application Lottery</title>
+        <meta name="description" content="Win $5 million for Gold Card application with just one USD1! On-chain lottery system with massive referral rewards. Join now!" />
+        <meta property="og:title" content="One USD1 for $5M - Win Gold Card Application Money!" />
+        <meta property="og:description" content="Join our on-chain lottery with just $1.05 USD1 and win $5M for your Gold Card application! Blockchain transparency + huge referral rewards!" />
+        <meta property="og:image" content="https://onedollargoldcard.com/social-share-card-updated.png" />
+        <meta property="og:url" content="https://onedollargoldcard.com" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="One USD1 for $5M - Win Gold Card Application Money!" />
+        <meta name="twitter:description" content="Join our on-chain lottery with just $1.05 USD1 and win $5M for your Gold Card application! Blockchain transparency + huge referral rewards!" />
+        <meta name="twitter:image" content="https://onedollargoldcard.com/social-share-card-updated.png" />
         <link rel="canonical" href="https://onedollargoldcard.com" />
         <link rel="alternate" href="https://onedollargoldcard.com" hrefLang="x-default" />
         <link rel="alternate" href="https://onedollargoldcard.com" hrefLang="en" />
