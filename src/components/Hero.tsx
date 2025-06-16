@@ -31,7 +31,7 @@ const Hero = () => {
           {/* Main heading */}
           <div className="mb-8">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              USD1GoldCard
+              One USD1,
               <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 bg-clip-text text-transparent">
                 Win $5M Gold Card
               </span>
