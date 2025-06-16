@@ -17,30 +17,43 @@ export const getExplorerUrl = (transactionId: string, walletType: WalletType): s
 export const detectWallets = (): Record<string, boolean> => {
   if (typeof window === 'undefined') return {};
   
-  console.log('Detecting wallets...');
+  console.log('正在检测钱包...');
   
   const availableWallets: Record<string, boolean> = {
     metamask: false,
-    okx: false
+    okx: false,
+    binance: false,
+    bitget: false
   };
   
-  // Check for MetaMask wallet
+  // 检测 MetaMask 钱包
   if (window.ethereum) {
-    console.log('Checking MetaMask: ethereum exists:', !!window.ethereum);
+    console.log('检测到 ethereum 对象:', !!window.ethereum);
     if (window.ethereum.isMetaMask) {
-      console.log('MetaMask secondary check:', !!window.ethereum.isMetaMask);
+      console.log('确认是 MetaMask 钱包');
       availableWallets.metamask = true;
     }
   }
   
-  // Check for OKX wallet
+  // 检测 OKX 钱包
   if (window.okxwallet && window.okxwallet.ethereum) {
-    console.log('Checking OKX: okxwallet exists:', !!window.okxwallet);
-    console.log('OKX secondary check:', !!(window.okxwallet.ethereum));
+    console.log('检测到 OKX 钱包');
     availableWallets.okx = true;
   }
   
-  console.log('Available wallets:', availableWallets);
+  // 检测 Binance 钱包
+  if (window.BinanceChain && window.BinanceChain.isBinance) {
+    console.log('检测到 Binance 钱包');
+    availableWallets.binance = true;
+  }
+  
+  // 检测 Bitget 钱包
+  if (window.bitkeep && window.bitkeep.ethereum) {
+    console.log('检测到 Bitget 钱包');
+    availableWallets.bitget = true;
+  }
+  
+  console.log('钱包检测结果:', availableWallets);
   return availableWallets;
 };
 

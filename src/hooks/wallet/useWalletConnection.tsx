@@ -14,7 +14,7 @@ export const useWalletConnection = () => {
 
   // Connect wallet handler
   const handleConnectWallet = async (type: WalletType): Promise<void> => {
-    console.log('准备连接钱包类型:', type);
+    console.log('开始连接钱包:', type);
     
     try {
       // 检查钱包是否已安装
@@ -35,7 +35,7 @@ export const useWalletConnection = () => {
       if (!walletCheckMap[type]()) {
         toast({
           title: "钱包未安装",
-          description: `请安装 ${type} 钱包扩展并刷新页面。`,
+          description: `请先安装 ${type} 钱包扩展程序，然后刷新页面重试。`,
           variant: "destructive",
         });
         
@@ -50,7 +50,7 @@ export const useWalletConnection = () => {
       // 显示连接中的提示
       toast({
         title: "正在连接钱包",
-        description: `正在连接到 ${type} 钱包，请在钱包中确认连接...`,
+        description: `正在连接到 ${type} 钱包，请在钱包中确认连接请求...`,
       });
       
       const result = await connectWalletUtil(type);
@@ -83,7 +83,7 @@ export const useWalletConnection = () => {
       // 显示成功消息
       toast({
         title: "钱包连接成功！",
-        description: `您的 ${type} 钱包已成功连接。现在可以开始捐赠了！`,
+        description: `您的 ${type} 钱包已成功连接到 BSC 网络。现在可以开始捐赠了！`,
       });
       
     } catch (error: any) {
@@ -91,10 +91,12 @@ export const useWalletConnection = () => {
       
       let errorMessage = '连接钱包时出现未知错误';
       
-      if (error.message.includes('用户拒绝')) {
+      if (error.message.includes('拒绝') || error.message.includes('rejected')) {
         errorMessage = '您拒绝了连接请求，请重试并在钱包中确认连接。';
-      } else if (error.message.includes('未安装')) {
-        errorMessage = `${type} 钱包未安装，请先安装钱包扩展。`;
+      } else if (error.message.includes('未安装') || error.message.includes('not installed')) {
+        errorMessage = `${type} 钱包未安装，请先安装钱包扩展程序。`;
+      } else if (error.message.includes('pending') || error.message.includes('待处理')) {
+        errorMessage = '钱包中有待处理的请求，请检查您的钱包并完成操作。';
       } else if (error.message) {
         errorMessage = error.message;
       }
