@@ -61,7 +61,7 @@ const Navbar = () => {
                 USD1GoldCard
               </span>
               <div className="text-gold-400 text-xs font-semibold uppercase tracking-wider -mt-1">
-                Fully On-Chain
+                Fully Secured On-Chain
               </div>
             </div>
           </a>

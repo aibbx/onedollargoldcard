@@ -131,7 +131,7 @@ const Hero = () => {
           className="mb-6 max-w-4xl mx-auto"
         >
           <h2 className="text-2xl md:text-4xl font-bold text-gold-400 uppercase tracking-wider mb-2">
-            Fully On-Chain Donation Initiatives
+            Fully Secured On-Chain Donation Initiatives
           </h2>
           <div className="w-32 h-1 bg-gold-400 mx-auto mb-4"></div>
           <p className="text-xl md:text-2xl text-blue-100 font-semibold">

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Link, useNavigate } from 'react-router-dom';
@@ -47,14 +46,14 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-b from-blue-900 to-blue-950 pt-16 pb-8 text-white">
       <div className="container-custom">
-        {/* Fully On-Chain Platform Statement Card */}
+        {/* Fully Secured On-Chain Platform Statement Card */}
         <div className="mb-12 bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-blue-400/30">
           <div className="flex items-start">
             <div className="text-gold-400 mr-6">
               <Award className="w-12 h-12" />
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-gold-400 mb-6 uppercase tracking-wide">Fully On-Chain Gold Card dApp</h3>
+              <h3 className="text-2xl font-bold text-gold-400 mb-6 uppercase tracking-wide">Fully Secured On-Chain Gold Card dApp</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-blue-800/50 p-6 rounded-lg border border-blue-600/50">
                   <div className="flex items-center mb-3">
@@ -106,11 +105,11 @@ const Footer = () => {
                 <span className="font-bold text-2xl text-white" style={{ fontFamily: 'Georgia, serif' }}>
                   USD1GoldCard
                 </span>
-                <div className="text-gold-400 text-sm font-semibold uppercase tracking-wide">Fully On-Chain</div>
+                <div className="text-gold-400 text-sm font-semibold uppercase tracking-wide">Fully Secured On-Chain</div>
               </div>
             </div>
             <p className="text-blue-200 mb-6 max-w-lg leading-relaxed">
-              A fully on-chain digital dApp for the Gold Card initiative, providing transparent blockchain-based 
+              A fully secured on-chain digital dApp for the Gold Card initiative, providing transparent blockchain-based 
               access to US residency opportunities through the community Gold Card program.
             </p>
             <div className="p-6 bg-red-900/30 border-l-4 border-red-400 rounded-r-lg">
@@ -119,7 +118,7 @@ const Footer = () => {
                 <p className="text-sm text-red-200 font-bold uppercase">Important Notice</p>
               </div>
               <p className="text-sm text-red-100">
-                This platform operates as a fully on-chain dApp and is not affiliated with any government agency or WFLI company. 
+                This platform operates as a fully secured on-chain dApp and is not affiliated with any government agency or WFLI company. 
                 All blockchain transactions are transparent and verifiable through public EVM ledgers.
               </p>
             </div>
@@ -161,10 +160,10 @@ const Footer = () => {
         <div className="border-t border-blue-700 pt-6 flex justify-between flex-col md:flex-row items-center">
           <div>
             <p className="text-sm text-blue-200 mb-2">
-              &copy; {currentYear} USD1GoldCard Fully On-Chain dApp Platform. All rights reserved.
+              &copy; {currentYear} USD1GoldCard Fully Secured On-Chain dApp Platform. All rights reserved.
             </p>
             <p className="text-xs text-blue-300">
-              Blockchain transparency • Fully on-chain operation • Equal opportunity access
+              Blockchain transparency • Fully secured on-chain operation • Equal opportunity access
             </p>
           </div>
           

@@ -1,3 +1,4 @@
+
 export const id = {
   // Navigation
   'nav.home': 'Beranda',

@@ -1,3 +1,4 @@
+
 export const pt = {
   // Navigation
   'nav.home': 'Início',

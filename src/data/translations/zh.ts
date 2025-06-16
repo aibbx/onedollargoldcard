@@ -1,3 +1,4 @@
+
 export const zh = {
   // Navigation
   'nav.home': '首頁',
