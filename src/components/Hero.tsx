@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Share2, Sparkles, Shield, CheckCircle } from 'lucide-react';
@@ -119,7 +120,7 @@ const Hero = () => {
           className="mb-6 max-w-4xl mx-auto"
         >
           <h2 className="text-2xl md:text-4xl font-bold text-gold-400 uppercase tracking-wider mb-2">
-            INDEPENDENT dApp PLATFORM
+            Fully On-Chain Donation Initiatives
           </h2>
           <div className="w-32 h-1 bg-gold-400 mx-auto mb-4"></div>
           <p className="text-xl md:text-2xl text-blue-100 font-semibold">
