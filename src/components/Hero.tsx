@@ -31,9 +31,9 @@ const Hero = () => {
           {/* Main heading */}
           <div className="mb-8">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              One Dollar,
+              One USD1,
               <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 bg-clip-text text-transparent">
-                One Dream
+                Win $5M Gold Card
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
