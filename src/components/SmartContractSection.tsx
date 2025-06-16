@@ -38,7 +38,7 @@ const SmartContractSection: React.FC = () => {
   ];
 
   const handleViewContract = () => {
-    navigate('/how-it-works', { state: { scrollToSection: 'smartContract' } });
+    navigate('/how-it-works', { state: { scrollToSection: 'smart-contract' } });
   };
 
   return (
@@ -70,7 +70,7 @@ const SmartContractSection: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left: Contract Features */}
           <div className="space-y-8">
-            <h3 className="text-2xl font-bold text-white mb-6">Core Features</h3>
+            <h3 className="text-2xl font-bold text-white mb-6 text-left">Core Features</h3>
             
             {contractFeatures.map((feature, index) => (
               <div 
@@ -80,7 +80,7 @@ const SmartContractSection: React.FC = () => {
                 <div className={`p-3 rounded-lg bg-gradient-to-br ${feature.color}`}>
                   {feature.icon}
                 </div>
-                <div>
+                <div className="text-left">
                   <h4 className="text-lg font-semibold text-white mb-2">{feature.title}</h4>
                   <p className="text-gray-300">{feature.description}</p>
                 </div>
@@ -90,7 +90,7 @@ const SmartContractSection: React.FC = () => {
 
           {/* Right: Contract Rules */}
           <div className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-            <h3 className="text-2xl font-bold text-white mb-6">{t('smartContract.rules.title')}</h3>
+            <h3 className="text-2xl font-bold text-white mb-6 text-left">{t('smartContract.rules.title')}</h3>
             
             <div className="space-y-4 mb-8">
               {contractRules.map((rule, index) => (
@@ -98,7 +98,7 @@ const SmartContractSection: React.FC = () => {
                   <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="text-white text-sm font-bold">{index + 1}</span>
                   </div>
-                  <p className="text-gray-300 leading-relaxed">{rule}</p>
+                  <p className="text-gray-300 leading-relaxed text-left">{rule}</p>
                 </div>
               ))}
             </div>
@@ -119,13 +119,13 @@ const SmartContractSection: React.FC = () => {
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white/5 rounded-lg p-4">
-              <div className="text-sm font-medium text-gray-400 mb-2">{t('smartContract.addresses.pool')}</div>
+              <div className="text-sm font-medium text-gray-400 mb-2 text-left">{t('smartContract.addresses.pool')}</div>
               <code className="text-blue-400 font-mono text-sm break-all">
                 0x6c521c6eB53361e901EC2bC1a2D392c8e9796f77
               </code>
             </div>
             <div className="bg-white/5 rounded-lg p-4">
-              <div className="text-sm font-medium text-gray-400 mb-2">{t('smartContract.addresses.fee')}</div>
+              <div className="text-sm font-medium text-gray-400 mb-2 text-left">{t('smartContract.addresses.fee')}</div>
               <code className="text-purple-400 font-mono text-sm break-all">
                 0x6c521c6eB53361e901EC2bC1a2D392c8e9796f77
               </code>
