@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Hero from '../components/Hero';
 import Features from '../components/Features';
+import SmartContractSection from '../components/SmartContractSection';
 import DonationCard from '../components/DonationCard';
 import PoolStats from '../components/PoolStats';
 
@@ -28,6 +29,7 @@ const Index = () => {
       <main className="relative">
         <Hero />
         <Features />
+        <SmartContractSection />
         <div className="relative bg-gradient-to-b from-slate-800 to-slate-900">
           <div id="donation-section">
             <DonationCard />
