@@ -27,8 +27,9 @@ export const usePoolStats = () => {
         if (poolStatus) {
           console.log('从Supabase获取的奖池状态:', poolStatus);
           
-          // 设置奖池金额
-          setPoolAmount(poolStatus.total_amount);
+          // 设置奖池金额 - 只计算pool部分（95%），不包括fee
+          const poolOnlyAmount = poolStatus.pool_amount || (poolStatus.total_amount * 0.95);
+          setPoolAmount(poolOnlyAmount);
           
           // 设置目标金额
           setTargetAmount(poolStatus.target_amount);
@@ -36,18 +37,18 @@ export const usePoolStats = () => {
           // 设置捐赠者总数
           setTotalDonors(poolStatus.participant_count);
           
-          // 计算进度百分比
-          const progressPercentage = (poolStatus.total_amount / poolStatus.target_amount) * 100;
+          // 计算进度百分比 - 基于pool金额，不包括fee
+          const progressPercentage = (poolOnlyAmount / poolStatus.target_amount) * 100;
           setProgress(progressPercentage);
         } else {
-          console.warn('无法从Supabase获取奖池状态，使用默认值');
+          console.warn('无法从Supabase获取奖池状态，使用本地计算');
           
           // 使用捐赠数据计算默认值
-          let calculatedAmount = 0;
+          let calculatedTotal = 0;
           let uniqueWallets = new Set();
           
           if (donations && donations.length > 0) {
-            calculatedAmount = donations.reduce((sum, donation) => sum + donation.amount, 0);
+            calculatedTotal = donations.reduce((sum, donation) => sum + donation.amount, 0);
             donations.forEach(donation => {
               if (donation.transactionId) {
                 uniqueWallets.add(donation.transactionId);
@@ -55,10 +56,12 @@ export const usePoolStats = () => {
             });
           }
           
-          setPoolAmount(calculatedAmount);
-          setTotalDonors(Math.max(uniqueWallets.size, 50)); // 至少50个捐赠者用于UI目的
+          // 计算pool金额（用户捐赠总额的95%进入pool，5%进入fee）
+          const poolOnlyAmount = calculatedTotal * 0.95;
+          setPoolAmount(poolOnlyAmount);
+          setTotalDonors(Math.max(uniqueWallets.size, 1)); // 至少1个捐赠者
           
-          const progressPercentage = (calculatedAmount / targetAmount) * 100;
+          const progressPercentage = (poolOnlyAmount / targetAmount) * 100;
           setProgress(progressPercentage);
         }
         
@@ -79,6 +82,12 @@ export const usePoolStats = () => {
           description: "使用缓存数据代替。请刷新重试。",
           variant: "destructive",
         });
+        
+        // 设置默认值以防止UI崩溃
+        setPoolAmount(0);
+        setTotalDonors(0);
+        setProgress(0);
+        setTimeLeft('90d 0h 0m');
       } finally {
         setIsLoading(false);
       }
@@ -86,17 +95,20 @@ export const usePoolStats = () => {
     
     fetchPoolStats();
     
-    // 设置刷新间隔 - 减少频率以防止速率限制
-    const interval = setInterval(fetchPoolStats, 300000); // 每5分钟刷新一次
+    // 设置刷新间隔 - 每5分钟刷新一次
+    const interval = setInterval(fetchPoolStats, 300000);
     
     // 订阅奖池状态的实时更新
     const subscription = subscribeToPoolStatus((status) => {
       console.log('收到奖池状态更新:', status);
-      setPoolAmount(status.total_amount);
+      
+      // 计算pool金额（95%进入pool，5%进入fee）
+      const poolOnlyAmount = status.pool_amount || (status.total_amount * 0.95);
+      setPoolAmount(poolOnlyAmount);
       setTargetAmount(status.target_amount);
       setTotalDonors(status.participant_count);
       
-      const progressPercentage = (status.total_amount / status.target_amount) * 100;
+      const progressPercentage = (poolOnlyAmount / status.target_amount) * 100;
       setProgress(progressPercentage);
     });
     
@@ -104,19 +116,7 @@ export const usePoolStats = () => {
       clearInterval(interval);
       supabase.removeChannel(subscription);
     };
-  }, []);
-  
-  // 获取BNB价格的辅助函数
-  const fetchBnbPrice = async (): Promise<number> => {
-    try {
-      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd');
-      const data = await response.json();
-      return data.binancecoin.usd;
-    } catch (error) {
-      console.error('获取BNB价格错误:', error);
-      return 250; // API不可用时的后备价格
-    }
-  };
+  }, [donations, toast]);
 
   return {
     poolAmount,

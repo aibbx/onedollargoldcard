@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from '../../context/WalletContext';
+import { usePoolStats } from '../../hooks/usePoolStats';
 import { Gift, Share2, Wallet, TrendingUp } from 'lucide-react';
 
 // Import components
@@ -32,6 +33,14 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
     totalDonationAmount,
     winningChance
   } = useWallet();
+
+  // Get real pool data
+  const { 
+    poolAmount, 
+    targetAmount, 
+    progress, 
+    isLoading: poolLoading 
+  } = usePoolStats();
   
   const {
     amount, 
@@ -74,6 +83,16 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
     handleAmountChange(e.target.value);
   };
 
+  const formatCurrency = (amount: number) => {
+    if (amount >= 1000000) {
+      return `$${(amount / 1000000).toFixed(2)}M`;
+    } else if (amount >= 1000) {
+      return `$${(amount / 1000).toFixed(1)}K`;
+    } else {
+      return `$${amount.toLocaleString()}`;
+    }
+  };
+
   return (
     <div className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
       {/* Header with gradient */}
@@ -86,7 +105,7 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
       </div>
       
       <div className="p-8 space-y-8">
-        {/* Live pool status */}
+        {/* Live pool status - now using real data */}
         <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 rounded-2xl p-6 border border-green-500/20">
           <div className="flex items-center justify-between">
             <div>
@@ -94,13 +113,22 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
                 <TrendingUp className="w-4 h-4 text-green-400" />
                 <span className="text-green-400 font-medium">Live Pool Status</span>
               </div>
-              <div className="text-2xl font-bold text-white">$2,143,567 USD1</div>
-              <div className="text-gray-300 text-sm">Target: $10,000,000 USD1</div>
+              <div className="text-2xl font-bold text-white">
+                {poolLoading ? "Loading..." : `${formatCurrency(poolAmount)} USD1`}
+              </div>
+              <div className="text-gray-300 text-sm">
+                Target: {formatCurrency(targetAmount)} USD1
+              </div>
             </div>
             <div className="text-right">
-              <div className="text-green-400 text-sm font-medium">21.4% Complete</div>
+              <div className="text-green-400 text-sm font-medium">
+                {poolLoading ? "..." : `${progress.toFixed(1)}% Complete`}
+              </div>
               <div className="w-20 h-2 bg-gray-700 rounded-full mt-2">
-                <div className="w-1/5 h-full bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"></div>
+                <div 
+                  className="h-full bg-gradient-to-r from-green-400 to-emerald-400 rounded-full transition-all duration-1000"
+                  style={{ width: `${Math.min(progress, 100)}%` }}
+                ></div>
               </div>
             </div>
           </div>

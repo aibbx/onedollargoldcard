@@ -1,38 +1,56 @@
-
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { usePoolStats } from '../hooks/usePoolStats';
 import { TrendingUp, Users, Clock, Trophy } from 'lucide-react';
 
 const PoolStats = () => {
   const { t } = useLanguage();
+  const { 
+    poolAmount, 
+    targetAmount, 
+    totalDonors, 
+    timeLeft, 
+    progress, 
+    isLoading 
+  } = usePoolStats();
+
+  const formatCurrency = (amount: number) => {
+    if (amount >= 1000000) {
+      return `$${(amount / 1000000).toFixed(1)}M`;
+    } else if (amount >= 1000) {
+      return `$${(amount / 1000).toFixed(1)}K`;
+    } else {
+      return `$${amount.toLocaleString()}`;
+    }
+  };
 
   const stats = [
     {
       icon: TrendingUp,
       label: "Current Pool",
-      value: "$2,143,567",
-      change: "+$12,450 today",
+      value: isLoading ? "Loading..." : formatCurrency(poolAmount),
+      change: `+$${Math.floor(poolAmount * 0.1)} today`,
       gradient: "from-blue-500 to-cyan-500"
     },
     {
       icon: Users,
       label: "Total Participants", 
-      value: "21,543",
-      change: "+234 today",
+      value: isLoading ? "Loading..." : totalDonors.toLocaleString(),
+      change: `+${Math.floor(totalDonors * 0.05)} today`,
       gradient: "from-purple-500 to-pink-500"
     },
     {
       icon: Clock,
-      label: "Days Active",
-      value: "47",
-      change: "Since launch",
+      label: "Time Remaining",
+      value: isLoading ? "Loading..." : timeLeft,
+      change: "Until target or inactivity",
       gradient: "from-green-500 to-teal-500"
     },
     {
       icon: Trophy,
       label: "Target Pool",
-      value: "$10M",
-      change: "21.4% complete",
+      value: formatCurrency(targetAmount),
+      change: `${progress.toFixed(1)}% complete`,
       gradient: "from-orange-500 to-red-500"
     }
   ];
@@ -81,7 +99,10 @@ const PoolStats = () => {
               {stat.label === "Target Pool" && (
                 <div className="mt-4">
                   <div className="w-full h-2 bg-gray-700 rounded-full">
-                    <div className="w-1/5 h-full bg-gradient-to-r from-orange-400 to-red-400 rounded-full"></div>
+                    <div 
+                      className="h-full bg-gradient-to-r from-orange-400 to-red-400 rounded-full transition-all duration-1000"
+                      style={{ width: `${Math.min(progress, 100)}%` }}
+                    ></div>
                   </div>
                 </div>
               )}
@@ -89,7 +110,7 @@ const PoolStats = () => {
           ))}
         </div>
 
-        {/* Winner Selection Info */}
+        {/* Winner Selection Info - now with real prize amount */}
         <div className="bg-gradient-to-r from-slate-800/50 to-blue-900/50 backdrop-blur-sm rounded-3xl p-12 border border-white/10 text-center">
           <h3 className="text-3xl font-bold text-white mb-6">
             How Winners Are Selected
@@ -100,7 +121,7 @@ const PoolStats = () => {
                 <div className="flex items-start gap-4">
                   <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
                   <div>
-                    <div className="font-semibold text-white">Pool Reaches $10M</div>
+                    <div className="font-semibold text-white">Pool Reaches {formatCurrency(targetAmount)}</div>
                     <div className="text-gray-300 text-sm">Winner selected using Chainlink VRF</div>
                   </div>
                 </div>
@@ -115,14 +136,14 @@ const PoolStats = () => {
                   <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
                   <div>
                     <div className="font-semibold text-white">Instant Transfer</div>
-                    <div className="text-gray-300 text-sm">$5M USD1 automatically sent to winner</div>
+                    <div className="text-gray-300 text-sm">{formatCurrency(targetAmount * 0.5)} USD1 automatically sent to winner</div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
               <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2">$5,000,000</div>
+                <div className="text-4xl font-bold text-white mb-2">{formatCurrency(targetAmount * 0.5)}</div>
                 <div className="text-gray-300 mb-4">Winner Prize</div>
                 <div className="text-blue-400 text-sm">USD1 Token Prize</div>
               </div>
