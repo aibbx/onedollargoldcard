@@ -32,7 +32,7 @@ const Hero = () => {
 
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
-    const text = `🎯 One USD1 for $5M! Just joined the on-chain lottery to win $5M for Gold Card application! 💰 Pure blockchain system + HUGE referral rewards! Your turn:`;
+    const text = `🎯 One USD1 for $5M! Just joined the on-chain system to win $5M for Gold Card application! 💰 Pure blockchain system + HUGE referral rewards! Your turn:`;
     const url = "https://onedollargoldcard.com/";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
@@ -51,10 +51,10 @@ const Hero = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "OneDollarGoldCard",
+    "name": "OneUSD1GoldCard",
     "url": "https://onedollargoldcard.com",
     "logo": "https://onedollargoldcard.com/gold-card.svg",
-    "description": "One USD1 for $5M - Win $5 million for Gold Card application through our on-chain lottery system with referral rewards.",
+    "description": "One USD1 for $5M - Win $5 million for Gold Card application through our on-chain system with referral rewards.",
     "sameAs": [
       "https://onedollargoldcard.xyz",
       "https://1dollargoldcard.com",
@@ -65,8 +65,8 @@ const Hero = () => {
   const productData = {
     "@context": "https://schema.org",
     "@type": "Product",
-    "name": "One USD1 Gold Card Lottery",
-    "description": "Win $5 million for Gold Card application with just one USD1 contribution to our on-chain lottery.",
+    "name": "One USD1 Gold Card System",
+    "description": "Win $5 million for Gold Card application with just one USD1 contribution to our on-chain system.",
     "offers": {
       "@type": "Offer",
       "price": "1.05",
@@ -80,16 +80,16 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900">
       <Helmet>
-        <title>One USD1 for $5M - Gold Card Application Lottery</title>
-        <meta name="description" content="Win $5 million for Gold Card application with just one USD1! On-chain lottery system with massive referral rewards. Join now!" />
+        <title>One USD1 for $5M - Gold Card Application System</title>
+        <meta name="description" content="Win $5 million for Gold Card application with just one USD1! On-chain system with massive referral rewards. Join now!" />
         <meta property="og:title" content="One USD1 for $5M - Win Gold Card Application Money!" />
-        <meta property="og:description" content="Join our on-chain lottery with just $1.05 USD1 and win $5M for your Gold Card application! Blockchain transparency + huge referral rewards!" />
+        <meta property="og:description" content="Join our on-chain system with just $1.05 USD1 and win $5M for your Gold Card application! Blockchain transparency + huge referral rewards!" />
         <meta property="og:image" content="https://onedollargoldcard.com/social-share-card-updated.png" />
         <meta property="og:url" content="https://onedollargoldcard.com" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="One USD1 for $5M - Win Gold Card Application Money!" />
-        <meta name="twitter:description" content="Join our on-chain lottery with just $1.05 USD1 and win $5M for your Gold Card application! Blockchain transparency + huge referral rewards!" />
+        <meta name="twitter:description" content="Join our on-chain system with just $1.05 USD1 and win $5M for your Gold Card application! Blockchain transparency + huge referral rewards!" />
         <meta name="twitter:image" content="https://onedollargoldcard.com/social-share-card-updated.png" />
         <link rel="canonical" href="https://onedollargoldcard.com" />
         <link rel="alternate" href="https://onedollargoldcard.com" hrefLang="x-default" />
@@ -156,13 +156,13 @@ const Hero = () => {
               <h3 className="text-2xl font-bold text-gold-400 uppercase tracking-wide">MASSIVE REFERRAL REWARDS</h3>
             </div>
             <p className="text-blue-100 leading-relaxed text-lg mb-4">
-              <strong>Earn Big by Sharing!</strong> Get rewarded for every person you refer to our USD1 on-chain lottery. 
+              <strong>Earn Big by Sharing!</strong> Get rewarded for every person you refer to our USD1 on-chain system. 
               The more you share, the more you earn. Build your referral network and enjoy passive income from our 
               decentralized reward system!
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <div className="bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
-                <span className="text-gold-400 font-bold">💰 Up to 10% Commission</span>
+                <span className="text-gold-400 font-bold">💰 Take 50% Service Fee</span>
               </div>
               <div className="bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
                 <span className="text-gold-400 font-bold">🔗 Blockchain Verified</span>
