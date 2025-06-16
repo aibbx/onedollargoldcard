@@ -46,14 +46,14 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-b from-blue-900 to-blue-950 pt-16 pb-8 text-white">
       <div className="container-custom">
-        {/* Independent Platform Statement Card */}
+        {/* Fully On-Chain Platform Statement Card */}
         <div className="mb-12 bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-blue-400/30">
           <div className="flex items-start">
             <div className="text-gold-400 mr-6">
               <Award className="w-12 h-12" />
             </div>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold text-gold-400 mb-6 uppercase tracking-wide">Independent Gold Card dApp</h3>
+              <h3 className="text-2xl font-bold text-gold-400 mb-6 uppercase tracking-wide">Fully On-Chain Gold Card dApp</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-blue-800/50 p-6 rounded-lg border border-blue-600/50">
                   <div className="flex items-center mb-3">
@@ -61,7 +61,7 @@ const Footer = () => {
                     <h4 className="font-bold text-blue-100">Blockchain Security</h4>
                   </div>
                   <p className="text-blue-200 italic leading-relaxed">
-                    "This platform operates as an independent dApp with blockchain transparency, ensuring every participant has equal opportunity in the Gold Card initiative."
+                    "This platform operates as a fully on-chain dApp with blockchain transparency, ensuring every participant has equal opportunity in the Gold Card initiative."
                   </p>
                 </div>
                 <div className="bg-blue-800/50 p-6 rounded-lg border border-blue-600/50">
@@ -105,11 +105,11 @@ const Footer = () => {
               </div>
               <div>
                 <span className="font-bold text-2xl text-white">OneDollarGoldCard</span>
-                <div className="text-gold-400 text-sm font-semibold uppercase tracking-wide">Independent dApp Platform</div>
+                <div className="text-gold-400 text-sm font-semibold uppercase tracking-wide">Fully On-Chain Platform</div>
               </div>
             </div>
             <p className="text-blue-200 mb-6 max-w-lg leading-relaxed">
-              An independent digital dApp for the Gold Card initiative, providing transparent blockchain-based 
+              A fully on-chain digital dApp for the Gold Card initiative, providing transparent blockchain-based 
               access to US residency opportunities through the community Gold Card program.
             </p>
             <div className="p-6 bg-red-900/30 border-l-4 border-red-400 rounded-r-lg">
@@ -118,7 +118,7 @@ const Footer = () => {
                 <p className="text-sm text-red-200 font-bold uppercase">Important Notice</p>
               </div>
               <p className="text-sm text-red-100">
-                This platform operates as an independent dApp and is not affiliated with any government agency or WFLI company. 
+                This platform operates as a fully on-chain dApp and is not affiliated with any government agency or WFLI company. 
                 All blockchain transactions are transparent and verifiable through public EVM ledgers.
               </p>
             </div>
@@ -133,14 +133,6 @@ const Footer = () => {
               >
                 <Home className="w-5 h-5 mr-3 text-blue-300" />
                 <span className="text-blue-100 group-hover:text-white font-semibold">dApp Platform</span>
-              </button>
-              
-              <button 
-                onClick={() => navigateToTop('/how-it-works')}
-                className="flex items-center px-4 py-3 bg-blue-800/50 hover:bg-blue-700/50 rounded-lg border border-blue-600/50 hover:border-blue-500 transition-all duration-200 text-left group"
-              >
-                <Sparkle className="w-5 h-5 mr-3 text-gold-400" />
-                <span className="text-blue-100 group-hover:text-white font-semibold">How It Works</span>
               </button>
               
               <button 
@@ -168,10 +160,10 @@ const Footer = () => {
         <div className="border-t border-blue-700 pt-6 flex justify-between flex-col md:flex-row items-center">
           <div>
             <p className="text-sm text-blue-200 mb-2">
-              &copy; {currentYear} OneDollarGoldCard Independent dApp Platform. All rights reserved.
+              &copy; {currentYear} OneDollarGoldCard Fully On-Chain dApp Platform. All rights reserved.
             </p>
             <p className="text-xs text-blue-300">
-              Blockchain transparency • Independent operation • Equal opportunity access
+              Blockchain transparency • Fully on-chain operation • Equal opportunity access
             </p>
           </div>
           

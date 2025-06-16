@@ -65,7 +65,7 @@ const Navbar = () => {
                 OneDollarGoldCard
               </span>
               <div className="text-gold-400 text-xs font-semibold uppercase tracking-wider -mt-1">
-                Independent dApp
+                Fully On-Chain
               </div>
             </div>
           </a>
@@ -73,12 +73,12 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center space-x-6">
           <NavLinks isScrolled={true} />
+          <WalletConnector />
           <div className="flex items-center gap-2">
             <Shield className="w-4 h-4 text-green-400" />
             <span className="text-green-300 text-xs font-semibold uppercase tracking-wide">Secure</span>
           </div>
           <LanguageSelector />
-          <WalletConnector />
         </div>
 
         <div className="md:hidden flex items-center">

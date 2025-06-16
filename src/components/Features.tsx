@@ -24,7 +24,7 @@ const Features = () => {
             </div>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-blue-900" style={{ fontFamily: 'Georgia, serif' }}>
-            INDEPENDENT dApp FEATURES
+            FULLY ON-CHAIN dApp FEATURES
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-gold-400 to-gold-600 mx-auto mb-4"></div>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -49,7 +49,7 @@ const Features = () => {
             </p>
           </div>
           
-          {/* Feature 2 - Independent Platform */}
+          {/* Feature 2 - Fully On-Chain Platform */}
           <div 
             className="bg-white rounded-xl p-8 shadow-xl border-l-4 border-gold-500 hover:shadow-2xl hover:transform hover:scale-[1.02] transition-all duration-300"
             {...featureItemRef(1)}
@@ -58,7 +58,7 @@ const Features = () => {
               <Verified size={28} />
             </div>
             <h3 className="text-xl font-bold mb-3 text-center text-blue-900 uppercase tracking-wide">
-              Independent dApp
+              Fully On-Chain dApp
             </h3>
             <p className="text-gray-600 text-center leading-relaxed">
               Autonomous platform supporting the Gold Card program with minimum $1.05 USD1 participation.
@@ -118,7 +118,7 @@ const Features = () => {
             <div className="text-center">
               <CheckCircle className="w-12 h-12 text-blue-300 mx-auto mb-4" />
               <h4 className="font-bold text-lg mb-2">Community Driven</h4>
-              <p className="text-blue-200">Independent operation with community governance and oversight</p>
+              <p className="text-blue-200">Fully on-chain operation with community governance and oversight</p>
             </div>
           </div>
         </div>
