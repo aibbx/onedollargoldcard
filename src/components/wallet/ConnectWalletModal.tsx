@@ -1,11 +1,14 @@
 
 import React, { useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { X, AlertCircle, Download, Wallet, Shield } from 'lucide-react';
 import { WalletType } from '../../types/wallet';
-import { Link } from 'react-router-dom';
 import { useWalletDetection } from '../../hooks/useWalletDetection';
-import { WALLET_CONFIGS, getWalletDisplayName, getWalletIcon } from '../../utils/walletConfig';
+import { WALLET_CONFIGS } from '../../utils/walletConfig';
+import WalletModalHeader from './modal/WalletModalHeader';
+import WalletOption from './modal/WalletOption';
+import SecurityNotice from './modal/SecurityNotice';
+import WalletModalFooter from './modal/WalletModalFooter';
+import { checkWalletAvailability } from './modal/walletAvailabilityUtils';
 
 interface ConnectWalletModalProps {
   isOpen: boolean;
@@ -102,114 +105,32 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
           minHeight: 'auto'
         }}
       >
-        {/* Header */}
-        <div className="relative p-6 border-b border-gold-500/20 bg-gradient-to-r from-zinc-900 to-zinc-800">
-          <button 
-            onClick={onClose}
-            className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors bg-zinc-800/50 hover:bg-zinc-700 rounded-full p-2 z-10"
-            aria-label="Close modal"
-          >
-            <X className="w-5 h-5" />
-          </button>
-          
-          <div className="pr-12">
-            <div className="flex items-center space-x-3 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-gold-400 to-gold-600 flex items-center justify-center">
-                <Wallet className="w-4 h-4 text-black" />
-              </div>
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-gold-300 to-gold-500 bg-clip-text text-transparent">
-                Connect Wallet
-              </h2>
-            </div>
-            <p className="text-zinc-400 text-sm">
-              Choose your wallet to start donating
-            </p>
-          </div>
-        </div>
+        <WalletModalHeader onClose={onClose} />
         
-        {/* Content */}
         <div className="p-6 max-h-96 overflow-y-auto">
           <div className="space-y-3">
             {WALLET_CONFIGS.map((config) => {
               const isAvailable = checkWalletAvailability(config.type, availableWallets);
               
               return (
-                <div key={config.type} className="relative">
-                  <button
-                    onClick={() => isAvailable ? handleWalletConnect(config.type) : window.open(config.installUrl, '_blank')}
-                    className={`w-full p-4 rounded-xl border-2 transition-all duration-200 flex items-center justify-between group ${
-                      isAvailable 
-                        ? 'border-zinc-700 bg-zinc-800/50 hover:border-gold-500/50 hover:bg-zinc-800 hover:shadow-lg hover:shadow-gold-500/10'
-                        : 'border-zinc-800 bg-zinc-900/50 hover:border-zinc-600'
-                    }`}
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-zinc-700 to-zinc-800 flex items-center justify-center text-2xl border border-zinc-600">
-                        {getWalletIcon(config.type)}
-                      </div>
-                      <div className="text-left">
-                        <h3 className="font-semibold text-white text-lg">
-                          {getWalletDisplayName(config.type)}
-                        </h3>
-                        <p className="text-zinc-400 text-sm">
-                          {isAvailable ? 'Ready to connect' : 'Click to install'}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                      {!isAvailable && (
-                        <div className="flex items-center space-x-1 text-zinc-500">
-                          <Download className="w-4 h-4" />
-                          <span className="text-sm">Install</span>
-                        </div>
-                      )}
-                      <div className={`w-3 h-3 rounded-full ${
-                        isAvailable ? 'bg-green-500' : 'bg-orange-500'
-                      }`} />
-                    </div>
-                  </button>
-                </div>
+                <WalletOption
+                  key={config.type}
+                  walletType={config.type}
+                  isAvailable={isAvailable}
+                  installUrl={config.installUrl}
+                  onConnect={handleWalletConnect}
+                />
               );
             })}
           </div>
           
-          {/* Security Notice */}
-          <div className="mt-6 p-4 bg-blue-900/20 border border-blue-700/30 rounded-xl">
-            <div className="flex items-start space-x-3">
-              <Shield className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-              <div>
-                <h4 className="text-blue-200 font-medium text-sm mb-1">Security First</h4>
-                <p className="text-blue-300 text-xs leading-relaxed">
-                  Your wallet connection is secure and encrypted. We never store your private keys.
-                </p>
-              </div>
-            </div>
-          </div>
+          <SecurityNotice />
         </div>
         
-        {/* Footer */}
-        <div className="px-6 pb-6">
-          <p className="text-center text-xs text-zinc-500 leading-relaxed">
-            By connecting, you agree to our{' '}
-            <Link to="/terms" className="text-gold-400 hover:text-gold-300 hover:underline transition-colors">
-              Terms
-            </Link>{' '}
-            and{' '}
-            <Link to="/privacy" className="text-gold-400 hover:text-gold-300 hover:underline transition-colors">
-              Privacy Policy
-            </Link>
-          </p>
-        </div>
+        <WalletModalFooter />
       </div>
     </div>
   );
-};
-
-// Helper function to check wallet availability
-const checkWalletAvailability = (type: WalletType, availableWallets: any): boolean => {
-  const key = type.toLowerCase() as keyof typeof availableWallets;
-  return !!availableWallets[key];
 };
 
 export default ConnectWalletModal;
