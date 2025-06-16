@@ -3,36 +3,38 @@ import React, { useState } from 'react';
 import { Code, Shield, Zap, Eye, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 const SmartContractSection: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const contractFeatures = [
     {
       icon: <Shield className="w-6 h-6" />,
-      title: "完全透明",
-      description: "所有捐赠和抽奖过程都在区块链上公开验证",
+      title: t('smartContract.features.transparent.title'),
+      description: t('smartContract.features.transparent.desc'),
       color: "from-blue-500 to-cyan-500"
     },
     {
       icon: <Zap className="w-6 h-6" />,
-      title: "自动执行",
-      description: "智能合约自动处理捐赠、中奖者选择和奖金分配",
+      title: t('smartContract.features.automated.title'),
+      description: t('smartContract.features.automated.desc'),
       color: "from-purple-500 to-pink-500"
     },
     {
       icon: <Eye className="w-6 h-6" />,
-      title: "可验证随机",
-      description: "使用Chainlink VRF确保中奖者选择完全公正",
+      title: t('smartContract.features.verifiable.title'),
+      description: t('smartContract.features.verifiable.desc'),
       color: "from-green-500 to-teal-500"
     }
   ];
 
   const contractRules = [
-    "最低捐赠 1.05 USD1 (1 USD1 进入奖池 + 0.05 USD1 服务费)",
-    "奖池达到 1000万 USD1 时自动选择中奖者",
-    "中奖者获得 500万 USD1，需管理员确认后转账",
-    "7天无有效捐赠时，最后捐赠者获得全部奖池"
+    t('smartContract.rules.1'),
+    t('smartContract.rules.2'),
+    t('smartContract.rules.3'),
+    t('smartContract.rules.4')
   ];
 
   const handleViewContract = () => {
@@ -51,25 +53,24 @@ const SmartContractSection: React.FC = () => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-sm rounded-full px-6 py-3 border border-white/10 mb-6">
             <Code className="w-5 h-5 text-blue-400" />
-            <span className="text-white font-medium">智能合约驱动</span>
+            <span className="text-white font-medium">Smart Contract Powered</span>
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              智能合约
+              {t('smartContract.title')}
             </span>
-            确保公正透明
           </h2>
           
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            我们的平台基于经过审计的智能合约构建，确保每一笔捐赠、每一次抽奖都完全透明且不可篡改
+            {t('smartContract.description')}
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left: Contract Features */}
           <div className="space-y-8">
-            <h3 className="text-2xl font-bold text-white mb-6">核心特性</h3>
+            <h3 className="text-2xl font-bold text-white mb-6">Core Features</h3>
             
             {contractFeatures.map((feature, index) => (
               <div 
@@ -89,7 +90,7 @@ const SmartContractSection: React.FC = () => {
 
           {/* Right: Contract Rules */}
           <div className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-            <h3 className="text-2xl font-bold text-white mb-6">合约规则</h3>
+            <h3 className="text-2xl font-bold text-white mb-6">{t('smartContract.rules.title')}</h3>
             
             <div className="space-y-4 mb-8">
               {contractRules.map((rule, index) => (
@@ -106,7 +107,7 @@ const SmartContractSection: React.FC = () => {
               onClick={handleViewContract}
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105"
             >
-              查看完整合约代码
+              {t('smartContract.viewContract')}
               <ChevronRight className="ml-2 w-4 h-4" />
             </Button>
           </div>
@@ -114,17 +115,17 @@ const SmartContractSection: React.FC = () => {
 
         {/* Contract Addresses */}
         <div className="mt-16 bg-gradient-to-r from-gray-900/50 to-slate-900/50 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-          <h3 className="text-xl font-bold text-white mb-6 text-center">已验证的合约地址</h3>
+          <h3 className="text-xl font-bold text-white mb-6 text-center">{t('smartContract.addresses.title')}</h3>
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white/5 rounded-lg p-4">
-              <div className="text-sm font-medium text-gray-400 mb-2">奖池合约地址</div>
+              <div className="text-sm font-medium text-gray-400 mb-2">{t('smartContract.addresses.pool')}</div>
               <code className="text-blue-400 font-mono text-sm break-all">
                 0x6c521c6eB53361e901EC2bC1a2D392c8e9796f77
               </code>
             </div>
             <div className="bg-white/5 rounded-lg p-4">
-              <div className="text-sm font-medium text-gray-400 mb-2">手续费接收地址</div>
+              <div className="text-sm font-medium text-gray-400 mb-2">{t('smartContract.addresses.fee')}</div>
               <code className="text-purple-400 font-mono text-sm break-all">
                 0x6c521c6eB53361e901EC2bC1a2D392c8e9796f77
               </code>

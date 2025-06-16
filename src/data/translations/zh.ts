@@ -9,7 +9,7 @@ export const zh = {
   'nav.smartContract': '智能合約',
 
   // Hero section
-  'hero.title': 'OneDollarGoldCard',
+  'hero.title': 'USD1GoldCard',
   'hero.subtitle': '普及移民機會',
   'hero.description': '一個在區塊鏈上的去中心化捐贈平台，為非美國公民提供贏取足夠資金申請美國金卡的機會。',
   'hero.donateButton': '立即捐款',
@@ -17,7 +17,7 @@ export const zh = {
   'hero.learnMore': '了解更多',
 
   // Features
-  'features.title': '為什麼選擇 OneDollarGoldCard？',
+  'features.title': '為什麼選擇 USD1GoldCard？',
   'features.transparent.title': '完全透明',
   'features.transparent.desc': '所有交易和獲獎者選擇都在鏈上驗證。',
   'features.accessible.title': '人人皆可參與',
@@ -37,6 +37,25 @@ export const zh = {
   'howItWorks.step3.desc': '當獎金池達到 1000 萬美元時，將隨機選擇一位獲獎者。',
   'howItWorks.step4.title': '接收資金',
   'howItWorks.step4.desc': '獲獎者將獲得 500 萬美元，而 500 萬美元將保留到下一輪。',
+
+  // Smart Contract Section
+  'smartContract.title': '智能合約確保公正透明',
+  'smartContract.description': '我們的平台基於經過審計的智能合約構建，確保每一筆捐贈、每一次抽獎都完全透明且不可篡改',
+  'smartContract.features.transparent.title': '完全透明',
+  'smartContract.features.transparent.desc': '所有捐贈和抽獎過程都在區塊鏈上公開驗證',
+  'smartContract.features.automated.title': '自動執行',
+  'smartContract.features.automated.desc': '智能合約自動處理捐贈、中獎者選擇和奖金分配',
+  'smartContract.features.verifiable.title': '可驗證隨機',
+  'smartContract.features.verifiable.desc': '使用Chainlink VRF確保中獎者選擇完全公正',
+  'smartContract.rules.title': '合約規則',
+  'smartContract.rules.1': '最低捐贈 1.05 USD1 (1 USD1 進入獎池 + 0.05 USD1 服務費)',
+  'smartContract.rules.2': '獎池達到 1000萬 USD1 時自動選擇中獎者',
+  'smartContract.rules.3': '中獎者獲得 500萬 USD1，需管理員確認後轉賬',
+  'smartContract.rules.4': '7天無有效捐贈時，最後捐贈者獲得全部獎池',
+  'smartContract.viewContract': '查看完整合約代碼',
+  'smartContract.addresses.title': '已驗證的合約地址',
+  'smartContract.addresses.pool': '獎池合約地址',
+  'smartContract.addresses.fee': '手續費接收地址',
 
   // Donation Card
   'donation.title': '進行捐贈',

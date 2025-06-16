@@ -9,7 +9,7 @@ export const id = {
   'nav.smartContract': 'Smart Contract',
 
   // Hero section
-  'hero.title': 'OneDollarGoldCard',
+  'hero.title': 'USD1GoldCard',
   'hero.subtitle': 'Demokratisasi Akses Kesempatan Imigrasi',
   'hero.description': 'Platform donasi terdesentralisasi di blockchain yang menawarkan kesempatan kepada non-warga AS untuk memenangkan dana yang cukup untuk mengajukan izin tinggal Gold Card AS.',
   'hero.donateButton': 'Donasi Sekarang',
@@ -17,7 +17,7 @@ export const id = {
   'hero.learnMore': 'Pelajari Lebih Lanjut',
 
   // Features
-  'features.title': 'Mengapa OneDollarGoldCard?',
+  'features.title': 'Mengapa USD1GoldCard?',
   'features.transparent.title': 'Sepenuhnya Transparan',
   'features.transparent.desc': 'Semua transaksi dan pemilihan pemenang diverifikasi on-chain.',
   'features.accessible.title': 'Dapat Diakses Oleh Semua Orang',
@@ -37,6 +37,25 @@ export const id = {
   'howItWorks.step3.desc': 'Ketika pool mencapai $10M, seorang pemenang dipilih secara acak.',
   'howItWorks.step4.title': 'Terima Dana',
   'howItWorks.step4.desc': 'Pemenang menerima $5M, dan $5M tetap untuk putaran berikutnya.',
+
+  // Smart Contract Section
+  'smartContract.title': 'Smart Contract Memastikan Keadilan dan Transparansi',
+  'smartContract.description': 'Platform kami dibangun di atas smart contract yang telah diaudit, memastikan setiap donasi dan undian lotere sepenuhnya transparan dan tidak dapat diubah',
+  'smartContract.features.transparent.title': 'Sepenuhnya Transparan',
+  'smartContract.features.transparent.desc': 'Semua donasi dan proses lotere diverifikasi secara publik di blockchain',
+  'smartContract.features.automated.title': 'Eksekusi Otomatis',
+  'smartContract.features.automated.desc': 'Smart contract secara otomatis menangani donasi, pemilihan pemenang dan distribusi hadiah',
+  'smartContract.features.verifiable.title': 'Random Terverifikasi',
+  'smartContract.features.verifiable.desc': 'Menggunakan Chainlink VRF untuk memastikan pemilihan pemenang benar-benar adil',
+  'smartContract.rules.title': 'Aturan Kontrak',
+  'smartContract.rules.1': 'Donasi minimum 1.05 USD1 (1 USD1 ke pool + 0.05 USD1 biaya layanan)',
+  'smartContract.rules.2': 'Pemenang dipilih secara otomatis ketika pool mencapai 10 juta USD1',
+  'smartContract.rules.3': 'Pemenang menerima 5 juta USD1, memerlukan konfirmasi admin sebelum transfer',
+  'smartContract.rules.4': 'Jika tidak ada donasi selama 7 hari, donor terakhir menerima seluruh pool',
+  'smartContract.viewContract': 'Lihat Kode Kontrak Lengkap',
+  'smartContract.addresses.title': 'Alamat Kontrak Terverifikasi',
+  'smartContract.addresses.pool': 'Alamat Kontrak Pool Hadiah',
+  'smartContract.addresses.fee': 'Alamat Penerima Biaya Layanan',
 
   // Donation Card
   'donation.title': 'Buat Donasi',
@@ -74,7 +93,7 @@ export const id = {
   // Trump quotes
   'trump.support1': "Amerika membutuhkan sistem berbasis prestasi. Inisiatif Gold Card adalah cara kita akan mendapatkan bakat terbaik. Percayalah pada saya!",
   'trump.support2': "Gold Card adalah cara terbaik, mungkin yang terbaik sepanjang masa, bagi yang terbaik dan tercerdas untuk datang ke Amerika. Kesempatan luar biasa!",
-  'trump.support3': "Kami akan menciptakan jalan yang adil, cepat, dan fantastis. Program Gold Card benar-benar sesuatu yang istimewa.",
+  'trump.support3': "Kami akan menciptakan jalan yang adil, cepat dan fantastis. Program Gold Card benar-benar sesuatu yang istimewa.",
   'trump.support4': "Kami menginginkan orang-orang terpintar datang ke Amerika. Gold Card adalah cara kami akan mewujudkannya. Ini akan menjadi sangat besar!",
   
   // Trump mention

@@ -1,3 +1,4 @@
+
 export const es = {
   // Navigation
   'nav.home': 'Inicio',
@@ -8,7 +9,7 @@ export const es = {
   'nav.smartContract': 'Contrato Inteligente',
 
   // Hero section
-  'hero.title': 'OneDollarGoldCard',
+  'hero.title': 'USD1GoldCard',
   'hero.subtitle': 'Democratizando el Acceso a Oportunidades de Inmigración',
   'hero.description': 'Una plataforma descentralizada de donaciones en blockchain que ofrece a no ciudadanos de EE.UU. la oportunidad de ganar lo suficiente para solicitar la residencia Gold Card.',
   'hero.donateButton': 'Donar Ahora',
@@ -16,7 +17,7 @@ export const es = {
   'hero.learnMore': 'Aprender Más',
 
   // Features
-  'features.title': '¿Por qué OneDollarGoldCard?',
+  'features.title': '¿Por qué USD1GoldCard?',
   'features.transparent.title': 'Totalmente Transparente',
   'features.transparent.desc': 'Todas las transacciones y selección de ganadores se verifican en la cadena.',
   'features.accessible.title': 'Accesible para Todos',
@@ -36,6 +37,25 @@ export const es = {
   'howItWorks.step3.desc': 'Cuando el fondo alcanza $10M, se selecciona aleatoriamente un ganador.',
   'howItWorks.step4.title': 'Recibe Fondos',
   'howItWorks.step4.desc': 'El ganador recibe $5M, y $5M permanecen para la próxima ronda.',
+
+  // Smart Contract Section
+  'smartContract.title': 'Contrato Inteligente Garantiza Transparencia y Equidad',
+  'smartContract.description': 'Nuestra plataforma está construida sobre contratos inteligentes auditados, garantizando que cada donación y sorteo sea completamente transparente e inmutable',
+  'smartContract.features.transparent.title': 'Completamente Transparente',
+  'smartContract.features.transparent.desc': 'Todas las donaciones y procesos de sorteo son verificados públicamente en blockchain',
+  'smartContract.features.automated.title': 'Ejecución Automatizada',
+  'smartContract.features.automated.desc': 'Los contratos inteligentes manejan automáticamente donaciones, selección de ganadores y distribución de premios',
+  'smartContract.features.verifiable.title': 'Aleatoriedad Verificable',
+  'smartContract.features.verifiable.desc': 'Utiliza Chainlink VRF para garantizar que la selección de ganadores sea completamente justa',
+  'smartContract.rules.title': 'Reglas del Contrato',
+  'smartContract.rules.1': 'Donación mínima 1.05 USD1 (1 USD1 al pool + 0.05 USD1 tarifa de servicio)',
+  'smartContract.rules.2': 'Ganador seleccionado automáticamente cuando el pool alcanza 10 millones USD1',
+  'smartContract.rules.3': 'El ganador recibe 5 millones USD1, requiere confirmación del admin antes de la transferencia',
+  'smartContract.rules.4': 'Si no hay donaciones por 7 días, el último donante recibe todo el pool',
+  'smartContract.viewContract': 'Ver Código Completo del Contrato',
+  'smartContract.addresses.title': 'Direcciones de Contratos Verificados',
+  'smartContract.addresses.pool': 'Dirección del Contrato del Pool de Premios',
+  'smartContract.addresses.fee': 'Dirección Receptora de Tarifas de Servicio',
 
   // Donation Card
   'donation.title': 'Hacer una Donación',
