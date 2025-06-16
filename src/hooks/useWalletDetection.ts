@@ -1,69 +1,42 @@
 
 import { useState, useEffect } from 'react';
-import { WALLET_CONFIGS } from '../utils/walletConfig';
-
-interface DetectedWallets {
-  metamask: boolean;
-  okx: boolean;
-}
+import { WalletDetectionResult } from '../types/wallet';
 
 export const useWalletDetection = () => {
-  const [availableWallets, setAvailableWallets] = useState<DetectedWallets>({
+  const [availableWallets, setAvailableWallets] = useState<WalletDetectionResult>({
     metamask: false,
-    okx: false
+    okx: false,
+    binance: false,
+    bitget: false
   });
-  const [detectionComplete, setDetectionComplete] = useState(false);
 
   useEffect(() => {
-    // Check what wallets are available in the browser
-    const detectAvailableWallets = () => {
-      if (typeof window === 'undefined') return;
-      
-      const detected: DetectedWallets = {
-        metamask: false,
-        okx: false
+    const detectWallets = () => {
+      const detection: WalletDetectionResult = {
+        metamask: !!(typeof window !== 'undefined' && window.ethereum?.isMetaMask),
+        okx: !!(typeof window !== 'undefined' && window.okxwallet?.ethereum),
+        binance: !!(typeof window !== 'undefined' && window.BinanceChain?.isBinance),
+        bitget: !!(typeof window !== 'undefined' && window.bitkeep?.ethereum)
       };
-      
-      // Log for debugging
-      console.log('Detecting wallets...');
-      
-      // Primary detection
-      WALLET_CONFIGS.forEach(config => {
-        const key = config.detectionKey as string;
-        const exists = key in window;
-        
-        console.log(`Checking ${config.type}: ${key} exists: ${exists}`);
-        
-        // Secondary check if needed
-        if (exists && config.secondaryCheck) {
-          const passesSecondaryCheck = config.secondaryCheck(window);
-          console.log(`${config.type} secondary check: ${passesSecondaryCheck}`);
-          
-          if (passesSecondaryCheck) {
-            const walletKey = config.type.toLowerCase() as keyof DetectedWallets;
-            detected[walletKey] = true;
-          }
-        } else if (exists) {
-          const walletKey = config.type.toLowerCase() as keyof DetectedWallets;
-          detected[walletKey] = true;
-        }
-      });
-      
-      console.log('Available wallets:', detected);
-      setAvailableWallets(detected);
-      setDetectionComplete(true);
+
+      console.log('Detected wallets:', detection);
+      setAvailableWallets(detection);
     };
-    
-    // Small delay to ensure browser extensions have loaded
-    const timer = setTimeout(() => {
-      detectAvailableWallets();
-    }, 1000); // Increased timer to ensure extensions are loaded
-    
-    return () => clearTimeout(timer);
+
+    // Initial detection
+    detectWallets();
+
+    // Re-detect after a short delay to account for slow-loading extensions
+    const timeouts = [
+      setTimeout(detectWallets, 500),
+      setTimeout(detectWallets, 1000),
+      setTimeout(detectWallets, 2000)
+    ];
+
+    return () => {
+      timeouts.forEach(timeout => clearTimeout(timeout));
+    };
   }, []);
 
-  return {
-    availableWallets,
-    detectionComplete
-  };
+  return { availableWallets };
 };

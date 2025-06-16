@@ -22,7 +22,7 @@ interface WalletContextType {
 // Create the context with default values
 const WalletContext = createContext<WalletContextType>({
   isWalletConnected: false,
-  walletType: 'OKX',
+  walletType: 'MetaMask',
   walletAddress: '',
   network: 'mainnet',
   provider: null,

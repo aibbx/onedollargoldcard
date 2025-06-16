@@ -12,6 +12,10 @@ export const connectWallet = async (type: WalletType, network: NetworkType = 'ma
       return connectMetaMaskWallet();
     case 'OKX':
       return connectOKXWallet();
+    case 'Binance':
+      return connectBinanceWallet();
+    case 'Bitget':
+      return connectBitgetWallet();
     default:
       throw new Error(`Unsupported wallet type: ${type}`);
   }
@@ -28,6 +32,10 @@ export const autoConnectWallet = async (type: WalletType, network: NetworkType =
         return await autoConnectMetaMaskWallet();
       case 'OKX':
         return await autoConnectOKXWallet();
+      case 'Binance':
+        return await autoConnectBinanceWallet();
+      case 'Bitget':
+        return await autoConnectBitgetWallet();
       default:
         throw new Error(`Unsupported wallet type: ${type}`);
     }
@@ -46,6 +54,12 @@ export const disconnectWallet = (type: WalletType): void => {
     case 'OKX':
       disconnectOKXWallet();
       break;
+    case 'Binance':
+      disconnectBinanceWallet();
+      break;
+    case 'Bitget':
+      disconnectBitgetWallet();
+      break;
     default:
       console.warn(`No disconnect handler for wallet type: ${type}`);
       break;
@@ -54,7 +68,7 @@ export const disconnectWallet = (type: WalletType): void => {
 
 // MetaMask wallet functions
 const connectMetaMaskWallet = async (): Promise<{ address: string; provider: any }> => {
-  if (typeof window === 'undefined' || !window.ethereum) {
+  if (typeof window === 'undefined' || !window.ethereum || !window.ethereum.isMetaMask) {
     throw new Error('MetaMask wallet not installed');
   }
   
@@ -73,13 +87,12 @@ const connectMetaMaskWallet = async (): Promise<{ address: string; provider: any
 };
 
 const autoConnectMetaMaskWallet = async (): Promise<{ address: string; provider: any } | null> => {
-  if (typeof window === 'undefined' || !window.ethereum) {
+  if (typeof window === 'undefined' || !window.ethereum || !window.ethereum.isMetaMask) {
     return null;
   }
   
   const provider = window.ethereum;
   
-  // Get accounts without showing the popup
   try {
     const accounts = await provider.request({ method: 'eth_accounts' });
     if (accounts && accounts.length > 0) {
@@ -99,8 +112,6 @@ const autoConnectMetaMaskWallet = async (): Promise<{ address: string; provider:
 
 const disconnectMetaMaskWallet = (): void => {
   console.log('MetaMask disconnected');
-  // MetaMask doesn't have a disconnect method in its API
-  // The connection is automatically cleared when the page is refreshed
 };
 
 // OKX wallet functions
@@ -111,7 +122,6 @@ const connectOKXWallet = async (): Promise<{ address: string; provider: any }> =
   
   const provider = window.okxwallet.ethereum;
   
-  // Request accounts
   const accounts = await provider.request({ method: 'eth_requestAccounts' });
   const address = accounts[0];
   
@@ -130,7 +140,6 @@ const autoConnectOKXWallet = async (): Promise<{ address: string; provider: any 
   
   const provider = window.okxwallet.ethereum;
   
-  // Get accounts without showing the popup
   try {
     const accounts = await provider.request({ method: 'eth_accounts' });
     if (accounts && accounts.length > 0) {
@@ -150,6 +159,98 @@ const autoConnectOKXWallet = async (): Promise<{ address: string; provider: any 
 
 const disconnectOKXWallet = (): void => {
   console.log('OKX wallet disconnected');
-  // OKX wallet doesn't have a disconnect method in its API
-  // The connection is automatically cleared when the page is refreshed
+};
+
+// Binance wallet functions
+const connectBinanceWallet = async (): Promise<{ address: string; provider: any }> => {
+  if (typeof window === 'undefined' || !window.BinanceChain) {
+    throw new Error('Binance wallet not installed');
+  }
+  
+  const provider = window.BinanceChain;
+  
+  const accounts = await provider.request({ method: 'eth_requestAccounts' });
+  const address = accounts[0];
+  
+  console.log('Connected to Binance wallet, address:', address);
+  
+  return {
+    address,
+    provider
+  };
+};
+
+const autoConnectBinanceWallet = async (): Promise<{ address: string; provider: any } | null> => {
+  if (typeof window === 'undefined' || !window.BinanceChain) {
+    return null;
+  }
+  
+  const provider = window.BinanceChain;
+  
+  try {
+    const accounts = await provider.request({ method: 'eth_accounts' });
+    if (accounts && accounts.length > 0) {
+      const address = accounts[0];
+      console.log('Auto-connected to Binance wallet, address:', address);
+      return {
+        address,
+        provider
+      };
+    }
+  } catch (error) {
+    console.error('Error getting Binance accounts:', error);
+  }
+  
+  return null;
+};
+
+const disconnectBinanceWallet = (): void => {
+  console.log('Binance wallet disconnected');
+};
+
+// Bitget wallet functions
+const connectBitgetWallet = async (): Promise<{ address: string; provider: any }> => {
+  if (typeof window === 'undefined' || !window.bitkeep || !window.bitkeep.ethereum) {
+    throw new Error('Bitget wallet not installed');
+  }
+  
+  const provider = window.bitkeep.ethereum;
+  
+  const accounts = await provider.request({ method: 'eth_requestAccounts' });
+  const address = accounts[0];
+  
+  console.log('Connected to Bitget wallet, address:', address);
+  
+  return {
+    address,
+    provider
+  };
+};
+
+const autoConnectBitgetWallet = async (): Promise<{ address: string; provider: any } | null> => {
+  if (typeof window === 'undefined' || !window.bitkeep || !window.bitkeep.ethereum) {
+    return null;
+  }
+  
+  const provider = window.bitkeep.ethereum;
+  
+  try {
+    const accounts = await provider.request({ method: 'eth_accounts' });
+    if (accounts && accounts.length > 0) {
+      const address = accounts[0];
+      console.log('Auto-connected to Bitget wallet, address:', address);
+      return {
+        address,
+        provider
+      };
+    }
+  } catch (error) {
+    console.error('Error getting Bitget accounts:', error);
+  }
+  
+  return null;
+};
+
+const disconnectBitgetWallet = (): void => {
+  console.log('Bitget wallet disconnected');
 };

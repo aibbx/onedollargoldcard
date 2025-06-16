@@ -1,5 +1,5 @@
 
-export type WalletType = 'MetaMask' | 'OKX';
+export type WalletType = 'MetaMask' | 'OKX' | 'Binance' | 'Bitget';
 
 export interface WalletContextType {
   isWalletConnected: boolean;
@@ -27,6 +27,8 @@ export interface DonationRecord {
 export interface WalletDetectionResult {
   metamask: boolean;
   okx: boolean;
+  binance: boolean;
+  bitget: boolean;
 }
 
 export interface WalletConnectionDetail {
@@ -57,10 +59,37 @@ export interface OKXWallet {
   };
 }
 
+export interface BinanceWallet {
+  isBinance?: boolean;
+  request: (request: { method: string; params?: any[] }) => Promise<any>;
+  on: (event: string, callback: (...args: any[]) => void) => void;
+  removeListener: (event: string, callback: (...args: any[]) => void) => void;
+  selectedAddress?: string;
+  isConnected?: () => boolean;
+  chainId?: string;
+}
+
+export interface BitgetWallet {
+  ethereum?: {
+    isBitKeep?: boolean;
+    request: (request: { method: string; params?: any[] }) => Promise<any>;
+    on: (event: string, callback: (...args: any[]) => void) => void;
+    removeListener: (event: string, callback: (...args: any[]) => void) => void;
+    selectedAddress?: string;
+    isConnected?: () => boolean;
+    chainId?: string;
+  };
+}
+
 declare global {
   interface Window {
     ethereum?: MetaMaskWallet;
     okxwallet?: {
+      ethereum?: any;
+      [key: string]: any;
+    };
+    BinanceChain?: BinanceWallet;
+    bitkeep?: {
       ethereum?: any;
       [key: string]: any;
     };

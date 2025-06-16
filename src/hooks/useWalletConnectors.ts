@@ -69,22 +69,28 @@ export const useWalletConnectors = () => {
   const connectWallet = async (type: WalletType) => {
     try {
       // Check if wallet is installed and show appropriate message if not
-      if (type === 'MetaMask' && (typeof window === 'undefined' || !window.ethereum)) {
+      const walletCheckMap = {
+        'MetaMask': () => typeof window !== 'undefined' && window.ethereum?.isMetaMask,
+        'OKX': () => typeof window !== 'undefined' && window.okxwallet?.ethereum,
+        'Binance': () => typeof window !== 'undefined' && window.BinanceChain?.isBinance,
+        'Bitget': () => typeof window !== 'undefined' && window.bitkeep?.ethereum
+      };
+
+      const installUrlMap = {
+        'MetaMask': 'https://metamask.io/',
+        'OKX': 'https://www.okx.com/web3',
+        'Binance': 'https://www.binance.com/en/wallet-direct',
+        'Bitget': 'https://web3.bitget.com/'
+      };
+
+      if (!walletCheckMap[type]()) {
         toast({
           title: "Wallet Not Found",
-          description: "Please install the MetaMask wallet extension and refresh the page.",
+          description: `Please install the ${type} wallet extension and refresh the page.`,
           variant: "destructive",
         });
-        window.open("https://metamask.io/", "_blank");
-        return Promise.reject(new Error('MetaMask wallet not installed'));
-      } else if (type === 'OKX' && (typeof window === 'undefined' || !window.okxwallet)) {
-        toast({
-          title: "Wallet Not Found",
-          description: "Please install the OKX wallet extension and refresh the page.",
-          variant: "destructive",
-        });
-        window.open("https://www.okx.com/web3", "_blank");
-        return Promise.reject(new Error('OKX wallet not installed'));
+        window.open(installUrlMap[type], "_blank");
+        return Promise.reject(new Error(`${type} wallet not installed`));
       }
       
       try {

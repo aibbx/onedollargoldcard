@@ -7,7 +7,7 @@ import { connectWallet as connectWalletUtil, disconnectWallet as disconnectWalle
 export const useWalletConnection = () => {
   const { toast } = useToast();
   const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [walletType, setWalletType] = useState<WalletType>('OKX');
+  const [walletType, setWalletType] = useState<WalletType>('MetaMask');
   const [walletAddress, setWalletAddress] = useState('');
   const [network, setNetwork] = useState('mainnet');
   const [provider, setProvider] = useState<any>(null);
