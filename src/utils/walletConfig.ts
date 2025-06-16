@@ -22,15 +22,15 @@ export const WALLET_CONFIGS: WalletConfig[] = [
   {
     type: 'OKX',
     name: 'OKX Wallet',
-    installUrl: 'https://www.okx.com/web3',
+    installUrl: 'https://www.okx.com/web3/dapp-store/app-front-page',
     detectionKey: 'okxwallet',
-    secondaryCheck: (window) => !!(window.okxwallet?.ethereum),
+    secondaryCheck: (window) => !!(window.okxwallet?.ethereum || window.okx?.ethereum || window.ethereum?.isOKExWallet),
     icon: '⭕'
   },
   {
     type: 'Binance',
     name: 'Binance Wallet',
-    installUrl: 'https://www.binance.com/en/wallet-direct',
+    installUrl: 'https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp',
     detectionKey: 'BinanceChain',
     secondaryCheck: (window) => !!(window.BinanceChain?.isBinance),
     icon: '🟡'
@@ -38,7 +38,7 @@ export const WALLET_CONFIGS: WalletConfig[] = [
   {
     type: 'Bitget',
     name: 'Bitget Wallet',
-    installUrl: 'https://web3.bitget.com/',
+    installUrl: 'https://chrome.google.com/webstore/detail/bitget-wallet-formerly-bi/jiidiaalihmmhddjgbnbgdfflelocpak',
     detectionKey: 'bitkeep',
     secondaryCheck: (window) => !!(window.bitkeep?.ethereum),
     icon: '🔷'

@@ -22,23 +22,59 @@ const openOKXMobile = (dappUrl: string): void => {
   localStorage.setItem('mobileConnectionTimestamp', Date.now().toString());
 };
 
+// Get OKX provider with improved detection
+const getOKXProvider = () => {
+  if (typeof window === 'undefined') return null;
+  
+  // 检查多种可能的 OKX 注入方式
+  if (window.okxwallet?.ethereum) {
+    console.log('找到 OKX 提供者: window.okxwallet.ethereum');
+    return window.okxwallet.ethereum;
+  }
+  
+  if (window.okx?.ethereum) {
+    console.log('找到 OKX 提供者: window.okx.ethereum');
+    return window.okx.ethereum;
+  }
+  
+  // 检查是否 OKX 注入到了 window.ethereum
+  if (window.ethereum?.isOKExWallet) {
+    console.log('找到 OKX 提供者: window.ethereum (OKX)');
+    return window.ethereum;
+  }
+  
+  // 检查多个以太坊提供者的情况
+  if (window.ethereum?.providers) {
+    const okxProvider = window.ethereum.providers.find((provider: any) => 
+      provider.isOKExWallet || provider.isOkxWallet
+    );
+    if (okxProvider) {
+      console.log('找到 OKX 提供者: window.ethereum.providers');
+      return okxProvider;
+    }
+  }
+  
+  console.log('未找到 OKX 提供者');
+  return null;
+};
+
 export const connectOKXWallet = async (): Promise<WalletConnectionResult> => {
   console.log('尝试连接 OKX 钱包...');
   
   const isMobile = isMobileDevice();
   
+  // Get OKX provider
+  const provider = getOKXProvider();
+  
   // On mobile, check if OKX is available
-  if (isMobile && typeof window !== 'undefined') {
-    // If no OKX provider on mobile, redirect to OKX app
-    if (!window.okxwallet || !window.okxwallet.ethereum) {
-      console.log('移动设备上未检测到 OKX 钱包，尝试打开 OKX 应用...');
-      const currentUrl = window.location.href;
-      openOKXMobile(currentUrl);
-      throw new Error('正在打开 OKX 应用，请在应用中完成连接后返回浏览器');
-    }
+  if (isMobile && !provider) {
+    console.log('移动设备上未检测到 OKX 钱包，尝试打开 OKX 应用...');
+    const currentUrl = window.location.href;
+    openOKXMobile(currentUrl);
+    throw new Error('正在打开 OKX 应用，请在应用中完成连接后返回浏览器');
   }
   
-  if (typeof window === 'undefined' || !window.okxwallet || !window.okxwallet.ethereum) {
+  if (!provider) {
     console.error('OKX 钱包未安装');
     if (isMobile) {
       throw new Error('请安装 OKX 移动应用，或在 OKX 浏览器中打开此页面');
@@ -46,8 +82,6 @@ export const connectOKXWallet = async (): Promise<WalletConnectionResult> => {
       throw new Error('OKX 钱包未安装，请先安装 OKX Wallet 扩展程序');
     }
   }
-  
-  const provider = window.okxwallet.ethereum;
   
   try {
     console.log('请求 OKX 账户访问权限...');
@@ -123,11 +157,11 @@ export const connectOKXWallet = async (): Promise<WalletConnectionResult> => {
 };
 
 export const autoConnectOKXWallet = async (): Promise<WalletConnectionResult | null> => {
-  if (typeof window === 'undefined' || !window.okxwallet || !window.okxwallet.ethereum) {
+  const provider = getOKXProvider();
+  
+  if (!provider) {
     return null;
   }
-  
-  const provider = window.okxwallet.ethereum;
   
   try {
     const accounts = await provider.request({ method: 'eth_accounts' });

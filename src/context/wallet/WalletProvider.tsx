@@ -35,14 +35,14 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     loadUserStats
   } = useWalletData(isWalletConnected, walletAddress);
   
-  // Use the auto-connect hook
-  useWalletAutoConnect(
+  // Use the auto-connect hook with correct parameters
+  useWalletAutoConnect({
     setIsWalletConnected,
     setWalletType,
     setWalletAddress,
     loadUserDonations,
     loadUserStats
-  );
+  });
   
   // Use the stats subscription hook
   useWalletStatsSubscription(
