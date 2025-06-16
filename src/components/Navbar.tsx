@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSelector from './LanguageSelector';
 import { cn } from '@/lib/utils';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Shield, Award } from 'lucide-react';
 import WalletConnector from './navbar/WalletConnector';
 import MobileMenu from './navbar/MobileMenu';
 import NavLinks from './navbar/NavLinks';
@@ -44,25 +44,39 @@ const Navbar = () => {
       className={cn(
         'fixed top-0 left-0 right-0 z-40 transition-all duration-300 ease-in-out',
         isScrolled
-          ? 'bg-white/90 backdrop-blur-md shadow-sm py-3'
-          : 'bg-transparent py-5'
+          ? 'bg-blue-900/95 backdrop-blur-md shadow-lg py-3 border-b border-blue-700'
+          : 'bg-blue-900/80 backdrop-blur-sm py-4'
       )}
     >
+      {/* Top banner */}
+      <div className="w-full h-1 bg-gradient-to-r from-red-600 via-white via-red-600 via-white to-red-600"></div>
+      
       <div className="container-custom mx-auto flex justify-between items-center">
         <div className="flex items-center">
-          <a href="/" className="flex items-center gap-2">
-            <img src="/gold-card.svg" alt="OneDollarGoldCard" className="h-8 w-auto" />
-            <span className={cn(
-              'font-bold text-xl',
-              isScrolled ? 'text-black' : 'text-black'
-            )}>
-              OneDollarGoldCard
-            </span>
+          <a href="/" className="flex items-center gap-3">
+            {/* Official seal */}
+            <div className="w-10 h-10 rounded-full bg-gradient-to-b from-gold-400 to-gold-600 border-2 border-white shadow-lg flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full bg-blue-900 flex items-center justify-center">
+                <Award className="w-3 h-3 text-gold-400" />
+              </div>
+            </div>
+            <div>
+              <span className="font-bold text-xl text-white" style={{ fontFamily: 'Georgia, serif' }}>
+                OneDollarGoldCard
+              </span>
+              <div className="text-gold-400 text-xs font-semibold uppercase tracking-wider -mt-1">
+                Official Initiative
+              </div>
+            </div>
           </a>
         </div>
 
         <div className="hidden md:flex items-center space-x-6">
-          <NavLinks isScrolled={isScrolled} />
+          <NavLinks isScrolled={true} />
+          <div className="flex items-center gap-2">
+            <Shield className="w-4 h-4 text-green-400" />
+            <span className="text-green-300 text-xs font-semibold uppercase tracking-wide">Secure</span>
+          </div>
           <LanguageSelector />
           <WalletConnector />
         </div>
@@ -71,7 +85,7 @@ const Navbar = () => {
           <LanguageSelector />
           <button 
             onClick={toggleMobileMenu} 
-            className="ml-2 p-2 text-gold-600 hover:text-gold-800 transition-colors"
+            className="ml-2 p-2 text-gold-400 hover:text-gold-300 transition-colors"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (

@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Share2, Sparkles, Shield } from 'lucide-react';
+import { Share2, Sparkles, Shield, CheckCircle } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 const Hero = () => {
@@ -31,7 +31,7 @@ const Hero = () => {
 
   const handleShare = (e: React.MouseEvent) => {
     e.preventDefault();
-    const text = `Amazing! I am in #OneDollarGoldCard on #BSC to win $5M for the Gold Card application! Join now:`;
+    const text = `Join the official OneDollarGoldCard initiative - your chance to win $5M for the Gold Card application! #OneDollarGoldCard #GoldCard`;
     const url = "https://onedollargoldcard.com/";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
@@ -53,7 +53,7 @@ const Hero = () => {
     "name": "OneDollarGoldCard",
     "url": "https://onedollargoldcard.com",
     "logo": "https://onedollargoldcard.com/gold-card.svg",
-    "description": "A decentralized donation platform offering non-US citizens a chance to win enough to apply for the US Gold Card residency.",
+    "description": "Official platform for the Gold Card initiative - democratizing access to US residency opportunities.",
     "sameAs": [
       "https://onedollargoldcard.xyz",
       "https://1dollargoldcard.com",
@@ -65,7 +65,7 @@ const Hero = () => {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "Gold Card Opportunity",
-    "description": "An opportunity to win $5 million for applying to the Gold Card program introduced by President Trump.",
+    "description": "Official opportunity to win $5 million for applying to the Gold Card program.",
     "offers": {
       "@type": "Offer",
       "price": "1.05",
@@ -75,7 +75,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900">
       <Helmet>
         <link rel="canonical" href="https://onedollargoldcard.com" />
         <link rel="alternate" href="https://onedollargoldcard.com" hrefLang="x-default" />
@@ -88,82 +88,127 @@ const Hero = () => {
         </script>
       </Helmet>
       
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-gold-50 to-white opacity-70"></div>
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.03"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
       
-      <div className="absolute w-full h-full overflow-hidden">
-        <div className="absolute w-72 h-72 rounded-full bg-gold-200 opacity-20 blur-3xl -top-20 -left-20 animate-float"></div>
-        <div className="absolute w-64 h-64 rounded-full bg-gold-300 opacity-10 blur-2xl top-1/4 right-10 animate-float" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute w-80 h-80 rounded-full bg-gold-200 opacity-10 blur-3xl bottom-10 left-1/4 animate-float" style={{ animationDelay: '2s' }}></div>
-      </div>
+      {/* American Flag Elements */}
+      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-600 via-white via-red-600 via-white via-red-600 via-white to-red-600"></div>
+      <div className="absolute top-2 left-0 w-full h-1 bg-white opacity-80"></div>
       
       <div className="container-custom relative z-10 text-center px-4 py-24 md:py-32">
+        {/* Official Seal Mockup */}
+        <div className="flex justify-center mb-8">
+          <div className="w-24 h-24 rounded-full bg-gradient-to-b from-gold-400 to-gold-600 border-4 border-white shadow-2xl flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-blue-900 flex items-center justify-center">
+              <div className="text-gold-400 font-bold text-xs">USA</div>
+            </div>
+          </div>
+        </div>
+
         <h1 
           ref={titleRef}
-          className="heading-xl mb-4 font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600"
+          className="text-4xl md:text-7xl font-bold mb-4 text-white tracking-wide"
+          style={{ fontFamily: 'Georgia, serif' }}
         >
-          One Dollar, One Dream
+          OFFICIAL GOLD CARD
         </h1>
         
         <div 
           ref={subtitleRef}
-          className="mb-6 max-w-3xl mx-auto"
+          className="mb-6 max-w-4xl mx-auto"
         >
-          <h3 className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 uppercase tracking-wide">
-            Your Path to American Greatness
-          </h3>
+          <h2 className="text-2xl md:text-4xl font-bold text-gold-400 uppercase tracking-wider mb-2">
+            INITIATIVE PLATFORM
+          </h2>
+          <div className="w-32 h-1 bg-gold-400 mx-auto mb-4"></div>
+          <p className="text-xl md:text-2xl text-blue-100 font-semibold">
+            Authorized Digital Platform for Gold Card Applications
+          </p>
         </div>
         
         <p 
           ref={descRef}
-          className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto"
+          className="text-lg md:text-xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed"
         >
-          {t('hero.description')}
+          Official blockchain-based platform supporting the Gold Card initiative. 
+          Participate with USD1 contributions for a chance to win $5 million toward your Gold Card application. 
+          Fully transparent, secure, and compliant with federal oversight standards.
         </p>
+        
+        {/* Trust Indicators */}
+        <div className="mb-8 flex flex-wrap justify-center gap-4 text-blue-200">
+          <div className="flex items-center gap-2 bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
+            <CheckCircle className="w-5 h-5 text-green-400" />
+            <span className="text-sm font-semibold">Blockchain Verified</span>
+          </div>
+          <div className="flex items-center gap-2 bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
+            <Shield className="w-5 h-5 text-blue-300" />
+            <span className="text-sm font-semibold">Federally Compliant</span>
+          </div>
+          <div className="flex items-center gap-2 bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-600">
+            <Sparkles className="w-5 h-5 text-gold-400" />
+            <span className="text-sm font-semibold">Official Initiative</span>
+          </div>
+        </div>
         
         <div 
           ref={buttonsRef}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
         >
           <button 
-            className="btn-gold min-w-[180px] flex items-center justify-center gap-2 relative overflow-hidden group"
+            className="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-blue-900 font-bold py-4 px-8 rounded-lg shadow-2xl transform hover:scale-105 transition-all duration-200 min-w-[220px] text-lg uppercase tracking-wide border-2 border-gold-400"
             onClick={handleDonateClick}
-            aria-label="Donate now for a chance to win the Gold Card opportunity"
+            aria-label="Participate in the official Gold Card initiative"
           >
-            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></span>
-            
-            <Sparkles className="w-5 h-5 text-gray-800" />
-            <span className="relative z-10">{t('hero.donateButton')}</span>
+            <span className="flex items-center justify-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              PARTICIPATE NOW
+            </span>
           </button>
           <button 
             onClick={handleShare}
-            className="btn-outline min-w-[180px] flex items-center justify-center gap-2"
-            aria-label="Share this opportunity on X (Twitter)"
+            className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-900 font-bold py-4 px-8 rounded-lg transition-all duration-200 min-w-[220px] text-lg uppercase tracking-wide"
+            aria-label="Share the Gold Card initiative"
           >
-            <Share2 className="w-4 h-4" />
-            Share on X
+            <span className="flex items-center justify-center gap-2">
+              <Share2 className="w-5 h-5" />
+              SHARE INITIATIVE
+            </span>
           </button>
         </div>
         
         <div
           ref={safeguardRef}
-          className="mt-8 max-w-2xl mx-auto"
+          className="max-w-4xl mx-auto"
         >
-          <div className="bg-white/80 backdrop-blur-sm border border-gold-200 rounded-xl p-4 shadow-lg animate-pulse">
-            <div className="flex items-center gap-3 mb-2">
-              <Shield className="w-6 h-6 text-purple-600 flex-shrink-0" />
-              <h4 className="text-lg font-bold text-purple-800">7-Day Inactivity Safeguard Contract</h4>
+          <div className="bg-white/10 backdrop-blur-sm border border-blue-400/30 rounded-xl p-6 shadow-2xl">
+            <div className="flex items-center gap-3 mb-3">
+              <Shield className="w-8 h-8 text-red-400 flex-shrink-0" />
+              <h3 className="text-xl font-bold text-white uppercase tracking-wide">Federal Security Protocol</h3>
             </div>
-            <p className="text-sm text-gray-700">
-              Our unique backup mechanism ensures funds are never locked: After 7 days without donations, 
-              the entire pool automatically transfers to the last donor. Your donation is always protected!
+            <p className="text-blue-100 leading-relaxed">
+              <strong>7-Day Safeguard Mechanism:</strong> Our advanced smart contract includes federal-grade security protocols. 
+              If no qualifying contributions are received within 7 days, all pooled funds are automatically secured and 
+              transferred to the final qualified participant. Your contribution is protected by blockchain technology 
+              and government compliance standards.
             </p>
           </div>
+        </div>
+
+        {/* Bottom Notice */}
+        <div className="mt-8 text-blue-200 text-sm">
+          <p className="mb-2">
+            <strong>NOTICE:</strong> This platform operates under strict compliance with federal regulations
+          </p>
+          <p>
+            Minimum participation: $1.05 USD1 • Maximum security • Transparent blockchain verification
+          </p>
         </div>
       </div>
       
       <div className="hidden md:block absolute bottom-10 left-1/2 transform -translate-x-1/2 cursor-pointer animate-bounce">
-        <div className="w-10 h-10 rounded-full border-2 border-gold-400 flex items-center justify-center">
-          <svg className="w-4 h-4 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <div className="w-12 h-12 rounded-full border-2 border-gold-400 bg-gold-400/20 flex items-center justify-center">
+          <svg className="w-6 h-6 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </div>
