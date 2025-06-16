@@ -31,14 +31,14 @@ const Hero = () => {
           {/* Main heading */}
           <div className="mb-8">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              One USD1,
+              USD1GoldCard
               <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 bg-clip-text text-transparent">
                 Win $5M Gold Card
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
               Join the revolutionary on-chain system. Donate $1 USD1 for a chance to win $5 million 
-              and secure your path to the US Gold Card.
+              and secure your path to the US Gold Card residency program.
             </p>
           </div>
 

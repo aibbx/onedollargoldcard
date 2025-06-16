@@ -8,7 +8,7 @@ const FAQHeader = () => {
         Frequently Asked Questions
       </h1>
       <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-        Everything you need to know about OneDollarGoldCard and how it works.
+        Everything you need to know about USD1GoldCard and how it works.
       </p>
     </>
   );

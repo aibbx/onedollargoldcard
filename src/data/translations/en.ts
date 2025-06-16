@@ -9,15 +9,15 @@ export const en = {
   'nav.smartContract': 'Smart Contract',
 
   // Hero section
-  'hero.title': 'OneDollarGoldCard',
+  'hero.title': 'USD1GoldCard',
   'hero.subtitle': 'Democratizing Access to Immigration Opportunities',
-  'hero.description': 'A decentralized donation platform on blockchain offering non-US citizens a chance to win enough to apply for the US Gold Card residency.',
+  'hero.description': 'A decentralized donation platform on blockchain offering non-US citizens a chance to win enough to apply for the US Gold Card residency program.',
   'hero.donateButton': 'Donate Now',
   'hero.donateNow': 'Donate Now',
   'hero.learnMore': 'Learn More',
 
   // Features
-  'features.title': 'Why OneDollarGoldCard?',
+  'features.title': 'Why USD1GoldCard?',
   'features.transparent.title': 'Fully Transparent',
   'features.transparent.desc': 'All transactions and winner selection are verified on-chain.',
   'features.accessible.title': 'Accessible to Everyone',
@@ -98,5 +98,5 @@ export const en = {
   'trump.support4': "We want the smartest people coming to America. The Gold Card is how we'll make that happen. It's going to be huge!",
   
   // Trump mention
-  'trump.support': 'Endorsed by the Trump administration\'s immigration initiatives.'
+  'trump.support': 'Endorsed by the Gold Card immigration initiatives.'
 };
