@@ -9,12 +9,17 @@ const isMobileDevice = (): boolean => {
 // Helper function to open OKX mobile app
 const openOKXMobile = (dappUrl: string): void => {
   const okxAppUrl = `okx://www.okx.com/web3/dapp?dappUrl=${encodeURIComponent(dappUrl)}`;
+  console.log('Opening OKX mobile app with URL:', okxAppUrl);
   window.open(okxAppUrl, '_blank');
   
   // Fallback to OKX website if app doesn't open
   setTimeout(() => {
     window.open('https://www.okx.com/web3', '_blank');
   }, 2000);
+  
+  // Set a flag to indicate we're waiting for mobile connection
+  localStorage.setItem('pendingMobileConnection', 'OKX');
+  localStorage.setItem('mobileConnectionTimestamp', Date.now().toString());
 };
 
 export const connectOKXWallet = async (): Promise<WalletConnectionResult> => {
@@ -27,9 +32,9 @@ export const connectOKXWallet = async (): Promise<WalletConnectionResult> => {
     // If no OKX provider on mobile, redirect to OKX app
     if (!window.okxwallet || !window.okxwallet.ethereum) {
       console.log('移动设备上未检测到 OKX 钱包，尝试打开 OKX 应用...');
-      const currentUrl = window.location.origin;
+      const currentUrl = window.location.href;
       openOKXMobile(currentUrl);
-      throw new Error('正在打开 OKX 应用，请在应用中完成连接后返回');
+      throw new Error('正在打开 OKX 应用，请在应用中完成连接后返回浏览器');
     }
   }
   
@@ -57,6 +62,10 @@ export const connectOKXWallet = async (): Promise<WalletConnectionResult> => {
     
     const address = accounts[0];
     console.log('OKX 钱包连接成功，地址:', address);
+    
+    // Clear mobile connection flags on successful connection
+    localStorage.removeItem('pendingMobileConnection');
+    localStorage.removeItem('mobileConnectionTimestamp');
     
     // 检查并切换到 BSC 网络
     try {
@@ -125,6 +134,11 @@ export const autoConnectOKXWallet = async (): Promise<WalletConnectionResult | n
     if (accounts && accounts.length > 0) {
       const address = accounts[0];
       console.log('OKX 钱包自动连接成功，地址:', address);
+      
+      // Clear mobile connection flags on successful auto-connection
+      localStorage.removeItem('pendingMobileConnection');
+      localStorage.removeItem('mobileConnectionTimestamp');
+      
       return { address, provider };
     }
   } catch (error) {
@@ -136,4 +150,7 @@ export const autoConnectOKXWallet = async (): Promise<WalletConnectionResult | n
 
 export const disconnectOKXWallet = (): void => {
   console.log('OKX 钱包连接已断开');
+  // Clear mobile connection flags
+  localStorage.removeItem('pendingMobileConnection');
+  localStorage.removeItem('mobileConnectionTimestamp');
 };

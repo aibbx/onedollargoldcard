@@ -9,7 +9,12 @@ const isMobileDevice = (): boolean => {
 // Helper function to open MetaMask mobile app
 const openMetaMaskMobile = (dappUrl: string): void => {
   const metamaskAppUrl = `https://metamask.app.link/dapp/${encodeURIComponent(dappUrl)}`;
+  console.log('Opening MetaMask mobile app with URL:', metamaskAppUrl);
   window.open(metamaskAppUrl, '_blank');
+  
+  // Set a flag to indicate we're waiting for mobile connection
+  localStorage.setItem('pendingMobileConnection', 'MetaMask');
+  localStorage.setItem('mobileConnectionTimestamp', Date.now().toString());
 };
 
 export const connectMetaMaskWallet = async (): Promise<WalletConnectionResult> => {
@@ -22,9 +27,9 @@ export const connectMetaMaskWallet = async (): Promise<WalletConnectionResult> =
     // If no ethereum provider on mobile, redirect to MetaMask app
     if (!window.ethereum) {
       console.log('移动设备上未检测到 MetaMask，尝试打开 MetaMask 应用...');
-      const currentUrl = window.location.origin;
+      const currentUrl = window.location.href;
       openMetaMaskMobile(currentUrl);
-      throw new Error('正在打开 MetaMask 应用，请在应用中完成连接后返回');
+      throw new Error('正在打开 MetaMask 应用，请在应用中完成连接后返回浏览器');
     }
   }
   
@@ -59,6 +64,10 @@ export const connectMetaMaskWallet = async (): Promise<WalletConnectionResult> =
     
     const address = accounts[0];
     console.log('MetaMask 连接成功，地址:', address);
+    
+    // Clear mobile connection flags on successful connection
+    localStorage.removeItem('pendingMobileConnection');
+    localStorage.removeItem('mobileConnectionTimestamp');
     
     // 检查网络 - 确保在 BSC 主网
     try {
@@ -129,6 +138,11 @@ export const autoConnectMetaMaskWallet = async (): Promise<WalletConnectionResul
     if (accounts && accounts.length > 0) {
       const address = accounts[0];
       console.log('MetaMask 自动连接成功，地址:', address);
+      
+      // Clear mobile connection flags on successful auto-connection
+      localStorage.removeItem('pendingMobileConnection');
+      localStorage.removeItem('mobileConnectionTimestamp');
+      
       return { address, provider };
     }
   } catch (error) {
@@ -140,5 +154,8 @@ export const autoConnectMetaMaskWallet = async (): Promise<WalletConnectionResul
 
 export const disconnectMetaMaskWallet = (): void => {
   console.log('MetaMask 钱包连接已断开');
+  // Clear mobile connection flags
+  localStorage.removeItem('pendingMobileConnection');
+  localStorage.removeItem('mobileConnectionTimestamp');
   // MetaMask 没有显式的断开连接方法，只需清除本地状态
 };

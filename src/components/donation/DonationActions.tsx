@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, Wallet, Sparkles, Loader2, AlertCircle, Smartphone } from 'lucide-react';
+import { CheckCircle2, Wallet, Sparkles, Loader2, AlertCircle, Smartphone, ArrowLeft } from 'lucide-react';
 import { useWallet } from '../../context/WalletContext';
 import { useIsMobile } from '../../hooks/use-mobile';
 
@@ -28,9 +28,20 @@ const DonationActions: React.FC<DonationActionsProps> = ({
   const isMobile = useIsMobile();
   const buttonDisabled = isLoading || isProcessing;
   
+  // Check for pending mobile connection
+  const pendingMobileConnection = localStorage.getItem('pendingMobileConnection');
+  const mobileConnectionTimestamp = localStorage.getItem('mobileConnectionTimestamp');
+  
+  // Check if pending connection is recent (within 5 minutes)
+  const hasPendingConnection = pendingMobileConnection && mobileConnectionTimestamp && 
+    (Date.now() - parseInt(mobileConnectionTimestamp)) < 5 * 60 * 1000;
+  
   const getButtonText = () => {
     if (buttonDisabled) {
       return walletType ? `Processing with ${walletType}...` : "Processing...";
+    }
+    if (hasPendingConnection && isMobile) {
+      return `Waiting for ${pendingMobileConnection} connection...`;
     }
     return isWalletConnected ? donateButtonText : connectWalletText;
   };
@@ -38,7 +49,7 @@ const DonationActions: React.FC<DonationActionsProps> = ({
   return (
     <div className="space-y-3">
       {/* Mobile-specific guidance */}
-      {isMobile && !isWalletConnected && (
+      {isMobile && !isWalletConnected && !hasPendingConnection && (
         <div className="p-3 bg-blue-900/30 border border-blue-500/20 rounded-md text-blue-200 text-sm">
           <div className="flex items-center">
             <Smartphone className="w-4 h-4 mr-2 flex-shrink-0" />
@@ -46,6 +57,22 @@ const DonationActions: React.FC<DonationActionsProps> = ({
               <strong>Mobile users:</strong> Make sure you have MetaMask or OKX app installed. 
               You might be redirected to your wallet app to complete the connection.
             </p>
+          </div>
+        </div>
+      )}
+      
+      {/* Pending mobile connection guidance */}
+      {isMobile && hasPendingConnection && (
+        <div className="p-4 bg-amber-900/30 border border-amber-500/20 rounded-md text-amber-200 text-sm">
+          <div className="flex items-start gap-3">
+            <ArrowLeft className="w-5 h-5 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="font-medium mb-2">Waiting for {pendingMobileConnection} connection...</p>
+              <p className="text-xs opacity-90">
+                If you've completed the connection in your {pendingMobileConnection} app, 
+                please wait a moment for the connection to be detected. You can also try refreshing the page.
+              </p>
+            </div>
           </div>
         </div>
       )}
@@ -60,7 +87,7 @@ const DonationActions: React.FC<DonationActionsProps> = ({
                    disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none ${
                      isMobile ? 'py-4 text-lg' : 'py-3'
                    }`}
-        aria-label={buttonDisabled ? "Processing donation" : (isWalletConnected ? "Donate USDC" : "Connect wallet")}
+        aria-label={buttonDisabled ? "Processing donation" : (isWalletConnected ? "Donate USD1" : "Connect wallet")}
       >
         {/* Shimmer effect */}
         <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmerTranslate"></span>
@@ -69,6 +96,11 @@ const DonationActions: React.FC<DonationActionsProps> = ({
           <>
             <Loader2 className="w-5 h-5 mr-2 animate-spin" />
             {walletType ? `Processing with ${walletType}...` : "Processing..."}
+          </>
+        ) : hasPendingConnection && isMobile ? (
+          <>
+            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+            Waiting for {pendingMobileConnection} connection...
           </>
         ) : isWalletConnected ? (
           <>
