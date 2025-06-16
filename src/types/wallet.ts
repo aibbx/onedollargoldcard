@@ -36,9 +36,11 @@ export interface WalletConnectionDetail {
   isConnected: boolean;
 }
 
-// Add custom wallet type declarations
+// Enhanced wallet type declarations
 export interface MetaMaskWallet {
   isMetaMask?: boolean;
+  isOKExWallet?: boolean;
+  providers?: any[];
   request: (request: { method: string; params?: any[] }) => Promise<any>;
   on: (event: string, callback: (...args: any[]) => void) => void;
   removeListener: (event: string, callback: (...args: any[]) => void) => void;

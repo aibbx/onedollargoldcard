@@ -25,7 +25,11 @@ const WalletConnector: React.FC = () => {
   const [showWalletMenu, setShowWalletMenu] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
 
-  const handleDonateClick = () => {
+  const handleDonateClick = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     console.log('WalletConnector donate click, isWalletConnected:', isWalletConnected);
     if (isWalletConnected) {
       // If wallet is connected, scroll to donation section
@@ -94,6 +98,7 @@ const WalletConnector: React.FC = () => {
                    shadow-lg transition-all duration-300 ease-out transform 
                    hover:scale-[1.03] active:scale-[0.98] flex items-center gap-2 relative overflow-hidden group"
           onClick={handleDonateClick}
+          type="button"
         >
           <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-gold-300/20 via-transparent to-transparent 
                          -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></span>

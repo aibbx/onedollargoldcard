@@ -30,12 +30,19 @@ const Navbar = () => {
   };
 
   const handleMobileMenuDonateClick = () => {
+    console.log('Mobile menu donate click triggered, isWalletConnected:', isWalletConnected);
     setIsMobileMenuOpen(false);
     
     if (isWalletConnected) {
       const donationSection = document.getElementById('donation-section');
       if (donationSection) {
         donationSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Trigger wallet modal opening
+      const walletConnector = document.querySelector('[data-wallet-connector]') as HTMLElement;
+      if (walletConnector) {
+        walletConnector.click();
       }
     }
   };
@@ -70,7 +77,9 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-6">
           <NavLinks isScrolled={isScrolled} />
           <LanguageSelector />
-          <WalletConnector />
+          <div data-wallet-connector>
+            <WalletConnector />
+          </div>
         </div>
 
         <div className="md:hidden flex items-center">

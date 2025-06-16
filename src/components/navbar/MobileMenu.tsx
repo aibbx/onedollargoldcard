@@ -38,8 +38,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
     onClose(); // Close the mobile menu after navigation
   };
 
-  const handleDonateButtonClick = () => {
+  const handleDonateButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     console.log('Mobile donate button clicked, isWalletConnected:', isWalletConnected);
+    console.log('Calling onDonateClick...');
     onDonateClick();
     onClose();
   };
@@ -77,6 +80,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                    shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform 
                    hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
           onClick={handleDonateButtonClick}
+          type="button"
         >
           {isWalletConnected ? t('hero.donateNow') : "Connect Wallet"}
           {!isWalletConnected && <Wallet className="w-4 h-4" />}
