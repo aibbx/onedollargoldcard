@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { Button } from '@/components/ui/button';
 
 const Terms = () => {
@@ -185,8 +184,6 @@ const Terms = () => {
           </div>
         </div>
       </main>
-      
-      <Footer />
     </div>
   );
 };

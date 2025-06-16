@@ -2,7 +2,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import FAQHeader from '../components/faq/FAQHeader';
 import FAQSection from '../components/faq/FAQSection';
 import { faqSections } from '../data/faqData';
@@ -27,8 +26,6 @@ const FAQ = () => {
           ))}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };
