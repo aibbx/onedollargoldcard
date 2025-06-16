@@ -19,7 +19,7 @@ export const useSendDonation = (
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const sendDonation = async (amount: number): Promise<string | null> => {
+  const sendDonation = async (amount: number, referralCode?: string): Promise<string | null> => {
     if (!isWalletConnected || !walletAddress) {
       toast({
         title: "钱包未连接",
@@ -50,7 +50,7 @@ export const useSendDonation = (
     
     try {
       setIsProcessing(true);
-      console.log('开始捐赠流程:', { amount, walletType, walletAddress });
+      console.log('开始捐赠流程:', { amount, walletType, walletAddress, referralCode });
       console.log('提供商信息:', { 
         type: walletType,
         hasPublicKey: walletType === 'OKX' ? !!provider?.solana?.publicKey : !!provider?.publicKey,
@@ -69,12 +69,13 @@ export const useSendDonation = (
       
       // 创建捐赠记录
       if (transactionId) {
-        // 首先保存到Supabase
+        // 首先保存到Supabase (包含referral_code)
         await addDonation({
           wallet_address: walletAddress,
           amount: amount,
           transaction_id: transactionId,
-          wallet_type: walletType
+          wallet_type: walletType,
+          referral_code: referralCode || null
         });
         
         // 创建本地记录
@@ -102,7 +103,12 @@ export const useSendDonation = (
           title: "捐赠成功",
           description: (
             <div>
-              <p>{`感谢您捐赠 $${amount.toFixed(2)} USDT!`}</p>
+              <p>{`感谢您捐赠 $${amount.toFixed(2)} USD1!`}</p>
+              {referralCode && (
+                <p className="text-sm text-green-600 mt-1">
+                  使用推荐码: {referralCode}
+                </p>
+              )}
               <a 
                 href={explorerUrl} 
                 target="_blank" 

@@ -12,6 +12,7 @@ import DonationActions from './DonationActions';
 import DonationSummary from './DonationSummary';
 import ConfirmationCheckbox from './ConfirmationCheckbox';
 import DonationHeader from './DonationHeader';
+import ReferralCodeInput from './ReferralCodeInput';
 import { useDonationForm } from '../../hooks/useDonationForm';
 import { useDonationTransactions } from '../../hooks/useDonationTransactions';
 
@@ -40,6 +41,8 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
     setIsConfirmed,
     error,
     setError,
+    referralCode,
+    setReferralCode,
     handleAmountChange,
     resetForm
   } = useDonationForm();
@@ -51,11 +54,12 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
     isConfirmed,
     setError,
     resetForm,
-    t
+    t,
+    referralCode // Pass referral code to the transaction hook
   });
 
   const handleShareOnX = () => {
-    const text = `Amazing! I just donated $${total} on #OneDollarGoldCard on #BSC to win $5M for the Gold Card application! Join now:`;
+    const text = `Amazing! I just donated $${total} on #OneDollarGoldCard on #EVM to win $5M for the Gold Card application! Join now:`;
     const url = "https://onedollargoldcard.com/";
     window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
@@ -77,6 +81,12 @@ const DonationCardContent: React.FC<DonationCardContentProps> = ({ showWalletMod
           onChange={handleAmountChange}
           presetAmounts={presetAmounts}
           setAmount={setAmount}
+        />
+        
+        <ReferralCodeInput
+          referralCode={referralCode}
+          setReferralCode={setReferralCode}
+          disabled={isLoading}
         />
         
         <DonationSummary 

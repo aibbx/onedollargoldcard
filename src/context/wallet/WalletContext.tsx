@@ -15,7 +15,7 @@ interface WalletContextType {
   isProcessing: boolean;
   connectWallet: (type: WalletType) => Promise<void>;
   disconnectWallet: () => void;
-  sendDonation: (amount: number) => Promise<string | null>;
+  sendDonation: (amount: number, referralCode?: string) => Promise<string | null>;
   recoverDonation: (transactionId: string, amount: number) => Promise<boolean>;
 }
 

@@ -11,6 +11,7 @@ interface UseDonationTransactionsProps {
   setError: (error: string) => void;
   resetForm: () => void;
   t: (key: string) => string;
+  referralCode?: string;
 }
 
 export const useDonationTransactions = ({
@@ -20,7 +21,8 @@ export const useDonationTransactions = ({
   isConfirmed,
   setError,
   resetForm,
-  t
+  t,
+  referralCode
 }: UseDonationTransactionsProps) => {
   const { toast } = useToast();
   const { sendDonation, isProcessing, walletType } = useWallet();
@@ -52,13 +54,14 @@ export const useDonationTransactions = ({
       // Show initial toast
       toast({
         title: "Preparing Donation",
-        description: `Preparing your donation of $${numericAmount.toFixed(2)} USDT...`,
+        description: `Preparing your donation of $${numericAmount.toFixed(2)} USD1...`,
       });
       
       // Calculate total with 5% fee
       const totalAmount = numericAmount * 1.05; 
       console.log('Initiating donation for amount:', totalAmount);
       console.log('Current wallet type:', walletType);
+      console.log('Referral code:', referralCode);
       
       // Set a timeout to show a more helpful message if it's taking too long
       const timeoutId = setTimeout(() => {
@@ -80,8 +83,8 @@ export const useDonationTransactions = ({
         }
       }, 15000);
       
-      // Try to send donation
-      const transactionId = await sendDonation(totalAmount);
+      // Try to send donation with referral code
+      const transactionId = await sendDonation(totalAmount, referralCode);
       
       // Clear the timeouts
       clearTimeout(timeoutId);
@@ -92,7 +95,7 @@ export const useDonationTransactions = ({
         resetForm();
         toast({
           title: "Donation Successful",
-          description: `Thank you! Your donation of $${totalAmount.toFixed(2)} USDT has been confirmed.`,
+          description: `Thank you! Your donation of $${totalAmount.toFixed(2)} USD1 has been confirmed.`,
         });
         return transactionId;
       } else {
@@ -109,13 +112,13 @@ export const useDonationTransactions = ({
         let helpfulMessage = errorMessage;
         
         if (errorMessage.includes("insufficient") || errorMessage.includes("Insufficient")) {
-          helpfulMessage = "You don't have enough USDT in your wallet. Please add more USDT and try again.";
+          helpfulMessage = "You don't have enough USD1 in your wallet. Please add more USD1 and try again.";
         } else if (errorMessage.includes("rejected") || errorMessage.includes("cancelled") || errorMessage.includes("denied")) {
           helpfulMessage = "You rejected the transaction in your wallet. Please try again when you're ready to approve.";
         } else if (errorMessage.includes("timeout") || errorMessage.includes("timed out")) {
-          helpfulMessage = "The transaction timed out. The Solana network might be congested. Please try again.";
-        } else if (errorMessage.includes("USDT token account") || errorMessage.includes("token account")) {
-          helpfulMessage = "You need a USDT token account. Please add some USDT to your wallet first.";
+          helpfulMessage = "The transaction timed out. The EVM network might be congested. Please try again.";
+        } else if (errorMessage.includes("USD1 token account") || errorMessage.includes("token account")) {
+          helpfulMessage = "You need a USD1 token account. Please add some USD1 to your wallet first.";
         }
         
         toast({

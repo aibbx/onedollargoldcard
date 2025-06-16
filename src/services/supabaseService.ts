@@ -9,6 +9,7 @@ export interface DbDonation {
   amount: number;
   transaction_id: string;
   wallet_type: string;
+  referral_code?: string | null;
   created_at?: string;
 }
 

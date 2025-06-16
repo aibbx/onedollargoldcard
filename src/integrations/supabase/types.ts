@@ -17,6 +17,7 @@ export type Database = {
           id: string
           is_valid_donation: boolean | null
           lottery_numbers_assigned: number | null
+          referral_code: string | null
           transaction_id: string
           wallet_address: string
           wallet_type: string
@@ -28,6 +29,7 @@ export type Database = {
           id?: string
           is_valid_donation?: boolean | null
           lottery_numbers_assigned?: number | null
+          referral_code?: string | null
           transaction_id: string
           wallet_address: string
           wallet_type: string
@@ -39,6 +41,7 @@ export type Database = {
           id?: string
           is_valid_donation?: boolean | null
           lottery_numbers_assigned?: number | null
+          referral_code?: string | null
           transaction_id?: string
           wallet_address?: string
           wallet_type?: string
@@ -185,6 +188,105 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_codes: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          is_active: boolean
+          referrer_wallet_address: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          referrer_wallet_address: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          referrer_wallet_address?: string
+        }
+        Relationships: []
+      }
+      referral_rewards: {
+        Row: {
+          id: string
+          last_updated: string
+          referrer_wallet_address: string
+          total_paid_rewards: number
+          total_pending_rewards: number
+        }
+        Insert: {
+          id?: string
+          last_updated?: string
+          referrer_wallet_address: string
+          total_paid_rewards?: number
+          total_pending_rewards?: number
+        }
+        Update: {
+          id?: string
+          last_updated?: string
+          referrer_wallet_address?: string
+          total_paid_rewards?: number
+          total_pending_rewards?: number
+        }
+        Relationships: []
+      }
+      referral_usage: {
+        Row: {
+          created_at: string
+          donation_amount: number
+          donation_id: string
+          id: string
+          referee_wallet_address: string
+          referral_code_id: string
+          referrer_wallet_address: string
+          reward_amount: number
+          service_fee_amount: number
+        }
+        Insert: {
+          created_at?: string
+          donation_amount: number
+          donation_id: string
+          id?: string
+          referee_wallet_address: string
+          referral_code_id: string
+          referrer_wallet_address: string
+          reward_amount?: number
+          service_fee_amount: number
+        }
+        Update: {
+          created_at?: string
+          donation_amount?: number
+          donation_id?: string
+          id?: string
+          referee_wallet_address?: string
+          referral_code_id?: string
+          referrer_wallet_address?: string
+          reward_amount?: number
+          service_fee_amount?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_usage_donation_id_fkey"
+            columns: ["donation_id"]
+            isOneToOne: false
+            referencedRelation: "donations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referral_usage_referral_code_id_fkey"
+            columns: ["referral_code_id"]
+            isOneToOne: false
+            referencedRelation: "referral_codes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_stats: {
         Row: {
           donation_count: number | null
@@ -226,7 +328,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_referral_code: {
+        Args: { wallet_address: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
